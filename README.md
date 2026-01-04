@@ -6,8 +6,8 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7.18-brightgreen.svg)](https://spring.io/projects/spring-boot)
-[![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-2021.0.5-blue.svg)](https://spring.io/projects/spring-cloud)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.2-brightgreen.svg)](https://spring.io/projects/spring-boot)
+[![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-2023.0.4-blue.svg)](https://spring.io/projects/spring-cloud)
 
 </div>
 
@@ -156,8 +156,8 @@ RiskSmart-OpenSource/
 |------|------|------|
 | Java | 17 | JDK |
 | Spring Boot | 2.7.18 | 基础框架 |
-| Spring Cloud | 2021.0.5 | 微服务框架 |
-| Spring Cloud Alibaba | 2021.0.5.0 | 微服务组件 |
+| Spring Cloud | 2023.0.4 | 微服务框架 |
+| Spring Cloud Alibaba | 2023.0.1.2 | 微服务组件 |
 | MyBatis Plus | 3.5.3.1 | ORM 框架 |
 | Drools | 7.73.0 | 规则引擎 |
 | MySQL | 8.4.0 | 数据库 |
@@ -242,3 +242,11 @@ npm run dev
 
 - **GitLab**: http://192.168.1.148/valengine-group/risksmart-opensource
 - **邮箱**: support@risksmart.com
+
+---
+
+## Star History
+
+如果这个项目对你有帮助，请给我们一个 Star！
+
+[![Star History Chart](https://api.star-history.com/svg?repos=valengine-group/risksmart-opensource&type=Date)](https://star-history.com/#valengine-group/risksmart-opensource&Date)
