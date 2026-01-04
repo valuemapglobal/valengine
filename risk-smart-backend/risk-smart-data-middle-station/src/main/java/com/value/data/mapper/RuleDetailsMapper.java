@@ -1,0 +1,16 @@
+package com.value.data.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.value.data.domain.entity.RuleDetails;
+
+/**
+ * <p>
+ * 分析指标规则详情表 Mapper 接口
+ * </p>
+ *
+ * @author Vida
+ * @since 2023-08-14
+ */
+public interface RuleDetailsMapper extends BaseMapper<RuleDetails> {
+
+}

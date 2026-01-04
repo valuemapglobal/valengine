@@ -1,0 +1,264 @@
+version: '3.8'
+
+services:
+  # ==================== MySQL 数据库 ====================
+  mysql:
+    image: mysql:8.4.0
+    container_name: risksmart-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-risksmart123}
+      TZ: Asia/Shanghai
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - ./deploy/mysql/conf/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./deploy/mysql/init:/docker-entrypoint-initdb.d
+      - mysql-data:/var/lib/mysql
+    command: --mysql-native-password=ON
+    networks:
+      - risksmart-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-risksmart123}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ==================== Redis 缓存 ====================
+  redis:
+    image: redis:7-alpine
+    container_name: risksmart-redis
+    restart: always
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - ./deploy/redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - redis-data:/data
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - risksmart-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # ==================== Nacos 配置中心 ====================
+  nacos:
+    image: nacos/nacos-server:v3.1.1
+    container_name: risksmart-nacos
+    restart: always
+    environment:
+      MODE: standalone
+      SPRING_DATASOURCE_PLATFORM: mysql
+      MYSQL_SERVICE_HOST: mysql
+      MYSQL_SERVICE_PORT: 3306
+      MYSQL_SERVICE_DB_NAME: nacos_config
+      MYSQL_SERVICE_USER: root
+      MYSQL_SERVICE_PASSWORD: ${MYSQL_ROOT_PASSWORD:-risksmart123}
+      MYSQL_SERVICE_DB_PARAM: characterEncoding=utf8&connectTimeout=10000&socketTimeout=30000&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+      # Nacos 3.x API 兼容模式（支持 2.x 客户端）
+      NACOS_CORE_API_COMPATIBILITY_CONSOLE_ENABLED: "true"
+      NACOS_AUTH_ENABLE: "true"
+      NACOS_AUTH_TOKEN: ${NACOS_AUTH_TOKEN:-SecretKey012345678901234567890123456789012345678901234567890123456789}
+      NACOS_AUTH_IDENTITY_KEY: nacos
+      NACOS_AUTH_IDENTITY_VALUE: nacos
+      JVM_XMS: 512m
+      JVM_XMX: 512m
+      JVM_XMN: 256m
+      JAVA_HOME: /usr/lib/jvm/java-17-openjdk
+      TZ: Asia/Shanghai
+    ports:
+      - "${NACOS_PORT:-8848}:8848"
+      - "${NACOS_CONSOLE_PORT:-8858}:8080"
+      - "9848:9848"
+      - "9849:9849"
+    volumes:
+      - nacos-logs:/home/nacos/logs
+      - nacos-data:/home/nacos/data
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - risksmart-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8848/nacos/"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+
+  # ==================== 后端服务 ====================
+  # API 网关服务
+  gateway:
+    build:
+      context: ./risk-smart-backend
+      dockerfile: risk-smart-gateway/Dockerfile
+    container_name: risksmart-gateway
+    restart: always
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8080
+      NACOS_SERVER_ADDR: nacos:8848
+      NACOS_USERNAME: nacos
+      NACOS_PASSWORD: nacos
+      TZ: Asia/Shanghai
+    ports:
+      - "${GATEWAY_PORT:-8080}:8080"
+    depends_on:
+      nacos:
+        condition: service_healthy
+    networks:
+      - risksmart-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # 系统管理服务
+  system:
+    build:
+      context: ./risk-smart-backend
+      dockerfile: risk-smart-system/Dockerfile
+    container_name: risksmart-system
+    restart: always
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8992
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/risk_smart_system?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD:-risksmart123}
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      NACOS_SERVER: nacos:8848
+      TZ: Asia/Shanghai
+    ports:
+      - "${SYSTEM_PORT:-8992}:8992"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      nacos:
+        condition: service_healthy
+    networks:
+      - risksmart-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8992/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # 决策引擎服务
+  decision-manage:
+    build:
+      context: ./risk-smart-backend
+      dockerfile: risk-smart-decision-manage/Dockerfile
+    container_name: risksmart-decision-manage
+    restart: always
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8991
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/risk_smart_decision_manage?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD:-risksmart123}
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      NACOS_SERVER_ADDR: nacos:8848
+      NACOS_USERNAME: nacos
+      NACOS_PASSWORD: nacos
+      TZ: Asia/Shanghai
+    ports:
+      - "${DECISION_PORT:-8991}:8991"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      nacos:
+        condition: service_healthy
+    networks:
+      - risksmart-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8991/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # 数据中台服务
+  data-middle-station:
+    build:
+      context: ./risk-smart-backend
+      dockerfile: risk-smart-data-middle-station/Dockerfile
+    container_name: risksmart-data-station
+    restart: always
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8990
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/risk_smart_data_middle_station?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD:-risksmart123}
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      NACOS_SERVER_ADDR: nacos:8848
+      NACOS_USERNAME: nacos
+      NACOS_PASSWORD: nacos
+      TZ: Asia/Shanghai
+    ports:
+      - "${DATA_STATION_PORT:-8990}:8990"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      nacos:
+        condition: service_healthy
+    networks:
+      - risksmart-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8990/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # ==================== 前端服务 ====================
+  web:
+    build:
+      context: ./risk-smart-web
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_BASE_URL=/api
+    container_name: risksmart-web
+    restart: always
+    ports:
+      - "${WEB_PORT:-80}:80"
+    depends_on:
+      - gateway
+    networks:
+      - risksmart-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+# ==================== 数据卷 ====================
+volumes:
+  mysql-data:
+    name: risksmart-mysql-data
+  redis-data:
+    name: risksmart-redis-data
+  nacos-logs:
+    name: risksmart-nacos-logs
+  nacos-data:
+    name: risksmart-nacos-data
+
+# ==================== 网络 ====================
+networks:
+  risksmart-network:
+    name: risksmart-network
+    driver: bridge

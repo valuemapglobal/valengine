@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.value.data.mapper.InterfaceFieldIdManageMapper">
+    <select id="listNotSync" resultType="com.value.data.domain.entity.InterfaceFieldIdManage">
+        select *
+        from interface_field_id_manage
+        where data_status = 0
+          and interface_field_id_manage not in(
+            select interface_field_id_manage
+            from rde_risk_variable_record
+            where data_status = 0
+        )
+    </select>
+</mapper>

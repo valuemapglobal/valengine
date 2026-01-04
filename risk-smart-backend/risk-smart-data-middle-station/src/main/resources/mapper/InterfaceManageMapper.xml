@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.value.data.mapper.InterfaceManageMapper">
+
+    <select id="listBySourceNo" parameterType="String" resultType="com.value.data.domain.vo.TreeInterfaceChildrenVO">
+        SELECT * FROM interface_manage WHERE interface_source_no = #{interfaceSourceNo} and data_status = 0
+    </select>
+
+    <select id="queryInterfaceChargingList" parameterType="com.value.data.domain.dto.InterfaceChargingDTO" resultType="com.value.data.domain.vo.InterfaceChargingListVo">
+        SELECT log.order_id,log.charging_flag,log.param,log.create_by,log.create_time,manage.interface_name,manage.interface_type,price
+        FROM interface_log log
+        LEFT JOIN interface_manage manage
+        on log.interface_manage_no = manage.interface_manage_no
+        where log.code = 200
+            <if test="deptId!=null">
+                and log.dept_id = #{deptId}
+            </if>
+            <if test="startTime != null">
+                and log.create_time <![CDATA[>]]> #{startTime}
+            </if>
+            <if test="endTime != null">
+                and log.create_time <![CDATA[<]]> #{endTime}
+            </if>
+            <if test="userName != null">
+                and log.create_by like concat('%',concat(#{userName}),'%')
+            </if>
+
+        GROUP BY log.order_id,log.id
+        order by log.create_time desc
+
+    </select>
+
+    <select id="queryTodayChargingCount" resultType="java.math.BigDecimal">
+        select price from interface_log log
+        JOIN interface_manage manage
+        on log.interface_manage_no = manage.interface_manage_no
+        where  TO_DAYS(log.create_time)=TO_DAYS(now()) and log.charging_flag = 1 and log.code = 200
+        <if test="deptId!=null">
+            and log.dept_id = #{deptId}
+        </if>
+
+    </select>
+
+    <select id="queryTodayUpdateTime" resultType="java.lang.String">
+        select log.create_time from interface_log log
+        JOIN interface_manage manage on log.interface_manage_no = manage.interface_manage_no
+        where TO_DAYS(log.create_time) = TO_DAYS(NOW()) and code = 200
+        <if test="deptId !=null">
+            and log.dept_id = #{deptId}
+        </if>
+        ORDER BY log.create_time DESC limit 1
+    </select>
+
+    <select id="queryAllChargingCount" resultType="java.math.BigDecimal">
+        select price from interface_log log
+        JOIN interface_manage manage
+        on log.interface_manage_no = manage.interface_manage_no
+        where
+        log.charging_flag = 1 and log.code = 200
+        <if test="deptId!=null">
+            and log.dept_id = #{deptId}
+        </if>
+
+
+    </select>
+
+    <select id="queryAllUpdateTime" resultType="java.lang.String">
+        select log.create_time from interface_log log
+        JOIN interface_manage manage on log.interface_manage_no = manage.interface_manage_no
+        where 1=1 and log.code = 200
+            <if test="deptId!=null">
+               and log.dept_id = #{deptId}
+            </if>
+
+
+        ORDER BY log.create_time DESC limit 1
+    </select>
+
+<!--    List<InterfaceManage> listNotSync();-->
+    <select id="listNotSync" resultType="com.value.data.domain.entity.InterfaceManage">
+        select *
+        from interface_manage
+        where data_status = 0
+        and interface_manage_no not in(
+            select interface_manage_no
+            from rde_risk_variable_group
+            where data_status = 0
+            )
+    </select>
+</mapper>
