@@ -23,6 +23,11 @@ spring:
         namespace: ${NACOS_NAMESPACE:}
         group: ${NACOS_GROUP:DEFAULT_GROUP}
         file-extension: yml
+        # 主配置文件（自动加载 risk-smart-gateway.yml 和 risk-smart-gateway-dev.yml）
+        extension-configs:
+          - data-id: risk-smart-gateway-${spring.profiles.active}.yml
+            group: DEFAULT_GROUP
+            refresh: true
         shared-configs:
           - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
     sentinel:

@@ -155,7 +155,7 @@ RiskSmart-OpenSource/
 | 技术 | 版本 | 说明 |
 |------|------|------|
 | Java | 17 | JDK |
-| Spring Boot | 2.7.18 | 基础框架 |
+| Spring Boot | 3.3.2 | 基础框架 |
 | Spring Cloud | 2023.0.4 | 微服务框架 |
 | Spring Cloud Alibaba | 2023.0.1.2 | 微服务组件 |
 | MyBatis Plus | 3.5.3.1 | ORM 框架 |
