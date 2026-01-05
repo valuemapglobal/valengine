@@ -1,0 +1,30 @@
+:root {
+  --primary-color: #2888e8;
+  --primary-color-lighter: #EAF3FD;
+  --bg-color: #fff;
+  --text-color: #000;
+  --text-color-secondary: rgba(0, 0, 0, 0.85);
+  --text-color-tertiary: rgba(0, 0, 0, 0.65);
+  --header-bg: #f8f9fa;
+  --border-color: #dee2e6;
+  --caret-image: url('../../../public/images/home/caret_3.png');
+  --main-bg: #f2f3f7;
+  --nav-border-color: none;
+  --table-header-bg: #F6F9FD;
+  --table-body-bg: #fff;
+}
+:root.dark {
+  --primary-color: #2888e8;
+  --primary-color-lighter: #EAF3FD;
+  --bg-color: #1a1a1a;
+  --text-color: #fff;
+  --text-color-secondary: #fff;
+  --text-color-tertiary: #fff;
+  --header-bg: #2d2d2d;
+  --border-color: #444444;
+  --caret-image: url('../../../public/images/home/caret_4.png');
+  --main-bg: #232738;
+  --nav-border-color: 1px solid #3e3e3e;
+  --table-header-bg: #262626;
+  --table-body-bg: #000;
+}

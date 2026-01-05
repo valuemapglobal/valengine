@@ -1,0 +1,223 @@
+/**
+* @author chris
+* @date 2023/4/20 9:26
+*/
+/*
+输入框样式
+*/
+/deep/ .el-form {
+	&-item {
+		margin-bottom: 20px;
+
+		&__label {
+			padding: 0;
+			height: 48px;
+			display: flex;
+			align-items: center;
+			font-size: 14px;
+			font-weight: 400;
+			color: #333333;
+			white-space: pre-line;
+
+			&.label-customisation {
+				line-height: 20px;
+				text-align: left;
+				display: inline-block;
+
+				.gray {
+					color: #666666;
+				}
+			}
+		}
+
+		//选择器
+		.el-select {
+			width: 100%;
+
+			.el-input {
+				.el-select__caret {
+					color: #272728;
+				}
+			}
+
+			.el-input--small .el-input__icon {
+				line-height: 48px;
+			}
+
+			.el-tag {
+				&:first-child {
+					height: 100%;
+					font-size: 14px;
+					color: #333333;
+					background: transparent;
+					border: none;
+				}
+			}
+
+			//多选时的关闭按钮 隐藏
+			.el-tag__close.el-icon-close {
+				display: none;
+			}
+		}
+
+		.el-input__prefix, .el-input__suffix {
+			line-height: 48px;
+			font-size: 14px;
+			color: rgba(0, 0, 0, 0.85);
+		}
+
+		.el-input__suffix {
+			right: 7px;
+			top: auto;
+		}
+
+		.is-disabled, .el-input__inner, .el-textarea__inner {
+			padding: 14px;
+			border: none;
+			font-size: 14px;
+			border-radius: 4px;
+			background: #F4F6F9;
+			color: rgba(0, 0, 0, 0.85);
+
+			&::placeholder {
+				color: rgba(0, 0, 0, 0.3);
+			}
+		}
+
+		.is-disabled {
+			padding: 0;
+		}
+
+		.el-input__inner {
+			height: 48px;
+			padding: 14px 40px 14px 14px;
+		}
+
+		.el-textarea__inner {
+			height: 96px;
+		}
+
+		//	单选、多选
+		.el-checkbox-group, .el-radio-group {
+			width: 100%;
+		}
+
+		.el-checkbox.is-bordered,
+		.el-radio.is-bordered {
+			padding: 0;
+
+			&.el-checkbox--small, &.el-radio--small {
+				//width: 100px;
+				height: 48px;
+				line-height: 48px;
+				margin-right: 0;
+				background: #F4F6F9;
+				border-radius: 4px;
+				border: none;
+				padding: 0;
+				text-align: center;
+				/*
+				w-4	一行展示4个
+				w-3	一行展示3个
+				w-2	一行展示2个
+				*/
+
+				&.w-4, &.w-3, &.w-2 {
+					min-width: calc((100% - 30px) / 4);
+
+					&.mr-10 {
+						margin-right: 10px;
+						margin-top: 10px;
+					}
+
+					&.mt-0 {
+						margin-top: 0;
+					}
+				}
+
+				&.w-special {
+					min-width: 28%;
+				}
+
+				&.w-last {
+					min-width: calc((20% - 10px));
+				}
+
+				&.w-3 {
+					min-width: calc((100% - 20px) / 3);
+				}
+
+				&.w-2 {
+					min-width: calc((100% - 10px) / 2);
+				}
+
+				.el-checkbox__label, .el-radio__label {
+					padding: 0;
+					font-size: 15px;
+					font-weight: 400;
+					color: rgba(0, 0, 0, 0.85);
+				}
+
+				.el-checkbox__input.is-checked + .el-checkbox__label,
+				.el-radio__input.is-checked + .el-radio__label {
+					color: #FFFFFF;
+				}
+			}
+
+			&.is-checked {
+				background: var(--primary-color);
+			}
+		}
+
+		.el-checkbox__input,
+		.el-checkbox__original,
+		.el-checkbox__input .el-checkbox__inner,
+		.el-checkbox__input.is-indeterminate .el-checkbox__inner,
+		.el-radio__input,
+		.el-radio__original,
+		.el-radio__input .el-radio__inner,
+		.el-radio__input.is-indeterminate .el-radio__inner {
+			display: none;
+		}
+
+		.el-checkbox.is-bordered + .el-checkbox.is-bordered,
+		.el-radio.is-bordered + .el-radio.is-bordered {
+			margin: 0;
+		}
+	}
+}
+
+/*
+底部按钮样式
+*/
+.drawer-footer {
+	text-align: right;
+
+	.el-button {
+		font-size: 14px;
+		font-weight: 500;
+		border-radius: 6px;
+
+		&:hover {
+			opacity: 0.8;
+		}
+
+		&:active {
+			opacity: 1;
+		}
+
+		&--primary {
+			background: var(--primary-color);
+			border-color: var(--primary-color);
+			padding: 13px 28px 12px;
+		}
+
+		&--info {
+			color: #3F4254;
+			background: #E4E6EF;
+			border-color: #E4E6EF;
+			padding: 13px 14px 12px;
+
+		}
+	}
+}

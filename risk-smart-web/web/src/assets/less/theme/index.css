@@ -1,0 +1,108 @@
+:root {
+  --decision-border: none;
+  --decision-product-list-bg-gradient: linear-gradient(90deg, #f7fafe 0%, #fff 100%);
+  --decision-model-card-border: none;
+  --decision-model-card-active-bg: #eaf2fa;
+  --decision-model-card-bg: rgba(0, 0, 0, 0.02);
+  --decision-model-card-operate-import-btn-bg: #e8effa;
+  --decision-model-card-operate-import-btn-border: none;
+  --decision-model-card-operate-copy-btn-bg: #e1f3ed;
+  --decision-model-card-operate-copy-btn-border: none;
+  --decision-model-card-operate-add-btn-bg: #fbf0e4;
+  --decision-model-card-operate-add-btn-border: none;
+  --decision-model-card-operate-edit-btn-bg: #d9ebfa;
+  --decision-model-card-operate-edit-btn-border: none;
+  --decision-model-card-operate-delete-btn-bg: #ebe9f0;
+  --decision-model-card-operate-delete-btn-border: none;
+  --decision-model-card-operate-addLevel-btn-bg: #ECE8E4;
+  --decision-model-card-operate-addLevel-btn-border: none;
+  --decision-rate-card-bg: #F3F6FE;
+  --decision-rate-card-border: none;
+}
+:root.dark {
+  --decision-border: 1px solid #444444;
+  --decision-product-list-bg-gradient: none;
+  --decision-model-card-border: 1px solid #444444;
+  --decision-model-card-bg: #2d2d2d;
+  --decision-model-card-active-bg: #444444;
+  --decision-model-card-operate-import-btn-bg: none;
+  --decision-model-card-operate-import-btn-border: 1px solid #4d96ff;
+  --decision-model-card-operate-copy-btn-bg: none;
+  --decision-model-card-operate-copy-btn-border: 1px solid #00b578;
+  --decision-model-card-operate-add-btn-bg: none;
+  --decision-model-card-operate-add-btn-border: 1px solid #ff8f1f;
+  --decision-model-card-operate-edit-btn-bg: none;
+  --decision-model-card-operate-edit-btn-border: 1px solid #4d96ff;
+  --decision-model-card-operate-delete-btn-bg: none;
+  --decision-model-card-operate-delete-btn-border: 1px solid #F9565A;
+  --decision-model-card-operate-addLevel-btn-bg: none;
+  --decision-model-card-operate-addLevel-btn-border: 1px solid #FF8F1F;
+  --decision-rate-card-bg: none;
+  --decision-rate-card-border: 1px solid #F3F6FE;
+}
+:root {
+  --table-header-bg: #F6F9FD;
+  --table-body-bg: #fff;
+  --table-fiex-border: none;
+  --select-dropdown__item-color: #000;
+  --select-dropdown__item-bg: #fff;
+  --select-dropdown__item-hover-color: #000;
+  --select-dropdown__item-hover-bg: #fff;
+  --select-dropdown__item-selected-color: #2888e8;
+  --select-dropdown__item-selected-bg: #fff;
+  --pagination-bg: #fff;
+  --pagination-color: #000;
+  --loading-mask-bg: #fff;
+  --drawer-border: none;
+  --tree-node-hover-bg: #f4f6f9;
+  --tree-node-hover-color: #000;
+}
+:root.dark {
+  --table-header-bg: #262626;
+  --table-body-bg: #000;
+  --table-fiex-border: 1px solid #444444;
+  --select-dropdown__item-color: #fff;
+  --select-dropdown__item-bg: #000;
+  --select-dropdown__item-hover-color: #000;
+  --select-dropdown__item-hover-bg: #fff;
+  --select-dropdown__item-selected-color: #2888e8;
+  --select-dropdown__item-selected-bg: #000;
+  --pagination-bg: #000;
+  --pagination-color: #fff;
+  --loading-mask-bg: rgba(0, 0, 0, 0.8);
+  --drawer-border: 1px solid #444444;
+  --tree-node-hover-bg: #444;
+  --tree-node-hover-color: #fff;
+}
+:root {
+  --primary-color: #2888e8;
+  --primary-color-lighter: #EAF3FD;
+  --bg-color: #fff;
+  --bg-color-lighter: rgba(0, 0, 0, 0.04);
+  --text-color: #000;
+  --text-color-secondary: rgba(0, 0, 0, 0.85);
+  --text-color-tertiary: rgba(0, 0, 0, 0.65);
+  --text-color-quaternary: rgba(0, 0, 0, 0.3);
+  --text-color-hover: none;
+  --header-bg: #f8f9fa;
+  --border-color: #dee2e6;
+  --caret-image: url('../../../../public/images/home/caret_3.png');
+  --main-bg: #f2f3f7;
+  --nav-border-color: none;
+}
+:root.dark {
+  --primary-color: #2888e8;
+  --primary-color-lighter: #EAF3FD;
+  --bg-color: #000;
+  --bg-color-lighter: #6d6d6d;
+  --text-color: #fff;
+  --text-color-secondary: #fff;
+  --text-color-tertiary: #fff;
+  --text-color-quaternary: #fff;
+  --text-color-hover: #000;
+  --header-bg: #2d2d2d;
+  --border-color: #444444;
+  --caret-image: url('../../../../public/images/home/caret_4.png');
+  --main-bg: #232738;
+  --nav-border-color: 1px solid #3e3e3e;
+}
