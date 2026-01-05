@@ -1,0 +1,42 @@
+:root {
+  --decision-border: none;
+  --decision-product-list-bg-gradient: linear-gradient(90deg, #f7fafe 0%, #fff 100%);
+  --decision-model-card-border: none;
+  --decision-model-card-active-bg: #eaf2fa;
+  --decision-model-card-bg: rgba(0, 0, 0, 0.02);
+  --decision-model-card-operate-import-btn-bg: #e8effa;
+  --decision-model-card-operate-import-btn-border: none;
+  --decision-model-card-operate-copy-btn-bg: #e1f3ed;
+  --decision-model-card-operate-copy-btn-border: none;
+  --decision-model-card-operate-add-btn-bg: #fbf0e4;
+  --decision-model-card-operate-add-btn-border: none;
+  --decision-model-card-operate-edit-btn-bg: #d9ebfa;
+  --decision-model-card-operate-edit-btn-border: none;
+  --decision-model-card-operate-delete-btn-bg: #ebe9f0;
+  --decision-model-card-operate-delete-btn-border: none;
+  --decision-model-card-operate-addLevel-btn-bg: #ECE8E4;
+  --decision-model-card-operate-addLevel-btn-border: none;
+  --decision-rate-card-bg: #F3F6FE;
+  --decision-rate-card-border: none;
+}
+:root.dark {
+  --decision-border: 1px solid #444444;
+  --decision-product-list-bg-gradient: none;
+  --decision-model-card-border: 1px solid #444444;
+  --decision-model-card-bg: #2d2d2d;
+  --decision-model-card-active-bg: #444444;
+  --decision-model-card-operate-import-btn-bg: none;
+  --decision-model-card-operate-import-btn-border: 1px solid #4d96ff;
+  --decision-model-card-operate-copy-btn-bg: none;
+  --decision-model-card-operate-copy-btn-border: 1px solid #00b578;
+  --decision-model-card-operate-add-btn-bg: none;
+  --decision-model-card-operate-add-btn-border: 1px solid #ff8f1f;
+  --decision-model-card-operate-edit-btn-bg: none;
+  --decision-model-card-operate-edit-btn-border: 1px solid #4d96ff;
+  --decision-model-card-operate-delete-btn-bg: none;
+  --decision-model-card-operate-delete-btn-border: 1px solid #F9565A;
+  --decision-model-card-operate-addLevel-btn-bg: none;
+  --decision-model-card-operate-addLevel-btn-border: 1px solid #FF8F1F;
+  --decision-rate-card-bg: none;
+  --decision-rate-card-border: 1px solid #F3F6FE;
+}

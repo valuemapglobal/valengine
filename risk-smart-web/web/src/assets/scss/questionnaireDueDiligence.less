@@ -1,0 +1,147 @@
+/**
+* @author chris
+* @date 2023/6/1 10:59
+*/
+/deep/ .el-tabs {
+	height: 100%;
+
+	&__nav {
+		padding: 0 20px;
+	}
+
+	&__active-bar {
+		margin-left: 20px;
+	}
+
+	&__header {
+
+		margin-bottom: 20px;
+	}
+
+	&__content {
+		height: calc(100% - 62px);
+		padding: 0 20px 20px;
+
+		.el-tab-pane {
+			height: 100%;
+		}
+	}
+}
+
+/deep/ .el-tag {
+	border-radius: 2px;
+	padding: 2px 6px;
+	font-size: 12px;
+	font-weight: 400;
+	color: var(--primary-color);
+	background: #E9F3FC;
+	border: none;
+
+	&--danger {
+		color: #FA5151;
+		background: #FEEDED;
+	}
+
+	&--success {
+		color: #00B578;
+		background: #E5F7F1;
+	}
+
+	&--warning {
+		color: #FF8F1F;
+		background: #FFF3E8;
+	}
+}
+
+.questionnaire {
+	height: 100%;
+	border-radius: 6px;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+
+	&-header {
+		padding: 20px;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+		&-top, .questionnaire-header-ul, li {
+			display: flex;
+			align-items: center;
+		}
+
+		&-top {
+			margin-bottom: 10px;
+			.questionnaire-name{
+				font-size: 20px;
+				font-weight: 600;
+				line-height: 28px;
+				color: rgba(0,0,0,0.9);
+			}
+		}
+
+		.questionnaire-header-ul {
+			justify-content: space-between;
+			font-size: 14px;
+			font-weight: 400;
+			line-height: 22px;
+
+			.li-label {
+				color: rgba(0, 0, 0, 0.4);
+			}
+
+			.li-value {
+				color: rgba(0, 0, 0, 0.85);
+			}
+		}
+	}
+
+	&-content {
+		overflow-y: auto;
+		height: calc(100% - 100px);
+
+		.right-no-data {
+			img {
+				width: 125px;
+				height: 117px;
+			}
+
+			&-text {
+				color: rgba(0, 0, 0, 0.5);
+			}
+		}
+
+		&-list {
+			padding: 20px;
+			line-height: 22px;
+			border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+			&:last-child {
+				border-bottom: none;
+			}
+
+			.questionnaire-list-label {
+				margin-bottom: 12px;
+				font-size: 16px;
+				font-weight: bold;
+				color: rgba(0, 0, 0, 0.85);
+			}
+
+			.questionnaire-list-value {
+				display: inline-block;
+				padding: 10px 14px;
+				font-size: 14px;
+				font-weight: 400;
+				color: var(--primary-color);
+				border-radius: 2px;
+				background: rgba(40, 136, 232, 0.04);
+			}
+		}
+	}
+}
+
+.drawer-footer {
+	margin-top: 20px;
+
+	.el-button {
+		line-height: 24px;
+		padding: 8px 14px;
+	}
+}

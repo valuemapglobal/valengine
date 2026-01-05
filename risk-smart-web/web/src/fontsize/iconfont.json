@@ -1,0 +1,37 @@
+{
+  "id": "3355381",
+  "name": "gutu",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "9752794",
+      "name": "成功",
+      "font_class": "chenggong",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "809932",
+      "name": "企业",
+      "font_class": "qiye",
+      "unicode": "e637",
+      "unicode_decimal": 58935
+    },
+    {
+      "icon_id": "1044263",
+      "name": "开锁换锁",
+      "font_class": "kaisuohuansuo",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "7876854",
+      "name": "user",
+      "font_class": "user",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    }
+  ]
+}
