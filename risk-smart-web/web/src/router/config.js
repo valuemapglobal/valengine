@@ -141,18 +141,19 @@ export const configRoutes = [
                 '@/views/decisionPlatform/modules/productDecision/index.vue'
               ),
           },
-          {
-            path: 'Review',
-            name: 'Review',
-            meta: {
-              title: '产品决策',
-            },
-            component: () =>
-              import(
-                /* webpackChunkName:"Review"*/
-                '@/views/decisionPlatform/modules/review/index.vue'
-              ),
-          },
+          // 暂时注释 20260105
+          // {
+          //   path: 'Review',
+          //   name: 'Review',
+          //   meta: {
+          //     title: '产品决策',
+          //   },
+          //   component: () =>
+          //     import(
+          //       /* webpackChunkName:"Review"*/
+          //       '@/views/decisionPlatform/modules/review/index.vue'
+          //     ),
+          // },
           {
             path: 'ModelDecision',
             name: 'ModelDecision',

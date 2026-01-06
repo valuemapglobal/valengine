@@ -240,13 +240,10 @@ export default {
               label: '产品模型',
               name: 'ProductDecision',
             },
-            {
-              label: '审批列表',
-              name: 'Review',
-            },
+            // 暂时注释 20260105
             // {
-            //   label: '模型',
-            //   name: 'ModelDecision',
+            //   label: '审批列表',
+            //   name: 'Review',
             // },
           ],
         },
@@ -266,21 +263,21 @@ export default {
             },
           ],
         },
-        {
-          label: '流程回溯',
-          name: 'Backtrack',
-          // isChange: true,
-          values: [
-            {
-              label: '历史任务列表',
-              name: 'HistoryTask',
-            },
-            {
-              label: '回溯任务列表',
-              name: 'BacktrackTask',
-            },
-          ],
-        },
+        // 暂时注释 20260105
+        // {
+        //   label: '流程回溯',
+        //   name: 'Backtrack',
+        //   values: [
+        //     {
+        //       label: '历史任务列表',
+        //       name: 'HistoryTask',
+        //     },
+        //     {
+        //       label: '回溯任务列表',
+        //       name: 'BacktrackTask',
+        //     },
+        //   ],
+        // },
         {
           label: '监测',
           name: 'Monitor',
@@ -318,13 +315,10 @@ export default {
               label: '部门管理',
               name: 'Department',
             },
-            {
-              label: '审批授权',
-              name: 'ApprovalAuth',
-            },
+            // 暂时注释 20260105
             // {
-            //   label: '资源管理',
-            //   name: 'Account',
+            //   label: '审批授权',
+            //   name: 'ApprovalAuth',
             // },
             {
               label: '操作日志',
