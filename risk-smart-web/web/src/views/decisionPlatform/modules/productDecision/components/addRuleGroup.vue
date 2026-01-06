@@ -37,15 +37,10 @@
 </template>
 
 <script>
-import {
-  editGroupSubmit,
-  versionControlFraud,
-  versionReserveFraud,
-} from '../api/riskModel'
+import { editGroupSubmit } from '../api/riskModel'
 import { mapState, mapGetters } from 'vuex'
-import { logChange, lockStatus } from '../api'
-import { handleCheckLock } from '../utils/index.js'
-/*import confirmDialog from '../components/confirmDialog.vue'*/
+// import { logChange } from '../api'
+// import { handleCheckLock } from '../utils/index.js'
 
 export default {
   name: 'addRuleGroup',
@@ -151,7 +146,7 @@ export default {
   },
   computed: {
     ...mapState(['dataRisk']),
-    ...mapGetters(['batchId']),
+    // ...mapGetters(['batchId']), 暂时注释 20260105
     mapProObj() {
       let findObj = this.dataRisk.productList.find(
         (item) => item.id === this.dataRisk.decision.projectCode
@@ -160,7 +155,7 @@ export default {
     },
   },
   methods: {
-    handleCheckLock,
+    // handleCheckLock, 暂时注释 20260105
     handleLogBaseData() {
       let decision = this.dataRisk.decision
       let productList = this.dataRisk.productList
@@ -177,8 +172,6 @@ export default {
         this.formData?.id && this.formData.id != null ? 'UPDATED' : 'CREATED'
       this.logRecord.currentVersion =
         this.formData?.versionObj?.newVersion || null
-
-      console.log(this.logRecord, 'formData---formData')
     },
     handleLogData() {
       const changes = this.compareObjects(this.formBackUp, this.ruleGroupForm)
@@ -241,30 +234,34 @@ export default {
       return fieldMap[field] || field
     },
     async handleBeforeSubmit() {
-      if (this.dataRisk.decision.ruleCode == 5) {
-        if (!(await this.handleCheckLock())) return
-      }
+      // 暂时注释 20260105
+      // if (this.dataRisk.decision.ruleCode == 5) {
+      //   if (!(await this.handleCheckLock())) return
+      // }
       this.$refs['form'].validate(async (valid) => {
         if (valid) {
-          let logData = this.handleLogData()
-          if (
-            logData.changeDetails.length &&
-            this.dataRisk.decision.ruleCode == 5
-          ) {
-            logChange({
-              ...logData,
-              parentId: this.tacticsId,
-              batchId: this.batchId,
-            })
-              .then((res) => {
-                if (res.code == 200) {
-                  this.submit()
-                }
-              })
-              .catch((err) => {})
-          } else {
-            this.submit()
-          }
+          // 暂时注释 20260105
+          // let logData = this.handleLogData()
+          // if (
+          //   logData.changeDetails.length &&
+          //   this.dataRisk.decision.ruleCode == 5
+          // ) {
+          //   logChange({
+          //     ...logData,
+          //     parentId: this.tacticsId,
+          //     batchId: this.batchId,
+          //   })
+          //     .then((res) => {
+          //       if (res.code == 200) {
+          //         this.submit()
+          //       }
+          //     })
+          //     .catch((err) => {})
+          // } else {
+          //   this.submit()
+          // }
+
+          this.submit()
         }
       })
     },
@@ -283,7 +280,7 @@ export default {
         .then((res) => {
           if (res.code == 200) {
             this.$message.success('操作成功')
-            this.handleCheckLock()
+            // this.handleCheckLock() 暂时注释 20260105
             this.$emit('success', 1)
             this.resetForm()
           }

@@ -24,16 +24,19 @@
         </template>
       </div>
       <div class="operateBtn">
+        <!-- 暂时注释 20260105 -->
+        <!-- v-if="active != 'rule' && hasButton('strategy:release:show')" -->
         <el-tooltip
           class="item"
           effect="light"
           content="点击这里，让功能操作同步到在线运行环境生效！"
           placement="bottom"
-          v-if="active != 'rule' && hasButton('strategy:release:show')"
+          v-if="hasButton('strategy:release:show')"
         >
           <el-button type="primary" @click="releaseRule"> 确认发布 </el-button>
         </el-tooltip>
-        <template v-if="active == 'rule'">
+        <!-- 暂时注释 20260105 -->
+        <!-- <template v-if="active == 'rule'">
           <el-button
             @click="handleCompare"
             :disabled="btnLoading"
@@ -54,7 +57,7 @@
             <i class="el-icon-time" />
             <div v-if="hasNew" class="redPoint" />
           </div>
-        </template>
+        </template> -->
       </div>
     </div>
     <div class="content">
@@ -76,7 +79,8 @@ import limit from './limit.vue'
 import price from './price.vue'
 import { mapActions, mapGetters, mapState } from 'vuex'
 import { notificationsStatus, exportStrategy, comparePreview } from '../api'
-import { handleCheckLock } from '../utils/index.js'
+// 暂时注释 20260105
+// import { handleCheckLock } from '../utils/index.js'
 import { getFileNameFromHeaders } from '@/utils/rouyi.js'
 
 export default {
@@ -85,7 +89,6 @@ export default {
     HistoricalBatch,
     rule,
     classify,
-    // tags,
     score,
     rate,
     limit,
@@ -109,7 +112,6 @@ export default {
           disabled: false,
           ruleCode: 2,
         },
-        // { label: '额度模型', template: 'limit', disabled: true, ruleCode: 3, btnPermission: 'Quota:model:show' },
         { label: '额度模型', template: 'limit', disabled: false, ruleCode: 3 },
         { label: '定价模型', template: 'price', disabled: false, ruleCode: 4 },
       ],
@@ -124,7 +126,7 @@ export default {
   },
   computed: {
     ...mapState(['dataRisk']),
-    ...mapGetters(['batchId']),
+    // ...mapGetters(['batchId']), 暂时注释 20260105
   },
   watch: {
     active: {
@@ -135,9 +137,10 @@ export default {
           moduleName: obj.label,
         })
 
-        if (cur == 'rule') {
-          this.handleStartPoll()
-        }
+        // 暂时注释 20260105
+        // if (cur == 'rule') {
+        //   this.handleStartPoll()
+        // }
       },
       deep: true,
       immediate: true,
@@ -147,37 +150,41 @@ export default {
   methods: {
     ...mapActions(['changeProductDecision']),
     getFileNameFromHeaders,
-    handleCheckLock,
-    getNotificationsStatus() {
-      let decision = this.dataRisk.decision
-      notificationsStatus({
-        projectCode: decision.projectCode + '',
-        businessCode: decision.businessCode + '',
-        ruleCode: decision.ruleCode + '',
-      }).then((res) => {
-        if (res.code == 200) {
-          this.hasNew = res.data.hasNew
-        }
-      })
-    },
-    handleStartPoll() {
-      this.getNotificationsStatus()
-      if (this.interval) {
-        clearInterval(this.interval)
-      }
-      this.interval = setInterval(() => {
-        this.getNotificationsStatus()
-      }, 5000)
-    },
+
+    // 暂时注释 20260105
+    // handleCheckLock,
+    // getNotificationsStatus() {
+    //   let decision = this.dataRisk.decision
+    //   notificationsStatus({
+    //     projectCode: decision.projectCode + '',
+    //     businessCode: decision.businessCode + '',
+    //     ruleCode: decision.ruleCode + '',
+    //   }).then((res) => {
+    //     if (res.code == 200) {
+    //       this.hasNew = res.data.hasNew
+    //     }
+    //   })
+    // },
+    // handleStartPoll() {
+    //   this.getNotificationsStatus()
+    //   if (this.interval) {
+    //     clearInterval(this.interval)
+    //   }
+    //   this.interval = setInterval(() => {
+    //     this.getNotificationsStatus()
+    //   }, 5000)
+    // },
+
     clickActive(data) {
       this.active = data.template
     },
     async handleCompare() {
-      if (!(await this.handleCheckLock())) return
+      // 暂时注释 20260105
+      // if (!(await this.handleCheckLock())) return
       this.btnLoading = true
       let decision = this.dataRisk.decision
       comparePreview({
-        batchId: this.batchId,
+        // batchId: this.batchId, 暂时注释 20260105
         projectCode: decision.projectCode + '',
         businessCode: decision.businessCode + '',
         ruleCode: decision.ruleCode + '',

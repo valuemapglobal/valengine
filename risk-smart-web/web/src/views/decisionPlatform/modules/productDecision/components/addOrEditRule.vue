@@ -326,8 +326,10 @@ import {
   searchSelectSubmit,
   lockStatus,
 } from '../api/riskModel'
-import { logChange } from '../api/index'
-import { handleCheckLock } from '../utils/index.js'
+
+// 暂时注释 20260105
+// import { logChange } from '../api/index'
+// import { handleCheckLock } from '../utils/index.js'
 
 export default {
   name: 'addRule',
@@ -669,7 +671,7 @@ export default {
     },
   },
   methods: {
-    handleCheckLock,
+    // handleCheckLock, 暂时注释 20260105
     handleLogBaseData() {
       if (this.readOnly) return
       let decision = this.dataRisk.decision
@@ -974,7 +976,7 @@ export default {
     },
 
     async handleBeforeSubmit() {
-      if (!(await this.handleCheckLock())) return
+      // if (!(await this.handleCheckLock())) return 暂时注释 20260105
       let isForm = false
       let isIF = true
       this.$refs.codeForm.validate((valid) => {
@@ -1122,78 +1124,75 @@ export default {
         }
 
         this.$nextTick(() => {
-          let formBackup = this.formBackup
-          // 表单基本信息对比
-          const changes = this.compareObjects(formBackup, codeForm)
-
-          // 数据总数 对比
-          let checkCondition = this.deepEqual(
-            this.conditionBackup,
-            conditionArray
-          )
-          if (!checkCondition) {
-            changes.push({
-              targetId: this.info.id || null,
-              targetType: 'RULE',
-              fieldName: 'conditionArray',
-              fieldDisplayName: '数据总数',
-              oldValue: this.conditionBackup,
-              newValue: conditionArray,
-            })
-          }
-
+          // 暂时注释 20260105
+          // let formBackup = this.formBackup
+          // // 表单基本信息对比
+          // const changes = this.compareObjects(formBackup, codeForm)
+          // // 数据总数 对比
+          // let checkCondition = this.deepEqual(
+          //   this.conditionBackup,
+          //   conditionArray
+          // )
+          // if (!checkCondition) {
+          //   changes.push({
+          //     targetId: this.info.id || null,
+          //     targetType: 'RULE',
+          //     fieldName: 'conditionArray',
+          //     fieldDisplayName: '数据总数',
+          //     oldValue: this.conditionBackup,
+          //     newValue: conditionArray,
+          //   })
+          // }
           // 判断条件 对比
-          let checkLogicGroup = this.deepEqual(
-            this.logicGroupArrayBackup,
-            processedLogicGroupArray
-          )
-          if (!checkLogicGroup) {
-            changes.push({
-              targetId: this.info.id || null,
-              targetType: 'RULE',
-              fieldName: 'logicGroup',
-              fieldDisplayName: '判断条件',
-              oldValue: this.logicGroupArrayBackup,
-              newValue: processedLogicGroupArray,
-            })
-          }
+          // let checkLogicGroup = this.deepEqual(
+          //   this.logicGroupArrayBackup,
+          //   processedLogicGroupArray
+          // )
+          // if (!checkLogicGroup) {
+          //   changes.push({
+          //     targetId: this.info.id || null,
+          //     targetType: 'RULE',
+          //     fieldName: 'logicGroup',
+          //     fieldDisplayName: '判断条件',
+          //     oldValue: this.logicGroupArrayBackup,
+          //     newValue: processedLogicGroupArray,
+          //   })
+          // }
+          // // 预警数据对比属性 对比
+          // let objResultCompareChanges = this.deepEqual(
+          //   this.objResultCompareBackup,
+          //   codeForm.generateRuleVO.objResultCompare
+          // )
+          // if (!objResultCompareChanges) {
+          //   changes.push({
+          //     targetId: this.info.id || null,
+          //     targetType: 'RULE',
+          //     fieldName: 'term',
+          //     fieldDisplayName: '预警数据对比属性',
+          //     oldValue: this.objResultCompareBackup,
+          //     newValue: codeForm.generateRuleVO.objResultCompare,
+          //   })
+          // }
+          // if (changes.length > 0) {
+          //   let logData = {
+          //     ...this.logRecord,
+          //     parentId: this.ruleGroupId,
+          //     changeDetails: changes,
+          //     batchId: this.batchId,
+          //   }
 
-          // 预警数据对比属性 对比
-          let objResultCompareChanges = this.deepEqual(
-            this.objResultCompareBackup,
-            codeForm.generateRuleVO.objResultCompare
-          )
-          if (!objResultCompareChanges) {
-            changes.push({
-              targetId: this.info.id || null,
-              targetType: 'RULE',
-              fieldName: 'term',
-              fieldDisplayName: '预警数据对比属性',
-              oldValue: this.objResultCompareBackup,
-              newValue: codeForm.generateRuleVO.objResultCompare,
-            })
-          }
-          // console.log(this.logicGroupArray, 'logicGroupArray')
-          // this.submit(codeForm)
-          // return
-          if (changes.length > 0) {
-            let logData = {
-              ...this.logRecord,
-              parentId: this.ruleGroupId,
-              changeDetails: changes,
-              batchId: this.batchId,
-            }
+          //   logChange({ ...logData })
+          //     .then((res) => {
+          //       if (res.code == 200) {
+          //         this.submit(codeForm)
+          //       }
+          //     })
+          //     .catch()
+          // } else {
+          //   this.submit(codeForm)
+          // }
 
-            logChange({ ...logData })
-              .then((res) => {
-                if (res.code == 200) {
-                  this.submit(codeForm)
-                }
-              })
-              .catch()
-          } else {
-            this.submit(codeForm)
-          }
+          this.submit(codeForm)
         })
       }
     },
@@ -1304,7 +1303,7 @@ export default {
           if (res.code == 200) {
             this.loading = false
             this.$message.success('操作成功')
-            this.handleCheckLock()
+            // this.handleCheckLock() 暂时注释 20260105
             this.$emit('success', 2)
             this.reset()
           }
