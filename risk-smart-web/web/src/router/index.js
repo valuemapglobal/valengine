@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-//取消路由权限配置方案
 import authority from '@/authority/index'
 import store from '@/store'
 import { configRoutes } from './config'
@@ -8,7 +7,6 @@ import { configRoutes } from './config'
 Vue.use(VueRouter)
 const routes = [
   {
-    //拓客推荐改版页面
     path: '/',
     redirect: '/InterfacePlatform/SmartDecision',
   },
@@ -34,7 +32,6 @@ const routes = [
     ],
   },
   {
-    //免登录空白页
     path: '/MiddleWare',
     name: 'MiddleWare',
     meta: { title: '' },
@@ -43,14 +40,12 @@ const routes = [
   },
   ...configRoutes,
 ]
-//重复跳转同一页面，控制台报错
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch((err) => err)
 }
 
 const router = new VueRouter({
-  // mode: 'history',
   base: process.env.BASE_URL,
   routes,
 })

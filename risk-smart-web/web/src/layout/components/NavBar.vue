@@ -105,7 +105,6 @@
                 </div>
                 <div class="person-info-item-content">
                   <div class="item-content-title">个人信息</div>
-                  <!-- <div class="item-content-dec">基本资料和编辑</div> -->
                 </div>
               </div>
               <div class="person-info-item" @click="exit">
@@ -180,7 +179,6 @@ export default {
           label: '接口平台',
           name: 'InterfacePlatform',
           show: 'Interface:Platform:show',
-          // isChange: true,
           values: [
             {
               label: '数据场景管理',
@@ -203,7 +201,6 @@ export default {
         {
           label: '数据平台',
           name: 'DataCenter',
-          // isChange: true,
           show: 'Data:Platform2:show',
           values: [
             {
@@ -233,28 +230,22 @@ export default {
         {
           label: '决策中台',
           name: 'ProductDecision',
-          // isChange: true,
           show: 'Decision:making:platformshow',
           values: [
             {
               label: '产品模型',
               name: 'ProductDecision',
             },
-            {
-              label: '审批列表',
-              name: 'Review',
-            },
+            // 暂时注释 20260105
             // {
-            //   label: '模型',
-            //   name: 'ModelDecision',
+            //   label: '审批列表',
+            //   name: 'Review',
             // },
           ],
         },
         {
           label: '平台引擎',
           name: 'PlatformEngine',
-          // isChange: true,
-          // show: 'Platform:engine:show',
           values: [
             {
               label: '流程管理',
@@ -266,21 +257,21 @@ export default {
             },
           ],
         },
-        {
-          label: '流程回溯',
-          name: 'Backtrack',
-          // isChange: true,
-          values: [
-            {
-              label: '历史任务列表',
-              name: 'HistoryTask',
-            },
-            {
-              label: '回溯任务列表',
-              name: 'BacktrackTask',
-            },
-          ],
-        },
+        // 暂时注释 20260105
+        // {
+        //   label: '流程回溯',
+        //   name: 'Backtrack',
+        //   values: [
+        //     {
+        //       label: '历史任务列表',
+        //       name: 'HistoryTask',
+        //     },
+        //     {
+        //       label: '回溯任务列表',
+        //       name: 'BacktrackTask',
+        //     },
+        //   ],
+        // },
         {
           label: '监测',
           name: 'Monitor',
@@ -296,7 +287,6 @@ export default {
           label: '系统管理',
           name: 'System',
           show: 'system:router:show',
-          // isChange: false,
           values: [
             {
               label: '用户管理',
@@ -318,13 +308,10 @@ export default {
               label: '部门管理',
               name: 'Department',
             },
-            {
-              label: '审批授权',
-              name: 'ApprovalAuth',
-            },
+            // 暂时注释 20260105
             // {
-            //   label: '资源管理',
-            //   name: 'Account',
+            //   label: '审批授权',
+            //   name: 'ApprovalAuth',
             // },
             {
               label: '操作日志',
@@ -371,21 +358,6 @@ export default {
       deep: true,
       immediate: true,
     },
-    // isFixed: {
-    //   handler(cur) {
-    //     if (cur) {
-    //       this.navBackground = 'rgba(255,255,255,1)'
-    //       this.navTextColor = 'rgba(0, 0, 0, 0.85)'
-    //       this.tipUrl = require('../../../public/images/home/msg_icon.png')
-    //     } else {
-    //       this.navBackground = 'rgba(255,255,255,0)'
-    //       this.navTextColor = 'rgba(255,255,255,1)'
-    //       this.tipUrl = require('../../../public/images/home/message_icon.png')
-    //     }
-    //   },
-    //   deep: true,
-    //   immediate: true,
-    // },
   },
   mounted() {
     this.$store.dispatch('initTheme')

@@ -362,8 +362,7 @@ import { mapState } from 'vuex'
 import {
   releaseStrategy,
   updateState,
-  logChange,
-  lockStatus,
+  // logChange, 暂时注释 20260105
 } from '../api/index'
 import confirmDialog from '../components/confirmDialog.vue'
 import {
@@ -390,7 +389,7 @@ import groupReuse from '../components/groupReuse.vue'
 import ruleReuse from '../components/ruleReuse.vue'
 import InfiniteLoading from '@/components/InfiniteLoading'
 import { isEditShow, isStandardDept } from '../utils/index.js'
-import { handleCheckLock } from '../utils/index.js'
+// import { handleCheckLock } from '../utils/index.js' 暂时注释 20260105
 export default {
   components: {
     addTactics,
@@ -507,15 +506,16 @@ export default {
       testParams: {},
       //复用弹窗-请求参数
       reuseParams: {},
-      logRecord: {
-        controlRecordId: null,
-        ownershipSubject: null,
-        currentVersion: null,
-        projectCode: null,
-        businessCode: null,
-        ruleCode: null,
-        changeType: 'DELETED', //CREATED,UPDATED,DELETED
-      },
+      // 暂时注释 20260105
+      // logRecord: {
+      //   controlRecordId: null,
+      //   ownershipSubject: null,
+      //   currentVersion: null,
+      //   projectCode: null,
+      //   businessCode: null,
+      //   ruleCode: null,
+      //   changeType: 'DELETED', //CREATED,UPDATED,DELETED
+      // },
     }
   },
   mounted() {
@@ -610,8 +610,6 @@ export default {
       let findObj = this.dataRisk.productList.find(
         (item) => item.id === this.dataRisk.decision.projectCode
       )
-      console.log(findObj, 'findObj-------------------')
-
       if (findObj) {
         return findObj
       }
@@ -620,17 +618,18 @@ export default {
   methods: {
     isEditShow,
     isStandardDept,
-    handleCheckLock,
-    handleLogBaseData(data) {
-      let decision = this.dataRisk.decision
-      let productList = this.dataRisk.productList
-      this.logRecord.projectCode = decision.projectCode || null
-      this.logRecord.businessCode = decision.businessCode || null
-      this.logRecord.ruleCode = decision.ruleCode || null
-      this.logRecord.ownershipSubject = this.mapProObj?.productName || null
-      this.logRecord.controlRecordId = data?.controlRecordId || null
-      this.logRecord.currentVersion = data?.versionObj?.userVersion || null
-    },
+    // 暂时注释 20260105
+    // handleCheckLock,
+    // handleLogBaseData(data) {
+    //   let decision = this.dataRisk.decision
+    //   let productList = this.dataRisk.productList
+    //   this.logRecord.projectCode = decision.projectCode || null
+    //   this.logRecord.businessCode = decision.businessCode || null
+    //   this.logRecord.ruleCode = decision.ruleCode || null
+    //   this.logRecord.ownershipSubject = this.mapProObj?.productName || null
+    //   this.logRecord.controlRecordId = data?.controlRecordId || null
+    //   this.logRecord.currentVersion = data?.versionObj?.userVersion || null
+    // },
     // 点击了取消
     cancel() {
       if (this.operationInfo.type == 2) {
@@ -670,14 +669,14 @@ export default {
     // 获取更新||保留版本参数
     getqueryData() {
       return {
-        modelId: this.tactics.activeId,
         ...this.dataRisk.decision,
-        modelName: this.tactics.dataList.find(
-          (item) => item.id === this.tactics.activeId
-        ).name,
+        modelId: this.tactics.activeId,
         projectName: this.mapProObj.productName,
         personOrCompany: 'C',
         versionControl: this.getVersionControl,
+        modelName: this.tactics.dataList.find(
+          (item) => item.id === this.tactics.activeId
+        ).name,
         championVersion: this.tactics.dataList.find(
           (item) => item.id === this.tactics.activeId
         ).versionObj.championVersion,
@@ -888,7 +887,7 @@ export default {
       }
     },
     async openDrawer(type, data, status = true) {
-      if (!(await this.handleCheckLock())) return
+      // if (!(await this.handleCheckLock())) return 暂时注释 20260105
       if (data && status) {
         if (this.handleOperate(data)) return
       }
@@ -988,7 +987,7 @@ export default {
       this.drawer.visible = true
     },
     async delTactics(data) {
-      if (!(await this.handleCheckLock())) return
+      // if (!(await this.handleCheckLock())) return 暂时注释 20260105
       if (this.handleOperate(data)) return
       this.$confirm(`是否删除策略【${data.name}】?`, '提示', {
         confirmButtonText: '确定',
@@ -996,63 +995,97 @@ export default {
         type: 'warning',
       })
         .then(() => {
-          this.handleLogBaseData(data)
+          // 暂时注释 20260105
+          // this.handleLogBaseData(data)
+          // logChange({
+          //   ...this.logRecord,
+          //   batchId: this.batchId,
+          //   changeDetails: [
+          //     {
+          //       targetId: data.id,
+          //       targetType: 'POLICY',
+          //       fieldName: '_ENTITY_DELETE_',
+          //     },
+          //   ],
+          // })
+          //   .then((result) => {
+          //     if (result.code == 200) {
+          //       const API =
+          //         !isStandardDept() && data.deptFlag == 1
+          //           ? deletePolicyGroup
+          //           : delTactics
+          //       const paramsData =
+          //         !isStandardDept() && data.deptFlag == 1
+          //           ? {
+          //               buildProjectCode: this.decision.projectCode,
+          //               buildBusinessCode: this.decision.businessCode,
+          //               buildRuleCode: this.decision.ruleCode,
+          //               parentCardId: data.id,
+          //               // 1为策略列表数据 2为规则组列表数据 3为规则列表数据
+          //               moudleId: 1,
+          //               versionControl: data.versionObj
+          //                 ? data.versionObj.userVersion
+          //                 : '',
+          //             }
+          //           : {
+          //               ...this.decision,
+          //               id: data.id,
+          //               versionControl: this.getVersionControl,
+          //             }
+          //       API(paramsData)
+          //         .then((res) => {
+          //           if (API == delTactics && !res.data) {
+          //             this.$message.warning(res.msg)
+          //             return
+          //           }
+          //           this.$message.success('操作成功')
+          //           this.initRuleGroupData()
+          //           this.initRuleData()
+          //           this.searchTacticsData(true)
+          //         })
+          //         .catch((err) => {})
+          //     }
+          //   })
+          //   .catch(() => {})
 
-          logChange({
-            ...this.logRecord,
-            batchId: this.batchId,
-            changeDetails: [
-              {
-                targetId: data.id,
-                targetType: 'POLICY',
-                fieldName: '_ENTITY_DELETE_',
-              },
-            ],
-          })
-            .then((result) => {
-              if (result.code == 200) {
-                /**
-                 * 非标准部门下自建产品 & 标准部门下的产品：使用 delTactics
-                 * 非标准部门下标准产品：使用 deletePolicyGroup
-                 */
-                const API =
-                  !isStandardDept() && data.deptFlag == 1
-                    ? deletePolicyGroup
-                    : delTactics
-                // const API = !isStandardDept() ? deletePolicyGroup : delTactics
-                const paramsData =
-                  !isStandardDept() && data.deptFlag == 1
-                    ? {
-                        buildProjectCode: this.decision.projectCode,
-                        buildBusinessCode: this.decision.businessCode,
-                        buildRuleCode: this.decision.ruleCode,
-                        parentCardId: data.id,
-                        // 1为策略列表数据 2为规则组列表数据 3为规则列表数据
-                        moudleId: 1,
-                        versionControl: data.versionObj
-                          ? data.versionObj.userVersion
-                          : '',
-                      }
-                    : {
-                        ...this.decision,
-                        id: data.id,
-                        versionControl: this.getVersionControl,
-                      }
-                API(paramsData)
-                  .then((res) => {
-                    if (API == delTactics && !res.data) {
-                      this.$message.warning(res.msg)
-                      return
-                    }
-                    this.$message.success('操作成功')
-                    this.initRuleGroupData()
-                    this.initRuleData()
-                    this.searchTacticsData(true)
-                  })
-                  .catch((err) => {})
+          /**
+           * 非标准部门下自建产品 & 标准部门下的产品：使用 delTactics
+           * 非标准部门下标准产品：使用 deletePolicyGroup
+           */
+          const API =
+            !isStandardDept() && data.deptFlag == 1
+              ? deletePolicyGroup
+              : delTactics
+          const paramsData =
+            !isStandardDept() && data.deptFlag == 1
+              ? {
+                  buildProjectCode: this.decision.projectCode,
+                  buildBusinessCode: this.decision.businessCode,
+                  buildRuleCode: this.decision.ruleCode,
+                  parentCardId: data.id,
+                  // 1为策略列表数据 2为规则组列表数据 3为规则列表数据
+                  moudleId: 1,
+                  versionControl: data.versionObj
+                    ? data.versionObj.userVersion
+                    : '',
+                }
+              : {
+                  ...this.decision,
+                  id: data.id,
+                  versionControl: this.getVersionControl,
+                }
+          API(paramsData)
+            .then((res) => {
+              if (API == delTactics && !res.data) {
+                this.$message.warning(res.msg)
+                return
               }
+              this.$message.success('操作成功')
+              this.initRuleGroupData()
+              this.initRuleData()
+              this.searchTacticsData(true)
             })
-            .catch(() => {})
+            .catch((err) => {})
         })
         .catch((err) => {})
     },
@@ -1068,52 +1101,80 @@ export default {
         type: 'warning',
       })
         .then(() => {
-          this.handleLogBaseData(data)
+          // 暂时注释 20260105
+          // this.handleLogBaseData(data)
+          // logChange({
+          //   ...this.logRecord,
+          //   batchId: this.batchId,
+          //   parentId: this.tactics.activeId,
+          //   changeDetails: [
+          //     {
+          //       targetId: data.id,
+          //       targetType: 'RULE_GROUP',
+          //       fieldName: '_ENTITY_DELETE_',
+          //     },
+          //   ],
+          // })
+          //   .then((result) => {
+          //     if (result.code == 200) {
+          //       const API =
+          //         !isStandardDept() && data.deptFlag == 1
+          //           ? deletePolicyGroup
+          //           : delRuleGroup
+          //       const paramsData =
+          //         !isStandardDept() && data.deptFlag == 1
+          //           ? {
+          //               ruleId: this.tactics.activeId,
+          //               buildProjectCode: this.decision.projectCode,
+          //               buildBusinessCode: this.decision.businessCode,
+          //               buildRuleCode: this.decision.ruleCode,
+          //               parentCardId: data.id,
+          //               // 1为策略列表数据 2为规则组列表数据 3为规则列表数据
+          //               moudleId: 2,
+          //               versionControl: data.versionControl,
+          //             }
+          //           : {
+          //               ...this.decision,
+          //               id: data.id,
+          //               versionControl: data.versionControl,
+          //             }
+          //       API(paramsData)
+          //         .then((res) => {
+          //           this.$message.success('操作成功')
+          //           this.initRuleData()
+          //           this.searchRuleGroup(this.tactics.activeId, true)
+          //         })
+          //         .catch((err) => {})
+          //     }
+          //   })
+          //   .catch((err) => {})
 
-          logChange({
-            ...this.logRecord,
-            batchId: this.batchId,
-            parentId: this.tactics.activeId,
-            changeDetails: [
-              {
-                targetId: data.id,
-                targetType: 'RULE_GROUP',
-                fieldName: '_ENTITY_DELETE_',
-              },
-            ],
-          })
-            .then((result) => {
-              if (result.code == 200) {
-                const API =
-                  !isStandardDept() && data.deptFlag == 1
-                    ? deletePolicyGroup
-                    : delRuleGroup
-                const paramsData =
-                  !isStandardDept() && data.deptFlag == 1
-                    ? {
-                        ruleId: this.tactics.activeId,
-                        buildProjectCode: this.decision.projectCode,
-                        buildBusinessCode: this.decision.businessCode,
-                        buildRuleCode: this.decision.ruleCode,
-                        parentCardId: data.id,
-                        // 1为策略列表数据 2为规则组列表数据 3为规则列表数据
-                        moudleId: 2,
-                        versionControl: data.versionControl,
-                      }
-                    : {
-                        ...this.decision,
-                        id: data.id,
-                        // versionControl: this.getVersionControl,
-                        versionControl: data.versionControl,
-                      }
-                API(paramsData)
-                  .then((res) => {
-                    this.$message.success('操作成功')
-                    this.initRuleData()
-                    this.searchRuleGroup(this.tactics.activeId, true)
-                  })
-                  .catch((err) => {})
-              }
+          const API =
+            !isStandardDept() && data.deptFlag == 1
+              ? deletePolicyGroup
+              : delRuleGroup
+          const paramsData =
+            !isStandardDept() && data.deptFlag == 1
+              ? {
+                  ruleId: this.tactics.activeId,
+                  buildProjectCode: this.decision.projectCode,
+                  buildBusinessCode: this.decision.businessCode,
+                  buildRuleCode: this.decision.ruleCode,
+                  parentCardId: data.id,
+                  // 1为策略列表数据 2为规则组列表数据 3为规则列表数据
+                  moudleId: 2,
+                  versionControl: data.versionControl,
+                }
+              : {
+                  ...this.decision,
+                  id: data.id,
+                  versionControl: data.versionControl,
+                }
+          API(paramsData)
+            .then((res) => {
+              this.$message.success('操作成功')
+              this.initRuleData()
+              this.searchRuleGroup(this.tactics.activeId, true)
             })
             .catch((err) => {})
         })
@@ -1127,52 +1188,82 @@ export default {
         type: 'warning',
       })
         .then(() => {
-          this.handleLogBaseData(data)
+          // 暂时注释 20260105
+          // this.handleLogBaseData(data)
+          // logChange({
+          //   ...this.logRecord,
+          //   batchId: this.batchId,
+          //   parentId: this.ruleGroup.activeId,
+          //   changeDetails: [
+          //     {
+          //       targetId: data.id,
+          //       targetType: 'RULE',
+          //       fieldName: '_ENTITY_DELETE_',
+          //     },
+          //   ],
+          // })
+          //   .then((result) => {
+          //     if (result.code == 200) {
+          //       const API =
+          //         !isStandardDept() && data.deptFlag == 1
+          //           ? deletePolicyGroup
+          //           : delRuleRecord
+          //       const paramsData =
+          //         !isStandardDept() && data.deptFlag == 1
+          //           ? {
+          //               ruleId: this.tactics.activeId,
+          //               groupId: this.ruleGroup.activeId,
+          //               buildProjectCode: this.decision.projectCode,
+          //               buildBusinessCode: this.decision.businessCode,
+          //               buildRuleCode: this.decision.ruleCode,
+          //               parentCardId: data.id,
+          //               // 1为策略列表数据 2为规则组列表数据 3为规则列表数据
+          //               moudleId: 3,
+          //               versionControl: data.versionControl,
+          //             }
+          //           : {
+          //               ...this.decision,
+          //               id: data.codeId,
+          //               // versionControl: this.getVersionControl,
+          //               versionControl: data.versionControl,
+          //             }
+          //       API(paramsData)
+          //         .then((res) => {
+          //           this.$message.success('操作成功')
+          //           this.searchRuleList(this.ruleGroup.activeId, true)
+          //         })
+          //         .catch((err) => {})
+          //     }
+          //   })
+          //   .catch((err) => {})
 
-          logChange({
-            ...this.logRecord,
-            batchId: this.batchId,
-            parentId: this.ruleGroup.activeId,
-            changeDetails: [
-              {
-                targetId: data.id,
-                targetType: 'RULE',
-                fieldName: '_ENTITY_DELETE_',
-              },
-            ],
-          })
-            .then((result) => {
-              if (result.code == 200) {
-                const API =
-                  !isStandardDept() && data.deptFlag == 1
-                    ? deletePolicyGroup
-                    : delRuleRecord
-                const paramsData =
-                  !isStandardDept() && data.deptFlag == 1
-                    ? {
-                        ruleId: this.tactics.activeId,
-                        groupId: this.ruleGroup.activeId,
-                        buildProjectCode: this.decision.projectCode,
-                        buildBusinessCode: this.decision.businessCode,
-                        buildRuleCode: this.decision.ruleCode,
-                        parentCardId: data.id,
-                        // 1为策略列表数据 2为规则组列表数据 3为规则列表数据
-                        moudleId: 3,
-                        versionControl: data.versionControl,
-                      }
-                    : {
-                        ...this.decision,
-                        id: data.codeId,
-                        // versionControl: this.getVersionControl,
-                        versionControl: data.versionControl,
-                      }
-                API(paramsData)
-                  .then((res) => {
-                    this.$message.success('操作成功')
-                    this.searchRuleList(this.ruleGroup.activeId, true)
-                  })
-                  .catch((err) => {})
-              }
+          const API =
+            !isStandardDept() && data.deptFlag == 1
+              ? deletePolicyGroup
+              : delRuleRecord
+          const paramsData =
+            !isStandardDept() && data.deptFlag == 1
+              ? {
+                  ruleId: this.tactics.activeId,
+                  groupId: this.ruleGroup.activeId,
+                  buildProjectCode: this.decision.projectCode,
+                  buildBusinessCode: this.decision.businessCode,
+                  buildRuleCode: this.decision.ruleCode,
+                  parentCardId: data.id,
+                  // 1为策略列表数据 2为规则组列表数据 3为规则列表数据
+                  moudleId: 3,
+                  versionControl: data.versionControl,
+                }
+              : {
+                  ...this.decision,
+                  id: data.codeId,
+                  // versionControl: this.getVersionControl,
+                  versionControl: data.versionControl,
+                }
+          API(paramsData)
+            .then((res) => {
+              this.$message.success('操作成功')
+              this.searchRuleList(this.ruleGroup.activeId, true)
             })
             .catch((err) => {})
         })
@@ -1914,7 +2005,7 @@ export default {
             height: 100%;
             display: flex;
             flex-direction: column;
-            width: calc(100% - 75px);
+            width: calc(100% - 100px);
 
             &.sort-detail {
               width: calc(100% - 124px);

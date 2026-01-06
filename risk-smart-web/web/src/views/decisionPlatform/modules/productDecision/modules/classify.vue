@@ -371,7 +371,7 @@ import {
   exportRuleJSON,
   importRuleJSON,
 } from '../api/riskModel'
-import { releaseStrategy, resetTestState, updateState } from '../api/index'
+import { releaseStrategy, updateState } from '../api/index'
 import addTactics from '../components/addTactics.vue'
 import AddRuleGroup from '../components/addRuleGroup.vue'
 import AddClassify from '../components/addClassify.vue'

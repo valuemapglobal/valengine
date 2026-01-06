@@ -65,9 +65,10 @@
 import { submitModel, checkName } from '../api/riskModel'
 import { getDicts } from '../api/index'
 import { mapState, mapGetters } from 'vuex'
-import { logChange } from '../api'
-import { handleCheckLock } from '../utils/index.js'
-/*import confirmDialog from '../components/confirmDialog.vue'*/
+
+// 暂时注释 20260105
+// import { logChange } from '../api'
+// import { handleCheckLock } from '../utils/index.js'
 
 export default {
   name: 'addTactics',
@@ -166,9 +167,7 @@ export default {
         }
         this.formBackUp = { ...this.modelForm }
 
-        this.handleLogBaseData()
-
-        // this.modelForm = val
+        // this.handleLogBaseData()
       },
       deep: true,
       immediate: true,
@@ -205,36 +204,31 @@ export default {
   },
   mounted() {
     this.init()
-    // if (!this.hasButton('productDecision:gutu:show')) {
-    //   this.professionList.shift()
-    // }
   },
   methods: {
-    handleCheckLock,
+    // 暂时注释 20260105
+    // handleCheckLock,
     /**
      * 处理日志变更基础数据
      */
-    handleLogBaseData() {
-      let decision = this.dataRisk.decision
-      let productList = this.dataRisk.productList
+    // handleLogBaseData() {
+    //   let decision = this.dataRisk.decision
+    //   let productList = this.dataRisk.productList
 
-      this.logRecord.projectCode = decision.projectCode || null
-      this.logRecord.businessCode = decision.businessCode || null
-      this.logRecord.ruleCode = decision.ruleCode || null
-      this.logRecord.ownershipSubject =
-        productList.find((item) => item.id === decision.projectCode)
-          .productName || null
+    //   this.logRecord.projectCode = decision.projectCode || null
+    //   this.logRecord.businessCode = decision.businessCode || null
+    //   this.logRecord.ruleCode = decision.ruleCode || null
+    //   this.logRecord.ownershipSubject =
+    //     productList.find((item) => item.id === decision.projectCode)
+    //       .productName || null
 
-      this.logRecord.controlRecordId = this.formData?.controlRecordId || null
-      this.logRecord.changeType =
-        this.formData?.id && this.formData.id != null ? 'UPDATED' : 'CREATED'
-      this.logRecord.currentVersion =
-        this.formData?.versionObj?.newVersion || null
+    //   this.logRecord.controlRecordId = this.formData?.controlRecordId || null
+    //   this.logRecord.changeType =
+    //     this.formData?.id && this.formData.id != null ? 'UPDATED' : 'CREATED'
+    //   this.logRecord.currentVersion =
+    //     this.formData?.versionObj?.newVersion || null
+    // },
 
-      console.log(this.formData, 'formData---formData')
-
-      console.log(this.logRecord, 'logRecord---logRecord')
-    },
     handleLogData() {
       // 比较表单数据变化，生成日志数据
       const changes = this.compareObjects(this.formBackUp, this.modelForm)
@@ -344,40 +338,31 @@ export default {
         .catch((err) => {})
     },
     async handleBeforeSubmit() {
-      if (this.dataRisk.decision.ruleCode == 5) {
-        if (!(await this.handleCheckLock())) return
-      }
+      // 暂时注释 20260105
+      // if (this.dataRisk.decision.ruleCode == 5) {
+      //   if (!(await this.handleCheckLock())) return
+      // }
       this.$refs['form'].validate(async (valid) => {
         if (valid) {
-          let logData = this.handleLogData()
-          if (
-            this.type == 'rule' &&
-            logData.changeDetails.length &&
-            this.dataRisk.decision.ruleCode == 5
-          ) {
-            logChange({ ...logData, batchId: this.batchId })
-              .then((res) => {
-                if (res.code == 200) {
-                  this.submit()
-                }
-              })
-              .catch((err) => {})
-          } else {
-            this.submit()
-          }
-          // submitModel({
-          //   ...this.modelForm,
-          //   ...this.dataRisk.decision,
-          //   versionControl: this.versionControl,
-          // })
-          //   .then((res) => {
-          //     if (res.code == 200) {
-          //       this.$message.success('操作成功')
-          //       this.$emit('success', 0)
-          //       this.resetForm()
-          //     }
-          //   })
-          //   .catch((err) => {})
+          // 暂时注释 20260105
+          // let logData = this.handleLogData()
+          // if (
+          //   this.type == 'rule' &&
+          //   logData.changeDetails.length &&
+          //   this.dataRisk.decision.ruleCode == 5
+          // ) {
+          //   logChange({ ...logData, batchId: this.batchId })
+          //     .then((res) => {
+          //       if (res.code == 200) {
+          //         this.submit()
+          //       }
+          //     })
+          //     .catch((err) => {})
+          // } else {
+          //   this.submit()
+          // }
+
+          this.submit()
         }
       })
     },
@@ -396,9 +381,10 @@ export default {
         .then((res) => {
           if (res.code == 200) {
             this.$message.success('操作成功')
-            if (this.dataRisk.decision.ruleCode == 5) {
-              this.handleCheckLock()
-            }
+            // 暂时注释 20260105
+            // if (this.dataRisk.decision.ruleCode == 5) {
+            //   this.handleCheckLock()
+            // }
             this.$emit('success', 0)
             this.resetForm()
           }

@@ -13,7 +13,7 @@ export const configRoutes = [
         },
         component: () =>
           import(
-            /* webpackChunkName:"System"*/
+            /* webpackChunkName:"InterfacePlatform"*/
             '@/views/index.vue'
           ),
         children: [
@@ -49,7 +49,7 @@ export const configRoutes = [
             },
             component: () =>
               import(
-                /* webpackChunkName:"DataDuditing"*/
+                /* webpackChunkName:"DataAuditing"*/
                 '@/views/interfacePlatform/modules/DataDuditing.vue'
               ),
           },
@@ -61,7 +61,7 @@ export const configRoutes = [
             },
             component: () =>
               import(
-                /* webpackChunkName:"TrafficStatistics"*/
+                /* webpackChunkName:"InterfaceUser"*/
                 '@/views/interfacePlatform/modules/interfaceUser.vue'
               ),
           },
@@ -87,7 +87,7 @@ export const configRoutes = [
             },
             component: () =>
               import(
-                /* webpackChunkName:"FeatureVariable"*/
+                /* webpackChunkName:"BasicVariables"*/
                 '@/views/DataCenter/modules/basicVariables.vue'
               ),
           },
@@ -125,7 +125,7 @@ export const configRoutes = [
         },
         component: () =>
           import(
-            /* webpackChunkName:"System"*/
+            /* webpackChunkName:"DecisionPlatform"*/
             '@/views/index.vue'
           ),
         children: [
@@ -141,18 +141,19 @@ export const configRoutes = [
                 '@/views/decisionPlatform/modules/productDecision/index.vue'
               ),
           },
-          {
-            path: 'Review',
-            name: 'Review',
-            meta: {
-              title: '产品决策',
-            },
-            component: () =>
-              import(
-                /* webpackChunkName:"Review"*/
-                '@/views/decisionPlatform/modules/review/index.vue'
-              ),
-          },
+          // 暂时注释 20260105
+          // {
+          //   path: 'Review',
+          //   name: 'Review',
+          //   meta: {
+          //     title: '产品决策',
+          //   },
+          //   component: () =>
+          //     import(
+          //       /* webpackChunkName:"Review"*/
+          //       '@/views/decisionPlatform/modules/review/index.vue'
+          //     ),
+          // },
           {
             path: 'ModelDecision',
             name: 'ModelDecision',
@@ -175,7 +176,7 @@ export const configRoutes = [
         },
         component: () =>
           import(
-            /* webpackChunkName:"System"*/
+            /* webpackChunkName:"RulePool"*/
             '@/views/index.vue'
           ),
         children: [
@@ -187,7 +188,7 @@ export const configRoutes = [
             },
             component: () =>
               import(
-                /* webpackChunkName:"ProductDecision"*/
+                /* webpackChunkName:"Strategy"*/
                 '@/views/rulePool/strategy/index.vue'
               ),
           },
@@ -201,7 +202,7 @@ export const configRoutes = [
         },
         component: () =>
           import(
-            /* webpackChunkName:"System"*/
+            /* webpackChunkName:"PlatformEngine"*/
             '@/views/index.vue'
           ),
         children: [
@@ -213,7 +214,7 @@ export const configRoutes = [
             },
             component: () =>
               import(
-                /* webpackChunkName:"BasicVariables"*/
+                /* webpackChunkName:"WorkflowEngine"*/
                 '@/views/platformEngine/modules/workflowEngine/index.vue'
               ),
           },
@@ -225,7 +226,7 @@ export const configRoutes = [
             },
             component: () =>
               import(
-                /* webpackChunkName:"CharacteristicVariable"*/
+                /* webpackChunkName:"TaskApproval"*/
                 '@/views/platformEngine/modules/taskApproval/index.vue'
               ),
           },
@@ -237,7 +238,7 @@ export const configRoutes = [
             },
             component: () =>
               import(
-                /* webpackChunkName:"AnalysisIndicators"*/
+                /* webpackChunkName:"TaskRecord"*/
                 '@/views/platformEngine/modules/taskRecord/index.vue'
               ),
           },
@@ -249,7 +250,7 @@ export const configRoutes = [
             },
             component: () =>
               import(
-                /* webpackChunkName:"processTask"*/
+                /* webpackChunkName:"ProcessTask"*/
                 '@/views/platformEngine/modules/processTask/index.vue'
               ),
           },
@@ -265,53 +266,44 @@ export const configRoutes = [
                 '@/views/platformEngine/modules/processTask/riskReport.vue'
               ),
           },
-          {
-            path: 'RiskReport',
-            name: 'RiskReport',
-            meta: {
-              title: '评估报告',
-            },
-            component: () =>
-              import(
-                /* webpackChunkName:"RiskReport"*/
-                '@/views/platformEngine/modules/processTask/riskReport.vue'
-              ),
-          },
         ],
       },
-      {
-        path: 'Backtrack',
-        name: 'Backtrack',
-        meta: {
-          title: '流程回溯',
-        },
-        component: () =>
-          import(/* webpackChunkName:"Backtrack"*/ '@/views/index.vue'),
-        children: [
-          {
-            path: 'HistoryTask',
-            name: 'HistoryTask',
-            meta: {
-              title: '历史任务列表',
-            },
-            component: () =>
-              import(
-                /* webpackChunkName:"HistoryTaskList"*/ '@/views/processBacktrack/historyTask/index.vue'
-              ),
-          },
-          {
-            path: 'BacktrackTask',
-            name: 'BacktrackTask',
-            meta: {
-              title: '回溯任务列表',
-            },
-            component: () =>
-              import(
-                /* webpackChunkName:"HistoryTaskList"*/ '@/views/processBacktrack/backtrackTask/index.vue'
-              ),
-          },
-        ],
-      },
+      // 暂时注释 20260105
+      // {
+      //   path: 'Backtrack',
+      //   name: 'Backtrack',
+      //   meta: {
+      //     title: '流程回溯',
+      //   },
+      //   component: () =>
+      //     import(/* webpackChunkName:"Backtrack"*/ '@/views/index.vue'),
+      //   children: [
+      //     {
+      //       path: 'HistoryTask',
+      //       name: 'HistoryTask',
+      //       meta: {
+      //         title: '历史任务列表',
+      //       },
+      //       component: () =>
+      //         import(
+      //           /* webpackChunkName:"HistoryTask"*/
+      //           '@/views/processBacktrack/historyTask/index.vue'
+      //         ),
+      //     },
+      //     {
+      //       path: 'BacktrackTask',
+      //       name: 'BacktrackTask',
+      //       meta: {
+      //         title: '回溯任务列表',
+      //       },
+      //       component: () =>
+      //         import(
+      //           /* webpackChunkName:"BacktrackTask"*/
+      //           '@/views/processBacktrack/backtrackTask/index.vue'
+      //         ),
+      //     },
+      //   ],
+      // },
       {
         path: 'Monitor',
         name: 'Monitor',
@@ -320,7 +312,7 @@ export const configRoutes = [
         },
         component: () =>
           import(
-            /* webpackChunkName:"System"*/
+            /* webpackChunkName:"Monitor"*/
             '@/views/index.vue'
           ),
         children: [
@@ -332,7 +324,7 @@ export const configRoutes = [
             },
             component: () =>
               import(
-                /* webpackChunkName:"BasicVariables"*/
+                /* webpackChunkName:"WarningTask"*/
                 '@/views/monitor/warningTask/index.vue'
               ),
           },
@@ -386,18 +378,19 @@ export const configRoutes = [
                 '@/views/system/menuManagement/index.vue'
               ),
           },
-          {
-            path: 'ApprovalAuth',
-            name: 'ApprovalAuth',
-            meta: {
-              title: '审批授权',
-            },
-            component: () =>
-              import(
-                /* webpackChunkName:"MenuManage"*/
-                '@/views/system/approvalAuth/index.vue'
-              ),
-          },
+          // 暂时注释 20260105
+          // {
+          //   path: 'ApprovalAuth',
+          //   name: 'ApprovalAuth',
+          //   meta: {
+          //     title: '审批授权',
+          //   },
+          //   component: () =>
+          //     import(
+          //       /* webpackChunkName:"ApprovalAuth"*/
+          //       '@/views/system/approvalAuth/index.vue'
+          //     ),
+          // },
           {
             path: 'DictionaryManagement',
             name: 'DictionaryManagement',
@@ -442,7 +435,7 @@ export const configRoutes = [
           //   },
           //   component: () =>
           //     import(
-          //       /* webpackChunkName:"Department"*/
+          //       /* webpackChunkName:"Account"*/
           //       '@/views/system/accountResources/index.vue'
           //     ),
           // },

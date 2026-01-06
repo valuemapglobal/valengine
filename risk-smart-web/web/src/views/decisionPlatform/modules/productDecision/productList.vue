@@ -201,7 +201,7 @@ import {
   newlyAddProduct,
   product_search,
 } from './api/index'
-import { handleCheckLock } from './utils/index.js'
+// import { handleCheckLock } from './utils/index.js'
 export default {
   name: 'productList',
   props: {},
@@ -233,7 +233,8 @@ export default {
   },
   methods: {
     ...mapActions(['changeProductDecision', 'getProList']),
-    handleCheckLock,
+    // 暂时注释 20260105
+    // handleCheckLock,
     search() {
       this.dataList = []
       Object.assign(this.queryParams, { pageNum: 1 })
@@ -314,9 +315,10 @@ export default {
             if (this.total == 0) {
               this.changeProductDecision({ projectCode: res.data.list[0].id })
 
-              if (this.dataRisk.decision.ruleCode == 5) {
-                this.handleCheckLock()
-              }
+              // 暂时注释 20260105
+              // if (this.dataRisk.decision.ruleCode == 5) {
+              //   this.handleCheckLock()
+              // }
             }
             let list = res.data.list.map((item) => {
               return {
@@ -355,9 +357,11 @@ export default {
       if (this.activeIndex === index) return
       this.activeIndex = index
       this.changeProductDecision({ projectCode: data.id })
-      if (this.dataRisk.decision.ruleCode == 5) {
-        this.handleCheckLock()
-      }
+
+      // 暂时注释 20260105
+      // if (this.dataRisk.decision.ruleCode == 5) {
+      //   this.handleCheckLock()
+      // }
     },
   },
 }
