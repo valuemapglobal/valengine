@@ -1,12 +1,15 @@
 package com.risksmart.system.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 部门表 sys_dept
@@ -59,4 +62,8 @@ public class SysDept implements Serializable {
 
     /** 更新时间 */
     private Date updateTime;
+
+    /** 子部门 */
+    @TableField(exist = false)
+    private List<SysDept> children = new ArrayList<>();
 }

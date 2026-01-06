@@ -75,13 +75,35 @@ public class SecurityUtils {
         String userKey = JwtUtils.getUserKey(token);
         //拼接redisKey
         String redisKey = CacheConstants.LOGIN_TOKEN_KEY+userKey;
-        //获取登录用户信息
-        com.ruoyi.system.api.model.LoginUser tempLoginUser = securityUtils.redisService.getCacheObject(redisKey);
+        //获取登录用户信息 - Redis使用FastJson序列化，返回JSONObject而非LoginUser
+        Object cacheObject = securityUtils.redisService.getCacheObject(redisKey);
         LoginUser loginUser = new LoginUser();
-        if (tempLoginUser==null){
+        if (cacheObject == null){
             throw new ServiceException(SecurityConstants.ERR_SECURITY_MSG,600);
         }
-        BeanUtil.copyProperties(tempLoginUser,loginUser);
+        // 处理FastJson反序列化返回JSONObject的情况
+        if (cacheObject instanceof JSONObject) {
+            JSONObject jsonObject = (JSONObject) cacheObject;
+            // 从JSONObject中提取用户信息
+            Long userId = jsonObject.getLong("userid");
+            String userName = jsonObject.getString("username");
+            SysUser sysUser = new SysUser();
+            sysUser.setUserId(userId);
+            sysUser.setUserName(userName);
+            // 获取嵌套的sysUser对象
+            JSONObject sysUserJson = jsonObject.getJSONObject("sysUser");
+            if (sysUserJson != null) {
+                if (sysUserJson.getLong("deptId") != null) {
+                    sysUser.setDeptId(sysUserJson.getLong("deptId"));
+                }
+            }
+            loginUser.setSysUser(sysUser);
+            loginUser.setUserid(userId);
+            loginUser.setUsername(userName);
+        } else {
+            // 如果是正确的LoginUser类型，直接复制属性
+            BeanUtil.copyProperties(cacheObject, loginUser);
+        }
 
         return loginUser;
     }

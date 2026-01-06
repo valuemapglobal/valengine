@@ -130,6 +130,26 @@ public class AjaxResult extends HashMap<String, Object> {
     }
 
     /**
+     * 根据操作结果返回成功或失败
+     *
+     * @param rows 影响行数
+     * @return 结果
+     */
+    public static AjaxResult toAjax(int rows) {
+        return rows > 0 ? AjaxResult.success() : AjaxResult.error();
+    }
+
+    /**
+     * 根据操作结果返回成功或失败
+     *
+     * @param result 操作结果
+     * @return 结果
+     */
+    public static AjaxResult toAjax(boolean result) {
+        return result ? AjaxResult.success() : AjaxResult.error();
+    }
+
+    /**
      * 方便链式调用
      */
     @Override

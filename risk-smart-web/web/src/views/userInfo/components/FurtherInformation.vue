@@ -38,7 +38,7 @@
             <el-avatar
               shape="square"
               :size="120"
-              :src="formData.avatar || avatarUrl[Number(formData.sex)]"
+              :src="formData.avatar || avatarUrl[Number(formData.sex) || 0]"
             />
           </div>
         </el-form-item>

@@ -86,7 +86,7 @@
                 <div style="display: flex; align-items: center">
                   <el-image
                     fit="cover"
-                    :src="userInfo.avatar || avatarUrl[Number(userInfo.sex)]"
+                    :src="userInfo.avatar || avatarUrl[Number(userInfo.sex) || 0]"
                     alt=""
                   />
                   <div class="person-info-head-center">
@@ -121,7 +121,7 @@
               <span>{{ userInfo.nickName }}</span>
               <el-avatar
                 :size="30"
-                :src="userInfo.avatar || avatarUrl[Number(userInfo.sex)]"
+                :src="userInfo.avatar || avatarUrl[Number(userInfo.sex) || 0]"
               >
               </el-avatar>
             </div>
@@ -179,7 +179,7 @@ export default {
         {
           label: '接口平台',
           name: 'InterfacePlatform',
-          show: 'Interface:Platform:show',
+          // show: 'Interface:Platform:show',
           // isChange: true,
           values: [
             {
@@ -204,7 +204,7 @@ export default {
           label: '数据平台',
           name: 'DataCenter',
           // isChange: true,
-          show: 'Data:Platform2:show',
+          // show: 'Data:Platform2:show',
           values: [
             {
               label: '元数据',
@@ -234,7 +234,7 @@ export default {
           label: '决策中台',
           name: 'ProductDecision',
           // isChange: true,
-          show: 'Decision:making:platformshow',
+          // show: 'Decision:making:platformshow',
           values: [
             {
               label: '产品模型',
@@ -295,7 +295,7 @@ export default {
         {
           label: '系统管理',
           name: 'System',
-          show: 'system:router:show',
+          // show: 'system:router:show',
           // isChange: false,
           values: [
             {

@@ -26,7 +26,7 @@
             <div class="avatar">
               <el-image
                 style="width: 100%; height: 100%"
-                :src="formData.avatar || avatarUrl[Number(formData.sex)]"
+                :src="formData.avatar || avatarUrl[Number(formData.sex) || 0]"
                 fit="cover"
               ></el-image>
             </div>

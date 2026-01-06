@@ -125,7 +125,8 @@ module.exports = defineConfig({
     proxy: {
       '/dev-api': {
         // target: 'http://192.168.1.29:6019',
-        target: 'http://124.222.29.106:8088',
+        // target: 'http://124.222.29.106:8088',
+        target: 'http://localhost:8080', // 本地网关
         // target: 'https://www.risksmart.valuemap.cn',
         changeOrigin: true,
         pathRewrite: {

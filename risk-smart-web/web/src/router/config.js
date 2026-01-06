@@ -279,65 +279,67 @@ export const configRoutes = [
           },
         ],
       },
-      {
-        path: 'Backtrack',
-        name: 'Backtrack',
-        meta: {
-          title: '流程回溯',
-        },
-        component: () =>
-          import(/* webpackChunkName:"Backtrack"*/ '@/views/index.vue'),
-        children: [
-          {
-            path: 'HistoryTask',
-            name: 'HistoryTask',
-            meta: {
-              title: '历史任务列表',
-            },
-            component: () =>
-              import(
-                /* webpackChunkName:"HistoryTaskList"*/ '@/views/processBacktrack/historyTask/index.vue'
-              ),
-          },
-          {
-            path: 'BacktrackTask',
-            name: 'BacktrackTask',
-            meta: {
-              title: '回溯任务列表',
-            },
-            component: () =>
-              import(
-                /* webpackChunkName:"HistoryTaskList"*/ '@/views/processBacktrack/backtrackTask/index.vue'
-              ),
-          },
-        ],
-      },
-      {
-        path: 'Monitor',
-        name: 'Monitor',
-        meta: {
-          title: '监测',
-        },
-        component: () =>
-          import(
-            /* webpackChunkName:"System"*/
-            '@/views/index.vue'
-          ),
-        children: [
-          {
-            path: 'WarningTask',
-            name: 'WarningTask',
-            meta: {
-              title: '预警任务',
-            },
-            component: () =>
-              import(
-                /* webpackChunkName:"BasicVariables"*/
-                '@/views/monitor/warningTask/index.vue'
-              ),
-          },
-        ],
-      },
+      // 本次版本不存在的模块 - 流程回溯
+      // {
+      //   path: 'Backtrack',
+      //   name: 'Backtrack',
+      //   meta: {
+      //     title: '流程回溯',
+      //   },
+      //   component: () =>
+      //     import(/* webpackChunkName:"Backtrack"*/ '@/views/index.vue'),
+      //   children: [
+      //     {
+      //       path: 'HistoryTask',
+      //       name: 'HistoryTask',
+      //       meta: {
+      //         title: '历史任务列表',
+      //       },
+      //       component: () =>
+      //         import(
+      //           /* webpackChunkName:"HistoryTaskList"*/ '@/views/processBacktrack/historyTask/index.vue'
+      //         ),
+      //     },
+      //     {
+      //       path: 'BacktrackTask',
+      //       name: 'BacktrackTask',
+      //       meta: {
+      //         title: '回溯任务列表',
+      //       },
+      //       component: () =>
+      //         import(
+      //           /* webpackChunkName:"HistoryTaskList"*/ '@/views/processBacktrack/backtrackTask/index.vue'
+      //         ),
+      //     },
+      //   ],
+      // },
+      // 本次版本不存在的模块 - 监测预警
+      // {
+      //   path: 'Monitor',
+      //   name: 'Monitor',
+      //   meta: {
+      //     title: '监测',
+      //   },
+      //   component: () =>
+      //     import(
+      //       /* webpackChunkName:"System"*/
+      //       '@/views/index.vue'
+      //     ),
+      //   children: [
+      //     {
+      //       path: 'WarningTask',
+      //       name: 'WarningTask',
+      //       meta: {
+      //         title: '预警任务',
+      //       },
+      //       component: () =>
+      //         import(
+      //           /* webpackChunkName:"BasicVariables"*/
+      //           '@/views/monitor/warningTask/index.vue'
+      //         ),
+      //     },
+      //   ],
+      // },
       {
         path: 'System',
         name: 'System',
@@ -386,18 +388,19 @@ export const configRoutes = [
                 '@/views/system/menuManagement/index.vue'
               ),
           },
-          {
-            path: 'ApprovalAuth',
-            name: 'ApprovalAuth',
-            meta: {
-              title: '审批授权',
-            },
-            component: () =>
-              import(
-                /* webpackChunkName:"MenuManage"*/
-                '@/views/system/approvalAuth/index.vue'
-              ),
-          },
+          // 本次版本不存在的模块 - 审批授权
+          // {
+          //   path: 'ApprovalAuth',
+          //   name: 'ApprovalAuth',
+          //   meta: {
+          //     title: '审批授权',
+          //   },
+          //   component: () =>
+          //     import(
+          //       /* webpackChunkName:"MenuManage"*/
+          //       '@/views/system/approvalAuth/index.vue'
+          //     ),
+          // },
           {
             path: 'DictionaryManagement',
             name: 'DictionaryManagement',

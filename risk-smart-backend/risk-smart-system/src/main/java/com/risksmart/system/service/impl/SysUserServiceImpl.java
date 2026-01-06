@@ -1,6 +1,7 @@
 package com.risksmart.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.risksmart.system.domain.SysDept;
 import com.risksmart.system.domain.SysUser;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -25,9 +27,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public List<SysUser> selectUserList(SysUser user) {
         LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<>();
-
         wrapper.eq(SysUser::getDelFlag, "0");
-
         if (user != null) {
             if (StringUtils.hasText(user.getUserName())) {
                 wrapper.like(SysUser::getUserName, user.getUserName());
@@ -45,7 +45,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 wrapper.eq(SysUser::getDeptId, user.getDeptId());
             }
         }
-
         wrapper.orderByAsc(SysUser::getUserId);
         return baseMapper.selectList(wrapper);
     }
@@ -63,5 +62,47 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public SysUser selectUserByUserName(String userName) {
         return baseMapper.selectUserByUserName(userName);
+    }
+
+    @Override
+    public int insertUser(SysUser user) {
+        return baseMapper.insert(user);
+    }
+
+    @Override
+    public int updateUser(SysUser user) {
+        return baseMapper.updateById(user);
+    }
+
+    @Override
+    public int deleteUserByIds(Long[] userIds) {
+        // 逻辑删除
+        LambdaUpdateWrapper<SysUser> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.in(SysUser::getUserId, Arrays.asList(userIds));
+        wrapper.set(SysUser::getDelFlag, "2");
+        return baseMapper.update(null, wrapper);
+    }
+
+    @Override
+    public int resetPwd(SysUser user) {
+        LambdaUpdateWrapper<SysUser> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(SysUser::getUserId, user.getUserId());
+        wrapper.set(SysUser::getPassword, user.getPassword());
+        wrapper.set(SysUser::getUpdateBy, user.getUpdateBy());
+        return baseMapper.update(null, wrapper);
+    }
+
+    @Override
+    public int updateUserStatus(SysUser user) {
+        LambdaUpdateWrapper<SysUser> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(SysUser::getUserId, user.getUserId());
+        wrapper.set(SysUser::getStatus, user.getStatus());
+        wrapper.set(SysUser::getUpdateBy, user.getUpdateBy());
+        return baseMapper.update(null, wrapper);
+    }
+
+    @Override
+    public void insertUserAuth(Long userId, Long[] roleIds) {
+        // 简化实现，暂不处理用户角色关联
     }
 }

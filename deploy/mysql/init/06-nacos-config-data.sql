@@ -137,9 +137,13 @@ INSERT INTO config_info(data_id, group_id, content, md5, gmt_create, gmt_modifie
 ('risk-smart-gateway-dev.yml', 'DEFAULT_GROUP',
 '# 网关服务配置
 server:
-  port: 8081
+  port: 8080
 
 spring:
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
   cloud:
     gateway:
       discovery:
@@ -147,24 +151,74 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
+        # 认证服务 - 登录/登出/验证码
+        - id: risk-smart-auth
+          uri: lb://risk-smart-system
+          predicates:
+            - Path=/login,/logout,/captchaImage
+
+        # 系统服务 - 用户/菜单/角色/部门/字典 (不去掉前缀，后端有/system前缀)
         - id: risk-smart-system
           uri: lb://risk-smart-system
           predicates:
             - Path=/system/**
-          filters:
-            - StripPrefix=1
-        - id: risk-smart-data-middle-station
+
+        # 登录日志
+        - id: risk-smart-logininfor
+          uri: lb://risk-smart-system
+          predicates:
+            - Path=/logininfor/**
+
+        # 数据中台服务 - /vm/smartData/** -> 去掉 /vm/smartData 前缀
+        - id: risk-smart-data-vm
           uri: lb://risk-smart-data-middle-station
           predicates:
-            - Path=/data/**
+            - Path=/vm/smartData/**
+          filters:
+            - StripPrefix=2
+
+        # 数据中台服务 - /smartData/** -> 去掉 /smartData 前缀 (兼容)
+        - id: risk-smart-data
+          uri: lb://risk-smart-data-middle-station
+          predicates:
+            - Path=/smartData/**
           filters:
             - StripPrefix=1
-        - id: risk-smart-decision-manage
+
+        # 决策管理服务 - /vm/smartDecision/** -> 去掉 /vm/smartDecision 前缀
+        - id: risk-smart-decision-vm
           uri: lb://risk-smart-decision-manage
           predicates:
-            - Path=/decision/**
+            - Path=/vm/smartDecision/**
+          filters:
+            - StripPrefix=2
+
+        # 决策管理服务 - /smartDecision/** -> 去掉 /smartDecision 前缀 (兼容)
+        - id: risk-smart-decision
+          uri: lb://risk-smart-decision-manage
+          predicates:
+            - Path=/smartDecision/**
           filters:
             - StripPrefix=1
+
+        # 决策管理服务 - /prod-api/smartDecision/** -> 去掉前缀
+        - id: risk-smart-decision-prod
+          uri: lb://risk-smart-decision-manage
+          predicates:
+            - Path=/prod-api/smartDecision/**
+          filters:
+            - StripPrefix=2
+
+# 安全配置
+security:
+  # 不校验白名单
+  ignore:
+    whites:
+      - /login
+      - /logout
+      - /captchaImage
+      - /*/v2/api-docs
+      - /*/v3/api-docs
 ', MD5('risk-smart-gateway-dev.yml'), NOW(), NOW(), NULL, NULL, '', '', '网关服务配置', NULL, NULL, 'yaml', '');
 
 -- ============================================================

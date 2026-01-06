@@ -24,4 +24,34 @@ public interface ISysUserService extends IService<SysUser> {
      * 根据用户名查询用户
      */
     SysUser selectUserByUserName(String userName);
+
+    /**
+     * 新增用户
+     */
+    int insertUser(SysUser user);
+
+    /**
+     * 修改用户
+     */
+    int updateUser(SysUser user);
+
+    /**
+     * 批量删除用户
+     */
+    int deleteUserByIds(Long[] userIds);
+
+    /**
+     * 重置密码
+     */
+    int resetPwd(SysUser user);
+
+    /**
+     * 修改用户状态
+     */
+    int updateUserStatus(SysUser user);
+
+    /**
+     * 用户授权角色
+     */
+    void insertUserAuth(Long userId, Long[] roleIds);
 }

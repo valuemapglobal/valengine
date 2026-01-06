@@ -31,24 +31,73 @@ INSERT INTO sys_role VALUES(2, '普通角色', 'common', 2, '2', 1, 1, '0', '0',
 INSERT INTO sys_user_role VALUES(1, 1);
 
 -- 初始化菜单 (基础菜单)
-INSERT INTO sys_menu VALUES(1, '系统管理', 0, 1, 'system', NULL, '', 1, 0, 'M', '0', '0', '', 'system', 'admin', sysdate(), '', NULL, '系统管理目录');
-INSERT INTO sys_menu VALUES(100, '用户管理', 1, 1, 'user', 'system/user/index', '', 1, 0, 'C', '0', '0', 'system:user:list', 'user', 'admin', sysdate(), '', NULL, '用户管理菜单');
-INSERT INTO sys_menu VALUES(101, '角色管理', 1, 2, 'role', 'system/role/index', '', 1, 0, 'C', '0', '0', 'system:role:list', 'peoples', 'admin', sysdate(), '', NULL, '角色管理菜单');
-INSERT INTO sys_menu VALUES(102, '菜单管理', 1, 3, 'menu', 'system/menu/index', '', 1, 0, 'C', '0', '0', 'system:menu:list', 'tree-table', 'admin', sysdate(), '', NULL, '菜单管理菜单');
-INSERT INTO sys_menu VALUES(103, '部门管理', 1, 4, 'dept', 'system/dept/index', '', 1, 0, 'C', '0', '0', 'system:dept:list', 'tree', 'admin', sysdate(), '', NULL, '部门管理菜单');
-INSERT INTO sys_menu VALUES(104, '岗位管理', 1, 5, 'post', 'system/post/index', '', 1, 0, 'C', '0', '0', 'system:post:list', 'post', 'admin', sysdate(), '', NULL, '岗位管理菜单');
-INSERT INTO sys_menu VALUES(105, '字典管理', 1, 6, 'dict', 'system/dict/index', '', 1, 0, 'C', '0', '0', 'system:dict:list', 'dict', 'admin', sysdate(), '', NULL, '字典管理菜单');
-INSERT INTO sys_menu VALUES(106, '参数设置', 1, 7, 'config', 'system/config/index', '', 1, 0, 'C', '0', '0', 'system:config:list', 'edit', 'admin', sysdate(), '', NULL, '参数设置菜单');
+-- 一级目录
+INSERT INTO sys_menu VALUES(1, '系统管理', 0, 99, 'System', NULL, '', 1, 0, 'M', '0', '0', '', 'system', 'admin', sysdate(), '', NULL, '系统管理目录');
+INSERT INTO sys_menu VALUES(2, '接口平台', 0, 1, 'InterfacePlatform', NULL, '', 1, 0, 'M', '0', '0', '', 'api', 'admin', sysdate(), '', NULL, '接口平台目录');
+INSERT INTO sys_menu VALUES(3, '数据平台', 0, 2, 'DataCenter', NULL, '', 1, 0, 'M', '0', '0', '', 'database', 'admin', sysdate(), '', NULL, '数据平台目录');
+INSERT INTO sys_menu VALUES(4, '决策平台', 0, 3, 'DecisionPlatform', NULL, '', 1, 0, 'M', '0', '0', '', 'decision', 'admin', sysdate(), '', NULL, '决策平台目录');
+INSERT INTO sys_menu VALUES(5, '规则池', 0, 4, 'RulePool', NULL, '', 1, 0, 'M', '0', '0', '', 'rule', 'admin', sysdate(), '', NULL, '规则池目录');
+INSERT INTO sys_menu VALUES(6, '平台引擎', 0, 5, 'PlatformEngine', NULL, '', 1, 0, 'M', '0', '0', '', 'engine', 'admin', sysdate(), '', NULL, '平台引擎目录');
+
+-- 系统管理子菜单
+INSERT INTO sys_menu VALUES(100, '用户管理', 1, 1, 'UserManage', 'system/userManage/index', '', 1, 0, 'C', '0', '0', 'system:user:list', 'user', 'admin', sysdate(), '', NULL, '用户管理菜单');
+INSERT INTO sys_menu VALUES(101, '角色管理', 1, 2, 'RoleManage', 'system/roleManage/index', '', 1, 0, 'C', '0', '0', 'system:role:list', 'peoples', 'admin', sysdate(), '', NULL, '角色管理菜单');
+INSERT INTO sys_menu VALUES(102, '菜单管理', 1, 3, 'MenuManage', 'system/menuManagement/index', '', 1, 0, 'C', '0', '0', 'system:menu:list', 'tree-table', 'admin', sysdate(), '', NULL, '菜单管理菜单');
+INSERT INTO sys_menu VALUES(103, '部门管理', 1, 4, 'Department', 'system/department/index', '', 1, 0, 'C', '0', '0', 'system:dept:list', 'tree', 'admin', sysdate(), '', NULL, '部门管理菜单');
+INSERT INTO sys_menu VALUES(104, '字典管理', 1, 5, 'DictionaryManagement', 'system/dictionaryManagement/index', '', 1, 0, 'C', '0', '0', 'system:dict:list', 'dict', 'admin', sysdate(), '', NULL, '字典管理菜单');
+INSERT INTO sys_menu VALUES(105, '操作日志', 1, 6, 'OperlogManage', 'system/operlogManage/index', '', 1, 0, 'C', '0', '0', 'system:operlog:list', 'log', 'admin', sysdate(), '', NULL, '操作日志菜单');
+
+-- 接口平台子菜单
+INSERT INTO sys_menu VALUES(200, '数据场景管理', 2, 1, 'SmartDecision', 'interfacePlatform/modules/SmartDecision', '', 1, 0, 'C', '0', '0', 'interface:scene:list', 'scene', 'admin', sysdate(), '', NULL, '数据场景管理菜单');
+INSERT INTO sys_menu VALUES(201, '接口管理', 2, 2, 'InterfaceManagement', 'interfacePlatform/modules/InterfaceManagement', '', 1, 0, 'C', '0', '0', 'interface:api:list', 'api', 'admin', sysdate(), '', NULL, '接口管理菜单');
+INSERT INTO sys_menu VALUES(202, '数据审计', 2, 3, 'DataDuditing', 'interfacePlatform/modules/DataDuditing', '', 1, 0, 'C', '0', '0', 'interface:audit:list', 'audit', 'admin', sysdate(), '', NULL, '数据审计菜单');
+INSERT INTO sys_menu VALUES(203, '数据报表', 2, 4, 'InterfaceUser', 'interfacePlatform/modules/interfaceUser', '', 1, 0, 'C', '0', '0', 'interface:report:list', 'chart', 'admin', sysdate(), '', NULL, '数据报表菜单');
+
+-- 数据平台子菜单
+INSERT INTO sys_menu VALUES(300, '元数据', 3, 1, 'BasicVariables', 'DataCenter/modules/basicVariables', '', 1, 0, 'C', '0', '0', 'data:meta:list', 'metadata', 'admin', sysdate(), '', NULL, '元数据菜单');
+INSERT INTO sys_menu VALUES(301, '特征变量', 3, 2, 'FeatureVariable', 'DataCenter/modules/featureVariable', '', 1, 0, 'C', '0', '0', 'data:feature:list', 'variable', 'admin', sysdate(), '', NULL, '特征变量菜单');
+INSERT INTO sys_menu VALUES(302, '分析指标', 3, 3, 'AnalysisTarget', 'DataCenter/modules/analysisTarget', '', 1, 0, 'C', '0', '0', 'data:analysis:list', 'target', 'admin', sysdate(), '', NULL, '分析指标菜单');
+
+-- 决策平台子菜单
+INSERT INTO sys_menu VALUES(400, '产品决策', 4, 1, 'ProductDecision', 'decisionPlatform/modules/productDecision/index', '', 1, 0, 'C', '0', '0', 'decision:product:list', 'product', 'admin', sysdate(), '', NULL, '产品决策菜单');
+INSERT INTO sys_menu VALUES(401, '模型决策', 4, 2, 'ModelDecision', 'decisionPlatform/modules/modelDecision/index', '', 1, 0, 'C', '0', '0', 'decision:model:list', 'model', 'admin', sysdate(), '', NULL, '模型决策菜单');
+
+-- 规则池子菜单
+INSERT INTO sys_menu VALUES(500, '策略规则池', 5, 1, 'Strategy', 'rulePool/strategy/index', '', 1, 0, 'C', '0', '0', 'rule:strategy:list', 'strategy', 'admin', sysdate(), '', NULL, '策略规则池菜单');
+
+-- 平台引擎子菜单
+INSERT INTO sys_menu VALUES(600, '流程引擎', 6, 1, 'WorkflowEngine', 'platformEngine/modules/workflowEngine/index', '', 1, 0, 'C', '0', '0', 'engine:workflow:list', 'workflow', 'admin', sysdate(), '', NULL, '流程引擎菜单');
+INSERT INTO sys_menu VALUES(601, '任务审批', 6, 2, 'TaskApproval', 'platformEngine/modules/taskApproval/index', '', 1, 0, 'C', '0', '0', 'engine:approval:list', 'approval', 'admin', sysdate(), '', NULL, '任务审批菜单');
+INSERT INTO sys_menu VALUES(602, '任务记录', 6, 3, 'TaskRecord', 'platformEngine/modules/taskRecord/index', '', 1, 0, 'C', '0', '0', 'engine:record:list', 'record', 'admin', sysdate(), '', NULL, '任务记录菜单');
+INSERT INTO sys_menu VALUES(603, '流程任务', 6, 4, 'ProcessTask', 'platformEngine/modules/processTask/index', '', 1, 0, 'C', '0', '0', 'engine:process:list', 'process', 'admin', sysdate(), '', NULL, '流程任务菜单');
 
 -- 初始化角色菜单关联 (admin拥有所有菜单)
 INSERT INTO sys_role_menu VALUES(1, 1);
+INSERT INTO sys_role_menu VALUES(1, 2);
+INSERT INTO sys_role_menu VALUES(1, 3);
+INSERT INTO sys_role_menu VALUES(1, 4);
+INSERT INTO sys_role_menu VALUES(1, 5);
+INSERT INTO sys_role_menu VALUES(1, 6);
 INSERT INTO sys_role_menu VALUES(1, 100);
 INSERT INTO sys_role_menu VALUES(1, 101);
 INSERT INTO sys_role_menu VALUES(1, 102);
 INSERT INTO sys_role_menu VALUES(1, 103);
 INSERT INTO sys_role_menu VALUES(1, 104);
 INSERT INTO sys_role_menu VALUES(1, 105);
-INSERT INTO sys_role_menu VALUES(1, 106);
+INSERT INTO sys_role_menu VALUES(1, 200);
+INSERT INTO sys_role_menu VALUES(1, 201);
+INSERT INTO sys_role_menu VALUES(1, 202);
+INSERT INTO sys_role_menu VALUES(1, 203);
+INSERT INTO sys_role_menu VALUES(1, 300);
+INSERT INTO sys_role_menu VALUES(1, 301);
+INSERT INTO sys_role_menu VALUES(1, 302);
+INSERT INTO sys_role_menu VALUES(1, 400);
+INSERT INTO sys_role_menu VALUES(1, 401);
+INSERT INTO sys_role_menu VALUES(1, 500);
+INSERT INTO sys_role_menu VALUES(1, 600);
+INSERT INTO sys_role_menu VALUES(1, 601);
+INSERT INTO sys_role_menu VALUES(1, 602);
+INSERT INTO sys_role_menu VALUES(1, 603);
 
 -- 初始化字典类型
 INSERT INTO sys_dict_type VALUES(1, '用户性别', 'sys_user_sex', '0', 'admin', sysdate(), '', NULL, '用户性别列表');

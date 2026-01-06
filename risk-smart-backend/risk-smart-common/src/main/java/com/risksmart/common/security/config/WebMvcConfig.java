@@ -1,5 +1,6 @@
 package com.risksmart.common.security.config;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.risksmart.common.security.interceptor.HeaderInterceptor;
@@ -9,6 +10,7 @@ import com.risksmart.common.security.interceptor.HeaderInterceptor;
  *
  * @author ruoyi
  */
+@Configuration
 public class WebMvcConfig implements WebMvcConfigurer
 {
     /** 不需要拦截地址 */
