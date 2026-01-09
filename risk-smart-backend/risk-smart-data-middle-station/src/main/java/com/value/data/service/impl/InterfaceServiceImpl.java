@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.core.utils.StringUtils;
-import com.value.data.common.code.exception.ServiceException;
+import com.risksmart.common.core.exception.ServiceException;
 import com.value.data.common.constant.HttpStatus;
 import com.value.data.common.model.LoginUser;
 import com.value.data.common.utils.AjaxResult;

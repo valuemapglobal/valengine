@@ -15,7 +15,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
-import com.value.decision.common.domain.R;
+import com.risksmart.common.core.domain.R;
 import com.value.decision.common.dto.EncryptDTO;
 import com.value.decision.common.utils.EncryptBodyUtil;
 import com.value.decision.common.utils.StringUtils;

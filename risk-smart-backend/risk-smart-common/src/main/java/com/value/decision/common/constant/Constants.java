@@ -7,15 +7,6 @@ package com.value.decision.common.constant;
  */
 public class Constants
 {
-	/*小程序登录用户的session-key*/
-    public static final String MINI_USER_SESSION_KEY = "vm-mini-user-key";
-
-    /*h5登录用户的session-key*/
-    public static final String MOBILE_USER_SESSION_KEY = "vm-mobile-user-key";
-
-    /*h5登录用户的session-key*/
-    public static final String USER_MOBILE_LOGIN_KEY = "mobile_login_tokens:";
-
     /**
      * UTF-8 字符集
      */

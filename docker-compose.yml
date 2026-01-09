@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # ==================== MySQL 数据库 ====================
   mysql:
@@ -12,14 +10,15 @@ services:
     ports:
       - "${MYSQL_PORT:-3306}:3306"
     volumes:
-      - ./deploy/mysql/conf/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./deploy/mysql/init:/docker-entrypoint-initdb.d
       - mysql-data:/var/lib/mysql
     command: >
-      --mysql-native-password=ON
       --character-set-server=utf8mb4
       --collation-server=utf8mb4_unicode_ci
       --init-connect='SET NAMES utf8mb4'
+      --default-time-zone='+8:00'
+      --mysql-native-password=ON
+      --max-connections=500
     networks:
       - risksmart-network
     healthcheck:

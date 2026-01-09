@@ -10,7 +10,7 @@ import com.alibaba.fastjson2.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.value.data.annotation.Api;
-import com.value.data.common.code.exception.ServiceException;
+import com.risksmart.common.core.exception.ServiceException;
 import com.value.data.config.RequestWrapper;
 import com.value.data.constant.EncryptParamNameConstant;
 import com.value.data.constant.IdConstant;

@@ -1,17 +1,21 @@
 package com.value.decision.common.utils;
 
 import cn.hutool.core.util.StrUtil;
-import org.springframework.stereotype.Component;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
- * @Author: Elijah
- * @DateTime: 2022/7/25 11:03
+ * 密码校验工具类
+ * @author Elijah
+ * @date 2022/7/25 11:03
  */
-@Component
-public class PwdCheckUtils {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class PwdCheckUtils {
 
-    //定义特殊字符
-    public static String SPECIAL_CHAR = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+    /**
+     * 特殊字符集
+     */
+    public static final String SPECIAL_CHAR = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
 
     /**
      * @brief   检测密码中字符长度

@@ -1,7 +1,7 @@
 package com.value.decision.model.decisionmanage.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.value.decision.common.exception.ServiceException;
+import com.risksmart.common.core.exception.ServiceException;
 import com.value.decision.model.decisionmanage.model.dto.ImportRuleWithJsonDTO;
 import com.value.decision.common.security.LoginUser;
 

@@ -1,115 +1,82 @@
 package com.risksmart.common.core.domain;
 
+import lombok.Data;
+
 import java.io.Serializable;
-import com.risksmart.common.core.constant.Constants;
 
 /**
- * 响应信息主体
+ * 通用响应类
  *
- * @author ruoyi
+ * @param <T> 数据类型
  */
-public class R<T> implements Serializable
-{
+@Data
+public class R<T> implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
-    /** 成功 */
-    public static final int SUCCESS = Constants.SUCCESS;
-
-    /** 失败 */
-    public static final int FAIL = Constants.FAIL;
+    public static final int SUCCESS = 200;
+    public static final int FAIL = 500;
 
     private int code;
-
     private String msg;
-
     private T data;
 
-    public static <T> R<T> ok()
-    {
-        return restResult(null, SUCCESS, null);
+    public R() {
     }
 
-    public static <T> R<T> ok(T data)
-    {
-        return restResult(data, SUCCESS, null);
-    }
-
-    public static <T> R<T> ok(T data, String msg)
-    {
-        return restResult(data, SUCCESS, msg);
-    }
-
-    public static <T> R<T> fail()
-    {
-        return restResult(null, FAIL, null);
-    }
-
-    public static <T> R<T> fail(String msg)
-    {
-        return restResult(null, FAIL, msg);
-    }
-
-    public static <T> R<T> fail(T data)
-    {
-        return restResult(data, FAIL, null);
-    }
-
-    public static <T> R<T> fail(T data, String msg)
-    {
-        return restResult(data, FAIL, msg);
-    }
-
-    public static <T> R<T> fail(int code, String msg)
-    {
-        return restResult(null, code, msg);
-    }
-
-    private static <T> R<T> restResult(T data, int code, String msg)
-    {
-        R<T> apiResult = new R<>();
-        apiResult.setCode(code);
-        apiResult.setData(data);
-        apiResult.setMsg(msg);
-        return apiResult;
-    }
-
-    public int getCode()
-    {
-        return code;
-    }
-
-    public void setCode(int code)
-    {
+    public R(int code, String msg, T data) {
         this.code = code;
-    }
-
-    public String getMsg()
-    {
-        return msg;
-    }
-
-    public void setMsg(String msg)
-    {
         this.msg = msg;
-    }
-
-    public T getData()
-    {
-        return data;
-    }
-
-    public void setData(T data)
-    {
         this.data = data;
     }
 
-    public static <T> Boolean isError(R<T> ret)
-    {
-        return !isSuccess(ret);
+    // ==================== 成功响应 ====================
+
+    public static <T> R<T> ok() {
+        return new R<>(SUCCESS, "操作成功", null);
     }
 
-    public static <T> Boolean isSuccess(R<T> ret)
-    {
-        return R.SUCCESS == ret.getCode();
+    public static <T> R<T> ok(T data) {
+        return new R<>(SUCCESS, "操作成功", data);
+    }
+
+    public static <T> R<T> ok(String msg, T data) {
+        return new R<>(SUCCESS, msg, data);
+    }
+
+    // ==================== 失败响应 ====================
+
+    public static <T> R<T> fail() {
+        return new R<>(FAIL, "操作失败", null);
+    }
+
+    public static <T> R<T> fail(String msg) {
+        return new R<>(FAIL, msg, null);
+    }
+
+    public static <T> R<T> fail(int code, String msg) {
+        return new R<>(code, msg, null);
+    }
+
+    public static <T> R<T> fail(String msg, T data) {
+        return new R<>(FAIL, msg, data);
+    }
+
+    // ==================== 状态判断 ====================
+
+    public boolean isSuccess() {
+        return SUCCESS == code;
+    }
+
+    public boolean isFail() {
+        return !isSuccess();
+    }
+
+    public static <T> boolean isSuccess(R<T> r) {
+        return r != null && r.isSuccess();
+    }
+
+    public static <T> boolean isError(R<T> r) {
+        return !isSuccess(r);
     }
 }

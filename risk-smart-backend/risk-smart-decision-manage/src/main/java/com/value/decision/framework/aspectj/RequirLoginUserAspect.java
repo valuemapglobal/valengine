@@ -1,6 +1,6 @@
 package com.value.decision.framework.aspectj;
 
-import com.value.decision.common.exception.ServiceException;
+import com.risksmart.common.core.exception.ServiceException;
 import com.value.decision.model.decisionmanage.controller.ProductController;
 import com.value.decision.model.decisionmanage.model.Product;
 import com.value.decision.common.utils.security.SecurityUtils;

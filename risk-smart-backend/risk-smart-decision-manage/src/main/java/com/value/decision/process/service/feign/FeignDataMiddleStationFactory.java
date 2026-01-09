@@ -5,7 +5,7 @@ import com.value.decision.common.dto.EncryptDTO;
 import com.risksmart.common.core.web.AjaxResult;
 import com.value.decision.process.dto.GetInterfaceInputParameterDTO;
 import com.value.decision.process.vo.InterfaceUser;
-import com.value.decision.common.domain.R;
+import com.risksmart.common.core.domain.R;
 import com.value.decision.process.dto.FindInterfaceInfoDTO;
 import com.value.decision.process.dto.FindInterfaceFieldIdInfoDTO;
 import org.slf4j.Logger;

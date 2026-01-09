@@ -1,6 +1,6 @@
 package com.value.decision.process.service.feign;
 
-import com.value.decision.common.domain.R;
+import com.risksmart.common.core.domain.R;
 import com.value.decision.process.vo.InterfaceUser;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

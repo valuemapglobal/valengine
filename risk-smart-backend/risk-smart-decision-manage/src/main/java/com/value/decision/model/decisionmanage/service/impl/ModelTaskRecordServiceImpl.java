@@ -1238,7 +1238,7 @@ public class ModelTaskRecordServiceImpl extends ServiceImpl<ModelTaskRecordMappe
         // 2. 调用中台接口
         String appkey = null;
         String secret = null;
-        com.value.decision.common.domain.R<com.value.decision.process.vo.InterfaceUser> interfaceUser =
+        com.risksmart.common.core.domain.R<com.value.decision.process.vo.InterfaceUser> interfaceUser =
             feignDataMiddleStationService.queryAppKeyByUserId(Integer.parseInt(userIdentity.get("userId").toString()));
 
         if (interfaceUser != null && interfaceUser.getCode() == 200) {
@@ -3251,7 +3251,7 @@ public class ModelTaskRecordServiceImpl extends ServiceImpl<ModelTaskRecordMappe
         Long userId = Long.valueOf(userIdentification);
 
         // 3. 根据userId获取数据中台密钥
-        com.value.decision.common.domain.R<com.value.decision.process.vo.InterfaceUser> interfaceUserR =
+        com.risksmart.common.core.domain.R<com.value.decision.process.vo.InterfaceUser> interfaceUserR =
                 feignDataMiddleStationService.queryAppKeyByUserId(userId.intValue());
         com.value.decision.process.vo.InterfaceUser interfaceUser = interfaceUserR.getData();
 

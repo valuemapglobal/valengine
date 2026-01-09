@@ -3,56 +3,36 @@ package com.value.decision.common.utils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
+/**
+ * Spring 上下文持有者
+ * 用于在非 Spring 管理的类中获取 Bean
+ */
 @Component
 public class ApplicationContextProvider implements ApplicationContextAware {
 
-	/**
-     * 上下文对象实例
-     */
     private static ApplicationContext applicationContext;
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+    public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
+        ApplicationContextProvider.applicationContext = applicationContext;
     }
 
-    /**
-     * 获取applicationContext
-     * @return
-     */
     public static ApplicationContext getApplicationContext() {
         return applicationContext;
     }
 
-    /**
-     * 通过name获取 Bean.
-     * @param name
-     * @return
-     */
-    public static Object getBean(String name){
-        return getApplicationContext().getBean(name);
-    }
-    
-    /**
-     * 通过class获取Bean.
-     * @param clazz
-     * @param <T>
-     * @return
-     */
-    public static <T> T getBean(Class<T> clazz){
-        return getApplicationContext().getBean(clazz);
+    public static Object getBean(String name) {
+        return applicationContext.getBean(name);
     }
 
-    /**
-     * 通过name,以及Clazz返回指定的Bean
-     * @param name
-     * @param clazz
-     * @param <T>
-     * @return
-     */
-    public static <T> T getBean(String name,Class<T> clazz){
-        return getApplicationContext().getBean(name, clazz);
+    public static <T> T getBean(Class<T> clazz) {
+        return applicationContext.getBean(clazz);
+    }
+
+    public static <T> T getBean(String name, Class<T> clazz) {
+        return applicationContext.getBean(name, clazz);
     }
 }

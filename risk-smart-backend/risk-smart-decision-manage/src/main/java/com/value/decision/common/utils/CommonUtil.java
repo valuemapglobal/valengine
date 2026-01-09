@@ -1,60 +1,73 @@
 package com.value.decision.common.utils;
 
-
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import jakarta.annotation.PostConstruct;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * @descr  通用工具类
+ * 通用工具类
  * @author Raysen
  * @create 2020/10/14 9:09
- **/
+ */
+@Slf4j
 @Component
+@RequiredArgsConstructor
 public class CommonUtil {
 
-    //静态初始化当前类
-    private static CommonUtil commonUtil;
+    private final FeishuProperties feishuProperties;
 
-    @PostConstruct
-    public void init(){
-        //声明的静态类=this
-        commonUtil = this;
+    private static CommonUtil instance;
+
+    @jakarta.annotation.PostConstruct
+    private void init() {
+        instance = this;
     }
-
-    @Value("${business.feishuBusinessGroupUrl:}")
-    private String feishuBusinessGroupUrl;
-
-    @Value("${business.intranetPushUrl:}")
-    private String intranetPushUrl;
 
     /**
      * 飞书发送群消息
      */
-    public static boolean sendBotMessage(String message){
-        if (commonUtil == null || commonUtil.feishuBusinessGroupUrl == null || commonUtil.feishuBusinessGroupUrl.isEmpty()
-            || commonUtil.intranetPushUrl == null || commonUtil.intranetPushUrl.isEmpty()) {
+    public static boolean sendBotMessage(String message) {
+        if (instance == null || !instance.feishuProperties.isConfigured()) {
             return false;
         }
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("groupUrl", commonUtil.feishuBusinessGroupUrl);
-        paramMap.put("message", "决策系统异常_" + "\n" +message);
-        String res = HttpUtil.post(commonUtil.intranetPushUrl, JSON.toJSONString(paramMap));
 
-        JSONObject jsonObject = JSONObject.parseObject(res);
-        if(jsonObject == null){
+        try {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("groupUrl", instance.feishuProperties.getFeishuBusinessGroupUrl());
+            paramMap.put("message", "决策系统异常_\n" + message);
+
+            String res = HttpUtil.post(instance.feishuProperties.getIntranetPushUrl(), JSON.toJSONString(paramMap));
+            JSONObject jsonObject = JSONObject.parseObject(res);
+
+            return jsonObject != null && jsonObject.getIntValue("code") == 200;
+        } catch (Exception e) {
+            log.error("发送飞书消息失败", e);
             return false;
-        }
-        if(jsonObject.getIntValue("code")!=200){
-            return false;
-        }else{
-            return true;
         }
     }
 
+    /**
+     * 飞书配置属性
+     */
+    @lombok.Data
+    @Component
+    @ConfigurationProperties(prefix = "business")
+    public static class FeishuProperties {
+
+        private String feishuBusinessGroupUrl;
+
+        private String intranetPushUrl;
+
+        public boolean isConfigured() {
+            return feishuBusinessGroupUrl != null && !feishuBusinessGroupUrl.isEmpty()
+                    && intranetPushUrl != null && !intranetPushUrl.isEmpty();
+        }
+    }
 }

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.value.decision.common.converter.ModelVersionClassificationConverter;
-import com.value.decision.common.exception.ServiceException;
+import com.risksmart.common.core.exception.ServiceException;
 import com.value.decision.model.decisionmanage.controller.feign.DataMiddleStationFeign;
 import com.value.decision.model.decisionmanage.mapper.BusinessMapper;
 import com.value.decision.model.decisionmanage.mapper.ProductMapper;

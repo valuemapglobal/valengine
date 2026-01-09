@@ -1,7 +1,7 @@
 package com.value.decision.model.decisionmanage.feign;
 
 import com.value.decision.common.constant.SecurityConstants;
-import com.value.decision.common.domain.R;
+import com.risksmart.common.core.domain.R;
 import com.risksmart.system.domain.SysUser;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;

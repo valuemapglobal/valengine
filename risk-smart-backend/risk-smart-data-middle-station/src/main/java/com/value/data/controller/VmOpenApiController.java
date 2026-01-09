@@ -8,7 +8,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.value.data.common.dto.EncryptDTO;
 import com.value.data.common.utils.EncryptBodyUtil;
-import com.value.data.common.code.exception.ServiceException;
+import com.risksmart.common.core.exception.ServiceException;
 import com.value.data.common.model.LoginUser;
 import com.value.data.common.utils.AjaxResult;
 import com.value.data.common.utils.EncryptTool;

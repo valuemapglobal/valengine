@@ -29,7 +29,7 @@ import com.value.decision.process.vo.InterfaceUser;
 import com.value.decision.model.rdenew.function.CommonRuleFunctionDataNew;
 import com.value.decision.snapshot.domain.RdeModelAntiFraudSnapshot;
 import com.value.decision.snapshot.mapper.RdeModelAntiFraudSnapshotMapper;
-import com.value.decision.common.domain.R;
+import com.risksmart.common.core.domain.R;
 import com.value.decision.common.utils.security.SecurityUtils;
 import com.risksmart.system.domain.SysUser;
 import com.value.decision.common.security.LoginUser;
@@ -66,8 +66,6 @@ public class ModelTaskRecordController {
     private IModelProcessDataService modelProcessDataService;
     private RdeModelAntiFraudSnapshotMapper rdeModelAntiFraudSnapshotMapper;
     private IScoreCardRecordSnapshotService scoreCardRecordSnapshotService;
-    private HeadlessPdfExportService headlessPdfExportService;
-    private PreRenderedPdfExportService preRenderedPdfExportService;
     private RuoYiService ruoYiService;
     private ModelTaskRecordProperties properties;
     private FeignDataMiddleStationService feignDataMiddleStationService;

@@ -2,7 +2,7 @@ package com.value.data.common.handler;
 
 import com.ruoyi.common.core.constant.HttpStatus;
 import com.ruoyi.common.core.exception.auth.NotPermissionException;
-import com.value.data.common.code.exception.ServiceException;
+import com.risksmart.common.core.exception.ServiceException;
 import com.value.data.common.utils.AjaxResult;
 import com.value.data.common.utils.StringUtils;
 import org.slf4j.Logger;

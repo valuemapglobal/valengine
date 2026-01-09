@@ -1,6 +1,6 @@
 package com.value.decision.model.decisionmanage.feign;
 
-import com.value.decision.common.domain.R;
+import com.risksmart.common.core.domain.R;
 import com.risksmart.system.domain.SysUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
