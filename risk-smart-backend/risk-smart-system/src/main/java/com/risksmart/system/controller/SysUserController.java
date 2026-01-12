@@ -6,9 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.risksmart.common.core.utils.StringUtils;
 import com.risksmart.common.core.web.AjaxResult;
-import com.risksmart.common.core.web.controller.BaseController;
 import com.risksmart.common.core.web.page.TableDataInfo;
 import com.risksmart.common.security.utils.SecurityUtils;
 import com.risksmart.system.api.model.LoginUser;
@@ -19,13 +20,14 @@ import com.risksmart.system.service.ISysDeptService;
 import com.risksmart.system.service.ISysMenuService;
 import com.risksmart.system.service.ISysRoleService;
 import com.risksmart.system.service.ISysUserService;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 用户管理 控制器
  */
 @RestController
 @RequestMapping("/system/user")
-public class SysUserController extends BaseController {
+public class SysUserController {
 
     @Autowired
     private ISysUserService userService;
@@ -43,10 +45,27 @@ public class SysUserController extends BaseController {
      * 获取用户列表
      */
     @GetMapping("/list")
-    public TableDataInfo list(SysUser user) {
-        startPage();
+    public TableDataInfo list(SysUser user, HttpServletRequest request) {
+        // 获取分页参数
+        Integer pageNum = 1;
+        Integer pageSize = 10;
+        try {
+            String pageNumStr = request.getParameter("pageNum");
+            String pageSizeStr = request.getParameter("pageSize");
+            if (pageNumStr != null) pageNum = Integer.parseInt(pageNumStr);
+            if (pageSizeStr != null) pageSize = Integer.parseInt(pageSizeStr);
+        } catch (Exception ignored) {}
+
+        PageHelper.startPage(pageNum, pageSize);
         List<SysUser> list = userService.selectUserList(user);
-        return getDataTable(list);
+        PageInfo<SysUser> pageInfo = new PageInfo<>(list);
+
+        TableDataInfo rspData = new TableDataInfo();
+        rspData.setCode(200);
+        rspData.setRows(list);
+        rspData.setTotal(pageInfo.getTotal());
+        rspData.setMsg("查询成功");
+        return rspData;
     }
 
     /**
