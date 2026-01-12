@@ -112,9 +112,4 @@ public class GlobalExceptionHandler
         return AjaxResult.error(stringBuffer.toString());
     }
 
-    @ExceptionHandler(com.value.data.common.exception.ServiceException.class)
-    public AjaxResult handleBindException(com.value.data.common.exception.ServiceException e) {
-        log.error(e.getMessage(), e);
-        return new AjaxResult(e.getCode(),e.getMsg(),e.getData());
-    }
 }

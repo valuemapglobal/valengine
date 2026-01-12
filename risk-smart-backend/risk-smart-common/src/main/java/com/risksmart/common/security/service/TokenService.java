@@ -104,13 +104,17 @@ public class TokenService
             if (StringUtils.isNotEmpty(token))
             {
                 String userkey = JwtUtils.getUserKey(token);
-                user = redisService.getCacheObject(getTokenKey(userkey));
+                log.debug("TokenService - userkey from JWT: {}", userkey);
+                String redisKey = getTokenKey(userkey);
+                log.debug("TokenService - looking up Redis key: {}", redisKey);
+                user = redisService.getCacheObject(redisKey);
+                log.debug("TokenService - user from Redis: {}", user != null ? "found" : "null");
                 return user;
             }
         }
         catch (Exception e)
         {
-            log.error("获取用户信息异常'{}'", e.getMessage());
+            log.error("获取用户信息异常: {}", e.getMessage(), e);
         }
         return user;
     }

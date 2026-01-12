@@ -104,7 +104,20 @@ public class SecurityUtils {
         }
 
         LoginUser loginUser = new LoginUser();
-        BeanUtil.copyProperties(tempLoginUser, loginUser);
+        loginUser.setUserid(tempLoginUser.getUserid());
+        loginUser.setUsername(tempLoginUser.getUsername());
+        loginUser.setToken(tempLoginUser.getToken());
+        loginUser.setLoginTime(tempLoginUser.getLoginTime());
+        loginUser.setExpireTime(tempLoginUser.getExpireTime());
+        loginUser.setIpaddr(tempLoginUser.getIpaddr());
+
+        // 转换 SysUser
+        if (tempLoginUser.getSysUser() != null) {
+            SysUser sysUser = new SysUser();
+            BeanUtil.copyProperties(tempLoginUser.getSysUser(), sysUser);
+            loginUser.setSysUser(sysUser);
+        }
+
         return loginUser;
     }
 

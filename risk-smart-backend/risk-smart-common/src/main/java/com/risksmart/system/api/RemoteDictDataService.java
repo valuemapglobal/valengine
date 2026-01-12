@@ -18,6 +18,6 @@ public interface RemoteDictDataService {
      * @param dictType
      * @return
      */
-    @GetMapping("/dict/data/type/{dictType}")
+    @GetMapping("/system/dict/data/inner/type/{dictType}")
     R<List<SysDictData>> dictType(@PathVariable("dictType") String dictType);
 }
