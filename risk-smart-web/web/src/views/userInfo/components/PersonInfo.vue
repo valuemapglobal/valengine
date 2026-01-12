@@ -123,7 +123,7 @@ export default {
     this.uploadImgUrl =
       process.env.VUE_APP_ENV === 'production'
         ? '/prod-api'
-        : '/dev-api/prod-api' + '/bankCashflow/analysis/uploadFile'
+        : '/dev-api' + '/bankCashflow/analysis/uploadFile'
     this.headers.Authorization = localStorage.getItem('id_token')
   },
   methods: {

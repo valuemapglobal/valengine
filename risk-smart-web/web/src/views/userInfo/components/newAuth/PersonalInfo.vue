@@ -374,7 +374,7 @@ export default {
       uploadImgUrl:
         (process.env.VUE_APP_ENV === 'production'
           ? '/prod-api'
-          : '/dev-api/prod-api') + '/bankCashflow/analysis/uploadFile',
+          : '/dev-api') + '/bankCashflow/analysis/uploadFile',
       headers: { Authorization: localStorage.getItem('id_token') },
       avatarUrl: [
         'https://www.valuemap.cn/ybxfile/group2/M00/16/83/ChdWRGa99MiAHaoJAAAUoXQTO0s874.png?filename=20240815203000587326.png',

@@ -57,7 +57,7 @@ export default {
         // 上传的地址
         url:
           process.env.VUE_APP_ENV === 'development'
-            ? '/dev-api/prod-api/system/user/importData'
+            ? '/dev-api/system/user/importData'
             : '/prod-api/system/user/importData',
       },
     }

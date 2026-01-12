@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 const url =
-  process.env.VUE_APP_ENV === 'production' ? '/prod-api' : '/dev-api/prod-api'
+  process.env.VUE_APP_ENV === 'production' ? '/prod-api' : '/dev-api'
 
 const url1 =
   process.env.VUE_APP_ENV === 'production' ? '/vm/api' : '/dev-api/vm/api'

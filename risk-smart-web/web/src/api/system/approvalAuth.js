@@ -6,7 +6,7 @@ import request from '@/utils/request'
 const url =
   process.env.VUE_APP_ENV === 'production'
     ? '/prod-api/smartDecision'
-    : '/dev-api/prod-api/smartDecision'
+    : '/dev-api/smartDecision'
 
 // 权限列表查询
 export function listByDeptIdHidden(data) {

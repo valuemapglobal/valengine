@@ -8,6 +8,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.risksmart.common.core.utils.StringUtils;
 import com.risksmart.common.core.web.AjaxResult;
+import com.risksmart.common.core.web.controller.BaseController;
+import com.risksmart.common.core.web.page.TableDataInfo;
 import com.risksmart.common.security.utils.SecurityUtils;
 import com.risksmart.system.api.model.LoginUser;
 import com.risksmart.system.domain.SysDept;
@@ -23,7 +25,7 @@ import com.risksmart.system.service.ISysUserService;
  */
 @RestController
 @RequestMapping("/system/user")
-public class SysUserController {
+public class SysUserController extends BaseController {
 
     @Autowired
     private ISysUserService userService;
@@ -41,9 +43,10 @@ public class SysUserController {
      * 获取用户列表
      */
     @GetMapping("/list")
-    public AjaxResult list(SysUser user) {
+    public TableDataInfo list(SysUser user) {
+        startPage();
         List<SysUser> list = userService.selectUserList(user);
-        return AjaxResult.success(list);
+        return getDataTable(list);
     }
 
     /**

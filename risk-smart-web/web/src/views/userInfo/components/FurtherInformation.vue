@@ -404,7 +404,7 @@ export default {
     this.uploadImgUrl =
       process.env.VUE_APP_ENV === 'production'
         ? '/prod-api/finance/common/uploadFile'
-        : '/dev-api/prod-api/finance/common/uploadFile'
+        : '/dev-api/finance/common/uploadFile'
     this.headers.Authorization = localStorage.getItem('id_token')
   },
   mounted() {

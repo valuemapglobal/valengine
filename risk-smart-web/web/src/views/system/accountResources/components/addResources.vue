@@ -199,7 +199,7 @@ export default {
     this.uploadUrl =
       process.env.VUE_APP_ENV === 'production'
         ? '/prod-api/finance/common/uploadFile'
-        : '/dev-api/prod-api/finance/common/uploadFile'
+        : '/dev-api/finance/common/uploadFile'
   },
   methods: {
     initInfo() {},
