@@ -1,6 +1,7 @@
 package com.value.decision.common.utils;
 
-import com.value.decision.common.core.text.Convert;
+import com.risksmart.common.core.text.Convert;
+import com.risksmart.common.core.utils.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;

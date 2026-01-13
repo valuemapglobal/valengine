@@ -6,7 +6,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.risksmart.common.core.exception.ServiceException;
 import com.value.decision.model.decisionmanage.feign.RuoYiUserFeign;
 import com.value.decision.model.decisionmanage.service.RuoYiService;
-import com.value.decision.common.constant.SecurityConstants;
+import com.risksmart.common.core.constant.SecurityConstants;
 import com.risksmart.common.core.domain.R;
 import com.risksmart.system.api.RemoteDictDataService;
 import com.risksmart.system.api.domain.SysDictData;

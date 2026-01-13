@@ -4,7 +4,7 @@ package com.value.decision.model.decisionmanage.controller;
 import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.value.decision.common.constant.OperationType;
+import com.risksmart.common.core.constant.OperationType;
 import com.value.decision.framework.aspectj.lang.annotation.RequirLoginUser;
 import com.value.decision.model.decisionmanage.model.Product;
 import com.value.decision.model.decisionmanage.model.dto.ProductQueryDTO;

@@ -1,6 +1,6 @@
 package com.value.decision.model.rdenew.mapper;
 
-import com.value.decision.common.base.CommonMapper;
+import com.risksmart.common.core.base.CommonMapper;
 import com.value.decision.model.rdenew.domain.RdeModelAntiFraudRuleGroup;
 import com.value.decision.model.rdenew.vo.RdeModelAntiFraudRuleGroupVO;
 import org.apache.ibatis.annotations.Param;

@@ -2,7 +2,7 @@ package com.value.decision.model.decisionmanage.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.value.decision.common.constant.SecurityConstants;
+import com.risksmart.common.core.constant.SecurityConstants;
 import com.risksmart.common.core.web.AjaxResult;
 import com.value.decision.model.decisionmanage.model.ModelTaskRecordBatch;
 import com.value.decision.model.decisionmanage.model.dto.batch.BatchDetailVO;

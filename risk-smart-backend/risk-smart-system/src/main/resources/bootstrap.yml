@@ -1,4 +1,9 @@
 # System Service Bootstrap Configuration
+
+# 业务配置
+business:
+  apiTokenDecryptPassword: ${API_TOKEN_DECRYPT_PASSWORD:RiskSmart@2024}
+
 server:
   port: ${SERVER_PORT:8992}
   servlet:

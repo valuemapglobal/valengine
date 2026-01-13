@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.value.data.common.service.RedisService;
 import com.value.data.common.utils.DataStationUtil;
-import com.value.data.common.utils.FormulaUtil;
+import com.risksmart.common.core.utils.FormulaUtil;
 import com.value.data.config.FeatureProperties;
 import com.value.data.domain.entity.MetricsAttributeEntity;
 import com.value.data.domain.entity.MetricsModuleEntity;

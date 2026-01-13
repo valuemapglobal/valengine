@@ -3,7 +3,7 @@ package com.value.decision.model.decisionmanage.model.vo;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.value.decision.common.constant.OperationType;
+import com.risksmart.common.core.constant.OperationType;
 import com.value.decision.model.decisionmanage.model.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;

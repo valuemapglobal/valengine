@@ -1,7 +1,7 @@
 package com.value.decision.common.exception;
 
+import com.risksmart.common.core.utils.StringUtils;
 import com.value.decision.common.utils.MessageUtils;
-import com.value.decision.common.utils.StringUtils;
 
 /**
  * 基础异常

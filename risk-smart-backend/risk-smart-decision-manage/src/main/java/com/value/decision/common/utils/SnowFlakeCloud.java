@@ -1,5 +1,6 @@
 package com.value.decision.common.utils;
 
+import com.risksmart.common.core.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.SystemUtils;

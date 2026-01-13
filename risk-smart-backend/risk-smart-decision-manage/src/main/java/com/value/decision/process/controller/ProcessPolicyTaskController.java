@@ -12,7 +12,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.value.decision.common.utils.CommonUtil;
 import com.value.decision.common.utils.IDCardUtil;
-import com.value.decision.common.utils.StringUtils;
 import com.risksmart.common.core.web.AjaxResult;
 import com.value.decision.process.common.RandomNumberUtil;
 import com.value.decision.process.common.RuleFunction;

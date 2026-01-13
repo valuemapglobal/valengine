@@ -2,7 +2,7 @@ package com.value.decision.snapshot.mapper;
 
 import com.value.decision.model.rdenew.domain.RdeModelAntiFraudRuleGroup;
 import com.value.decision.snapshot.domain.RdeModelAntiFraudRuleGroupSnapshot;
-import com.value.decision.common.base.CommonMapper;
+import com.risksmart.common.core.base.CommonMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

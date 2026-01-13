@@ -46,4 +46,10 @@ public class SecurityConstants
      * 角色权限
      */
     public static final String ROLE_PERMISSION = "role_permission";
+
+
+    public static final int ERR_SECURITY_CODE = 600;
+
+    public static final String ERR_SECURITY_MSG = "操作失败：登录失效";
+
 }

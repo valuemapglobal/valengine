@@ -1,7 +1,7 @@
 package com.value.decision.snapshot.mapper;
 
 import com.value.decision.snapshot.domain.RdeModelAntiProjectFraudSnapshot;
-import com.value.decision.common.base.CommonMapper;
+import com.risksmart.common.core.base.CommonMapper;
 
 /**
  * 决策引擎项目-模型关联持久层接口

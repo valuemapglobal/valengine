@@ -2,7 +2,7 @@ package com.value.decision.snapshot.mapper;
 
 import com.value.decision.model.decisionmanage.model.vo.JudicialClassRuleVO;
 import com.value.decision.snapshot.domain.RdeModelDecisionCodeLevelSnapshot;
-import com.value.decision.common.base.CommonMapper;
+import com.risksmart.common.core.base.CommonMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

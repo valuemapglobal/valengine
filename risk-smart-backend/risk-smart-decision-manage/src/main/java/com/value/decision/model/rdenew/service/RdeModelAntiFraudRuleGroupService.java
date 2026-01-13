@@ -5,7 +5,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.value.decision.common.utils.StringUtils;
+import com.risksmart.common.core.utils.StringUtils;
 import com.value.decision.common.utils.security.SecurityUtils;
 import com.value.decision.model.decisionmanage.constants.RuleConstants;
 import com.value.decision.model.decisionmanage.mapper.RuleRecordReuseMapper;

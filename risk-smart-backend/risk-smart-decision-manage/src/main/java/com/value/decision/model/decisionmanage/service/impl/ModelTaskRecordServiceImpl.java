@@ -12,12 +12,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.util.StringUtil;
+import com.risksmart.common.core.utils.StringUtils;
 import com.value.decision.common.dto.EncryptDTO;
 import com.value.decision.common.utils.EncryptBodyUtil;
 import com.value.decision.common.configure.ModelTaskRecordProperties;
-import com.value.decision.common.constant.ModelConstants;
-import com.value.decision.common.constant.QuotaCalculationConstants;
-import com.value.decision.common.utils.StringUtils;
+import com.risksmart.common.core.constant.ModelConstants;
+import com.risksmart.common.core.constant.QuotaCalculationConstants;
 import com.risksmart.common.core.web.AjaxResult;
 import com.risksmart.common.core.web.page.TableDataInfo;
 // TODO: FeignRuoYiSystemService removed - approval flow feature disabled

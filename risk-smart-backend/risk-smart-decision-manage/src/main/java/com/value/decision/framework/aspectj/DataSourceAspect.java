@@ -1,6 +1,6 @@
 package com.value.decision.framework.aspectj;
 
-import com.value.decision.common.utils.StringUtils;
+import com.risksmart.common.core.utils.StringUtils;
 import com.value.decision.framework.aspectj.lang.annotation.DataSource;
 import com.value.decision.framework.datasource.DynamicDataSourceContextHolder;
 import org.aspectj.lang.ProceedingJoinPoint;

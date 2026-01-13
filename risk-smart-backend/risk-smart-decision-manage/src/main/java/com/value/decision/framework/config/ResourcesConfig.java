@@ -1,6 +1,6 @@
 package com.value.decision.framework.config;
 
-import com.value.decision.common.constant.Constants;
+import com.risksmart.common.core.constant.Constants;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

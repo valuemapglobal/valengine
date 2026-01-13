@@ -278,17 +278,18 @@ export default {
         //     },
         //   ],
         // },
-        {
-          label: '监测',
-          name: 'Monitor',
-          isChange: true,
-          values: [
-            {
-              label: '预警任务',
-              name: 'WarningTask',
-            },
-          ],
-        },
+        // 暂时注释监测菜单
+        // {
+        //   label: '监测',
+        //   name: 'Monitor',
+        //   isChange: true,
+        //   values: [
+        //     {
+        //       label: '预警任务',
+        //       name: 'WarningTask',
+        //     },
+        //   ],
+        // },
         {
           label: '系统管理',
           name: 'System',

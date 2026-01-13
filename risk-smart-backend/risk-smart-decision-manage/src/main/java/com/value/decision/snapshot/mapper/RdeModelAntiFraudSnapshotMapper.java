@@ -1,7 +1,7 @@
 package com.value.decision.snapshot.mapper;
 
 import com.value.decision.snapshot.domain.RdeModelAntiFraudSnapshot;
-import com.value.decision.common.base.CommonMapper;
+import com.risksmart.common.core.base.CommonMapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 

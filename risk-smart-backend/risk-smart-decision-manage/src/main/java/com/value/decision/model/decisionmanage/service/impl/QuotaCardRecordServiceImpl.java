@@ -5,7 +5,7 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.value.decision.common.utils.FormulaUtil;
+import com.risksmart.common.core.utils.FormulaUtil;
 import com.value.decision.model.decisionmanage.mapper.DataCallingMapper;
 import com.value.decision.model.decisionmanage.mapper.QuotaCardRadiusMapper;
 import com.value.decision.model.decisionmanage.mapper.QuotaCardRecordMapper;

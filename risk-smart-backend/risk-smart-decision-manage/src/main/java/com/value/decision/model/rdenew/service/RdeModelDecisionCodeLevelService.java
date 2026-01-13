@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.pagehelper.PageInfo;
-import com.value.decision.common.constant.HttpStatus;
+import com.risksmart.common.core.constant.HttpStatus;
 import com.value.decision.common.utils.security.SecurityUtils;
 import com.risksmart.common.core.web.page.TableDataInfo;
 import com.value.decision.model.decisionmanage.common.GenerateRuleUtil;

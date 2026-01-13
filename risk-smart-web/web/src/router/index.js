@@ -51,7 +51,10 @@ const router = new VueRouter({
 })
 
 // 使用 sessionStorage 来跟踪权限加载状态，避免热更新问题
-let status = !sessionStorage.getItem('permissionsLoaded')
+// 但页面刷新后Vuex store会被清空，需要重新加载权限
+// 因此在每次页面初始化时，清除permissionsLoaded标记
+sessionStorage.removeItem('permissionsLoaded')
+let status = true
 let path = []
 let whiteList = [
   '/login',

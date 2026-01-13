@@ -1,10 +1,10 @@
 package com.value.data.common.handler;
 
-import com.ruoyi.common.core.constant.HttpStatus;
-import com.ruoyi.common.core.exception.auth.NotPermissionException;
+import com.risksmart.common.core.utils.StringUtils;
+import com.risksmart.common.core.constant.HttpStatus;
+import com.risksmart.common.core.exception.auth.NotPermissionException;
 import com.risksmart.common.core.exception.ServiceException;
 import com.value.data.common.utils.AjaxResult;
-import com.value.data.common.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;
@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  * 全局异常处理器
- * 
+ *
  * @author ruoyi
  */
 @RestControllerAdvice
@@ -31,11 +31,11 @@ public class GlobalExceptionHandler
      * 权限码异常
      */
     @ExceptionHandler(NotPermissionException.class)
-    public com.ruoyi.common.core.web.domain.AjaxResult handleNotPermissionException(NotPermissionException e, HttpServletRequest request)
+    public AjaxResult handleNotPermissionException(NotPermissionException e, HttpServletRequest request)
     {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',权限码校验失败'{}'", requestURI, e.getMessage());
-        return com.ruoyi.common.core.web.domain.AjaxResult.error(HttpStatus.FORBIDDEN, "没有访问权限，请联系管理员授权");
+        return AjaxResult.error(HttpStatus.FORBIDDEN, "没有访问权限，请联系管理员授权");
     }
     /**
      * 请求方式不支持

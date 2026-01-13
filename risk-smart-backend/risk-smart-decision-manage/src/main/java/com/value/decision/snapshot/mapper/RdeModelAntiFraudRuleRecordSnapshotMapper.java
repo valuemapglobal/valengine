@@ -1,7 +1,7 @@
 package com.value.decision.snapshot.mapper;
 
 import com.value.decision.snapshot.domain.RdeModelAntiFraudRuleRecordSnapshot;
-import com.value.decision.common.base.CommonMapper;
+import com.risksmart.common.core.base.CommonMapper;
 import com.value.decision.model.rdenew.domain.RdeModelAntiProjectFraud;
 import com.value.decision.model.rdenew.domain.RdeModelDecisionCodeLevel;
 import com.value.decision.snapshot.domain.RdeModelDecisionCodeLevelSnapshot;

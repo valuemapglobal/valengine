@@ -1,7 +1,7 @@
 package com.value.decision.version.common.util;
 
 import cn.hutool.extra.pinyin.PinyinUtil;
-import com.value.decision.common.utils.StringUtils;
+import com.risksmart.common.core.utils.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,59 +10,6 @@ import java.util.Date;
  * 工具封装类
  */
 public class StringUtil {
-
-    public static void main(String[] args) {
-        //版本号模板: CCZL-ZR-P-V1.0-20231221-01
-        String projectName = "创程租赁"; // 要处理的中文字符串
-        String businessName = "准入";
-        String personOrCompany = "C";
-
-        String projectNameS = getPinYinHeadChar(projectName);
-        System.out.println("产品名称首字母大写为：" + projectNameS);
-        String businessNameS = getPinYinHeadChar(businessName);
-        System.out.println("业务名称首字母大写为：" + businessNameS);
-
-        String versionNum = versionNum("CCZL-ZR-C-V10.0-20231227-10");
-
-        System.out.println("拼接完成的版本号: "+projectNameS + "-" + businessNameS + "-" + personOrCompany + "-" + versionNum);
-
-        String ss = "V1.0";
-        String substring = ss.substring(1, 2);
-        System.out.println(substring);
-
-        // 获取当前日期
-        Date currentDate = new Date();
-        // 创建SimpleDateFormat对象，指定日期格式
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        // 格式化日期
-        String formattedDate = dateFormat.format(currentDate);
-        // 打印格式化后的日期
-        System.out.println("Formatted Date: " + formattedDate);
-
-
-        String verison = "CCZL-ZR-C-V4.0-20231229-1";
-        String[] split = verison.split("-");
-        System.out.println("versionStack: "+split[3]);
-        System.out.println("releaseDate: "+split[4]);
-        System.out.println("num: "+split[5]);
-
-
-
-
-        String str = "V10.0"; // 原始字符串
-
-        int startIndex = str.indexOf("V"); // 获取第一个特定字符"H"在字符串中的索引位置
-        int endIndex = str.lastIndexOf("."); // 获取最后一个特定字符"!"在字符串中的索引位置
-
-        if (startIndex != -1 && endIndex != -1) {
-            String result = str.substring(startIndex + 1, endIndex); // 根据起始索引和结束索引进行子字符串截取
-
-            System.out.println("特定字符"+result); // 输出截取到的字符
-        } else {
-            System.out.println("未找到指定的特定字符！");
-        }
-
-    }
 
     /**
      * 获取模型版本编号

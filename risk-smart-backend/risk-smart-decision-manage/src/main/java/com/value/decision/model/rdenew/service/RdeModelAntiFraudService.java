@@ -106,7 +106,7 @@ public class RdeModelAntiFraudService {
         }
 
         //搜索
-        if (com.value.decision.common.utils.StringUtils.isNotEmpty(rdeModelAntiFraud.getName())){
+        if (StringUtils.isNotEmpty(rdeModelAntiFraud.getName())){
             List<RdeModelAntiFraud> collect = rdeModelAntiFraudList.stream().filter(x -> x.getName().contains(rdeModelAntiFraud.getName())).collect(Collectors.toList());
             return collect;
         }

@@ -1,8 +1,8 @@
 package com.value.data.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.ruoyi.common.core.domain.R;
-import com.ruoyi.system.api.RemoteUserService;
+import com.risksmart.common.core.domain.R;
+import com.risksmart.system.api.RemoteUserService;
 import com.value.data.common.utils.AppUtils;
 import com.value.data.domain.dto.AppKeyAndSecretDTO;
 import com.value.data.domain.dto.InterfaceUserDTO;

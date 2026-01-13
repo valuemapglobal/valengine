@@ -3,8 +3,8 @@ package com.value.data.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ruoyi.common.core.domain.R;
-import com.ruoyi.system.api.RemoteUserService;
+import com.risksmart.common.core.domain.R;
+import com.risksmart.system.api.RemoteUserService;
 import com.value.data.domain.dto.InterfaceUserDTO;
 import com.value.data.domain.entity.InterfaceUser;
 import com.value.data.mapper.InterfaceUserMapper;

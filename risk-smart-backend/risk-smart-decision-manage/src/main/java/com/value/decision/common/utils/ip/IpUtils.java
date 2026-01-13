@@ -1,7 +1,7 @@
 package com.value.decision.common.utils.ip;
 
-import com.value.decision.common.utils.StringUtils;
 
+import com.risksmart.common.core.utils.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;

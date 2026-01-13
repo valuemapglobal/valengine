@@ -1,7 +1,7 @@
 package com.value.decision.model.decisionmanage.controller;
 
 
-import com.value.decision.common.constant.SecurityConstants;
+import com.risksmart.common.core.constant.SecurityConstants;
 import com.risksmart.common.core.web.AjaxResult;
 import com.value.decision.model.decisionmanage.model.dto.model.ScoreCardReuseVO;
 import com.value.decision.model.decisionmanage.service.IScoreCardReuseService;
