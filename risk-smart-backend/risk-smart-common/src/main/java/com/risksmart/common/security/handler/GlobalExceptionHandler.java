@@ -110,7 +110,9 @@ public class GlobalExceptionHandler
     {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',发生未知异常.", requestURI, e);
-        return AjaxResult.error(e.getMessage());
+        // 生产环境不应该暴露原始错误信息，返回通用错误提示
+        String message = StringUtils.isNotEmpty(e.getMessage()) ? e.getMessage() : "系统繁忙，请稍后重试";
+        return AjaxResult.error(message);
     }
 
     /**
@@ -121,7 +123,8 @@ public class GlobalExceptionHandler
     {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',发生系统异常.", requestURI, e);
-        return AjaxResult.error(e.getMessage());
+        // 生产环境不应该暴露原始错误信息，返回通用错误提示
+        return AjaxResult.error("系统繁忙，请稍后重试");
     }
 
     /**
@@ -131,7 +134,7 @@ public class GlobalExceptionHandler
     public AjaxResult handleBindException(BindException e)
     {
         log.error(e.getMessage(), e);
-        String message = e.getAllErrors().get(0).getDefaultMessage();
+        String message = e.getAllErrors().isEmpty() ? "参数验证失败" : e.getAllErrors().get(0).getDefaultMessage();
         return AjaxResult.error(message);
     }
 
@@ -142,7 +145,11 @@ public class GlobalExceptionHandler
     public Object handleMethodArgumentNotValidException(MethodArgumentNotValidException e)
     {
         log.error(e.getMessage(), e);
-        String message = e.getBindingResult().getFieldError().getDefaultMessage();
+        String message = "参数验证失败";
+        if (e.getBindingResult().getFieldError() != null)
+        {
+            message = e.getBindingResult().getFieldError().getDefaultMessage();
+        }
         return AjaxResult.error(message);
     }
 

@@ -124,8 +124,8 @@ public class LogAspect
         catch (Exception exp)
         {
             // 记录本地异常日志
-            log.error("异常信息:{}", exp.getMessage());
-            exp.printStackTrace();
+            log.error("操作日志记录异常, 请求URI: {}, 异常信息: {}",
+                    ServletUtils.getRequest().getRequestURI(), exp.getMessage(), exp);
         }
         finally
         {

@@ -155,9 +155,14 @@ public class ExcelUtil<T>
     private Map<String, List<Field>> subFieldsMap;
 
     /**
-     * 统计列表
+     * 统计列表，初始容量16以减少扩容
      */
-    private Map<Integer, Double> statistics = new HashMap<Integer, Double>();
+    private Map<Integer, Double> statistics = new HashMap<>(16);
+
+    /**
+     * 样式key缓存，避免重复调用StringUtils.format生成样式key
+     */
+    private Map<Field, String> dataStyleKeyCache;
 
     /**
      * 实体对象
@@ -297,7 +302,7 @@ public class ExcelUtil<T>
      */
     public List<T> importExcel(InputStream is, int titleNum)
     {
-        List<T> list = null;
+        List<T> list = new ArrayList<>(100);
         try
         {
             list = importExcel(StringUtils.EMPTY, is, titleNum);
@@ -338,8 +343,8 @@ public class ExcelUtil<T>
         int rows = sheet.getLastRowNum();
         if (rows > 0)
         {
-            // 定义一个map用于存放excel列的序号和field.
-            Map<String, Integer> cellMap = new HashMap<String, Integer>();
+            // 定义一个map用于存放excel列的序号和field，预估列数为50
+            Map<String, Integer> cellMap = new HashMap<>(50);
             // 获取表头
             Row heard = sheet.getRow(titleNum);
             if (heard == null)
@@ -357,7 +362,7 @@ public class ExcelUtil<T>
             }
             // 有数据时才处理 得到类的所有field.
             List<Object[]> fields = this.getFields();
-            Map<Integer, Object[]> fieldsMap = new HashMap<Integer, Object[]>();
+            Map<Integer, Object[]> fieldsMap = new HashMap<>(fields.size());
             for (Object[] objects : fields)
             {
                 Excel attr = (Excel) objects[1];
@@ -692,8 +697,8 @@ public class ExcelUtil<T>
      */
     private Map<String, CellStyle> createStyles(Workbook wb)
     {
-        // 写入各条记录,每条记录对应excel表中的一行
-        Map<String, CellStyle> styles = new HashMap<String, CellStyle>();
+        // 写入各条记录,每条记录对应excel表中的一行，预估样式数为20
+        Map<String, CellStyle> styles = new HashMap<>(20);
         CellStyle style = wb.createCellStyle();
         style.setAlignment(HorizontalAlignment.CENTER);
         style.setVerticalAlignment(VerticalAlignment.CENTER);
@@ -748,7 +753,7 @@ public class ExcelUtil<T>
      */
     private Map<String, CellStyle> annotationHeaderStyles(Workbook wb, Map<String, CellStyle> styles)
     {
-        Map<String, CellStyle> headerStyles = new HashMap<String, CellStyle>();
+        Map<String, CellStyle> headerStyles = new HashMap<>(16);
         for (Object[] os : fields)
         {
             Excel excel = (Excel) os[1];
@@ -784,7 +789,7 @@ public class ExcelUtil<T>
      */
     private Map<String, CellStyle> annotationDataStyles(Workbook wb)
     {
-        Map<String, CellStyle> styles = new HashMap<String, CellStyle>();
+        Map<String, CellStyle> styles = new HashMap<>(16);
         for (Object[] os : fields)
         {
             Field field = (Field) os[0];
@@ -994,7 +999,14 @@ public class ExcelUtil<T>
                         sheet.addMergedRegion(new CellRangeAddress(subMergedFirstRowNum, subMergedLastRowNum, column, column));
                     }
                 }
-                cell.setCellStyle(styles.get(StringUtils.format("data_{}_{}_{}_{}_{}", attr.align(), attr.color(), attr.backgroundColor(), attr.cellType(), attr.wrapText())));
+                // 使用缓存的样式key，避免重复字符串格式化
+                String styleKey = dataStyleKeyCache.get(field);
+                if (styleKey == null)
+                {
+                    styleKey = StringUtils.format("data_{}_{}_{}_{}_{}",
+                            attr.align(), attr.color(), attr.backgroundColor(), attr.cellType(), attr.wrapText());
+                }
+                cell.setCellStyle(styles.get(styleKey));
 
                 // 用于读取对象中的属性
                 Object value = getTargetValue(vo, field, attr);
@@ -1028,7 +1040,7 @@ public class ExcelUtil<T>
         }
         catch (Exception e)
         {
-            log.error("导出Excel失败{}", e);
+            log.error("导出Excel单元格失败, 列: {}, 字段: {}, 错误: {}", column, field.getName(), e.getMessage(), e);
         }
         return cell;
     }
@@ -1254,6 +1266,8 @@ public class ExcelUtil<T>
             }
             catch (NumberFormatException e)
             {
+                // 非数字类型的值无法统计，使用默认值0，这是预期行为
+                log.debug("统计列值转换失败, 列索引: {}, 值: {}", index, text);
             }
             statistics.put(index, statistics.get(index) + temp);
         }
@@ -1342,6 +1356,16 @@ public class ExcelUtil<T>
         this.fields = getFields();
         this.fields = this.fields.stream().sorted(Comparator.comparing(objects -> ((Excel) objects[1]).sort())).collect(Collectors.toList());
         this.maxHeight = getRowHeight();
+        // 预计算样式key缓存，避免在循环中重复调用StringUtils.format
+        this.dataStyleKeyCache = new HashMap<>(this.fields.size());
+        for (Object[] os : this.fields)
+        {
+            Field field = (Field) os[0];
+            Excel excel = (Excel) os[1];
+            String styleKey = StringUtils.format("data_{}_{}_{}_{}_{}",
+                    excel.align(), excel.color(), excel.backgroundColor(), excel.cellType(), excel.wrapText());
+            this.dataStyleKeyCache.put(field, styleKey);
+        }
     }
 
     /**
@@ -1349,10 +1373,10 @@ public class ExcelUtil<T>
      */
     public List<Object[]> getFields()
     {
-        List<Object[]> fields = new ArrayList<Object[]>();
-        List<Field> tempFields = new ArrayList<>();
-        subFieldsMap = new HashMap<>();
-        subMethods = new HashMap<>();
+        List<Object[]> fields = new ArrayList<>(50);
+        List<Field> tempFields = new ArrayList<>(30);
+        subFieldsMap = new HashMap<>(8);
+        subMethods = new HashMap<>(8);
         tempFields.addAll(Arrays.asList(clazz.getSuperclass().getDeclaredFields()));
         tempFields.addAll(Arrays.asList(clazz.getDeclaredFields()));
         if (StringUtils.isNotEmpty(includeFields))

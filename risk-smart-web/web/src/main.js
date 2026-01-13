@@ -38,6 +38,10 @@ Vue.mixin({
     //判断按钮是否有权限
     hasButton(buttonCode) {
       const buttonList = store.state.buttonList
+      // 处理超级管理员通配符权限
+      if (buttonList.includes('*:*:*')) {
+        return true
+      }
       return buttonList.includes(buttonCode)
     },
     //金额千分位分割

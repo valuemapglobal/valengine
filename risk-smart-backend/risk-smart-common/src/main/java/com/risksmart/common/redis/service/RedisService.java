@@ -160,13 +160,15 @@ public class RedisService
      * @param dataSet 缓存的数据
      * @return 缓存数据的对象
      */
+    @SuppressWarnings("unchecked")
     public <T> BoundSetOperations<String, T> setCacheSet(final String key, final Set<T> dataSet)
     {
         BoundSetOperations<String, T> setOperation = redisTemplate.boundSetOps(key);
-        Iterator<T> it = dataSet.iterator();
-        while (it.hasNext())
+        if (dataSet != null && !dataSet.isEmpty())
         {
-            setOperation.add(it.next());
+            // 使用批量添加，减少网络往返次数（单次SADD命令）
+            Object[] values = dataSet.toArray();
+            redisTemplate.opsForSet().add(key, values);
         }
         return setOperation;
     }

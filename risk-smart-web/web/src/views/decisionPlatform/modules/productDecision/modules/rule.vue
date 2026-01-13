@@ -472,6 +472,7 @@ export default {
         btDisable: false, //规则组和规则switch是否启用
         showIcon: '1',
         loading: false,
+        _requestId: 0, // 用于追踪请求版本，忽略过期响应
       },
       ruleGroup: {
         total: 0,
@@ -526,48 +527,54 @@ export default {
     'dataRisk.decision': {
       handler(val) {
         this.decision = val
-        //切换产品时，初始化搜索和滚动加载参数
-        const defaultFilterParams = {
-          pageNum: 1,
-          pageSize: 10,
-          scoreCard: undefined,
+        // 使用防抖延迟调用，避免watcher多次触发导致的竞态条件
+        // 注意：不在这里重置 tactics/ruleGroup/rule 的 dataList，避免清空正在显示的数据
+        // dataList 的重置移到 searchTacticsData 中，在请求返回后处理
+        if (this._searchDebounceTimer) {
+          clearTimeout(this._searchDebounceTimer)
         }
-        this.cardList = this.cardList.map((item, index) => {
-          this.onBlur(defaultFilterParams, index)
-          return {
-            ...item,
-            loadingMore: false, //正在获取更多内容……
-            noMore: false, //没有更多了
-            filterParams: { ...defaultFilterParams },
-            isFocus: false, //搜索框是否获取焦点
+        this._searchDebounceTimer = setTimeout(() => {
+          // 如果正在加载中，不重复请求
+          if (this.tactics.loading) {
+            return
           }
-        })
-        const defaultListParams = {
-          total: 0,
-          dataList: [],
-          activeId: null,
-          loading: false,
-        }
-        Object.assign(this.tactics, {
-          ...defaultListParams,
-          tacticsRowData: {}, //策略列表行数据
-          projectCode: undefined, //当前策略的projectCode
-          switchStatus: '', //当前策略列选择行的switch状态
-          btDisable: false, //规则组和规则switch是否启用
-          showIcon: '1',
-        })
-        Object.assign(this.ruleGroup, {
-          ...defaultListParams,
-          ruleGroupData: {}, //规则组行数据
-          projectCode: undefined, //当前规则组的projectCode
-          switchStatus: '', //当前规则组列选择行的switch状态
-          btDisable: false, //规则switch是否启用
-        })
-        Object.assign(this.rule, {
-          ...defaultListParams,
-          ruleData: {},
-        })
-        this.searchTacticsData(true)
+          // 重置搜索参数（在防抖回调中执行，避免多次重置）
+          const defaultFilterParams = {
+            pageNum: 1,
+            pageSize: 10,
+            scoreCard: undefined,
+          }
+          this.cardList = this.cardList.map((item, index) => {
+            return {
+              ...item,
+              loadingMore: false,
+              noMore: false,
+              filterParams: { ...defaultFilterParams },
+              isFocus: false,
+            }
+          })
+          // 重置其他状态（但不清空 dataList）
+          Object.assign(this.tactics, {
+            activeId: null,
+            tacticsRowData: {},
+            projectCode: undefined,
+            switchStatus: '',
+            btDisable: false,
+            showIcon: '1',
+          })
+          Object.assign(this.ruleGroup, {
+            activeId: null,
+            ruleGroupData: {},
+            projectCode: undefined,
+            switchStatus: '',
+            btDisable: false,
+          })
+          Object.assign(this.rule, {
+            activeId: null,
+            ruleData: {},
+          })
+          this.searchTacticsData(true)
+        }, 500)
       },
       deep: true,
       immediate: true,
@@ -1295,7 +1302,12 @@ export default {
      * @param isFirst 是否为首次加载
      */
     searchTacticsData(isFirst) {
+      // 递增请求ID，用于忽略过期响应
+      this.tactics._requestId = (this.tactics._requestId || 0) + 1
+      const currentRequestId = this.tactics._requestId
+
       let filterParams = this.cardList[0].filterParams
+
       if (isFirst) {
         this.tactics.loading = true
         this.cardList[0].loadingMore = false
@@ -1311,16 +1323,20 @@ export default {
         ...this.decision,
       })
         .then(async (res) => {
+          // 检查是否为过期响应
+          if (currentRequestId !== this.tactics._requestId) {
+            return
+          }
           if (res.code == 200) {
             const { list, pages } = res.data
-            console.log(isStandardDept(), 'isStandardDept()')
+            const isStandard = isStandardDept()
             list.forEach((item) => {
               /**
                * 非标准部门下自己新建产品 & 标准部门下的产品
                */
               if (
-                isStandardDept() ||
-                (!isStandardDept() && item.deptFlag == 2)
+                isStandard ||
+                (!isStandard && item.deptFlag == 2)
               ) {
                 return getVersion({
                   modelId: item.id,
@@ -1375,6 +1391,10 @@ export default {
           this.tactics.loading = false
         })
         .catch((err) => {
+          // 只处理当前请求的错误，忽略过期请求的错误
+          if (currentRequestId !== this.tactics._requestId) {
+            return
+          }
           this.tactics.loading = false
           this.cardList[0].loadingMore = false
         })

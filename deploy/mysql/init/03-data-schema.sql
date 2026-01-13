@@ -367,6 +367,12 @@ CREATE TABLE `rde_risk_variable_group` (
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `data_status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
+  `theme_no` varchar(100) DEFAULT NULL COMMENT '主题编号',
+  `group_no` varchar(100) DEFAULT NULL COMMENT '分组编号',
+  `interface_manage_no` varchar(100) DEFAULT NULL COMMENT '接口管理编号',
+  `interface_version` varchar(50) DEFAULT NULL COMMENT '接口版本',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
+  `dept_id` bigint(20) DEFAULT NULL COMMENT '部门ID',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `index_theme_id` (`theme_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='风险变量分组表';
@@ -388,6 +394,12 @@ CREATE TABLE `rde_risk_variable_record` (
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `data_status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '数据状态',
+  `group_no` varchar(100) DEFAULT NULL COMMENT '分组编号',
+  `record_no` varchar(100) DEFAULT NULL COMMENT '记录编号',
+  `parent_no` varchar(100) DEFAULT NULL COMMENT '父级编号',
+  `interface_field_id_manage` varchar(100) DEFAULT NULL COMMENT '接口字段管理ID',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
+  `dept_id` bigint(20) DEFAULT NULL COMMENT '部门ID',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `index_group_id` (`group_id`) USING BTREE,
   KEY `index_theme_id` (`theme_id`) USING BTREE

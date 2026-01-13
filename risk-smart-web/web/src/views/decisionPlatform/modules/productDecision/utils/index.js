@@ -13,16 +13,26 @@ export function isEditShow(deptId) {
  * 判断当前账号是否为标准部门账号
  */
 export function isStandardDept() {
-  const userInfo = JSON.parse(localStorage.getItem('userInfo'))
-  const decisionStandardList = JSON.parse(
-    sessionStorage.getItem('decisionStandard')
-  )
-  if (decisionStandardList.indexOf(userInfo.dept.deptId) === -1) {
-    // console.log("非标准部门");
+  try {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    const decisionStandardStr = sessionStorage.getItem('decisionStandard')
+    if (!decisionStandardStr || !userInfo?.dept?.deptId) {
+      return false
+    }
+    const decisionStandardList = JSON.parse(decisionStandardStr)
+    if (!Array.isArray(decisionStandardList)) {
+      return false
+    }
+    if (decisionStandardList.indexOf(userInfo.dept.deptId) === -1) {
+      // console.log("非标准部门");
+      return false
+    } else {
+      // console.log("标准部门");
+      return true
+    }
+  } catch (e) {
+    console.error('isStandardDept error:', e)
     return false
-  } else {
-    // console.log("标准部门");
-    return true
   }
 }
 

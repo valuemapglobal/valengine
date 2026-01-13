@@ -65,17 +65,17 @@ INSERT INTO sys_menu VALUES(401, '模型决策', 4, 2, 'ModelDecision', 'decisio
 -- 规则池子菜单
 INSERT INTO sys_menu VALUES(500, '策略规则池', 5, 1, 'Strategy', 'rulePool/strategy/index', '', 1, 0, 'C', '0', '0', 'rule:strategy:list', 'strategy', 'admin', sysdate(), '', NULL, '策略规则池菜单');
 
--- 产品决策按钮权限
-INSERT INTO sys_menu VALUES(4001, '查看', 400, 1, '', '', '', 1, 0, 'F', '0', '0', 'strategy:view:show', '#', 'admin', sysdate(), '', NULL, '');
-INSERT INTO sys_menu VALUES(4002, '编辑', 400, 2, '', '', '', 1, 0, 'F', '0', '0', 'strategy:edit:show', '#', 'admin', sysdate(), '', NULL, '');
-INSERT INTO sys_menu VALUES(4003, '测试', 400, 3, '', '', '', 1, 0, 'F', '0', '0', 'strategy:test:show', '#', 'admin', sysdate(), '', NULL, '');
-INSERT INTO sys_menu VALUES(4004, '发布', 400, 4, '', '', '', 1, 0, 'F', '0', '0', 'strategy:release:show', '#', 'admin', sysdate(), '', NULL, '');
-INSERT INTO sys_menu VALUES(4005, '复用', 400, 5, '', '', '', 1, 0, 'F', '0', '0', 'strategy:reuse:show', '#', 'admin', sysdate(), '', NULL, '');
-INSERT INTO sys_menu VALUES(4006, '导出', 400, 6, '', '', '', 1, 0, 'F', '0', '0', 'strategy:export:show', '#', 'admin', sysdate(), '', NULL, '');
-INSERT INTO sys_menu VALUES(4007, '导入策略', 400, 7, '', '', '', 1, 0, 'F', '0', '0', 'import:strategy:show', '#', 'admin', sysdate(), '', NULL, '');
-INSERT INTO sys_menu VALUES(4008, '策略新增', 400, 8, '', '', '', 1, 0, 'F', '0', '0', 'Newstrategy:addition:show', '#', 'admin', sysdate(), '', NULL, '');
-INSERT INTO sys_menu VALUES(4009, '策略删除', 400, 9, '', '', '', 1, 0, 'F', '0', '0', 'Strategy:deletion:show', '#', 'admin', sysdate(), '', NULL, '');
-INSERT INTO sys_menu VALUES(4010, '启用禁用', 400, 10, '', '', '', 1, 0, 'F', '0', '0', 'enable:disable:show', '#', 'admin', sysdate(), '', NULL, '');
+-- 产品决策按钮权限 (注意: 需包含route_name列,共20列)
+INSERT INTO sys_menu VALUES(4001, '查看', 400, 1, '', '', '', '', 1, 0, 'F', '0', '0', 'strategy:view:show', '#', 'admin', sysdate(), '', NULL, '');
+INSERT INTO sys_menu VALUES(4002, '编辑', 400, 2, '', '', '', '', 1, 0, 'F', '0', '0', 'strategy:edit:show', '#', 'admin', sysdate(), '', NULL, '');
+INSERT INTO sys_menu VALUES(4003, '测试', 400, 3, '', '', '', '', 1, 0, 'F', '0', '0', 'strategy:test:show', '#', 'admin', sysdate(), '', NULL, '');
+INSERT INTO sys_menu VALUES(4004, '发布', 400, 4, '', '', '', '', 1, 0, 'F', '0', '0', 'strategy:release:show', '#', 'admin', sysdate(), '', NULL, '');
+INSERT INTO sys_menu VALUES(4005, '复用', 400, 5, '', '', '', '', 1, 0, 'F', '0', '0', 'strategy:reuse:show', '#', 'admin', sysdate(), '', NULL, '');
+INSERT INTO sys_menu VALUES(4006, '导出', 400, 6, '', '', '', '', 1, 0, 'F', '0', '0', 'strategy:export:show', '#', 'admin', sysdate(), '', NULL, '');
+INSERT INTO sys_menu VALUES(4007, '导入策略', 400, 7, '', '', '', '', 1, 0, 'F', '0', '0', 'import:strategy:show', '#', 'admin', sysdate(), '', NULL, '');
+INSERT INTO sys_menu VALUES(4008, '策略新增', 400, 8, '', '', '', '', 1, 0, 'F', '0', '0', 'Newstrategy:addition:show', '#', 'admin', sysdate(), '', NULL, '');
+INSERT INTO sys_menu VALUES(4009, '策略删除', 400, 9, '', '', '', '', 1, 0, 'F', '0', '0', 'Strategy:deletion:show', '#', 'admin', sysdate(), '', NULL, '');
+INSERT INTO sys_menu VALUES(4010, '启用禁用', 400, 10, '', '', '', '', 1, 0, 'F', '0', '0', 'enable:disable:show', '#', 'admin', sysdate(), '', NULL, '');
 
 -- 平台引擎子菜单
 INSERT INTO sys_menu VALUES(600, '流程引擎', 6, 1, 'WorkflowEngine', 'platformEngine/modules/workflowEngine/index', '', 1, 0, 'C', '0', '0', 'engine:workflow:list', 'workflow', 'admin', sysdate(), '', NULL, '流程引擎菜单');

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.value.decision.version.mapper.RdeModelDecisionCodeLevelVersionMapper">
+
+    <!-- 批量插入决策code等级版本 -->
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO rde_model_decision_code_level_version (
+            id, code, level, type, risk_type, content, risk_description, sort_num,
+            start_rate, end_rate, status, term, term_package, term_key, term_value,
+            term_other, term_rule, remark, update_by, create_by, update_time, create_time,
+            dept_id, data_status, dept_flag, rule_code, project_code, purpose_category,
+            category_type, business_code, conditions, version_control, data_module,
+            strongly_reject, quato_rate
+        ) VALUES
+        <foreach collection="CodeLevelList" item="item" separator=",">
+            (
+                #{item.id}, #{item.code}, #{item.level}, #{item.type}, #{item.riskType},
+                #{item.content}, #{item.riskDescription}, #{item.sortNum}, #{item.startRate},
+                #{item.endRate}, #{item.status}, #{item.term}, #{item.termPackage},
+                #{item.termKey}, #{item.termValue}, #{item.termOther}, #{item.termRule},
+                #{item.remark}, #{item.updateBy}, #{item.createBy}, #{item.updateTime},
+                #{item.createTime}, #{item.deptId}, #{item.dataStatus}, #{item.deptFlag},
+                #{item.ruleCode}, #{item.projectCode}, #{item.purposeCategory},
+                #{item.categoryType}, #{item.businessCode}, #{item.conditions},
+                #{item.versionControl}, #{item.dataModule}, #{item.stronglyReject},
+                #{item.quatoRate}
+            )
+        </foreach>
+    </insert>
+
+</mapper>

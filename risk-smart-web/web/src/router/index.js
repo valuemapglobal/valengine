@@ -50,7 +50,8 @@ const router = new VueRouter({
   routes,
 })
 
-let status = true
+// 使用 sessionStorage 来跟踪权限加载状态，避免热更新问题
+let status = !sessionStorage.getItem('permissionsLoaded')
 let path = []
 let whiteList = [
   '/login',
@@ -78,8 +79,9 @@ router.beforeEach(async (to, from, next) => {
     return
   }
   // 退出登录后，重新登录时需要重新拉取当前登录人的路由信息
-  if (loyout && !status) {
+  if (loyout) {
     localStorage.removeItem('loyout')
+    sessionStorage.removeItem('permissionsLoaded')
     status = true
   }
 
@@ -88,11 +90,16 @@ router.beforeEach(async (to, from, next) => {
   // let routerList = []
   // 取消路由权限配置方案
   // 如果不在login页并且token存在切是第一次进入则去请求路由权限
+  console.log('[路由守卫] status:', status, 'path:', path, 'id_token:', !!id_token)
   if (status && !path.includes('login') && id_token) {
+    console.log('[路由守卫] 开始加载权限...')
     let res = await authority()
+    console.log('[路由守卫] authority返回:', res)
+    console.log('[路由守卫] res[1]:', res[1])
     store.commit('setButtonList', res[1])
     // 处理路由权限为自己可用状态
     status = false
+    sessionStorage.setItem('permissionsLoaded', 'true')
     // 判断是否有路径没有默认正常跳转
     if (tos.length) {
       next({ ...to, replace: true })

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.value.decision.version.mapper.RdeModelAntiFraudRuleRecordVersionMapper">
+
+    <!-- 批量插入反欺诈模型规则明细版本 -->
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO rde_model_anti_fraud_rule_record_version (
+            id, group_id, code_id, model_id, code, name, descr, control, status,
+            term, term_package, term_key, term_value, term_other, term_rule, remark,
+            create_user_id, create_time, update_time, data_status, dept_id, dept_flag,
+            project_code, rule_code, business_code, version_control, data_module
+        ) VALUES
+        <foreach collection="fraudRecordList" item="item" separator=",">
+            (
+                #{item.id}, #{item.groupId}, #{item.codeId}, #{item.modelId}, #{item.code},
+                #{item.name}, #{item.descr}, #{item.control}, #{item.status}, #{item.term},
+                #{item.termPackage}, #{item.termKey}, #{item.termValue}, #{item.termOther},
+                #{item.termRule}, #{item.remark}, #{item.createUserId}, #{item.createTime},
+                #{item.updateTime}, #{item.dataStatus}, #{item.deptId}, #{item.deptFlag},
+                #{item.projectCode}, #{item.ruleCode}, #{item.businessCode},
+                #{item.versionControl}, #{item.dataModule}
+            )
+        </foreach>
+    </insert>
+
+</mapper>

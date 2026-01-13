@@ -31,7 +31,26 @@ public class AuthLogic
     /** 管理员角色权限标识 */
     private static final String SUPER_ADMIN = "admin";
 
-    public TokenService tokenService = SpringUtils.getBean(TokenService.class);
+    /** TokenService 实例，使用延迟初始化确保 Spring 容器已就绪 */
+    private volatile TokenService tokenService;
+
+    /**
+     * 获取 TokenService 实例，使用双重检查锁实现线程安全的延迟初始化
+     */
+    private TokenService getTokenService()
+    {
+        if (tokenService == null)
+        {
+            synchronized (this)
+            {
+                if (tokenService == null)
+                {
+                    tokenService = SpringUtils.getBean(TokenService.class);
+                }
+            }
+        }
+        return tokenService;
+    }
 
     /**
      * 会话注销
@@ -51,7 +70,7 @@ public class AuthLogic
      */
     public void logoutByToken(String token)
     {
-        tokenService.delLoginUser(token);
+        getTokenService().delLoginUser(token);
     }
 
     /**
@@ -90,7 +109,7 @@ public class AuthLogic
      */
     public LoginUser getLoginUser(String token)
     {
-        return tokenService.getLoginUser(token);
+        return getTokenService().getLoginUser(token);
     }
 
     /**
@@ -100,7 +119,7 @@ public class AuthLogic
      */
     public void verifyLoginUserExpire(LoginUser loginUser)
     {
-        tokenService.verifyToken(loginUser);
+        getTokenService().verifyToken(loginUser);
     }
 
     /**
@@ -311,63 +330,111 @@ public class AuthLogic
 
     /**
      * 获取当前账号的角色列表
-     * 
-     * @return 角色列表
+     *
+     * @return 角色列表，未登录时返回空集合
      */
     public Set<String> getRoleList()
     {
         try
         {
             LoginUser loginUser = getLoginUser();
-            return loginUser.getRoles();
+            Set<String> roles = loginUser.getRoles();
+            return roles != null ? roles : new HashSet<>();
         }
-        catch (Exception e)
+        catch (NotLoginException e)
         {
+            // 未登录时返回空集合，这是预期行为
             return new HashSet<>();
         }
     }
 
     /**
      * 获取当前账号的权限列表
-     * 
-     * @return 权限列表
+     *
+     * @return 权限列表，未登录时返回空集合
      */
     public Set<String> getPermiList()
     {
         try
         {
             LoginUser loginUser = getLoginUser();
-            return loginUser.getPermissions();
+            Set<String> permissions = loginUser.getPermissions();
+            return permissions != null ? permissions : new HashSet<>();
         }
-        catch (Exception e)
+        catch (NotLoginException e)
         {
+            // 未登录时返回空集合，这是预期行为
             return new HashSet<>();
         }
     }
 
     /**
      * 判断是否包含权限
-     * 
+     * 优化：先快速检查全权限，避免不必要的流处理
+     *
      * @param authorities 权限列表
      * @param permission 权限字符串
      * @return 用户是否具备某权限
      */
     public boolean hasPermi(Collection<String> authorities, String permission)
     {
-        return authorities.stream().filter(StringUtils::hasText)
-                .anyMatch(x -> ALL_PERMISSION.equals(x) || PatternMatchUtils.simpleMatch(x, permission));
+        if (authorities == null || authorities.isEmpty())
+        {
+            return false;
+        }
+        // 快速路径：直接检查是否包含全权限标识
+        if (authorities.contains(ALL_PERMISSION))
+        {
+            return true;
+        }
+        // 快速路径：精确匹配
+        if (authorities.contains(permission))
+        {
+            return true;
+        }
+        // 慢速路径：使用模式匹配
+        for (String authority : authorities)
+        {
+            if (StringUtils.hasText(authority) && PatternMatchUtils.simpleMatch(authority, permission))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
      * 判断是否包含角色
-     * 
+     * 优化：先快速检查管理员角色，避免不必要的流处理
+     *
      * @param roles 角色列表
      * @param role 角色
      * @return 用户是否具备某角色权限
      */
     public boolean hasRole(Collection<String> roles, String role)
     {
-        return roles.stream().filter(StringUtils::hasText)
-                .anyMatch(x -> SUPER_ADMIN.equals(x) || PatternMatchUtils.simpleMatch(x, role));
+        if (roles == null || roles.isEmpty())
+        {
+            return false;
+        }
+        // 快速路径：直接检查是否是管理员
+        if (roles.contains(SUPER_ADMIN))
+        {
+            return true;
+        }
+        // 快速路径：精确匹配
+        if (roles.contains(role))
+        {
+            return true;
+        }
+        // 慢速路径：使用模式匹配
+        for (String r : roles)
+        {
+            if (StringUtils.hasText(r) && PatternMatchUtils.simpleMatch(r, role))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
