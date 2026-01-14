@@ -1,6 +1,6 @@
 package com.value.data.domain.dto;
 
-import com.value.data.common.constant.ValidatedType;
+import com.risksmart.common.core.constant.ValidatedType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;

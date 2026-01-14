@@ -52,4 +52,9 @@ public class SecurityConstants
 
     public static final String ERR_SECURITY_MSG = "操作失败：登录失效";
 
+    /**
+     * 用户信息为空
+     */
+    public static final String USER_INFORMATION_SPACE = "用户信息为空";
+
 }

@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.value.data.common.constant.ValidatedType;
+import com.risksmart.common.core.constant.ValidatedType;
 import com.value.data.common.model.LoginUser;
 import com.value.data.common.utils.AjaxResult;
 import com.value.data.common.utils.SecurityUtils;

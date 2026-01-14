@@ -1,6 +1,5 @@
 package com.value.data.common.service;
-
-import com.value.data.common.utils.SnowFlake;
+import com.risksmart.common.core.utils.uuid.SnowFlake;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
