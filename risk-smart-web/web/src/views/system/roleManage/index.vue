@@ -292,14 +292,25 @@ export default {
         // ...deptId,
         ...data,
       }).then((res) => {
-        this.tableData = res.rows.reduce((arr, item) => {
-          arr.push({
-            ...item,
-            status: !Number(item.status),
-          })
-          return arr
-        }, [])
-        this.totalNum = res.total
+        // 兼容两种返回格式：res.rows 或 res.data
+        const rows = res.rows || res.data || []
+        if (Array.isArray(rows)) {
+          this.tableData = rows.reduce((arr, item) => {
+            arr.push({
+              ...item,
+              status: !Number(item.status),
+            })
+            return arr
+          }, [])
+          this.totalNum = res.total || rows.length || 0
+        } else {
+          this.tableData = []
+          this.totalNum = 0
+        }
+      }).catch((err) => {
+        console.error('获取角色列表失败:', err)
+        this.tableData = []
+        this.totalNum = 0
       })
     },
     switchChange(bl, data) {

@@ -369,7 +369,7 @@ export default {
         dictType: 'nyr_service_Area',
         status: 0,
       }).then((response) => {
-        let data = response.rows
+        let data = response.rows || response.data || []
         data.forEach((item) => {
           item.dictValue = parseInt(item.dictValue)
         })

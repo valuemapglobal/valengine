@@ -6,15 +6,12 @@ import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson2.JSONObject;
 import com.risksmart.common.core.exception.ServiceException;
 import com.risksmart.common.core.utils.StringUtils;
+import com.value.data.openapi.config.HttpDataSourceProperties;
 import com.value.data.openapi.spi.DataSourceAdapter;
 import com.value.data.openapi.spi.DataSourceContext;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 /**
  * HTTP数据源适配器
@@ -114,35 +111,5 @@ public class HttpDataSourceAdapter implements DataSourceAdapter {
 
             return JSONObject.parseObject(body);
         }
-    }
-
-    @Data
-    @Component
-    @ConfigurationProperties(prefix = "openapi.http")
-    public static class HttpDataSourceProperties {
-        /**
-         * 是否启用
-         */
-        private Boolean enabled = false;
-
-        /**
-         * 基础URL
-         */
-        private String baseUrl;
-
-        /**
-         * 超时时间（毫秒）
-         */
-        private Integer timeout = 30000;
-
-        /**
-         * 请求头
-         */
-        private Map<String, String> headers;
-
-        /**
-         * 接口映射：apiName -> path
-         */
-        private Map<String, String> apiMappings;
     }
 }

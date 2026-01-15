@@ -51,4 +51,13 @@ public interface RemoteUserService
      */
     @PutMapping("/user/recordlogin")
     public R<Boolean> recordUserLogin(@RequestBody SysUser sysUser, @RequestHeader(SecurityConstants.FROM_SOURCE) String source);
+
+    /**
+     * 通过用户ID查询用户信息
+     *
+     * @param userId 用户ID
+     * @return 结果
+     */
+    @GetMapping("/user/queryById/{userId}")
+    public R<Object> queryUserById(@PathVariable("userId") Integer userId);
 }

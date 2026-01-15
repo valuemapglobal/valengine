@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/openApi/v2")
-@Slf4j(topic = "[OpenApiController]")
+@Slf4j
 @AllArgsConstructor
 public class OpenApiController {
 
@@ -61,9 +61,9 @@ public class OpenApiController {
      * @param request    HTTP请求
      * @return 接口响应
      */
-    @PostMapping(value = {"/invoke/{apiName}/{returnName}", "/invoke/{apiName}"})
+    @PostMapping("/invoke/{apiName}")
     public AjaxResult invoke(@PathVariable String apiName,
-                             @PathVariable(required = false) String returnName,
+                             @RequestParam(required = false) String returnName,
                              @RequestBody(required = false) JSONObject param,
                              HttpServletRequest request) {
         return doInvoke(null, apiName, returnName, param, request);
@@ -79,10 +79,10 @@ public class OpenApiController {
      * @param request     HTTP请求
      * @return 接口响应
      */
-    @PostMapping(value = {"/invoke/{adapterName}/{apiName}/{returnName}", "/invoke/{adapterName}/{apiName}"})
+    @PostMapping("/invoke/by/{adapterName}/{apiName}")
     public AjaxResult invokeWithAdapter(@PathVariable String adapterName,
                                         @PathVariable String apiName,
-                                        @PathVariable(required = false) String returnName,
+                                        @RequestParam(required = false) String returnName,
                                         @RequestBody(required = false) JSONObject param,
                                         HttpServletRequest request) {
         return doInvoke(adapterName, apiName, returnName, param, request);

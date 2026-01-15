@@ -73,4 +73,19 @@ public class SysUserInnerController {
         // 暂不实现
         return R.ok(true);
     }
+
+    /**
+     * 根据用户ID查询用户信息
+     */
+    @GetMapping("/queryById/{userId}")
+    public R<Object> queryUserById(@PathVariable("userId") Integer userId) {
+        com.risksmart.system.domain.SysUser sysUser = userService.selectUserById(userId.longValue());
+        if (sysUser == null) {
+            return R.fail("用户不存在");
+        }
+        // 转换为 API 层的 SysUser
+        com.risksmart.system.api.domain.SysUser apiSysUser = new com.risksmart.system.api.domain.SysUser();
+        BeanUtils.copyProperties(sysUser, apiSysUser);
+        return R.ok(apiSysUser);
+    }
 }

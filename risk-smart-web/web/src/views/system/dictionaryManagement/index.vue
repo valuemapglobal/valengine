@@ -360,8 +360,9 @@ export default {
       // }
       selectAll({ ...this.params, ...this.queryParams })
         .then((res) => {
-          this.tableData = res.rows
-          this.total = res.total
+          // 兼容两种返回格式：res.rows 或 res.data
+          this.tableData = res.rows || res.data || []
+          this.total = res.total || (this.tableData ? this.tableData.length : 0)
         })
         .catch((eerr) => {})
     },

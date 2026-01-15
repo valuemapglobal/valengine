@@ -16,7 +16,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @since 1.0.0
  */
 @SpringBootApplication(
-        scanBasePackages = {"com.value.decision", "com.risksmart.system"},
+        scanBasePackages = {"com.value.decision", "com.risksmart.system", "com.risksmart.common.core"},
         exclude = {DataSourceAutoConfiguration.class}
 )
 @MapperScan({"com.value.decision.**.mapper", "com.risksmart.system.mapper"})

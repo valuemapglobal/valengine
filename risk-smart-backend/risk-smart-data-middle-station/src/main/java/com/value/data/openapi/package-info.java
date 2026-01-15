@@ -34,7 +34,7 @@
  *
  * // 2. 调用接口
  * // POST /openApi/v2/invoke/{apiName}
- * // 或指定适配器：POST /openApi/v2/invoke/{adapterName}/{apiName}
+ * // 或指定适配器：POST /openApi/v2/invoke/by/{adapterName}/{apiName}
  * </pre>
  *
  * <h2>内置适配器</h2>

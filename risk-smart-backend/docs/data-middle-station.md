@@ -190,7 +190,7 @@ Content-Type: application/json
 }
 
 # 指定适配器
-POST /openApi/v2/invoke/{adapterName}/{apiName}
+POST /openApi/v2/invoke/by/{adapterName}/{apiName}
 
 # 查看可用适配器列表
 GET /openApi/v2/adapters
@@ -310,7 +310,7 @@ business:
 |-----|------|------|
 | `/openApi/v2/adapters` | GET | 获取可用适配器列表 |
 | `/openApi/v2/invoke/{apiName}` | POST | 调用数据源接口（自动选择适配器） |
-| `/openApi/v2/invoke/{adapter}/{apiName}` | POST | 调用指定适配器的接口 |
+| `/openApi/v2/invoke/by/{adapter}/{apiName}` | POST | 调用指定适配器的接口 |
 
 ### 指标管理
 

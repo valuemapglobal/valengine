@@ -1,6 +1,6 @@
 package com.value.data.domain;
 
-import com.value.data.common.constant.HttpStatus;
+import com.risksmart.common.core.constant.HttpStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

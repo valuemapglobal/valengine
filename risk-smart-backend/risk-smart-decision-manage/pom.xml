@@ -64,12 +64,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+        <!-- DevTools 已禁用，避免Metaspace溢出
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
+        -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
@@ -109,11 +111,49 @@
             <groupId>com.vm.cloud.ruoyi</groupId>
             <artifactId>ruoyi-common-security</artifactId>
             <version>3.2.0</version>
+            <exclusions>
+                <!-- 排除旧版mybatis-plus，使用本项目统一的3.5.3.1版本 -->
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-boot-starter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-spring-boot-autoconfigure</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-extension</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.vm.cloud.ruoyi</groupId>
             <artifactId>ruoyi-api-system</artifactId>
             <version>3.2.9</version>
+            <exclusions>
+                <!-- 排除旧版mybatis-plus，使用本项目统一的3.5.3.1版本 -->
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-boot-starter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-spring-boot-autoconfigure</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-extension</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.risksmart</groupId>
@@ -127,7 +167,7 @@
         </dependency>
 
         <!-- ==================== Database ==================== -->
-        <!-- MyBatis Plus -->
+        <!-- MyBatis Plus - 显式声明所有组件强制版本 -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -135,8 +175,34 @@
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-spring-boot-autoconfigure</artifactId>
+            <version>${mybatis-plus.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-core</artifactId>
+            <version>${mybatis-plus.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-extension</artifactId>
+            <version>${mybatis-plus.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-annotation</artifactId>
             <version>${mybatis-plus.version}</version>
+        </dependency>
+        <!-- MyBatis Core - 强制使用兼容版本 -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.5.13</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>3.0.3</version>
         </dependency>
         <!-- MySQL -->
         <dependency>

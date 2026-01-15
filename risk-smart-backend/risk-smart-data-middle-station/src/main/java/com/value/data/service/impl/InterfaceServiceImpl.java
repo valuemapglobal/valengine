@@ -8,17 +8,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.risksmart.common.core.utils.StringUtils;
 import com.risksmart.common.core.exception.ServiceException;
-import com.value.data.common.constant.HttpStatus;
 import com.value.data.common.model.LoginUser;
-import com.value.data.common.utils.AjaxResult;
 import com.value.data.constant.IdConstant;
 import com.value.data.constant.ServiceConstant;
-import com.value.data.domain.VMHttpResult;
 import com.value.data.domain.dto.*;
 import com.value.data.domain.entity.InterfaceFieldIdManage;
 import com.value.data.domain.entity.InterfaceManage;
 import com.value.data.domain.entity.InterfaceSourceManage;
-import com.value.data.domain.entity.RdeRiskVariableRecord;
 import com.value.data.domain.vo.InterfaceChargingListVo;
 import com.value.data.domain.vo.InterfaceChargingVo;
 import com.value.data.mapper.InterfaceManageMapper;
@@ -30,8 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
-
-import jakarta.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -407,23 +401,6 @@ public class InterfaceServiceImpl implements InterfaceService {
     @Override
     @Transactional
     public int removeInterfaceFieldIdInfo(RemoveInterfaceFieldIdInfoDTO removeInterfaceFieldIdInfoDTO,LoginUser user) {
-        //删除之前校验一下决策平台是否引用了该字段
-        /*
-        RdeRiskVariableRecord field = rdeRiskVariableRecordMapper.selectOne(
-                Wrappers.lambdaQuery(RdeRiskVariableRecord.class)
-                        .eq(RdeRiskVariableRecord::getInterfaceFieldIdManage, removeInterfaceFieldIdInfoDTO.getFieldIdNo())
-        );
-        Optional.ofNullable(field).ifPresent(f -> {
-            VMHttpResult<Boolean> response = decisionManageFeignService.checkField(f.getRecordNo());
-            if (!Boolean.TRUE.equals(response.getData())){
-                throw new ServiceException(
-                        HttpStatus.SUCCESS,
-                        response.getCode().equals(HttpStatus.SUCCESS)?"无法删除存在引用的参数":response.getMsg(),
-                        Boolean.FALSE
-                );
-            }
-        });
-         */
         //删除参数
         LambdaQueryWrapper<InterfaceFieldIdManage> lambdaQuery = Wrappers.lambdaQuery();
         lambdaQuery.eq(InterfaceFieldIdManage::getInterfaceFieldIdManage, removeInterfaceFieldIdInfoDTO.getFieldIdNo())

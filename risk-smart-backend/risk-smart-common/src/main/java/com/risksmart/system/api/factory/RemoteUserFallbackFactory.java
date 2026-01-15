@@ -42,6 +42,12 @@ public class RemoteUserFallbackFactory implements FallbackFactory<RemoteUserServ
             {
                 return R.fail("记录用户登录信息失败:" + throwable.getMessage());
             }
+
+            @Override
+            public R<Object> queryUserById(Integer userId)
+            {
+                return R.fail("根据ID查询用户失败:" + throwable.getMessage());
+            }
         };
     }
 }
