@@ -1,33 +1,33 @@
 <template>
   <div class="rightCompoent" v-show="!showEmpty">
     <div class="header">
-      <div class="text">接口日志</div>
+      <div class="text">{{ $t('interfacePlatform.interfaceLog') }}</div>
       <div class="search-form">
         <el-input
           v-model="formData.interfaceNameZh"
           :maxlength="30"
-          placeholder="请输入接口名称"
+          :placeholder="$t('interfacePlatform.inputInterfaceName')"
           clearable
           @clear="getList"
         ></el-input>
         <el-input
           v-model="formData.createBy"
           :maxlength="11"
-          placeholder="请输入用户昵称"
+          :placeholder="$t('interfacePlatform.inputUserNickname')"
           clearable
           @clear="getList"
         ></el-input>
         <el-input
           v-model="formData.userDept"
           :maxlength="30"
-          placeholder="请输入用户部门"
+          :placeholder="$t('interfacePlatform.inputUserDept')"
           clearable
           @clear="getList"
         ></el-input>
         <el-select
           v-model="formData.state"
           clearable
-          placeholder="请选择调用状态"
+          :placeholder="$t('interfacePlatform.selectCallStatus')"
           :popper-append-to-body="false"
           @clear="
             () => {
@@ -36,8 +36,10 @@
             }
           "
         >
-          <el-option label="成功" :value="0"> </el-option>
-          <el-option label="失败" :value="1"> </el-option>
+          <el-option :label="$t('interfacePlatform.success')" :value="0">
+          </el-option>
+          <el-option :label="$t('interfacePlatform.failure')" :value="1">
+          </el-option>
         </el-select>
         <el-date-picker
           :default-value="defaultTime"
@@ -46,8 +48,8 @@
           type="daterange"
           range-separator="——"
           @change="timeChange"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="$t('interfacePlatform.startDate')"
+          :end-placeholder="$t('interfacePlatform.endDate')"
           :clearable="false"
         >
         </el-date-picker>
@@ -61,7 +63,7 @@
             font-size: 14px;
           "
           @click="resetFields"
-          >重置</el-button
+          >{{ $t('common.reset') }}</el-button
         >
       </div>
     </div>
@@ -70,6 +72,7 @@
         <el-table
           :data="tableData"
           :border="false"
+          ref="duditingTable"
           style="width: 100%"
           v-loading="loading"
           height="calc(var(--bgvh) - 290px)"
@@ -84,30 +87,64 @@
             "
           >
           </el-table-column>
-          <el-table-column prop="interfaceNameZh" label="接口名称" width="">
+          <el-table-column
+            prop="interfaceNameZh"
+            :label="$t('interfacePlatform.interfaceName')"
+            width=""
+          >
           </el-table-column>
-          <el-table-column prop="createBy" label="用户昵称" width="120">
+          <el-table-column
+            prop="createBy"
+            :label="$t('interfacePlatform.userNickname')"
+            width="120"
+          >
           </el-table-column>
-          <el-table-column prop="userDept" label="用户部门" width="200">
+          <el-table-column
+            prop="userDept"
+            :label="$t('interfacePlatform.userDept')"
+            width="200"
+          >
           </el-table-column>
-          <el-table-column prop="accessTime" label="调用时间" width="190">
+          <el-table-column
+            prop="accessTime"
+            :label="$t('interfacePlatform.callTime')"
+            width="190"
+          >
           </el-table-column>
-          <el-table-column prop="resultTime" label="响应时间" width="190">
+          <el-table-column
+            prop="resultTime"
+            :label="$t('interfacePlatform.responseTime')"
+            width="190"
+          >
           </el-table-column>
-          <el-table-column prop="ip" label="ip地址" width="140">
+          <el-table-column
+            prop="ip"
+            :label="$t('interfacePlatform.ipAddress')"
+            width="140"
+          >
           </el-table-column>
-          <el-table-column prop="code" label="调用状态" width="90">
+          <el-table-column
+            prop="code"
+            :label="$t('interfacePlatform.callStatus')"
+            width="90"
+          >
             <template slot-scope="scope">
               <el-tag :type="scope.row.code == 200 ? 'success' : 'danger'">{{
-                scope.row.code == 200 ? '成功' : '失败'
+                scope.row.code == 200
+                  ? $t('interfacePlatform.success')
+                  : $t('interfacePlatform.failure')
               }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column fixed="right" label="操作" width="140">
+          <el-table-column
+            fixed="right"
+            :label="$t('common.operation')"
+            width="140"
+          >
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="detail(scope.row)"
-                >详情</el-button
-              >
+              <el-button type="text" size="small" @click="detail(scope.row)">{{
+                $t('interfacePlatform.detail')
+              }}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -185,6 +222,14 @@ export default {
     }
   },
   watch: {
+    '$i18n.locale'() {
+      // 语言切换时，强制表格重新计算布局，修复fixed列位置
+      this.$nextTick(() => {
+        if (this.$refs.duditingTable) {
+          this.$refs.duditingTable.doLayout()
+        }
+      })
+    },
     sourceNo: {
       handler(n, o) {
         if (n) {

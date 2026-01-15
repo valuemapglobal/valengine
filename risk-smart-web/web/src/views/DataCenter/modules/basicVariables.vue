@@ -2,7 +2,7 @@
   <div class="basicVariable">
     <div class="box-card">
       <div slot="header" class="clearfix">
-        <span>主题</span>
+        <span>{{ $t('dataCenter.theme') }}</span>
       </div>
       <el-table
         v-loading="theme.loading"
@@ -13,16 +13,21 @@
         :row-class-name="tableRowClassNameTheme"
         :border="true"
       >
-        <el-table-column prop="name" label="主题名称" />
-        <el-table-column prop="keycode" label="包名称" />
-        <el-table-column prop="packageType" label="主题类型"> </el-table-column>
-        <el-table-column prop="handle" label="操作" width="120">
+        <el-table-column prop="name" :label="$t('dataCenter.themeName')" />
+        <el-table-column prop="keycode" :label="$t('dataCenter.packageName')" />
+        <el-table-column prop="packageType" :label="$t('dataCenter.themeType')">
+        </el-table-column>
+        <el-table-column
+          prop="handle"
+          :label="$t('common.operation')"
+          width="120"
+        >
           <template slot-scope="scope">
             <el-button
               style="float: left; color: #36a3f7"
               type="text"
               @click="handleUpdateTheme(scope.row)"
-              >详情
+              >{{ $t('dataCenter.detail') }}
             </el-button>
           </template>
         </el-table-column>
@@ -43,39 +48,55 @@
 
     <div class="box-card">
       <div slot="header" class="clearfix">
-        <span>对象</span>
+        <span>{{ $t('dataCenter.object') }}</span>
       </div>
       <el-table
+        ref="groupTable"
         v-loading="group.loading"
         height="calc(var(--bgvh) - 210px)"
         :data="group.list"
         :border="true"
       >
         <el-table-column prop="keycode" label="code" width="" />
-        <el-table-column prop="name" label="名称" width="" />
-        <el-table-column prop="interfaceVersion" label="版本号" width="90px" />
+        <el-table-column
+          prop="name"
+          :label="$t('dataCenter.objectName')"
+          width=""
+        />
+        <el-table-column
+          prop="interfaceVersion"
+          :label="$t('dataCenter.version')"
+          width="90px"
+        />
         <el-table-column
           prop="type"
-          label="对象类型"
-          width="90px"
+          :label="$t('dataCenter.objectType')"
+          :width="isEnglish() ? 120 : 90"
           align="center"
         >
           <template slot-scope="scope">
-            <div v-if="scope.row.type == 0">数值</div>
-            <div v-if="scope.row.type == 1">字符串</div>
-            <div v-if="scope.row.type == 2">日期</div>
-            <div v-if="scope.row.type == 3">对象</div>
-            <div v-if="scope.row.type == 4">数组</div>
-            <div v-if="scope.row.type == 5">文件</div>
+            <div v-if="scope.row.type == 0">{{ $t('dataCenter.number') }}</div>
+            <div v-if="scope.row.type == 1">{{ $t('dataCenter.string') }}</div>
+            <div v-if="scope.row.type == 2">{{ $t('dataCenter.date') }}</div>
+            <div v-if="scope.row.type == 3">
+              {{ $t('dataCenter.objectTypeValue') }}
+            </div>
+            <div v-if="scope.row.type == 4">{{ $t('dataCenter.array') }}</div>
+            <div v-if="scope.row.type == 5">{{ $t('dataCenter.file') }}</div>
           </template>
         </el-table-column>
-        <el-table-column prop="handle" label="操作" width="140" fixed="right">
+        <el-table-column
+          prop="handle"
+          :label="$t('common.operation')"
+          :width="isEnglish() ? 200 : 140"
+          fixed="right"
+        >
           <template slot-scope="scope">
             <el-button type="text" @click="handleSetVariable(scope.row)"
-              >查看属性
+              >{{ $t('dataCenter.viewProperty') }}
             </el-button>
             <el-button type="text" @click="handleUpdateGroup(scope.row)"
-              >详情
+              >{{ $t('dataCenter.detail') }}
             </el-button>
           </template>
         </el-table-column>
@@ -99,22 +120,30 @@
       :visible.sync="theme.dialog.open"
       :size="theme.dialog.width"
     >
-      <el-form ref="theme.form" :model="theme.form" label-width="100px">
-        <el-form-item label="主题名称" prop="name">
-          <el-input v-model="theme.form.name" disabled placeholder="请输入" />
+      <el-form
+        ref="theme.form"
+        :model="theme.form"
+        :label-width="isEnglish() ? '140px' : '100px'"
+      >
+        <el-form-item :label="$t('dataCenter.themeName')" prop="name">
+          <el-input
+            v-model="theme.form.name"
+            disabled
+            :placeholder="$t('common.pleaseInput')"
+          />
         </el-form-item>
-        <el-form-item label="包名称" prop="keycode">
+        <el-form-item :label="$t('dataCenter.packageName')" prop="keycode">
           <el-input
             v-model="theme.form.keycode"
             disabled
-            placeholder="请输入"
+            :placeholder="$t('common.pleaseInput')"
           />
         </el-form-item>
-        <el-form-item label="主题类型">
+        <el-form-item :label="$t('dataCenter.themeType')">
           <el-select
             v-model="theme.form.packageType"
             disabled
-            placeholder="请选择状态"
+            :placeholder="$t('dataCenter.selectStatus')"
           >
             <el-option
               v-for="dict in packageTpyeOptions"
@@ -134,26 +163,30 @@
       :visible.sync="group.dialog.open"
       :size="group.dialog.width"
     >
-      <el-form ref="group.form" :model="group.form" label-width="80px">
-        <el-form-item label="对象名称" prop="name">
+      <el-form
+        ref="group.form"
+        :model="group.form"
+        :label-width="isEnglish() ? '140px' : '80px'"
+      >
+        <el-form-item :label="$t('dataCenter.objectName')" prop="name">
           <el-input
             disabled
             v-model="group.form.name"
-            placeholder="请输入名称"
+            :placeholder="$t('dataCenter.inputName')"
           />
         </el-form-item>
-        <el-form-item label="对象Code" prop="keycode">
+        <el-form-item :label="$t('dataCenter.objectCode')" prop="keycode">
           <el-input
             disabled
             v-model="group.form.keycode"
-            placeholder="请输入对象Code"
+            :placeholder="$t('dataCenter.inputObjectCode')"
           />
         </el-form-item>
-        <el-form-item label="对象类型" prop="type">
+        <el-form-item :label="$t('dataCenter.objectType')" prop="type">
           <el-select
             v-model="group.form.type"
             disabled
-            placeholder="请选择状态"
+            :placeholder="$t('dataCenter.selectStatus')"
           >
             <el-option
               v-for="dict in dataTypeList"
@@ -206,10 +239,7 @@ export default {
         isAsc: 'desc',
         name: undefined,
       },
-      packageTpyeOptions: [
-        { dictValue: '0', dictLabel: '分析对象' },
-        { dictValue: '1', dictLabel: '衍生对象' },
-      ],
+      packageTpyeOptions: [],
       // 表单参数
       form: {},
 
@@ -227,15 +257,10 @@ export default {
         dialog: {
           loading: false,
           open: false,
-          title: '编辑主题',
+          title: '',
           width: '30%',
         },
-        rules: {
-          name: [{ required: true, message: '名称不能为空', trigger: 'blur' }],
-          keycode: [
-            { required: true, message: '包名称不能为空', trigger: 'blur' },
-          ],
-        },
+        rules: {},
       },
 
       group: {
@@ -255,23 +280,39 @@ export default {
         dialog: {
           loading: false,
           open: false,
-          title: '编辑分组',
+          title: '',
           width: '30%',
         },
-        rules: {
-          name: [{ required: true, message: '名称不能为空', trigger: 'blur' }],
-        },
+        rules: {},
       },
       dataTypeList: [],
       record: {
         dialog: {
           loading: false,
           open: false,
-          title: '编辑属性',
+          title: '',
           width: '55%',
         },
       },
     }
+  },
+  computed: {
+    packageTpyeOptions() {
+      return [
+        { dictValue: '0', dictLabel: this.$t('dataCenter.analysisObject') },
+        { dictValue: '1', dictLabel: this.$t('dataCenter.derivedObject') },
+      ]
+    },
+  },
+  watch: {
+    '$i18n.locale'() {
+      // 语言切换时，强制表格重新计算布局，修复fixed列位置
+      this.$nextTick(() => {
+        if (this.$refs.groupTable) {
+          this.$refs.groupTable.doLayout()
+        }
+      })
+    },
   },
   created() {
     this.getListTheme()
@@ -284,6 +325,9 @@ export default {
       .catch((err) => {})
   },
   methods: {
+    isEnglish() {
+      return this.$i18n.locale === 'en'
+    },
     handleCurrentChange(val) {
       this.queryParams.pageNum = val
       this.getListTheme()
@@ -327,14 +371,14 @@ export default {
     /** 修改按钮操作 */
     handleUpdateTheme(row) {
       this.resetTheme()
-      this.theme.dialog.title = '主题详情'
+      this.theme.dialog.title = this.$t('dataCenter.themeDetail')
       this.theme.form = row
       this.theme.dialog.open = true
     },
     handleSetVariable(row) {
       this.group.form = row
       this.record.dialog.open = true
-      this.record.dialog.title = '查看属性'
+      this.record.dialog.title = this.$t('dataCenter.viewProperty')
     },
 
     tableDealTheme(row, column, cell, event) {
@@ -380,7 +424,7 @@ export default {
     handleUpdateGroup(row) {
       this.resetGroup()
       this.group.dialog.open = true
-      this.group.dialog.title = '对象详情'
+      this.group.dialog.title = this.$t('dataCenter.objectDetail')
       this.group.form = { ...row }
     },
 

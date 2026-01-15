@@ -1,9 +1,9 @@
 <template>
   <div class="feature-variable">
     <ModuleTable
-      title="特征变量模块"
-      placeholder="请输入模块名称"
-      buttonText="新增模块"
+      :title="$t('featureVariable.title')"
+      :placeholder="$t('featureVariable.inputModuleName')"
+      :buttonText="$t('featureVariable.addModule')"
       :params="moduleParams"
       :loading="moduleLoading"
       :tableColumn="moduleTableColumn"
@@ -11,16 +11,22 @@
       :total="moduleTotal"
       @search="onSearch($event, 'module')"
       @cellClick="cellClickHandle"
-      @add="openDrawer('新增模块', 'addEditingModuleRef')"
-      @edit="openDrawer('编辑模块', 'addEditingModuleRef', $event)"
+      @add="openDrawer($t('featureVariable.addModule'), 'addEditingModuleRef')"
+      @edit="
+        openDrawer(
+          $t('featureVariable.editModule'),
+          'addEditingModuleRef',
+          $event
+        )
+      "
       @delete="onDelete($event, 'module')"
       @currentChange="handleCurrentChange($event, 'module')"
     />
     <ModuleTable
-      title="特征变量属性"
-      placeholder="请输入特征变量属性"
+      :title="$t('featureVariable.attribute')"
+      :placeholder="$t('featureVariable.inputAttribute')"
       titleIconType="2"
-      buttonText="新增属性"
+      :buttonText="$t('featureVariable.addAttribute')"
       :params="attributeParams"
       :cellClickDisabled="true"
       :loading="attributeLoading"
@@ -28,8 +34,16 @@
       :tableData="attributeTableData"
       :total="attributeTotal"
       @search="onSearch($event, 'attribute')"
-      @add="openDrawer('新增属性', 'addEditingVariableRef')"
-      @edit="openDrawer('编辑属性', 'addEditingVariableRef', $event)"
+      @add="
+        openDrawer($t('featureVariable.addAttribute'), 'addEditingVariableRef')
+      "
+      @edit="
+        openDrawer(
+          $t('featureVariable.editAttribute'),
+          'addEditingVariableRef',
+          $event
+        )
+      "
       @delete="onDelete($event, 'attribute')"
       @currentChange="handleCurrentChange($event, 'attribute')"
     />
@@ -72,6 +86,75 @@ export default {
     AddEditingModule,
     AddEditingVariable,
   },
+  computed: {
+    moduleTableColumn() {
+      return [
+        {
+          prop: 'index',
+          label: this.$t('featureVariable.index'),
+          width: '68',
+          align: 'center',
+        },
+        {
+          prop: 'name',
+          label: this.$t('featureVariable.moduleName'),
+          align: 'center',
+        },
+        {
+          prop: 'code',
+          label: this.$t('featureVariable.moduleCode'),
+          align: 'center',
+        },
+        {
+          prop: 'type',
+          label: this.$t('featureVariable.moduleType'),
+          align: 'center',
+          type: 'tooltip',
+          valueOption: 'typeOptions',
+          tooltip: this.$t('featureVariable.tooltip'),
+        },
+        {
+          prop: 'createTime',
+          label: this.$t('common.createTime'),
+          width: '180',
+          align: 'center',
+          type: 'date',
+        },
+      ]
+    },
+    attributeTableColumn() {
+      return [
+        {
+          prop: 'index',
+          label: this.$t('featureVariable.index'),
+          width: '68',
+          align: 'center',
+        },
+        {
+          prop: 'name',
+          label: this.$t('featureVariable.attributeName'),
+          align: 'center',
+        },
+        {
+          prop: 'code',
+          label: this.$t('featureVariable.paramName'),
+          align: 'center',
+        },
+        {
+          prop: 'moduleName',
+          label: this.$t('featureVariable.moduleName'),
+          align: 'center',
+        },
+        {
+          prop: 'createTime',
+          label: this.$t('common.createTime'),
+          width: '180',
+          align: 'center',
+          type: 'date',
+        },
+      ]
+    },
+  },
   data() {
     return {
       drawerTitle: '',
@@ -84,27 +167,6 @@ export default {
         moduleName: undefined, //当前选中的模版名称
       },
       moduleLoading: false,
-      moduleTableColumn: [
-        { prop: 'index', label: '序号', width: '68', align: 'center' },
-        { prop: 'name', label: '模块名称', align: 'center' },
-        { prop: 'code', label: '模块唯一标识', align: 'center' },
-        {
-          prop: 'type',
-          label: '模块类型',
-          align: 'center',
-          type: 'tooltip',
-          valueOption: 'typeOptions', //对应子组件中的options
-          tooltip:
-            '仅引用集合内字段计算时返回\n集合,引用对象或组合集合内字\n段计算返回对象',
-        },
-        {
-          prop: 'createTime',
-          label: '创建时间',
-          width: '180',
-          align: 'center',
-          type: 'date',
-        },
-      ],
       moduleTableData: [],
       moduleTotal: 0,
       cascadeOptions: [],
@@ -121,19 +183,6 @@ export default {
         moduleId: undefined, //所属模块id
       },
       attributeLoading: false,
-      attributeTableColumn: [
-        { prop: 'index', label: '序号', width: '68', align: 'center' },
-        { prop: 'name', label: '特征变量名称', align: 'center' },
-        { prop: 'code', label: '参数名', align: 'center' },
-        { prop: 'moduleName', label: '模块名称', align: 'center' },
-        {
-          prop: 'createTime',
-          label: '创建时间',
-          width: '180',
-          align: 'center',
-          type: 'date',
-        },
-      ],
       attributeTableData: [],
       attributeTotal: 0,
     }

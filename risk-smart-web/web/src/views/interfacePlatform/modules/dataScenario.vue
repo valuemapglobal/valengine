@@ -31,10 +31,10 @@
             </g>
           </g>
         </svg>
-        <span>接口模块主题</span>
+        <span>{{ $t('interfacePlatform.interfaceModuleTheme') }}</span>
         <el-select
           v-model="supplierParams.interfaceDataType"
-          placeholder="请选择"
+          :placeholder="$t('interfacePlatform.pleaseSelect')"
         >
           <el-option
             v-for="item in options"
@@ -51,7 +51,7 @@
           :class="{ isActive: item === 1 }"
           v-for="item in 20"
         >
-          <div class="menu-item-name">司法研究院</div>
+          <div class="menu-item-name">{{ item.dataName || '司法研究院' }}</div>
           <div class="menu-item-action">
             <div
               data-v-184aeaba=""
@@ -218,14 +218,14 @@
         </div>
       </div>
       <div class="menu-footer">
-        <el-button type="primary" icon="el-icon-plus">新增</el-button>
+        <el-button type="primary" icon="el-icon-plus">{{ $t('interfacePlatform.add') }}</el-button>
       </div>
     </div>
     <div class="scenario-wrapper">
       <div class="scenario-wrapper-search">
         <el-input
           v-model="apiParams.interfaceName"
-          placeholder="请输入接口名称"
+          :placeholder="$t('interfacePlatform.inputInterfaceName')"
         >
           <span slot="prefix">
             <svg
@@ -250,7 +250,7 @@
             </svg>
           </span>
         </el-input>
-        <el-button type="primary" icon="el-icon-plus">新增接口</el-button>
+        <el-button type="primary" icon="el-icon-plus">{{ $t('interfacePlatform.addInterface') }}</el-button>
       </div>
       <div class="scenario-wrapper-content">
         <el-table
@@ -261,29 +261,29 @@
           :row-style="IntelligentExtensionRowStyle"
           style="width: 100%"
         >
-          <el-table-column prop="date" label="编号" width="64" align="center" />
-          <el-table-column prop="name" label="接口名称" />
-          <el-table-column prop="name" label="接口编号" />
-          <el-table-column prop="name" label="接口版本" />
+          <el-table-column prop="date" :label="$t('interfacePlatform.index')" width="64" align="center" />
+          <el-table-column prop="name" :label="$t('interfacePlatform.interfaceName')" />
+          <el-table-column prop="name" :label="$t('interfacePlatform.interfaceNo')" />
+          <el-table-column prop="name" :label="$t('interfacePlatform.interfaceVersion')" />
           <el-table-column
             prop="address"
-            label="接口类型"
+            :label="$t('interfacePlatform.interfaceType')"
             width="156"
             align="center"
           >
-            <el-tag>司法接口</el-tag>
+            <el-tag>{{ $t('interfacePlatform.judicialInterface') }}</el-tag>
           </el-table-column>
           <el-table-column
             prop="date"
-            label="创建时间"
+            :label="$t('common.createTime')"
             width="156"
             align="center"
           />
-          <el-table-column label="操作" align="center">
+          <el-table-column :label="$t('common.operation')" align="center">
             <template slot-scope="{ row }">
-              <el-button type="text">编辑接口</el-button>
-              <el-button type="text">编辑参数</el-button>
-              <el-button type="text" class="delete-button">删除</el-button>
+              <el-button type="text">{{ $t('interfacePlatform.editInterface') }}</el-button>
+              <el-button type="text">{{ $t('interfacePlatform.editParameter') }}</el-button>
+              <el-button type="text" class="delete-button">{{ $t('common.delete') }}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -307,11 +307,7 @@ export default {
   },
   data() {
     return {
-      options: [
-        { value: 0, label: '元数据' },
-        { value: 1, label: '特征变量' },
-        { value: 2, label: '分析指标' },
-      ],
+      options: [],
       supplierParams: {
         pageNum: 1,
         pageSize: 10,
@@ -328,26 +324,35 @@ export default {
       tableData: [],
     }
   },
+  computed: {
+    options() {
+      return [
+        { value: 0, label: this.$t('interfacePlatform.metadata') },
+        { value: 1, label: this.$t('interfacePlatform.featureVariable') },
+        { value: 2, label: this.$t('interfacePlatform.analysisTarget') },
+      ]
+    },
+  },
   methods: {
     editMenu(item) {
       console.log('编辑', item)
     },
     deleteMenu(item) {
-      this.$confirm('是否确定删除?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('interfacePlatform.deleteConfirmSimple'), this.$t('common.systemTip'), {
+        confirmButtonText: this.$t('common.sure'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       })
         .then(() => {
           this.$message({
             type: 'success',
-            message: '删除成功!',
+            message: this.$t('interfacePlatform.deleteSuccess'),
           })
         })
         .catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消删除',
+            message: this.$t('interfacePlatform.deleteCancelled'),
           })
         })
     },

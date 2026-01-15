@@ -1,14 +1,14 @@
 <template>
   <div class="textarea-container">
     <div class="textarea-container-inner">
-      <div class="textarea-container-inner--title">公式配置</div>
+      <div class="textarea-container-inner--title">{{ $t('dataCenter.formulaConfig') }}</div>
       <el-input
         id="testMultiple"
         type="textarea"
         :rows="2"
         resize="none"
         v-model="virtualValue"
-        placeholder="例1:(@字段1#常用运算符-加@字段2)#常用运算符-除2 例2:#统计运算符-最大值(@字段1,@字段2)"
+        :placeholder="$t('dataCenter.formulaPlaceholder')"
         @input="onInput"
       />
     </div>
@@ -47,7 +47,7 @@
             </g>
           </g>
         </svg>
-        公式配置展示
+        {{ $t('dataCenter.formulaConfigDisplay') }}
       </div>
       <div class="real-value">
         {{ realValue }}

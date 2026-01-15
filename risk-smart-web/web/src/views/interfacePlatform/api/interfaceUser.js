@@ -14,7 +14,7 @@ const url1 = process.env.VUE_APP_ENV === 'production' ? '/vm' : '/dev-api/vm'
 
 export function getUser(data) {
   return request({
-    url: `${url1}/system/user/list`,
+    url: `${url1}/system/gmUser/list`,
     method: 'post',
     data,
   })

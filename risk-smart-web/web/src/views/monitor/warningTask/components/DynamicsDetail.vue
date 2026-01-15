@@ -29,7 +29,7 @@ export default {
     return {
       drawer: {
         visible: false,
-        title: '风险类别',
+        title: '',
         width: '40%',
       },
       loading: false,
@@ -38,6 +38,15 @@ export default {
       collectionList: {},
       id: null,
     }
+  },
+  computed: {
+    charsList() {
+      return [
+        { label: this.$t('monitor.taskNo'), width: '240px' },
+        { label: this.$t('monitor.caseNo'), width: '240px' },
+        { label: this.$t('monitor.time'), width: '180px' },
+      ]
+    },
   },
   methods: {
     getDataList() {
@@ -67,16 +76,10 @@ export default {
         })
     },
     handleTableWidth(name) {
-      let charsList = [
-        { label: '任务号', width: '240px' },
-        { label: '案号', width: '240px' },
-        { label: '时间', width: '180px' },
-      ]
-
       if (typeof name !== 'string') return 'auto'
 
       // 遍历chars数组，检查name是否包含当前label
-      for (const char of charsList) {
+      for (const char of this.charsList) {
         if (name.includes(char.label)) {
           return char.width
         }
@@ -87,6 +90,7 @@ export default {
     },
     handleOpen(data) {
       this.id = data.alertId
+      this.drawer.title = this.$t('monitor.riskType')
       this.getDataList()
       this.drawer.visible = true
     },

@@ -16,16 +16,16 @@
       <div class="search">
         <el-input
           v-model="queryParams.userName"
-          placeholder="请输入用户名称"
+          :placeholder="$t('interfacePlatform.inputUserName')"
           clearable
         />
         <!-- <el-button
           type="primary"
           @click="getList"
         >搜 索</el-button> -->
-        <el-button type="primary" icon="el-icon-plus" @click="addUser"
-          >申 请</el-button
-        >
+        <el-button type="primary" icon="el-icon-plus" @click="addUser">{{
+          $t('interfacePlatform.apply')
+        }}</el-button>
       </div>
       <!-- <div class="operate">
 
@@ -42,7 +42,7 @@
       >
         <template #bt_handle="{ data }">
           <el-button type="text" @click="openRole(data.row)">
-            接口信息
+            {{ $t('interfacePlatform.interfaceInfo') }}
           </el-button>
         </template>
       </gutuTable>
@@ -79,15 +79,15 @@
               </p>
             </div>
             <el-form-item prop="appKey">
-              <el-button type="primary" @click="getKeyAndSecret"
-                >生成appkey和secret</el-button
-              >
+              <el-button type="primary" @click="getKeyAndSecret">{{
+                $t('interfacePlatform.generateAppKeySecret')
+              }}</el-button>
             </el-form-item>
           </div>
-          <el-form-item label="用户名称" prop="userId">
+          <el-form-item :label="$t('interfacePlatform.userName')" prop="userId">
             <el-select
               v-model="userForm.userId"
-              placeholder="请选择"
+              :placeholder="$t('interfacePlatform.pleaseSelect')"
               filterable
             >
               <el-option
@@ -101,23 +101,27 @@
           </el-form-item>
         </el-form>
         <div class="bottomBtns">
-          <el-button type="primary" @click="submitUser">确 定 </el-button>
-          <el-button @click="closeDrawer">取 消</el-button>
+          <el-button type="primary" @click="submitUser">{{
+            $t('common.sure')
+          }}</el-button>
+          <el-button @click="closeDrawer">{{ $t('common.cancel') }}</el-button>
         </div>
       </div>
       <div v-if="drawer.type == 'info'">
         <div class="generateKey">
           <div>
             <p>
-              用户名称：<span>{{ rowInfo.userName }}</span>
+              {{ $t('interfacePlatform.userNameLabel')
+              }}<span>{{ rowInfo.userName }}</span>
             </p>
             <p>
-              部门：<span>{{ rowInfo.dept && rowInfo.dept.deptName }}</span>
+              {{ $t('interfacePlatform.deptLabel')
+              }}<span>{{ rowInfo.dept && rowInfo.dept.deptName }}</span>
             </p>
           </div>
         </div>
-        <el-form label-width="80px">
-          <el-form-item label="菜单权限">
+        <el-form :label-width="isEnglish() ? '140px' : '80px'">
+          <el-form-item :label="$t('interfacePlatform.menuPermission')">
             <div class="tree">
               <el-tree
                 ref="roleTreeRef"
@@ -130,8 +134,10 @@
           </el-form-item>
         </el-form>
         <div class="bottomBtns">
-          <el-button type="primary" @click="submitRole"> 保 存 </el-button>
-          <el-button @click="closeDrawer">取 消</el-button>
+          <el-button type="primary" @click="submitRole">{{
+            $t('common.save')
+          }}</el-button>
+          <el-button @click="closeDrawer">{{ $t('common.cancel') }}</el-button>
         </div>
       </div>
     </el-drawer>
@@ -158,33 +164,6 @@ export default {
     return {
       dataList: [],
       loading: false,
-      columnConfig: [
-        { label: '用户名称', field: 'userName', width: '150', align: 'left' },
-        {
-          label: '部门',
-          field: 'dept',
-          subfield: 'deptName',
-          width: '',
-          type: 'object',
-          align: 'left',
-        },
-        { label: 'appkey', field: 'appKey', width: '260', align: 'left' },
-        { label: 'secret', field: 'secret', width: '', align: 'left' },
-        {
-          label: '添加时间',
-          field: 'createTime',
-          width: '200',
-          align: 'left',
-          type: 'timeStamp',
-        },
-      ],
-      tableHandle: {
-        fixed: 'right',
-        width: '',
-        label: '操作',
-        align: 'left',
-        slot: true,
-      },
       collectionList: {},
       total: 0,
       queryParams: {
@@ -200,18 +179,6 @@ export default {
         secret: null,
         userId: null,
       },
-      userRules: {
-        appKey: [
-          {
-            required: true,
-            message: '请先生成appKey和secret',
-            trigger: 'blur',
-          },
-        ],
-        userId: [
-          { required: true, message: '请选择角色码', trigger: 'change' },
-        ],
-      },
       params: {
         pageNum: 1,
         pageSize: 10,
@@ -220,6 +187,72 @@ export default {
       rowInfo: {},
       treeData: [],
     }
+  },
+  computed: {
+    columnConfig() {
+      return [
+        {
+          label: this.$t('interfacePlatform.userName'),
+          field: 'userName',
+          width: '150',
+          align: 'left',
+        },
+        {
+          label: this.$t('interfacePlatform.dept'),
+          field: 'dept',
+          subfield: 'deptName',
+          width: '',
+          type: 'object',
+          align: 'left',
+        },
+        {
+          label: this.$t('interfacePlatform.appkey'),
+          field: 'appKey',
+          width: '260',
+          align: 'left',
+        },
+        {
+          label: this.$t('interfacePlatform.secret'),
+          field: 'secret',
+          width: '',
+          align: 'left',
+        },
+        {
+          label: this.$t('interfacePlatform.addTime'),
+          field: 'createTime',
+          width: '200',
+          align: 'left',
+          type: 'timeStamp',
+        },
+      ]
+    },
+    tableHandle() {
+      return {
+        fixed: 'right',
+        width: '',
+        label: this.$t('common.operation'),
+        align: 'left',
+        slot: true,
+      }
+    },
+    userRules() {
+      return {
+        appKey: [
+          {
+            required: true,
+            message: this.$t('interfacePlatform.generateAppKeyFirst'),
+            trigger: 'blur',
+          },
+        ],
+        userId: [
+          {
+            required: true,
+            message: this.$t('interfacePlatform.selectRoleCode'),
+            trigger: 'change',
+          },
+        ],
+      }
+    },
   },
   watch: {
     queryParams: {
@@ -234,6 +267,9 @@ export default {
     this.init()
   },
   methods: {
+    isEnglish() {
+      return this.$i18n.locale === 'en'
+    },
     init() {
       getUser({ pageNum: 1, pageSize: 9999 })
         .then((res) => {
@@ -272,7 +308,7 @@ export default {
         .catch(() => {})
     },
     addUser() {
-      this.drawer.title = '添加用户'
+      this.drawer.title = this.$t('interfacePlatform.addUser')
       this.drawer.type = 'add'
       this.drawer.size = '35%'
       this.drawer.visable = true
@@ -280,7 +316,7 @@ export default {
     openRole(data) {
       this.rowInfo = JSON.parse(JSON.stringify(data))
       this.getUserPermissions(data.userId)
-      this.drawer.title = '接口信息'
+      this.drawer.title = this.$t('interfacePlatform.interfaceInfo')
       this.drawer.type = 'info'
       this.drawer.size = '35%'
       this.drawer.visable = true
@@ -318,7 +354,7 @@ export default {
       updatePermissions(params)
         .then((res) => {
           if (res.code == 200) {
-            this.$message.success('操作成功')
+            this.$message.success(this.$t('common.success'))
             this.closeDrawer()
           }
         })

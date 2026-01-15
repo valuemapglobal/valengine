@@ -39,7 +39,7 @@ export default {
       const seriesData = [];
       let calc = [this.info.successPercentage, this.info.failurePercentage]
       const values = [this.info.successPercentage, this.info.failurePercentage];
-      const names = ["接口调用成功", "接口调用失败"];
+      const names = [this.$t('interfacePlatform.interfaceCallSuccess'), this.$t('interfacePlatform.interfaceCallFailure')];
       names.forEach((item, index) => {
         bgSeriesData.push({
           name: item,
@@ -60,7 +60,7 @@ export default {
 
       let option = {
         title: {
-          text: "累计接口调用",
+          text: this.$t('interfacePlatform.totalInterfaceCall'),
           left: "50%",
           top: "50%",
           itemGap: 10,
@@ -69,7 +69,7 @@ export default {
             fontSize: "12",
             fontWeight: 400,
           },
-          subtext: this.info.total+'次',
+          subtext: this.info.total + this.$t('interfacePlatform.times'),
           subtextStyle: {
             color: "#000000",
             fontSize: "16",

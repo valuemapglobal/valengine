@@ -212,7 +212,7 @@
         style="width: 100%"
       >
         <template v-for="(item, index) in tableColumn">
-          <el-table-column :key="index" v-bind="item">
+          <el-table-column v-bind="item" :key="index">
             <template :slot="item.type === 'tooltip' ? 'header' : ''">
               <span>{{ item.label }}</span>
               <el-tooltip
@@ -258,20 +258,20 @@
           </el-table-column>
           <!--					<el-table-column prop="name" label="姓名" width="180"></el-table-column>-->
         </template>
-        <el-table-column label="操作">
+        <el-table-column :label="$t('common.operation')">
           <template slot-scope="{ row }">
             <el-button
               type="text"
               size="medium"
               @click.stop="$emit('edit', row)"
-              >编辑</el-button
+              >{{ $t('common.edit') }}</el-button
             >
             <el-button
               type="text"
               style="color: #fa5151"
               size="medium"
               @click.stop="onDelete(row)"
-              >删除</el-button
+              >{{ $t('common.delete') }}</el-button
             >
           </template>
         </el-table-column>
@@ -306,7 +306,7 @@ export default {
     },
     placeholder: {
       type: String,
-      default: '请输入',
+      default: '',
     },
     buttonText: {
       type: String,
@@ -347,13 +347,17 @@ export default {
         name: undefined,
         moduleId: undefined, //所属模块id
       },
-      options: {
-        typeOptions: [
-          { label: '对象', value: 0 },
-          { label: '集合', value: 1 },
-        ],
-      },
     }
+  },
+  computed: {
+    options() {
+      return {
+        typeOptions: [
+          { label: this.$t('dataCenter.objectTypeValue'), value: 0 },
+          { label: this.$t('dataCenter.collection'), value: 1 },
+        ],
+      }
+    },
   },
   watch: {
     params: {
@@ -399,11 +403,15 @@ export default {
       console.log('row', row)
     },
     onDelete(row) {
-      this.$confirm('是否确定删除?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm(
+        this.$t('common.deleteConfirm'),
+        this.$t('common.systemTip'),
+        {
+          confirmButtonText: this.$t('common.sure'),
+          cancelButtonText: this.$t('common.cancel'),
+          type: 'warning',
+        }
+      )
         .then(() => {
           this.$emit('delete', row)
         })

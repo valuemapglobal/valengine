@@ -4,10 +4,12 @@
       <div class="searchTop">
         <el-input
           v-model="queryParams.dictLabel"
-          placeholder="字典标签"
+          :placeholder="$t('dictionaryManagement.dictLabel')"
           clearable
         ></el-input>
-        <el-button type="primary" @click="reset" size="default">重置</el-button>
+        <el-button type="primary" @click="reset" size="default">{{
+          $t('common.reset')
+        }}</el-button>
       </div>
       <div class="btnss">
         <el-button
@@ -15,7 +17,7 @@
           @click="openAdd"
           size="default"
           icon="el-icon-plus"
-          >新增
+          >{{ $t('common.add') }}
         </el-button>
         <el-button
           type="danger"
@@ -24,10 +26,12 @@
           size="default"
           icon="el-icon-delete"
           @click="handleDelete"
-          >删除
+          >{{ $t('common.delete') }}
         </el-button>
 
-        <el-button type="" size="default" @click="goBack">返回</el-button>
+        <el-button type="" size="default" @click="goBack">{{
+          $t('common.back')
+        }}</el-button>
       </div>
     </div>
     <div class="content">
@@ -36,17 +40,14 @@
           :options="dictNameList"
           :data.sync="queryParams.dictType"
           flatten
-          :config="{ placeholder: '字典名称' }"
+          :config="{ placeholder: $t('dictionaryManagement.dictName') }"
           :adaptiveWidth="{ enable: true, minWidth: '90px' }"
         />
         <GutuSelect
-          :options="[
-            { label: '正常', value: '0' },
-            { label: '停用', value: '1' },
-          ]"
+          :options="statusOptions"
           :data.sync="queryParams.status"
           flatten
-          :config="{ placeholder: '字典状态' }"
+          :config="{ placeholder: $t('dictionaryManagement.dictStatus') }"
           :adaptiveWidth="{ enable: true, minWidth: '90px' }"
         />
       </div>
@@ -76,21 +77,23 @@
               </router-link>
             </div>
             <div class="column_status" v-else-if="col.prop === 'status'">
-              <span v-if="row.status === '0'" class="normal">正常</span>
-              <span v-else-if="row.status === '1'" class="deactivate"
-                >停用</span
-              >
+              <span v-if="row.status === '0'" class="normal">{{
+                $t('common.normal')
+              }}</span>
+              <span v-else-if="row.status === '1'" class="deactivate">{{
+                $t('common.disabled')
+              }}</span>
             </div>
             <div v-else-if="col.prop === 'operation'">
               <span class="el-dropdown-link" @click="openChaneg(row)">
-                修改
+                {{ $t('common.modify') }}
               </span>
               <span
                 style="color: red"
                 class="el-dropdown-link"
                 @click="handleDelete(row)"
               >
-                删除
+                {{ $t('common.delete') }}
               </span>
             </div>
             <div v-else>{{ row[col.prop] }}</div>
@@ -122,19 +125,22 @@
           :model="uploadForm"
           :rules="rules"
           ref="uploadForm"
-          label-width="100px"
+          :label-width="isEnglish() ? '140px' : '100px'"
         >
           <el-row>
             <el-col :span="12">
-              <el-form-item label="字典类型">
+              <el-form-item :label="$t('dictionaryManagement.dictType')">
                 <el-input v-model="uploadForm.dictType" :disabled="true" />
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="数据标签" prop="dictLabel">
+              <el-form-item
+                :label="$t('dictionaryManagement.dataLabel')"
+                prop="dictLabel"
+              >
                 <el-input
                   v-model="uploadForm.dictLabel"
-                  placeholder="请输入数据标签"
+                  :placeholder="$t('dictionaryManagement.inputDataLabel')"
                 />
               </el-form-item>
             </el-col>
@@ -142,25 +148,34 @@
 
           <el-row>
             <el-col :span="12">
-              <el-form-item label="数据键值" prop="dictValue">
+              <el-form-item
+                :label="$t('dictionaryManagement.dataValue')"
+                prop="dictValue"
+              >
                 <el-input
                   v-model="uploadForm.dictValue"
-                  placeholder="请输入数据键值"
+                  :placeholder="$t('dictionaryManagement.inputDataValue')"
                 />
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="样式属性" prop="cssClass">
+              <el-form-item
+                :label="$t('dictionaryManagement.cssClass')"
+                prop="cssClass"
+              >
                 <el-input
                   v-model="uploadForm.cssClass"
-                  placeholder="请输入样式属性"
+                  :placeholder="$t('dictionaryManagement.inputCssClass')"
                 />
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="显示排序" prop="dictSort">
+              <el-form-item
+                :label="$t('dictionaryManagement.displaySort')"
+                prop="dictSort"
+              >
                 <el-input-number
                   v-model="uploadForm.dictSort"
                   controls-position="right"
@@ -169,7 +184,10 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="回显样式" prop="listClass">
+              <el-form-item
+                :label="$t('dictionaryManagement.echoStyle')"
+                prop="listClass"
+              >
                 <el-select v-model="uploadForm.listClass">
                   <el-option
                     v-for="item in listClassOptions"
@@ -183,7 +201,7 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="状态" prop="status">
+              <el-form-item :label="$t('common.status')" prop="status">
                 <el-radio-group v-model="uploadForm.status">
                   <el-radio
                     v-for="dict in DictStatus"
@@ -197,11 +215,11 @@
           </el-row>
           <el-row>
             <el-col :span="24">
-              <el-form-item label="备注" prop="remark">
+              <el-form-item :label="$t('common.remark')" prop="remark">
                 <el-input
                   v-model="uploadForm.remark"
                   type="textarea"
-                  placeholder="请输入内容"
+                  :placeholder="$t('dictionaryManagement.inputContent')"
                 ></el-input>
               </el-form-item>
             </el-col>
@@ -209,9 +227,9 @@
         </el-form>
         <div class="bottomBtn">
           <el-button class="btn" type="primary" @click="operation"
-            >确定
+            >{{ $t('common.sure') }}
           </el-button>
-          <el-button @click="handleClose">取消</el-button>
+          <el-button @click="handleClose">{{ $t('common.cancel') }}</el-button>
         </div>
       </div>
     </el-drawer>
@@ -235,93 +253,125 @@ export default {
     Search,
     GutuSelect,
   },
-  data() {
-    return {
-      tableHeader: [
+  computed: {
+    statusOptions() {
+      return [
+        { label: this.$t('common.normal'), value: '0' },
+        { label: this.$t('common.disabled'), value: '1' },
+      ]
+    },
+    tableHeader() {
+      return [
         {
           prop: 'dictCode',
           id: 1,
-          label: '字典编码',
+          label: this.$t('dictionaryManagement.dictCode'),
           width: '100px',
           align: 'left',
         },
         {
           prop: 'dictLabel',
           id: 2,
-          label: '字典标签',
+          label: this.$t('dictionaryManagement.dictLabel'),
           align: 'left',
         },
         {
           prop: 'dictValue',
           id: 3,
-          label: '字典键值',
+          label: this.$t('dictionaryManagement.dictValue'),
           align: 'left',
         },
         {
           prop: 'dictSort',
           id: 4,
-          label: '字典顺序',
+          label: this.$t('dictionaryManagement.dictSort'),
           align: 'center',
           width: '116px',
         },
         {
           prop: 'status',
           id: 5,
-          label: '状态',
+          label: this.$t('common.status'),
           align: 'center',
           width: '116px',
         },
         {
           prop: 'remark',
           id: 6,
-          label: '备注',
+          label: this.$t('common.remark'),
           align: 'left',
         },
         {
           prop: 'createTime',
           id: 7,
-          label: '创建时间',
+          label: this.$t('common.createTime'),
           align: 'left',
         },
         {
           prop: 'operation',
           id: 8,
-          label: '操作',
+          label: this.$t('common.operation'),
           width: '180px',
           align: 'left',
         },
-      ],
-      listClassOptions: [
+      ]
+    },
+    listClassOptions() {
+      return [
         {
           value: 'default',
-          label: '默认',
+          label: this.$t('dictionaryManagement.default'),
         },
         {
           value: 'primary',
-          label: '主要',
+          label: this.$t('dictionaryManagement.primary'),
         },
         {
           value: 'success',
-          label: '成功',
+          label: this.$t('dictionaryManagement.success'),
         },
         {
           value: 'info',
-          label: '信息',
+          label: this.$t('dictionaryManagement.info'),
         },
         {
           value: 'warning',
-          label: '警告',
+          label: this.$t('dictionaryManagement.warning'),
         },
         {
           value: 'danger',
-          label: '危险',
+          label: this.$t('dictionaryManagement.danger'),
         },
-      ],
-      DictStatus: [
-        { label: '正常', value: '0' },
-        { label: '停用', value: '1' },
-      ],
-
+      ]
+    },
+    DictStatus() {
+      return [
+        { label: this.$t('common.normal'), value: '0' },
+        { label: this.$t('common.disabled'), value: '1' },
+      ]
+    },
+    rules() {
+      return {
+        dictLabel: {
+          required: true,
+          message: this.$t('dictionaryManagement.inputDataLabel'),
+          trigger: 'blur',
+        },
+        dictValue: {
+          required: true,
+          message: this.$t('dictionaryManagement.inputDataValue'),
+          trigger: 'blur',
+        },
+        dictSort: {
+          required: true,
+          message: this.$t('dictionaryManagement.inputDisplaySort'),
+          trigger: 'blur',
+        },
+      }
+    },
+  },
+  data() {
+    return {
       drawer: {
         title: '',
         visible: false,
@@ -353,23 +403,6 @@ export default {
         status: '0',
         remark: null,
         dictId: null,
-      },
-      rules: {
-        dictLabel: {
-          required: true,
-          message: '请输入数据标签',
-          trigger: 'blur',
-        },
-        dictValue: {
-          required: true,
-          message: '请输入数据键值',
-          trigger: 'blur',
-        },
-        dictSort: {
-          required: true,
-          message: '请输入显示排序',
-          trigger: 'blur',
-        },
       },
       ids: [],
     }
@@ -444,7 +477,7 @@ export default {
             insertData({ ...this.uploadForm })
               .then((res) => {
                 if (res.code == 200) {
-                  this.$message.success('操作成功')
+                  this.$message.success(this.$t('common.success'))
                   this.handleClose()
                   this.searchData()
                 }
@@ -454,7 +487,7 @@ export default {
             updateData({ ...this.uploadForm })
               .then((res) => {
                 if (res.code == 200) {
-                  this.$message.success('操作成功')
+                  this.$message.success(this.$t('common.success'))
                   this.handleClose()
                   this.searchData()
                 }
@@ -465,22 +498,26 @@ export default {
       })
     },
     openAdd() {
-      this.drawer.title = '添加字典'
+      this.drawer.title = this.$t('dictionaryManagement.addDictionary')
       this.drawer.type = 'add'
       this.drawer.visible = true
     },
     handleDelete(data) {
       const dictIds = (data && data.dictCode) || this.ids
-      this.$confirm(`是否删除编号为${dictIds}的字典?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm(
+        this.$t('dictionaryManagement.deleteConfirm', { id: dictIds }),
+        this.$t('common.systemTip'),
+        {
+          confirmButtonText: this.$t('common.sure'),
+          cancelButtonText: this.$t('common.cancel'),
+          type: 'warning',
+        }
+      )
         .then((res) => {
           deleteData(dictIds)
             .then((res) => {
               if (res.code == 200) {
-                this.$message.success('操作成功')
+                this.$message.success(this.$t('common.success'))
                 this.searchData()
               }
             })
@@ -495,7 +532,7 @@ export default {
           this.uploadForm = res.data
         })
         .catch((err) => {})
-      this.drawer.title = '修改字典类型'
+      this.drawer.title = this.$t('dictionaryManagement.editDictionaryType')
       this.drawer.type = 'change'
       this.drawer.visible = true
     },

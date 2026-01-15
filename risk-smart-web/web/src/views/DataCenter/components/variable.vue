@@ -2,18 +2,25 @@
   <div class="app-container">
     <div class="item">
       <el-table :data="variableList">
-        <el-table-column prop="code" label="code" />
-        <el-table-column prop="name" label="变量名称" />
-        <el-table-column prop="type" label="变量类型">
+        <el-table-column prop="code" :label="$t('dataCenter.code')" />
+        <el-table-column prop="name" :label="$t('dataCenter.variableName')" />
+        <el-table-column prop="type" :label="$t('dataCenter.variableType')">
           <template slot-scope="scope">
             <div>{{ selectDictLabel(dataTypeList, scope.row.type) }}</div>
           </template>
         </el-table-column>
-        <el-table-column prop="parentName" label="父对象" />
-        <el-table-column prop="handle" label="操作" width="150">
+        <el-table-column
+          prop="parentName"
+          :label="$t('dataCenter.parentObject')"
+        />
+        <el-table-column
+          prop="handle"
+          :label="$t('common.operation')"
+          width="150"
+        >
           <template slot-scope="scope">
             <el-button type="text" @click="handleUpdate(scope.row)"
-              >详情
+              >{{ $t('dataCenter.detail') }}
             </el-button>
           </template>
         </el-table-column>
@@ -44,13 +51,21 @@
         label-width="100px"
         class="submitForm isShowborder"
       >
-        <el-form-item label="code：" prop="code">
-          <el-input v-model="form.code" placeholder="请输入code" disabled />
+        <el-form-item :label="$t('dataCenter.code')" prop="code">
+          <el-input
+            v-model="form.code"
+            :placeholder="$t('dataCenter.inputCode')"
+            disabled
+          />
         </el-form-item>
-        <el-form-item label="变量名称：" prop="name">
-          <el-input v-model="form.name" placeholder="请输入名称" disabled />
+        <el-form-item :label="$t('dataCenter.variableName')" prop="name">
+          <el-input
+            v-model="form.name"
+            :placeholder="$t('common.pleaseInput')"
+            disabled
+          />
         </el-form-item>
-        <el-form-item label="变量类型：" prop="type">
+        <el-form-item :label="$t('dataCenter.variableType')" prop="type">
           <div
             v-if="form.type == 0"
             style="
@@ -59,7 +74,7 @@
               font-size: 13px;
             "
           >
-            对象
+            {{ $t('dataCenter.objectTypeValue') }}
           </div>
           <div
             v-if="form.type == 1"
@@ -69,7 +84,7 @@
               font-size: 13px;
             "
           >
-            集合
+            {{ $t('dataCenter.collection') }}
           </div>
           <div
             v-if="form.type == 2"
@@ -79,7 +94,7 @@
               font-size: 13px;
             "
           >
-            字符
+            {{ $t('dataCenter.string') }}
           </div>
           <div
             v-if="form.type == 3"
@@ -89,7 +104,7 @@
               font-size: 13px;
             "
           >
-            布尔
+            {{ $t('dataCenter.boolean') }}
           </div>
           <div
             v-if="form.type == 4"
@@ -99,7 +114,7 @@
               font-size: 13px;
             "
           >
-            整数
+            {{ $t('dataCenter.integer') }}
           </div>
           <div
             v-if="form.type == 5"
@@ -109,10 +124,10 @@
               font-size: 13px;
             "
           >
-            浮点数
+            {{ $t('dataCenter.float') }}
           </div>
         </el-form-item>
-        <el-form-item label="父对象：" prop="parentName">
+        <el-form-item :label="$t('dataCenter.parentObject')" prop="parentName">
           <el-input v-model="form.parentName" placeholder="" disabled />
         </el-form-item>
       </el-form>
@@ -137,7 +152,7 @@ export default {
   data() {
     return {
       groupId: undefined,
-      title: '属性详情',
+      title: '',
       loading: false,
       open: false,
       total: 0,
@@ -161,13 +176,36 @@ export default {
         type: undefined,
         remark: undefined,
       },
-      rules: {
-        code: [{ required: true, message: 'code不能为空', trigger: 'blur' }],
-        name: [{ required: true, message: '名称不能为空', trigger: 'blur' }],
-        type: [{ required: true, message: '类型不能为空', trigger: 'blur' }],
-      },
+      rules: {},
       dataTypeList: [],
     }
+  },
+  computed: {
+    rules() {
+      return {
+        code: [
+          {
+            required: true,
+            message: this.$t('dataCenter.codeCannotBeEmpty'),
+            trigger: 'blur',
+          },
+        ],
+        name: [
+          {
+            required: true,
+            message: this.$t('dataCenter.nameCannotBeEmpty'),
+            trigger: 'blur',
+          },
+        ],
+        type: [
+          {
+            required: true,
+            message: this.$t('dataCenter.typeCannotBeEmpty'),
+            trigger: 'blur',
+          },
+        ],
+      }
+    },
   },
   created() {
     this.queryParams.groupId = this.$route.params.id

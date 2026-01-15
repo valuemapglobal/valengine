@@ -13,7 +13,7 @@ export const configRoutes = [
         },
         component: () =>
           import(
-            /* webpackChunkName:"System"*/
+            /* webpackChunkName:"InterfacePlatform"*/
             '@/views/index.vue'
           ),
         children: [
@@ -49,7 +49,7 @@ export const configRoutes = [
             },
             component: () =>
               import(
-                /* webpackChunkName:"DataDuditing"*/
+                /* webpackChunkName:"DataAuditing"*/
                 '@/views/interfacePlatform/modules/DataDuditing.vue'
               ),
           },
@@ -61,7 +61,7 @@ export const configRoutes = [
             },
             component: () =>
               import(
-                /* webpackChunkName:"TrafficStatistics"*/
+                /* webpackChunkName:"InterfaceUser"*/
                 '@/views/interfacePlatform/modules/interfaceUser.vue'
               ),
           },
@@ -87,7 +87,7 @@ export const configRoutes = [
             },
             component: () =>
               import(
-                /* webpackChunkName:"FeatureVariable"*/
+                /* webpackChunkName:"BasicVariables"*/
                 '@/views/DataCenter/modules/basicVariables.vue'
               ),
           },
@@ -125,7 +125,7 @@ export const configRoutes = [
         },
         component: () =>
           import(
-            /* webpackChunkName:"System"*/
+            /* webpackChunkName:"DecisionPlatform"*/
             '@/views/index.vue'
           ),
         children: [
@@ -176,7 +176,7 @@ export const configRoutes = [
         },
         component: () =>
           import(
-            /* webpackChunkName:"System"*/
+            /* webpackChunkName:"RulePool"*/
             '@/views/index.vue'
           ),
         children: [
@@ -188,7 +188,7 @@ export const configRoutes = [
             },
             component: () =>
               import(
-                /* webpackChunkName:"ProductDecision"*/
+                /* webpackChunkName:"Strategy"*/
                 '@/views/rulePool/strategy/index.vue'
               ),
           },
@@ -202,7 +202,7 @@ export const configRoutes = [
         },
         component: () =>
           import(
-            /* webpackChunkName:"System"*/
+            /* webpackChunkName:"PlatformEngine"*/
             '@/views/index.vue'
           ),
         children: [
@@ -214,7 +214,7 @@ export const configRoutes = [
             },
             component: () =>
               import(
-                /* webpackChunkName:"BasicVariables"*/
+                /* webpackChunkName:"WorkflowEngine"*/
                 '@/views/platformEngine/modules/workflowEngine/index.vue'
               ),
           },
@@ -226,7 +226,7 @@ export const configRoutes = [
             },
             component: () =>
               import(
-                /* webpackChunkName:"CharacteristicVariable"*/
+                /* webpackChunkName:"TaskApproval"*/
                 '@/views/platformEngine/modules/taskApproval/index.vue'
               ),
           },
@@ -238,7 +238,7 @@ export const configRoutes = [
             },
             component: () =>
               import(
-                /* webpackChunkName:"AnalysisIndicators"*/
+                /* webpackChunkName:"TaskRecord"*/
                 '@/views/platformEngine/modules/taskRecord/index.vue'
               ),
           },
@@ -250,7 +250,7 @@ export const configRoutes = [
             },
             component: () =>
               import(
-                /* webpackChunkName:"processTask"*/
+                /* webpackChunkName:"ProcessTask"*/
                 '@/views/platformEngine/modules/processTask/index.vue'
               ),
           },
@@ -266,21 +266,9 @@ export const configRoutes = [
                 '@/views/platformEngine/modules/processTask/riskReport.vue'
               ),
           },
-          {
-            path: 'RiskReport',
-            name: 'RiskReport',
-            meta: {
-              title: '评估报告',
-            },
-            component: () =>
-              import(
-                /* webpackChunkName:"RiskReport"*/
-                '@/views/platformEngine/modules/processTask/riskReport.vue'
-              ),
-          },
         ],
       },
-      // 本次版本不存在的模块 - 流程回溯
+      // 暂时注释 20260105
       // {
       //   path: 'Backtrack',
       //   name: 'Backtrack',
@@ -298,7 +286,8 @@ export const configRoutes = [
       //       },
       //       component: () =>
       //         import(
-      //           /* webpackChunkName:"HistoryTaskList"*/ '@/views/processBacktrack/historyTask/index.vue'
+      //           /* webpackChunkName:"HistoryTask"*/
+      //           '@/views/processBacktrack/historyTask/index.vue'
       //         ),
       //     },
       //     {
@@ -309,38 +298,38 @@ export const configRoutes = [
       //       },
       //       component: () =>
       //         import(
-      //           /* webpackChunkName:"HistoryTaskList"*/ '@/views/processBacktrack/backtrackTask/index.vue'
+      //           /* webpackChunkName:"BacktrackTask"*/
+      //           '@/views/processBacktrack/backtrackTask/index.vue'
       //         ),
       //     },
       //   ],
       // },
-      // 本次版本不存在的模块 - 监测预警
-      // {
-      //   path: 'Monitor',
-      //   name: 'Monitor',
-      //   meta: {
-      //     title: '监测',
-      //   },
-      //   component: () =>
-      //     import(
-      //       /* webpackChunkName:"System"*/
-      //       '@/views/index.vue'
-      //     ),
-      //   children: [
-      //     {
-      //       path: 'WarningTask',
-      //       name: 'WarningTask',
-      //       meta: {
-      //         title: '预警任务',
-      //       },
-      //       component: () =>
-      //         import(
-      //           /* webpackChunkName:"BasicVariables"*/
-      //           '@/views/monitor/warningTask/index.vue'
-      //         ),
-      //     },
-      //   ],
-      // },
+      {
+        path: 'Monitor',
+        name: 'Monitor',
+        meta: {
+          title: '监测',
+        },
+        component: () =>
+          import(
+            /* webpackChunkName:"Monitor"*/
+            '@/views/index.vue'
+          ),
+        children: [
+          {
+            path: 'WarningTask',
+            name: 'WarningTask',
+            meta: {
+              title: '预警任务',
+            },
+            component: () =>
+              import(
+                /* webpackChunkName:"WarningTask"*/
+                '@/views/monitor/warningTask/index.vue'
+              ),
+          },
+        ],
+      },
       {
         path: 'System',
         name: 'System',
@@ -389,7 +378,7 @@ export const configRoutes = [
                 '@/views/system/menuManagement/index.vue'
               ),
           },
-          // 本次版本不存在的模块 - 审批授权
+          // 暂时注释 20260105
           // {
           //   path: 'ApprovalAuth',
           //   name: 'ApprovalAuth',
@@ -398,7 +387,7 @@ export const configRoutes = [
           //   },
           //   component: () =>
           //     import(
-          //       /* webpackChunkName:"MenuManage"*/
+          //       /* webpackChunkName:"ApprovalAuth"*/
           //       '@/views/system/approvalAuth/index.vue'
           //     ),
           // },
@@ -446,7 +435,7 @@ export const configRoutes = [
           //   },
           //   component: () =>
           //     import(
-          //       /* webpackChunkName:"Department"*/
+          //       /* webpackChunkName:"Account"*/
           //       '@/views/system/accountResources/index.vue'
           //     ),
           // },

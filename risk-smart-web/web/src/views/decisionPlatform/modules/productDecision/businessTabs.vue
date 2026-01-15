@@ -35,7 +35,7 @@
         <el-input
           ref="inputRef"
           v-if="addInputShow"
-          placeholder="请输入名称"
+          :placeholder="$t('decisionPlatform.inputName')"
           v-model.trim="nameValue"
           @blur="addInputShow = false"
           @keyup.enter.native="addFormSubmit"
@@ -44,19 +44,31 @@
         </el-input>
         <div class="add-tab-button" @click="addBtnClick" v-else>
           <div class="add-icon"></div>
-          新增
+          {{ $t('decisionPlatform.add') }}
         </div>
       </li>
     </ul>
     <div class="content">
       <components is="Modules"></components>
     </div>
-    <el-dialog title="编辑" :visible.sync="editVisible" width="26%">
-      <el-input placeholder="请输入名称" v-model.trim="nameValue" clearable>
+    <el-dialog
+      :title="$t('decisionPlatform.edit')"
+      :visible.sync="editVisible"
+      width="26%"
+    >
+      <el-input
+        :placeholder="$t('decisionPlatform.inputName')"
+        v-model.trim="nameValue"
+        clearable
+      >
       </el-input>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="editVisible = false">取消</el-button>
-        <el-button type="primary" @click="editFormSubmit">确定</el-button>
+        <el-button @click="editVisible = false">{{
+          $t('common.cancel')
+        }}</el-button>
+        <el-button type="primary" @click="editFormSubmit">{{
+          $t('common.sure')
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -145,7 +157,7 @@ export default {
     editFormSubmit() {
       const name = this.nameValue
       if (!name) {
-        this.$message.warning('请输入名称')
+        this.$message.warning(this.$t('decisionPlatform.inputName'))
       } else {
         this.editVisible = false
         editBusiness({
@@ -153,16 +165,16 @@ export default {
           id: this.editId,
         }).then((res) => {
           if (res.code === 200) {
-            this.$message.success('编辑完成')
+            this.$message.success(this.$t('decisionPlatform.editComplete'))
             this.getTabList()
           }
         })
       }
     },
     deleteBusinessHandle(item) {
-      this.$confirm('是否确认删除?', '', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('common.deleteConfirm'), '', {
+        confirmButtonText: this.$t('common.sure'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       })
         .then(() => {
@@ -170,7 +182,7 @@ export default {
             if (res.code === 200) {
               this.$message({
                 type: 'success',
-                message: '删除成功!',
+                message: this.$t('decisionPlatform.deleteSuccess'),
               })
               this.getTabList()
             }
@@ -179,7 +191,7 @@ export default {
         .catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消删除',
+            message: this.$t('decisionPlatform.deleteCancelled'),
           })
         })
     },
@@ -196,14 +208,14 @@ export default {
     addFormSubmit() {
       const name = this.nameValue
       if (!name) {
-        this.$message.warning('请输入名称')
+        this.$message.warning(this.$t('decisionPlatform.inputName'))
       } else {
         this.addInputShow = false
         newlyAddBusiness({
           name,
         }).then((res) => {
           if (res.code === 200) {
-            this.$message.success(`新增成功`)
+            this.$message.success(this.$t('decisionPlatform.addSuccess'))
             this.getTabList()
           }
         })

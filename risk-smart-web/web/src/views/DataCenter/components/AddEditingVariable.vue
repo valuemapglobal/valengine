@@ -11,35 +11,41 @@
       :model="ruleForm"
       :rules="rules"
       ref="ruleForm"
-      label-width="140px"
+      :label-width="isEnglish() ? '160px' : '140px'"
     >
-      <el-form-item label="特征变量名称" prop="name">
+      <el-form-item :label="$t('dataCenter.featureVariableName')" prop="name">
         <el-input
           v-model="ruleForm.name"
           @change="checkHandle($event, 'name')"
-          placeholder="请输入"
+          :placeholder="$t('common.pleaseInput')"
         />
       </el-form-item>
-      <el-form-item label="特征变量类型" prop="type">
-        <el-select v-model="ruleForm.type" placeholder="请选择">
-          <el-option label="字符型" :value="0"></el-option>
-          <el-option label="小数" :value="1"></el-option>
-          <el-option label="数值" :value="2"></el-option>
+      <el-form-item :label="$t('dataCenter.featureVariableType')" prop="type">
+        <el-select
+          v-model="ruleForm.type"
+          :placeholder="$t('common.pleaseSelect')"
+        >
+          <el-option
+            :label="$t('dataCenter.characterType')"
+            :value="0"
+          ></el-option>
+          <el-option :label="$t('dataCenter.decimal')" :value="1"></el-option>
+          <el-option :label="$t('dataCenter.number')" :value="2"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="参数名" prop="code">
+      <el-form-item :label="$t('dataCenter.paramName')" prop="code">
         <el-input
           v-model="ruleForm.code"
           @input="(e) => (ruleForm.code = e.replace(/\s*/g, ''))"
           @change="checkHandle($event, 'code')"
-          placeholder="请输入"
+          :placeholder="$t('common.pleaseInput')"
         />
       </el-form-item>
-      <el-form-item label="模块名称">
+      <el-form-item :label="$t('dataCenter.moduleName')">
         <el-input
           v-model="ruleForm.moduleName"
           disabled
-          placeholder="固定关联上一级"
+          :placeholder="$t('dataCenter.fixedRelateUpperLevel')"
         ></el-input>
       </el-form-item>
       <div class="group-title">
@@ -67,14 +73,17 @@
             </g>
           </g>
         </svg>
-        变量逻辑配置
+        {{ $t('dataCenter.variableLogicConfig') }}
       </div>
       <el-form-item class="group-content">
-        <el-form-item label="是否固定阈值" prop="thresholdType">
+        <el-form-item
+          :label="$t('dataCenter.isFixedThreshold')"
+          prop="thresholdType"
+        >
           <el-radio-group v-model="ruleForm.thresholdType">
-            <el-radio :label="0" border>是</el-radio>
-            <el-radio :label="1" border>否</el-radio>
-            <el-radio :label="2" border>自定义</el-radio>
+            <el-radio :label="0" border>{{ $t('common.yes') }}</el-radio>
+            <el-radio :label="1" border>{{ $t('common.no') }}</el-radio>
+            <el-radio :label="2" border>{{ $t('dataCenter.custom') }}</el-radio>
           </el-radio-group>
         </el-form-item>
         <!--				是-->
@@ -85,7 +94,8 @@
             :key="'threshold' + thresholdIndex"
           >
             <div class="group-condition-title">
-              组合计算条件{{ thresholdIndex + 1 }}
+              {{ $t('dataCenter.combinationCalculationCondition')
+              }}{{ thresholdIndex + 1 }}
               {{
                 thresholdIndex === 0
                   ? 'if'
@@ -97,7 +107,7 @@
               :prop="'configThreshold.' + thresholdIndex + '.selectObj'"
               :rules="{
                 required: true,
-                message: '元数据/接口编号/字段名不能为空',
+                message: $t('dataCenter.metadataInterfaceFieldCannotBeEmpty'),
                 trigger: 'blur',
               }"
             >
@@ -106,7 +116,7 @@
                 :options="cascadeOptions"
                 :props="cascadeProps"
                 clearable
-                placeholder="元数据/接口编号/字段名"
+                :placeholder="$t('dataCenter.metadataInterfaceField')"
               />
             </el-form-item>
             <el-form-item
@@ -114,13 +124,13 @@
               :prop="'configThreshold.' + thresholdIndex + '.operator'"
               :rules="{
                 required: true,
-                message: '逻辑条件不能为空',
+                message: $t('dataCenter.logicConditionCannotBeEmpty'),
                 trigger: 'blur',
               }"
             >
               <el-select
                 v-model="thresholdItem.operator"
-                placeholder="逻辑条件"
+                :placeholder="$t('dataCenter.logicCondition')"
               >
                 <el-option
                   :label="item.label"
@@ -134,13 +144,13 @@
               :prop="'configThreshold.' + thresholdIndex + '.value'"
               :rules="{
                 required: true,
-                message: '请输入',
+                message: $t('common.pleaseInput'),
                 trigger: 'blur',
               }"
             >
               <el-input
                 v-model="thresholdItem.value"
-                placeholder="阈值"
+                :placeholder="$t('dataCenter.threshold')"
               ></el-input>
             </el-form-item>
             <el-form-item
@@ -149,13 +159,19 @@
               :prop="'configThreshold.' + thresholdIndex + '.condition'"
               :rules="{
                 required: true,
-                message: '请选择',
+                message: $t('common.pleaseSelect'),
                 trigger: 'blur',
               }"
             >
-              <el-select v-model="thresholdItem.condition" placeholder="并且">
-                <el-option label="并且" value="and"></el-option>
-                <el-option label="或者" value="or"></el-option>
+              <el-select
+                v-model="thresholdItem.condition"
+                :placeholder="$t('dataCenter.and')"
+              >
+                <el-option
+                  :label="$t('dataCenter.and')"
+                  value="and"
+                ></el-option>
+                <el-option :label="$t('dataCenter.or')" value="or"></el-option>
               </el-select>
             </el-form-item>
             <el-button
@@ -185,7 +201,7 @@
               :prop="'configCompute.selectObj'"
               :rules="{
                 required: true,
-                message: '元数据/接口编号/字段名不能为空',
+                message: $t('dataCenter.metadataInterfaceFieldCannotBeEmpty'),
                 trigger: 'blur',
               }"
             >
@@ -194,7 +210,7 @@
                 :options="cascadeOptions"
                 :props="cascadeProps"
                 clearable
-                placeholder="元数据/接口编号/字段名"
+                :placeholder="$t('dataCenter.metadataInterfaceField')"
               />
             </el-form-item>
             <el-form-item
@@ -202,13 +218,13 @@
               :prop="'configCompute.operator'"
               :rules="{
                 required: true,
-                message: '逻辑条件不能为空',
+                message: $t('dataCenter.logicConditionCannotBeEmpty'),
                 trigger: 'blur',
               }"
             >
               <el-select
                 v-model="ruleForm.configCompute.operator"
-                placeholder="逻辑条件"
+                :placeholder="$t('dataCenter.logicCondition')"
               >
                 <el-option
                   :label="item.label"
@@ -336,10 +352,12 @@
       </el-form-item>
     </el-form>
     <div class="drawer-footer">
-      <el-button type="primary" :loading="loading" @click="onSubmit"
-        >提交</el-button
-      >
-      <el-button :loading="loading" @click="closeDrawer">取消</el-button>
+      <el-button type="primary" :loading="loading" @click="onSubmit">{{
+        $t('common.submit')
+      }}</el-button>
+      <el-button :loading="loading" @click="closeDrawer">{{
+        $t('common.cancel')
+      }}</el-button>
     </div>
   </el-drawer>
 </template>
@@ -375,21 +393,7 @@ export default {
         configCompute: { selectObj: [], operator: '' }, //计算配置
         configScript: '', //脚本配置
       },
-      rules: {
-        name: [
-          { required: true, message: '请输入特征变量名称', trigger: 'blur' },
-        ],
-        type: [
-          { required: true, message: '请选择特征变量类型', trigger: 'blur' },
-        ],
-        code: [{ required: true, message: '请输入参数名', trigger: 'blur' }],
-        thresholdType: [
-          { required: true, message: '请选择是否固定阈值', trigger: 'blur' },
-        ],
-        configScript: [
-          { required: true, message: '请输入代码脚本', trigger: 'blur' },
-        ],
-      },
+      rules: {},
       thresholdConditionOptions: [
         { label: '大于', value: 'GT' },
         { label: '小于', value: 'LT' },
@@ -416,6 +420,63 @@ export default {
       //提交按钮loading
       loading: false,
     }
+  },
+  computed: {
+    rules() {
+      return {
+        name: [
+          {
+            required: true,
+            message: this.$t('dataCenter.pleaseInputFeatureVariableName'),
+            trigger: 'blur',
+          },
+        ],
+        type: [
+          {
+            required: true,
+            message: this.$t('dataCenter.pleaseSelectFeatureVariableType'),
+            trigger: 'blur',
+          },
+        ],
+        code: [
+          {
+            required: true,
+            message: this.$t('dataCenter.pleaseInputParamName'),
+            trigger: 'blur',
+          },
+        ],
+        thresholdType: [
+          {
+            required: true,
+            message: this.$t('dataCenter.pleaseSelectIsFixedThreshold'),
+            trigger: 'blur',
+          },
+        ],
+        configScript: [
+          {
+            required: true,
+            message: this.$t('dataCenter.pleaseInputCodeScript'),
+            trigger: 'blur',
+          },
+        ],
+      }
+    },
+    thresholdConditionOptions() {
+      return [
+        { label: this.$t('dataCenter.greaterThan'), value: 'GT' },
+        { label: this.$t('dataCenter.lessThan'), value: 'LT' },
+        { label: this.$t('dataCenter.equal'), value: 'EQ' },
+        { label: this.$t('dataCenter.notEqual'), value: 'NE' },
+        { label: this.$t('dataCenter.include'), value: 'INCLUDE' },
+        { label: this.$t('dataCenter.notInclude'), value: 'NINCLUDE' },
+        { label: this.$t('dataCenter.greaterThanEqualYears'), value: 'GEY' },
+        { label: this.$t('dataCenter.greaterThanEqualMonths'), value: 'GEM' },
+        { label: this.$t('dataCenter.greaterThanEqualDays'), value: 'GED' },
+        { label: this.$t('dataCenter.lessThanEqualYears'), value: 'LEY' },
+        { label: this.$t('dataCenter.lessThanEqualMonths'), value: 'LEM' },
+        { label: this.$t('dataCenter.lessThanEqualDays'), value: 'LED' },
+      ]
+    },
   },
   mounted() {
     this.getFindSourceInfo()
@@ -738,11 +799,13 @@ export default {
       this.$message.success('文本已复制到剪贴板')
     },
     closeDrawer(done) {
-      if (this.rules.name.length >= 2) {
-        this.rules.name.splice(1, 2)
-      }
-      if (this.rules.code.length >= 2) {
-        this.rules.code.splice(1, 2)
+      if (Object.keys(this.rules).length) {
+        if (this.rules.name.length >= 2) {
+          this.rules.name.splice(1, 2)
+        }
+        if (this.rules.code.length >= 2) {
+          this.rules.code.splice(1, 2)
+        }
       }
       this.$refs.ruleForm.clearValidate()
       if (typeof done === 'function') {

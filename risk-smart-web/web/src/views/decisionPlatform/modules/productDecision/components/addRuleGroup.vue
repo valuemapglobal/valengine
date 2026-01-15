@@ -4,21 +4,24 @@
       ref="form"
       :model="ruleGroupForm"
       :rules="rules"
-      label-width="120px"
+      :label-width="isEnglish() ? '180px' : '100px'"
     >
-      <el-form-item label="规则组名称" prop="name">
+      <el-form-item :label="$t('decisionPlatform.ruleGroupName')" prop="name">
         <el-input
           v-model="ruleGroupForm.name"
-          placeholder="请输入规则组名称"
+          :placeholder="$t('decisionPlatform.inputRuleGroupName')"
           :disabled="readOnly"
           :class="{ noDisabledColor: readOnly }"
         />
       </el-form-item>
-      <el-form-item label="规则组描述" prop="descr">
+      <el-form-item
+        :label="$t('decisionPlatform.ruleGroupDescription')"
+        prop="descr"
+      >
         <el-input
           type="textarea"
           v-model="ruleGroupForm.descr"
-          placeholder="请输入规则组描述"
+          :placeholder="$t('decisionPlatform.inputRuleGroupDescription')"
           :disabled="readOnly"
           :class="{ noDisabledColor: readOnly }"
         />
@@ -26,9 +29,11 @@
     </el-form>
     <div class="btnBottom" v-if="status">
       <el-button type="primary" @click="handleBeforeSubmit" v-preventReClick
-        >确定
+        >{{ $t('decisionPlatform.confirm') }}
       </el-button>
-      <el-button @click="handleClose">取消</el-button>
+      <el-button @click="handleClose">{{
+        $t('decisionPlatform.cancel')
+      }}</el-button>
     </div>
     <!--		<confirmDialog ref="confirmDialog" :disabled="fullscreenLoading" @update="update" @reserved="reserved">
           <div>是否需要生成新的版本？</div>
@@ -93,28 +98,6 @@ export default {
         modelId: null,
       },
       projectCode: '1001',
-      rules: {
-        name: [
-          { required: true, message: '规则组名称不能为空', trigger: 'blur' },
-          // {
-          //   validator: (rule, value, callback) => {
-          //     let check = /^[\u4E00-\u9FA5A-Za-z0-9_]+$/
-          //     if (!check.test(value)) {
-          //       callback('请输入不包含特殊字符的名称')
-          //     }
-          //     callback()
-          //   }, trigger: 'blur'
-          // },
-          { max: 30, message: '规则组名称文字长度不能超过30', trigger: 'blur' },
-        ],
-        descr: [
-          {
-            max: 200,
-            message: '规则组描述文字长度不能超过200',
-            trigger: 'blur',
-          },
-        ],
-      },
       logRecord: {
         controlRecordId: null,
         ownershipSubject: null,
@@ -153,8 +136,36 @@ export default {
       )
       return findObj
     },
+    rules() {
+      return {
+        name: [
+          {
+            required: true,
+            message: this.$t('decisionPlatform.ruleGroupNameCannotBeEmpty'),
+            trigger: 'blur',
+          },
+          {
+            max: 30,
+            message: this.$t('decisionPlatform.ruleGroupNameLengthExceeded'),
+            trigger: 'blur',
+          },
+        ],
+        descr: [
+          {
+            max: 200,
+            message: this.$t(
+              'decisionPlatform.ruleGroupDescriptionLengthExceeded'
+            ),
+            trigger: 'blur',
+          },
+        ],
+      }
+    },
   },
   methods: {
+    isEnglish() {
+      return this.$i18n.locale === 'en'
+    },
     // handleCheckLock, 暂时注释 20260105
     handleLogBaseData() {
       let decision = this.dataRisk.decision
@@ -228,8 +239,8 @@ export default {
      */
     getFieldLabel(field) {
       const fieldMap = {
-        name: '规则组名称',
-        descr: '规则组描述',
+        name: this.$t('decisionPlatform.ruleGroupName'),
+        descr: this.$t('decisionPlatform.ruleGroupDescription'),
       }
       return fieldMap[field] || field
     },
@@ -279,7 +290,7 @@ export default {
       })
         .then((res) => {
           if (res.code == 200) {
-            this.$message.success('操作成功')
+            this.$message.success(this.$t('decisionPlatform.operationSuccess'))
             // this.handleCheckLock() 暂时注释 20260105
             this.$emit('success', 1)
             this.resetForm()

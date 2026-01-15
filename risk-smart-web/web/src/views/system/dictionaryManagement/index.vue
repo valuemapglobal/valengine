@@ -4,15 +4,17 @@
       <div class="searchTop">
         <el-input
           v-model="queryParams.dictName"
-          placeholder="字典名称"
+          :placeholder="$t('dictionaryManagement.dictName')"
           clearable
         ></el-input>
         <el-input
           v-model="queryParams.dictType"
-          placeholder="字典类型"
+          :placeholder="$t('dictionaryManagement.dictType')"
           clearable
         ></el-input>
-        <el-button type="primary" @click="reset" size="default">重置</el-button>
+        <el-button type="primary" @click="reset" size="default">{{
+          $t('common.reset')
+        }}</el-button>
       </div>
       <div class="btnss">
         <el-button
@@ -20,7 +22,7 @@
           @click="openAdd"
           size="default"
           icon="el-icon-plus"
-          >新增</el-button
+          >{{ $t('common.add') }}</el-button
         >
         <el-button
           type="danger"
@@ -29,20 +31,17 @@
           size="default"
           icon="el-icon-delete"
           @click="handleDelete"
-          >删除</el-button
+          >{{ $t('common.delete') }}</el-button
         >
       </div>
     </div>
     <div class="content">
       <div class="filter">
         <GutuSelect
-          :options="[
-            { label: '正常', value: '0' },
-            { label: '停用', value: '1' },
-          ]"
+          :options="statusOptions"
           :data.sync="queryParams.status"
           flatten
-          :config="{ placeholder: '字典状态' }"
+          :config="{ placeholder: $t('dictionaryManagement.dictStatus') }"
           :adaptiveWidth="{ enable: true, minWidth: '90px' }"
         />
         <div class="filterTime">
@@ -52,8 +51,8 @@
             type="daterange"
             value-format="yyyy-MM-dd"
             range-separator="-"
-            start-placeholder="创建时间（起）"
-            end-placeholder="创建时间（止）"
+            :start-placeholder="$t('dictionaryManagement.createTimeStart')"
+            :end-placeholder="$t('dictionaryManagement.createTimeEnd')"
           >
           </el-date-picker>
         </div>
@@ -89,21 +88,23 @@
               </router-link>
             </div>
             <div class="column_status" v-else-if="col.prop === 'status'">
-              <span v-if="row.status === '0'" class="normal">正常</span>
-              <span v-else-if="row.status === '1'" class="deactivate"
-                >停用</span
-              >
+              <span v-if="row.status === '0'" class="normal">{{
+                $t('common.normal')
+              }}</span>
+              <span v-else-if="row.status === '1'" class="deactivate">{{
+                $t('common.disabled')
+              }}</span>
             </div>
             <div v-else-if="col.prop === 'operation'">
               <span class="el-dropdown-link" @click="openChaneg(row)">
-                修改
+                {{ $t('common.modify') }}
               </span>
               <span
                 style="color: red"
                 class="el-dropdown-link"
                 @click="handleDelete(row)"
               >
-                删除
+                {{ $t('common.delete') }}
               </span>
             </div>
             <div v-else>{{ row[col.prop] }}</div>
@@ -134,38 +135,48 @@
           :model="uploadForm"
           :rules="rules"
           ref="uploadForm"
-          label-width="100px"
+          :label-width="isEnglish() ? '140px' : '100px'"
         >
           <el-row>
             <el-col :span="12">
-              <el-form-item label="字典名称" prop="dictName">
+              <el-form-item
+                :label="$t('dictionaryManagement.dictName')"
+                prop="dictName"
+              >
                 <el-input
                   size="medium"
                   v-model="uploadForm.dictName"
-                  placeholder="请输入"
+                  :placeholder="$t('menuManagement.inputPlaceholder')"
                 ></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="字典类型" prop="dictType">
+              <el-form-item
+                :label="$t('dictionaryManagement.dictType')"
+                prop="dictType"
+              >
                 <el-input
                   size="medium"
                   v-model="uploadForm.dictType"
-                  placeholder="请输入"
+                  :placeholder="$t('menuManagement.inputPlaceholder')"
                 ></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="24">
-              <el-form-item label="状态" prop="status">
-                <el-radio v-model="uploadForm.status" label="0">正常</el-radio>
-                <el-radio v-model="uploadForm.status" label="1">停用</el-radio>
+              <el-form-item :label="$t('common.status')" prop="status">
+                <el-radio v-model="uploadForm.status" label="0">{{
+                  $t('common.normal')
+                }}</el-radio>
+                <el-radio v-model="uploadForm.status" label="1">{{
+                  $t('common.disabled')
+                }}</el-radio>
               </el-form-item>
             </el-col>
             <el-col :span="24">
-              <el-form-item label="备注" prop="remark">
+              <el-form-item :label="$t('common.remark')" prop="remark">
                 <el-input
                   v-model="uploadForm.remark"
-                  placeholder="请输入"
+                  :placeholder="$t('menuManagement.inputPlaceholder')"
                   type="textarea"
                   :rows="3"
                 ></el-input>
@@ -174,10 +185,10 @@
           </el-row>
         </el-form>
         <div class="bottomBtn">
-          <el-button class="btn" type="primary" @click="operation"
-            >确定</el-button
-          >
-          <el-button @click="handleClose">取消</el-button>
+          <el-button class="btn" type="primary" @click="operation">{{
+            $t('common.sure')
+          }}</el-button>
+          <el-button @click="handleClose">{{ $t('common.cancel') }}</el-button>
         </div>
       </div>
     </el-drawer>
@@ -198,94 +209,83 @@ export default {
     Search,
     GutuSelect,
   },
-  data() {
-    return {
-      list: [
-        {
-          type: 'input',
-          placeholder: '请输入字典名称',
-          prop: {
-            key: 'dictName',
-            value: null,
-          },
-        },
-        {
-          type: 'input',
-          placeholder: '请输入字典类型',
-          prop: {
-            key: 'dictType',
-            value: null,
-          },
-        },
-        {
-          type: 'select',
-          placeholder: '请选择字典状态',
-          options: [
-            { label: '正常', value: '0' },
-            { label: '停用', value: '1' },
-          ],
-          prop: {
-            key: 'status',
-            value: null,
-          },
-        },
-        {
-          type: 'time',
-          placeholder: '请选择时间',
-          prop: {
-            key: 'time',
-            value: null,
-          },
-        },
-      ],
-      tableHeader: [
+  computed: {
+    statusOptions() {
+      return [
+        { label: this.$t('common.normal'), value: '0' },
+        { label: this.$t('common.disabled'), value: '1' },
+      ]
+    },
+    tableHeader() {
+      return [
         {
           prop: 'dictId',
           id: 1,
-          label: '编号',
+          label: this.$t('dictionaryManagement.dictId'),
           width: '60px',
           align: 'left',
         },
         {
           prop: 'dictName',
           id: 2,
-          label: '字典名称',
+          label: this.$t('dictionaryManagement.dictName'),
           align: 'left',
         },
         {
           prop: 'dictType',
           id: 3,
-          label: '字典类型',
+          label: this.$t('dictionaryManagement.dictType'),
           align: 'left',
         },
         {
           prop: 'status',
           id: 4,
-          label: '状态',
+          label: this.$t('common.status'),
           align: 'center',
           width: '116px',
         },
         {
           prop: 'remark',
           id: 5,
-          label: '备注',
+          label: this.$t('common.remark'),
           align: 'left',
         },
         {
           prop: 'createTime',
           id: 6,
-          label: '创建时间',
+          label: this.$t('common.createTime'),
           align: 'left',
         },
         {
           prop: 'operation',
           id: 7,
-          label: '操作',
+          label: this.$t('common.operation'),
           width: '180px',
           align: 'left',
         },
-      ],
-
+      ]
+    },
+    rules() {
+      return {
+        dictName: [
+          {
+            required: true,
+            message: this.$t('dictionaryManagement.inputDictName'),
+            trigger: 'blur',
+          },
+        ],
+        dictType: [
+          {
+            required: true,
+            message: this.$t('dictionaryManagement.inputDictType'),
+            trigger: 'blur',
+          },
+        ],
+      }
+    },
+  },
+  data() {
+    return {
       drawer: {
         title: '',
         visible: false,
@@ -318,14 +318,6 @@ export default {
         status: '0',
         remark: null,
         dictId: null,
-      },
-      rules: {
-        dictName: [
-          { required: true, message: '请输入字典名称', trigger: 'blur' },
-        ],
-        dictType: [
-          { required: true, message: '请输入字典类型', trigger: 'blur' },
-        ],
       },
       ids: [],
     }
@@ -360,9 +352,8 @@ export default {
       // }
       selectAll({ ...this.params, ...this.queryParams })
         .then((res) => {
-          // 兼容两种返回格式：res.rows 或 res.data
-          this.tableData = res.rows || res.data || []
-          this.total = res.total || (this.tableData ? this.tableData.length : 0)
+          this.tableData = res.rows
+          this.total = res.total
         })
         .catch((eerr) => {})
     },
@@ -373,7 +364,7 @@ export default {
             addDictionary({ ...this.uploadForm })
               .then((res) => {
                 if (res.code == 200) {
-                  this.$message.success('操作成功')
+                  this.$message.success(this.$t('common.success'))
                   this.handleClose()
                   this.searchData()
                 }
@@ -383,7 +374,7 @@ export default {
             updateType({ ...this.uploadForm })
               .then((res) => {
                 if (res.code == 200) {
-                  this.$message.success('操作成功')
+                  this.$message.success(this.$t('common.success'))
                   this.handleClose()
                   this.searchData()
                 }
@@ -394,7 +385,7 @@ export default {
       })
     },
     openAdd() {
-      this.drawer.title = '添加字典'
+      this.drawer.title = this.$t('dictionaryManagement.addDictionary')
       this.drawer.type = 'add'
       this.uploadForm = {
         dictName: null,
@@ -407,16 +398,20 @@ export default {
     },
     handleDelete(data) {
       const dictIds = data.dictId || this.ids
-      this.$confirm(`是否删除编号为${dictIds}的字典?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm(
+        this.$t('dictionaryManagement.deleteConfirm', { id: dictIds }),
+        this.$t('common.systemTip'),
+        {
+          confirmButtonText: this.$t('common.sure'),
+          cancelButtonText: this.$t('common.cancel'),
+          type: 'warning',
+        }
+      )
         .then((res) => {
           deleteType(dictIds)
             .then((res) => {
               if (res.code == 200) {
-                this.$message.success('操作成功')
+                this.$message.success(this.$t('common.success'))
                 this.searchData()
               }
             })
@@ -440,7 +435,7 @@ export default {
       } else {
         return
       }
-      this.drawer.title = '修改字典类型'
+      this.drawer.title = this.$t('dictionaryManagement.editDictionary')
       this.drawer.type = 'change'
 
       this.drawer.visible = true
@@ -535,8 +530,7 @@ export default {
         margin-right: 10px;
 
         /deep/.el-date-editor {
-          width: 300px;
-          border: none;
+          width: 340px;
           padding: 0px 5px !important;
           .el-range__icon {
             display: none;

@@ -9,14 +9,14 @@
       :modal="false"
       :wrapperClosable="false"
       size="58%"
-      title="编辑参数"
+      :title="$t('interfacePlatform.editParameter')"
     >
       <div class="header">
         <div class="right">
           <div class="input-warp">
             <el-input
               v-model="formData.interfaceFieIdName"
-              placeholder="请输入参数名称"
+              :placeholder="$t('interfacePlatform.inputParameterName')"
               suffix-icon="el-icon-search"
               style="width: 100%; height: 100%"
               clearable
@@ -27,65 +27,76 @@
             type="primary"
             style="margin-left: 10px; width: 85px; flex-shrink: 0"
             @click="getList"
-            >搜索</el-button
+            >{{ $t('common.search') }}</el-button
           >
         </div>
-        <div class="add" @click="add">
+        <div
+          class="add"
+          @click="add"
+          :style="{ width: (isEnglish() ? 140 : 110) + 'px' }"
+        >
           <img src="../image/addOrange.png" />
-          <div>新增参数</div>
+          <div>{{ $t('interfacePlatform.addParameter') }}</div>
         </div>
       </div>
 
       <div class="content">
         <div class="table-warp">
           <el-table
+            ref="parameterTable"
             :data="tableData"
             :border="true"
             v-loading="loading"
             style="width: 100%"
             height="calc(var(--bgvh) - 240px)"
           >
-            <el-table-column prop="date" label="编号" width="60" type="index">
+            <el-table-column
+              prop="date"
+              :label="$t('interfacePlatform.index')"
+              width="60"
+              type="index"
+              align="center"
+            >
             </el-table-column>
-            <el-table-column prop="interfaceNo" label="接口编号" width="144">
+            <el-table-column
+              prop="interfaceNo"
+              :label="$t('interfacePlatform.interfaceNo')"
+              width="160"
+            >
             </el-table-column>
             <el-table-column
               prop="interfaceFieIdName"
-              label="参数名称"
+              :label="$t('interfacePlatform.parameterName')"
               width="144"
             >
             </el-table-column>
             <el-table-column
               prop="interfaceFieIdAlias"
-              label="参数别名"
+              :label="$t('interfacePlatform.parameterAlias')"
               width="144"
             >
             </el-table-column>
             <el-table-column
               prop="interfaceFieIdType"
-              label="参数类型"
+              :label="$t('interfacePlatform.parameterType')"
               width="144"
             >
               <template slot-scope="scope">
                 <span>
                   {{
-                    scope.row.interfaceFieIdType == '1' ? '出参' : '入参'
+                    scope.row.interfaceFieIdType == '1'
+                      ? $t('interfacePlatform.outputParameter')
+                      : $t('interfacePlatform.inputParameter')
                   }}</span
                 >
               </template>
             </el-table-column>
             <el-table-column
               prop="interfaceFieIdDataType"
-              label="数据类型"
+              :label="$t('interfacePlatform.dataTypeLabel')"
               width="144"
             >
               <template slot-scope="scope">
-                <!-- <span v-show="scope.row.interfaceFieIdDataType == '0'">数值</span>
-                <span v-show="scope.row.interfaceFieIdDataType == '1'">字符串</span>
-                <span v-show="scope.row.interfaceFieIdDataType == '2'">日期</span>
-                <span v-show="scope.row.interfaceFieIdDataType == '3'">对象</span>
-                <span v-show="scope.row.interfaceFieIdDataType == '4'">数组</span>
-                <span v-show="scope.row.interfaceFieIdDataType == '5'">文件</span> -->
                 <div>
                   {{
                     selectDictLabel(
@@ -98,40 +109,53 @@
             </el-table-column>
             <el-table-column
               prop="interfaceFieIdRequired"
-              label="是否必填"
+              :label="$t('interfacePlatform.isRequired')"
               width="144"
             >
               <template slot-scope="{ row }">
                 <span>{{
-                  row.interfaceFieIdRequired == 1 ? '非必填' : '必填'
+                  row.interfaceFieIdRequired == 1
+                    ? $t('interfacePlatform.optional')
+                    : $t('interfacePlatform.required')
                 }}</span>
               </template>
             </el-table-column>
             <el-table-column
               prop="interfaceFieIdRemark"
-              label="参数备注"
+              :label="$t('interfacePlatform.parameterRemark')"
               width="144"
             >
             </el-table-column>
             <el-table-column
               prop="interfaceFieIdFather"
-              label="父级属性"
+              :label="$t('interfacePlatform.parentProperty')"
               width="144"
             >
             </el-table-column>
-            <el-table-column prop="createTime" label="创建时间" width="144">
+            <el-table-column
+              prop="createTime"
+              :label="$t('common.createTime')"
+              width="180"
+            >
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="110">
+            <el-table-column
+              fixed="right"
+              :label="$t('common.operation')"
+              width="110"
+            >
               <template slot-scope="scope">
-                <el-button type="text" size="small" @click="update(scope.row)"
-                  >修改</el-button
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="update(scope.row)"
+                  >{{ $t('common.modify') }}</el-button
                 >
                 <el-button
                   type="text"
                   size="small"
                   style="color: #fa5151"
                   @click="del(scope.row)"
-                  >删除</el-button
+                  >{{ $t('common.delete') }}</el-button
                 >
               </template>
             </el-table-column>
@@ -167,6 +191,7 @@ import {
   removeInterfaceFieIdInfo,
 } from '@/views/interfacePlatform/api/dataList'
 import { getDicts } from '@/api/index'
+import { parseTime } from '@/utils/rouyi'
 export default {
   components: { Headline, NewParameter },
   props: {
@@ -205,6 +230,14 @@ export default {
     }
   },
   watch: {
+    '$i18n.locale'() {
+      // 语言切换时，强制表格重新计算布局，修复fixed列位置
+      this.$nextTick(() => {
+        if (this.$refs.parameterTable) {
+          this.$refs.parameterTable.doLayout()
+        }
+      })
+    },
     drawer: {
       handler(n, o) {
         if (n) {
@@ -222,6 +255,10 @@ export default {
     })
   },
   methods: {
+    parseTime,
+    isEnglish() {
+      return this.$i18n.locale === 'en'
+    },
     handleCurrentChange(val) {
       this.formData.pageNum = val
       this.getList()
@@ -233,7 +270,12 @@ export default {
         manageNo: this.manageNo,
       }).then((res) => {
         if (res.code == 200) {
-          this.tableData = res.data.list
+          this.tableData = res.data.list.map((item) => {
+            return {
+              ...item,
+              createTime: this.parseTime(item.createTime),
+            }
+          })
           this.loading = false
           this.formData.totalNum = res.data.total
         }
@@ -256,11 +298,15 @@ export default {
     },
     // 删除
     del(row) {
-      this.$confirm('确定删除吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm(
+        this.$t('interfacePlatform.deleteConfirmSimple'),
+        this.$t('common.systemTip'),
+        {
+          confirmButtonText: this.$t('common.sure'),
+          cancelButtonText: this.$t('common.cancel'),
+          type: 'warning',
+        }
+      )
         .then(() => {
           removeInterfaceFieIdInfo({ fieIdNo: row.interfaceFieIdManage }).then(
             (res) => {
@@ -271,7 +317,7 @@ export default {
                 }
                 this.$message({
                   type: 'success',
-                  message: '删除成功!',
+                  message: this.$t('interfacePlatform.deleteSuccess'),
                 })
                 this.getList()
               }

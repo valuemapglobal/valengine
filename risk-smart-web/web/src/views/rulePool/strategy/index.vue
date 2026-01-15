@@ -46,7 +46,7 @@
             }"
             >{{ item.rate }}%</span
           >
-          较上月
+          {{ $t('rulePool.comparedLastMonth') }}
         </div>
       </div>
     </div>
@@ -54,7 +54,7 @@
       <div class="search-input">
         <el-input
           v-model="queryParams.keyword"
-          placeholder="搜索规则名称/ID/策略/产品关键词"
+          :placeholder="$t('rulePool.searchPlaceholder')"
           clearable
           style="width: 100%"
           @keyup.enter="handleSearch"
@@ -70,11 +70,13 @@
           </div>
         </el-input>
         <div class="search-button">
-          <el-button type="primary" @click="handleSearch">搜索</el-button>
+          <el-button type="primary" @click="handleSearch">{{
+            $t('rulePool.search')
+          }}</el-button>
         </div>
       </div>
       <div class="hot-search" v-if="hotList.length > 0">
-        <span>热门搜索：</span>
+        <span>{{ $t('rulePool.hotSearch') }}</span>
         <span
           class="hot-tag"
           @click="handleHotSearch(item)"
@@ -85,8 +87,12 @@
       </div>
       <div class="search-options">
         <div class="search-options-header">
-          <el-button type="primary" @click="handleSearch">应用筛选</el-button>
-          <el-button type="" @click="handleReset">重置筛选</el-button>
+          <el-button type="primary" @click="handleSearch">{{
+            $t('rulePool.applyFilter')
+          }}</el-button>
+          <el-button type="" @click="handleReset">{{
+            $t('rulePool.resetFilter')
+          }}</el-button>
           <el-button type="" @click="handleExport" :disabled="exportLoading">
             <svg
               v-if="!exportLoading"
@@ -104,7 +110,7 @@
               </g>
             </svg>
             <i class="el-icon-loading" v-if="exportLoading" />
-            导出数据
+            {{ $t('rulePool.exportData') }}
           </el-button>
         </div>
 
@@ -112,19 +118,22 @@
           class="search-options-content"
           :style="{ height: openStatus ? 'auto' : '42px' }"
         >
-          <el-form :model="queryParams" label-width="100px">
-            <el-form-item label="策略名称：">
+          <el-form
+            :model="queryParams"
+            :label-width="isEnglish() ? '160px' : '100px'"
+          >
+            <el-form-item :label="$t('rulePool.strategyName') + '：'">
               <el-input
                 v-model="queryParams.strategy"
-                placeholder="请输入策略名称"
+                :placeholder="$t('rulePool.inputStrategyName')"
                 clearable
                 @clear="queryParams.strategy = null"
               />
             </el-form-item>
-            <el-form-item label="规则状态：">
+            <el-form-item :label="$t('rulePool.ruleStatus') + '：'">
               <el-select
                 v-model="queryParams.status"
-                placeholder="请选择规则状态"
+                :placeholder="$t('rulePool.selectRuleStatus')"
                 clearable
                 @clear="queryParams.status = null"
               >
@@ -136,10 +145,10 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label="风险等级：">
+            <el-form-item :label="$t('rulePool.riskLevel') + '：'">
               <el-select
                 v-model="queryParams.riskLevel"
-                placeholder="请选择命中动作"
+                :placeholder="$t('rulePool.selectHitAction')"
                 clearable
                 @clear="queryParams.riskLevel = null"
               >
@@ -151,10 +160,10 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label="命中动作：">
+            <el-form-item :label="$t('rulePool.hitAction') + '：'">
               <el-select
                 v-model="queryParams.hitAction"
-                placeholder="请选择命中动作"
+                :placeholder="$t('rulePool.selectHitAction')"
                 clearable
                 @clear="queryParams.hitAction = null"
               >
@@ -166,10 +175,10 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label="业务场景：">
+            <el-form-item :label="$t('rulePool.businessScene') + '：'">
               <el-select
                 v-model="queryParams.businessScene"
-                placeholder="请选择模型类型"
+                :placeholder="$t('rulePool.selectModelType')"
                 clearable
                 @clear="queryParams.businessScene = null"
               >
@@ -181,10 +190,10 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label="模型类型：">
+            <el-form-item :label="$t('rulePool.modelType') + '：'">
               <el-select
                 v-model="queryParams.modelType"
-                placeholder="请选择模型类型"
+                :placeholder="$t('rulePool.selectModelType')"
                 clearable
                 @clear="queryParams.modelType = null"
               >
@@ -196,22 +205,22 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label="产品名称：">
+            <el-form-item :label="$t('rulePool.productName') + '：'">
               <el-input
                 v-model="queryParams.referenceProduct"
                 clearable
                 @clear="queryParams.referenceProduct = null"
-                placeholder="请输入产品名称"
+                :placeholder="$t('rulePool.inputProductName')"
               ></el-input>
             </el-form-item>
-            <el-form-item label="时间范围：">
+            <el-form-item :label="$t('rulePool.timeRange') + '：'">
               <el-date-picker
                 v-model="timeRange"
                 type="daterange"
                 value-format="yyyy-MM-dd"
                 range-separator="-"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
+                :start-placeholder="$t('rulePool.startDate')"
+                :end-placeholder="$t('rulePool.endDate')"
               />
             </el-form-item>
           </el-form>
@@ -237,7 +246,11 @@
               clip-rule="evenodd"
             />
           </svg>
-          <span>{{ openStatus ? '收起筛选' : '更多筛选' }}</span>
+          <span>{{
+            openStatus
+              ? $t('rulePool.collapseFilter')
+              : $t('rulePool.moreFilter')
+          }}</span>
         </div>
         <svg width="140" height="35" viewBox="0 0 140 35">
           <path
@@ -250,9 +263,11 @@
     </div>
     <div class="table-container">
       <div class="table-container-header">
-        <span class="table-container-header-title">规则列表</span>
+        <span class="table-container-header-title">{{
+          $t('rulePool.ruleList')
+        }}</span>
         <div>
-          共 <span style="color: #2888e8">{{ total }}</span> 条规则
+          {{ $t('rulePool.totalRules', { total }) }}
         </div>
       </div>
       <div class="table-container-table">
@@ -274,7 +289,7 @@
                 size="medium"
                 @click="handleDetails(data.row)"
               >
-                查看详情
+                {{ $t('rulePool.viewDetails') }}
               </el-button>
             </div>
           </template>
@@ -292,7 +307,7 @@
     </div>
     <el-drawer
       v-if="currentRow"
-      :title="drawer.title"
+      :title="$t('rulePool.viewRule')"
       :visible.sync="drawer.visible"
       direction="rtl"
       :modal="false"
@@ -300,7 +315,7 @@
       :size="drawer.width"
     >
       <addOrEditRule
-        v-if="!['评分'].includes(currentRow.modelType)"
+        v-if="![$t('rulePool.score')].includes(currentRow.modelType)"
         :info="currentRow"
         :readOnly="true"
         @close="drawer.visible = false"
@@ -339,7 +354,7 @@ export default {
   data() {
     return {
       drawer: {
-        title: '查看规则',
+        title: '',
         visible: false,
         width: '1200px',
       },
@@ -360,98 +375,140 @@ export default {
         pageSize: 10,
       },
       timeRange: [],
-      boardList: [
-        {
-          label: '总规则数',
-          field: 'totalRules',
-          value: 0,
-          rateField: 'totalRulesRate',
-          rate: 0,
-        },
-        {
-          label: '启用中规则',
-          field: 'activeRules',
-          value: 0,
-          rateField: 'activeRulesRate',
-          rate: 0,
-        },
-        {
-          label: '规则覆盖产品数',
-          field: 'productCount',
-          value: 0,
-          rateField: 'productCountRate',
-          rate: 0,
-        },
-        {
-          label: '规则覆盖场景数',
-          field: 'sceneCount',
-          value: 0,
-          rateField: 'sceneCountRate',
-          rate: 0,
-        },
-      ],
-
       hotList: [],
-
-      statusOptions: [
-        { label: '启用', value: 1 },
-        { label: '禁用', value: 2 },
-      ],
-      riskLevelOptions: [
-        { label: '低风险', value: 1 },
-        { label: '中低风险', value: 2 },
-        { label: '中风险', value: 3 },
-        { label: '中高风险', value: 4 },
-        { label: '高风险', value: 5 },
-      ],
-      hitActionOptions: [
-        { label: '通过', value: '通过' },
-        { label: '拒绝', value: '拒绝' },
-        { label: '转人工', value: '转人工' },
-      ],
       businessSceneOptions: [],
-      modelTypeOptions: [
-        { label: '评分', value: 1 },
-        { label: '规则', value: 5 },
-        { label: '分类', value: 6 },
-      ],
-
       openStatus: false,
-
       dataList: [],
       total: 0,
       loading: false,
-      columnConfig: [
-        { label: '策略', field: 'strategy', width: 180 },
-        { label: '规则组', field: 'ruleGroup', width: 350 },
-        { label: '规则code', field: 'ruleCode', width: 180 },
-        { label: '规则描述', field: 'ruleDesc', width: 500 },
-        { label: '风险等级', field: 'riskLevel', width: 180 },
-        { label: '命中动作', field: 'hitAction', width: 180 },
-        { label: '状态', field: 'status', width: 180 },
-        { label: '参考产品', field: 'referenceProduct', width: 180 },
-        { label: '业务场景', field: 'businessScene', width: 180 },
-        { label: '模型类型', field: 'modelType', width: 180 },
+      collectionList: {},
+      selectRowMap: new Map(),
+      boardData: {},
+      exportLoading: false,
+      currentRow: null,
+    }
+  },
+  computed: {
+    boardList() {
+      return [
         {
-          label: '创建时间',
+          label: this.$t('rulePool.totalRulesCount'),
+          field: 'totalRules',
+          value: this.boardData.totalRules || 0,
+          rateField: 'totalRulesRate',
+          rate: this.boardData.totalRulesRate || 0,
+        },
+        {
+          label: this.$t('rulePool.activeRules'),
+          field: 'activeRules',
+          value: this.boardData.activeRules || 0,
+          rateField: 'activeRulesRate',
+          rate: this.boardData.activeRulesRate || 0,
+        },
+        {
+          label: this.$t('rulePool.productCount'),
+          field: 'productCount',
+          value: this.boardData.productCount || 0,
+          rateField: 'productCountRate',
+          rate: this.boardData.productCountRate || 0,
+        },
+        {
+          label: this.$t('rulePool.sceneCount'),
+          field: 'sceneCount',
+          value: this.boardData.sceneCount || 0,
+          rateField: 'sceneCountRate',
+          rate: this.boardData.sceneCountRate || 0,
+        },
+      ]
+    },
+    statusOptions() {
+      return [
+        { label: this.$t('rulePool.enabled'), value: 1 },
+        { label: this.$t('rulePool.disabled'), value: 2 },
+      ]
+    },
+    riskLevelOptions() {
+      return [
+        { label: this.$t('rulePool.lowRisk'), value: 1 },
+        { label: this.$t('rulePool.mediumLowRisk'), value: 2 },
+        { label: this.$t('rulePool.mediumRisk'), value: 3 },
+        { label: this.$t('rulePool.mediumHighRisk'), value: 4 },
+        { label: this.$t('rulePool.highRisk'), value: 5 },
+      ]
+    },
+    hitActionOptions() {
+      return [
+        { label: this.$t('rulePool.pass'), value: this.$t('rulePool.pass') },
+        {
+          label: this.$t('rulePool.reject'),
+          value: this.$t('rulePool.reject'),
+        },
+        {
+          label: this.$t('rulePool.transferToManual'),
+          value: this.$t('rulePool.transferToManual'),
+        },
+      ]
+    },
+    modelTypeOptions() {
+      return [
+        { label: this.$t('rulePool.score'), value: 1 },
+        { label: this.$t('rulePool.rule'), value: 5 },
+        { label: this.$t('rulePool.classification'), value: 6 },
+      ]
+    },
+    columnConfig() {
+      return [
+        { label: this.$t('rulePool.strategy'), field: 'strategy', width: 180 },
+        {
+          label: this.$t('rulePool.ruleGroup'),
+          field: 'ruleGroup',
+          width: 350,
+        },
+        { label: this.$t('rulePool.ruleCode'), field: 'ruleCode', width: 180 },
+        { label: this.$t('rulePool.ruleDesc'), field: 'ruleDesc', width: 500 },
+        {
+          label: this.$t('rulePool.riskLevelLabel'),
+          field: 'riskLevel',
+          width: 180,
+        },
+        {
+          label: this.$t('rulePool.hitActionLabel'),
+          field: 'hitAction',
+          width: 180,
+        },
+        { label: this.$t('rulePool.statusLabel'), field: 'status', width: 180 },
+        {
+          label: this.$t('rulePool.referenceProduct'),
+          field: 'referenceProduct',
+          width: 180,
+        },
+        {
+          label: this.$t('rulePool.businessSceneLabel'),
+          field: 'businessScene',
+          width: 180,
+        },
+        {
+          label: this.$t('rulePool.modelTypeLabel'),
+          field: 'modelType',
+          width: 180,
+        },
+        {
+          label: this.$t('rulePool.createTimeLabel'),
           width: 180,
           field: 'createTime',
           type: 'timeStamp',
         },
-      ],
-      collectionList: {},
-      tableHandle: {
+      ]
+    },
+    tableHandle() {
+      return {
         fixed: 'right',
         width: '140px',
-        label: '操作',
+        label: this.$t('rulePool.operation'),
         align: 'left',
         slot: true,
-      },
-      selectRowMap: new Map(),
-
-      exportLoading: false,
-      currentRow: null,
-    }
+      }
+    },
   },
   watch: {
     timeRange: {
@@ -475,10 +532,17 @@ export default {
     init() {
       getRulePoolStats().then((res) => {
         if (res.code === 200) {
-          this.boardList.forEach((item) => {
-            item.value = res.data[item.field]
-            item.rate = res.data[item.rateField]
-          })
+          // 更新 boardData，computed 的 boardList 会自动更新
+          this.boardData = {
+            totalRules: res.data.totalRules,
+            totalRulesRate: res.data.totalRulesRate,
+            activeRules: res.data.activeRules,
+            activeRulesRate: res.data.activeRulesRate,
+            productCount: res.data.productCount,
+            productCountRate: res.data.productCountRate,
+            sceneCount: res.data.sceneCount,
+            sceneCountRate: res.data.sceneCountRate,
+          }
         }
       })
       getRulePoolHotKeywords().then((res) => {
@@ -540,7 +604,9 @@ export default {
       this.exportLoading = true
       getRulePoolExport(params).then((res) => {
         this.exportLoading = false
-        const fileName = this.getFileNameFromHeaders(res.headers) || '版本对比'
+        const fileName =
+          this.getFileNameFromHeaders(res.headers) ||
+          this.$t('rulePool.versionCompare')
         this.handleDownload(res.data, fileName)
       })
     },
@@ -689,7 +755,6 @@ export default {
       color: #fff;
       margin-right: 10px;
       .el-button {
-        width: 60px;
         height: 32px;
         font-size: 14px;
         border-radius: 8px;

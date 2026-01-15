@@ -3,13 +3,13 @@
     <main>
       <div
         class="leftRate"
-        element-loading-text="数据加载中"
+        :element-loading-text="$t('decisionPlatform.dataLoading')"
         v-if="rateList.length || rateCard != ''"
       >
         <div class="searchTop">
           <el-input
             v-model="rateCard"
-            placeholder="请输入"
+            :placeholder="$t('decisionPlatform.inputPlaceholder')"
             suffix-icon="el-icon-search"
           ></el-input>
         </div>
@@ -28,30 +28,34 @@
                     v-model="item.buttonState"
                     active-color="#D6D3D3"
                     inactive-color="var(--primary-color)"
-                    active-text="禁用"
-                    inactive-text="使用"
+                    :active-text="$t('decisionPlatform.disabled')"
+                    :inactive-text="$t('decisionPlatform.enabled')"
                     :active-value="0"
                     :inactive-value="1"
                     @change="handleSwitch(item)"
                   />
                 </div>
               </div>
-              <div class="cardDescribe">描述：{{ item.description }}</div>
+              <div class="cardDescribe">
+                {{ $t('decisionPlatform.description') }}：{{ item.description }}
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="noData" v-else>
         <img src="@/assets/images/dataRisk/noData.png" />
-        <p>您还未创建评分卡</p>
-        <p>请先进行配置</p>
+        <p>{{ $t('decisionPlatform.notCreatedRateCard') }}</p>
+        <p>{{ $t('decisionPlatform.pleaseConfigureFirst') }}</p>
         <el-button @click="jumpToScore">
-          <img class="icon" src="@/assets/images/dataRisk/add.png" />去新增
+          <img class="icon" src="@/assets/images/dataRisk/add.png" />{{
+            $t('decisionPlatform.goToAdd')
+          }}
         </el-button>
       </div>
       <div class="rightTable">
         <div v-if="showTable">
-          <div class="title">评级规则表</div>
+          <div class="title">{{ $t('decisionPlatform.rateRuleTable') }}</div>
           <el-table
             v-loading="tableLoading"
             :data="rateRulesTable"
@@ -60,12 +64,19 @@
             @row-click="checkRow"
             :row-class-name="tableRowClassName"
           >
-            <el-table-column label="评级" prop="rate" width="116" />
-            <el-table-column label="评分范围" prop="rateRange">
+            <el-table-column
+              :label="$t('decisionPlatform.rate')"
+              prop="rate"
+              width="116"
+            />
+            <el-table-column
+              :label="$t('decisionPlatform.scoreRange')"
+              prop="rateRange"
+            >
               <template slot-scope="{ row }">
                 <div class="editRange">
                   <div :class="{ checkFailed: row.checkDy }">
-                    <span>大于</span>
+                    <span>{{ $t('decisionPlatform.greaterThan') }}</span>
                     <span class="value" v-if="!edit">{{ row.dy }}</span>
                     <el-input
                       v-else
@@ -78,7 +89,7 @@
                     v-if="row.rateRange"
                     :class="{ checkFailed: row.checkXydy }"
                   >
-                    <span>小于等于</span>
+                    <span>{{ $t('decisionPlatform.lessThanOrEqual') }}</span>
                     <span class="value" v-if="!edit">{{ row.xydy }}</span>
                     <el-input
                       v-else
@@ -92,7 +103,8 @@
             </el-table-column>
             <el-table-column prop="remark">
               <template slot="header">
-                <span style="color: red">*</span> 说明
+                <span style="color: red">*</span>
+                {{ $t('decisionPlatform.remark') }}
               </template>
               <template slot-scope="{ row }">
                 <div
@@ -100,12 +112,12 @@
                   :class="{ checkFailed: row.checkRemark }"
                 >
                   <span class="value" v-if="!edit">{{
-                    row.remark || '待填写'
+                    row.remark || $t('decisionPlatform.toBeFilled')
                   }}</span>
                   <el-input
                     v-else
                     v-model="row.remark"
-                    placeholder="待填写"
+                    :placeholder="$t('decisionPlatform.toBeFilled')"
                     max="200"
                   ></el-input>
                 </div>
@@ -117,13 +129,13 @@
               type="primary"
               @click="editTable"
               :disabled="edit || !activeCard"
-              >编辑评级规则</el-button
+              >{{ $t('decisionPlatform.editRateRule') }}</el-button
             >
             <el-button
               @click="submit"
               type="primary"
               :disabled="!edit || !activeCard"
-              >确认提交</el-button
+              >{{ $t('decisionPlatform.submit') }}</el-button
             >
           </div>
         </div>
@@ -133,7 +145,7 @@
       </div>
     </main>
     <el-dialog
-      title="警告"
+      :title="$t('decisionPlatform.warning')"
       :visible.sync="dialogVisible"
       width="350px"
       :before-close="
@@ -144,15 +156,15 @@
       class="dialogRelease"
     >
       <div class="dialogTitle" slot="title">
-        <span>警告</span>
+        <span>{{ $t('decisionPlatform.warning') }}</span>
       </div>
       <div class="releaseContent">
         <span>{{ checkMsg }}</span>
       </div>
       <div class="releaseBtnList">
-        <el-button type="primary" @click="dialogVisible = false"
-          >确定</el-button
-        >
+        <el-button type="primary" @click="dialogVisible = false">{{
+          $t('decisionPlatform.confirm')
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -426,11 +438,13 @@ export default {
       })
 
       if (checkRang > 0) {
-        this.popupPrompt('当前评分范围不合理，请修改确认')
+        this.popupPrompt(this.$t('decisionPlatform.currentScoreRangeInvalid'))
         return
       }
       if (checkRemark > 0) {
-        this.popupPrompt('当前评级说明未完善，请补充')
+        this.popupPrompt(
+          this.$t('decisionPlatform.currentRateRemarkIncomplete')
+        )
         return
       }
       let params = {
@@ -441,7 +455,7 @@ export default {
       submitRate({ ...params })
         .then((res) => {
           if (res.code == 200) {
-            this.$message.success('操作成功')
+            this.$message.success(this.$t('decisionPlatform.operationSuccess'))
             this.edit = false
             this.getRateListData()
           }
@@ -486,14 +500,19 @@ export default {
         .catch((err) => {})
     },
     handleSwitch(data) {
+      const action =
+        data.buttonState == 1
+          ? this.$t('decisionPlatform.enable')
+          : this.$t('decisionPlatform.close')
       this.$confirm(
-        `是否${data.buttonState == 1 ? '启用' : '关闭'}指标 【${
-          data.rateCard
-        }】?`,
-        '提示',
+        this.$t('decisionPlatform.enableOrDisableIndicator', {
+          action: action,
+          name: data.rateCard,
+        }),
+        this.$t('decisionPlatform.tip'),
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+          confirmButtonText: this.$t('decisionPlatform.confirm'),
+          cancelButtonText: this.$t('decisionPlatform.cancel'),
           type: 'warning',
         }
       )
@@ -506,7 +525,9 @@ export default {
           updateStatusRate({ ...params })
             .then((res) => {
               if (res.code == 200) {
-                this.$message.success('操作成功')
+                this.$message.success(
+                  this.$t('decisionPlatform.operationSuccess')
+                )
                 this.getRateListData()
               }
             })
@@ -528,7 +549,7 @@ export default {
     },
     editTable() {
       if (!this.activeCard) {
-        this.popupPrompt('请选择评分卡')
+        this.popupPrompt(this.$t('decisionPlatform.pleaseSelectRateCard'))
         return
       }
       this.edit = !this.edit
@@ -549,7 +570,7 @@ export default {
       })
         .then((res) => {
           if (res.code == 200) {
-            this.$message.success('操作成功')
+            this.$message.success(this.$t('decisionPlatform.operationSuccess'))
             this.getRateListData()
           }
         })

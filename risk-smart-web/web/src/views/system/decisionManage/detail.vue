@@ -3,49 +3,51 @@
     <el-drawer
       :visible.sync="visible"
       direction="rtl"
-      :title="title"
+      :title="drawerTitle"
       :before-close="resetFields"
       size="35%"
     >
       <div class="drawer">
         <div class="form-warp1">
           <div class="text">
-            操作用户：<span>{{
+            {{ $t('decisionManage.operator') }}：<span>{{
               dataList.operName ? dataList.operName : '-'
             }}</span>
           </div>
           <div class="text">
-            用户部门：<span>{{
+            {{ $t('decisionManage.userDept') }}：<span>{{
               dataList.deptName ? dataList.deptName : '-'
             }}</span>
           </div>
           <div class="text">
-            操作类型：<span>{{
+            {{ $t('decisionManage.operationType') }}：<span>{{
               getOperationTypeText(dataList.businessType)
             }}</span>
           </div>
           <div class="text">
-            金融产品：<span>{{
+            {{ $t('decisionManage.financialProduct') }}：<span>{{
               dataList.productName ? dataList.productName : '-'
             }}</span>
           </div>
           <div class="text">
-            业务场景：<span>{{
+            {{ $t('decisionManage.businessScene') }}：<span>{{
               dataList.businessCode ? mapText(dataList.businessCode) : '-'
             }}</span>
           </div>
           <div class="text">
-            策略模型：<span>{{
+            {{ $t('decisionManage.strategyModel') }}：<span>{{
               dataList.ruleCode ? moduleObj[dataList.ruleCode] : '-'
             }}</span>
           </div>
           <div class="text">
-            操作时间：<span>{{
+            {{ $t('decisionManage.operationTime') }}：<span>{{
               dataList.operTime ? dataList.operTime : '-'
             }}</span>
           </div>
           <div class="text" style="display: flex">
-            <div style="flex-shrink: 0">操作内容：</div>
+            <div style="flex-shrink: 0">
+              {{ $t('decisionManage.operationContent') }}：
+            </div>
             <div v-if="dataList.operParam">
               <json-viewer
                 :value="dataList.operParam"
@@ -71,7 +73,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: '详情',
+      default: '',
     },
     info: {
       type: Object,
@@ -84,14 +86,6 @@ export default {
   },
   data() {
     return {
-      moduleObj: {
-        1: '评分模型',
-        2: '评级模型',
-        3: '额度模型',
-        4: '定价模型',
-        5: '规则模型',
-        6: '分类模型',
-      },
       Item: {},
       resVisible: false,
       dataList: [],
@@ -101,22 +95,35 @@ export default {
     }
   },
   computed: {
+    moduleObj() {
+      return {
+        1: this.$t('decisionManage.scoreModel'),
+        2: this.$t('decisionManage.ratingModel'),
+        3: this.$t('decisionManage.limitModel'),
+        4: this.$t('decisionManage.priceModel'),
+        5: this.$t('decisionManage.ruleModel'),
+        6: this.$t('decisionManage.classifyModel'),
+      }
+    },
     getOperationTypeText() {
       return function (businessType) {
         if (businessType === 0) {
-          return '其他'
+          return this.$t('decisionManage.other')
         } else if (businessType === 1) {
-          return '新增'
+          return this.$t('common.add')
         } else if (businessType === 2) {
-          return '修改'
+          return this.$t('common.modify')
         } else if (businessType === 3) {
-          return '删除'
+          return this.$t('common.delete')
         } else if (businessType === 12) {
-          return '启停'
+          return this.$t('decisionManage.enableDisable')
         } else {
-          return '未知'
+          return this.$t('decisionManage.unknown')
         }
-      }
+      }.bind(this)
+    },
+    drawerTitle() {
+      return this.title || this.$t('operlogManage.detail')
     },
   },
   methods: {

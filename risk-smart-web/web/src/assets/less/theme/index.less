@@ -1,21 +1,6 @@
 @import './decisionPlatform_product.less';
 @import './element.less';
 
-// 主题切换过渡效果
-html {
-  &, *, *::before, *::after {
-    transition: background-color 0.3s ease,
-                color 0.3s ease,
-                border-color 0.3s ease,
-                box-shadow 0.3s ease;
-  }
-}
-
-// 禁用某些元素的过渡（避免影响交互）
-input, textarea, select, button {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
-}
-
 :root {
   --primary-color: #2888e8;
   --primary-color-lighter: #EAF3FD;

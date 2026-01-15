@@ -7,11 +7,11 @@
           <div class="item-text">
             <div class="item-header">{{ itemInfo.interfaceName }}</div>
             <div class="item-dec">
-              <span>描述：</span>
+              <span>{{ $t('interfacePlatform.description') }}</span>
               <span>{{ itemInfo.interfaceDescription }}</span>
             </div>
             <div class="item-dec">
-              <span>接口ID：</span>
+              <span>{{ $t('interfacePlatform.interfaceId') }}</span>
               <span>{{ itemInfo.interfaceNo }}</span>
             </div>
           </div>
@@ -20,36 +20,49 @@
           <el-button
             v-show="itemInfo.interfaceOn === 0"
             @click="changeStatus(1)"
-            >关闭</el-button
+            >{{ $t('interfacePlatform.close') }}</el-button
           >
           <el-button
             type="primary"
             v-show="itemInfo.interfaceOn === 1"
             @click="changeStatus(0)"
-            >开启</el-button
+            >{{ $t('interfacePlatform.open') }}</el-button
           >
         </div>
       </div>
     </div>
     <div class="tab-warp">
       <el-radio-group v-model="form.radio">
-        <el-radio-button label="产品详情"></el-radio-button>
-        <el-radio-button label="业务参数"></el-radio-button>
-        <el-radio-button label="返回码"></el-radio-button>
-        <el-radio-button label="接口测试"></el-radio-button>
+        <el-radio-button :label="radioOptions.productDetail"></el-radio-button>
+        <el-radio-button :label="radioOptions.businessParam"></el-radio-button>
+        <el-radio-button :label="radioOptions.returnCode"></el-radio-button>
+        <el-radio-button :label="radioOptions.interfaceTest"></el-radio-button>
       </el-radio-group>
-      <div class="inner-content" v-show="form.radio == '产品详情'">
-        <div class="inner-title">产品特点</div>
+      <div
+        class="inner-content"
+        v-show="form.radio == radioOptions.productDetail"
+      >
+        <div class="inner-title">
+          {{ $t('interfacePlatform.productFeatures') }}
+        </div>
         <div class="inner-data">{{ itemInfo.interfaceFeatures }}</div>
       </div>
-      <div v-show="form.radio == '业务参数'">
+      <div v-show="form.radio == radioOptions.businessParam">
         <div class="inner-content">
-          <div class="inner-title">产品请求参数</div>
+          <div class="inner-title">
+            {{ $t('interfacePlatform.productRequestParam') }}
+          </div>
           <div class="inner-data inner-table">
             <el-table border :data="reqlist" style="width: 100%" height="250px">
-              <el-table-column prop="interfaceFieIdName" label="参数名称">
+              <el-table-column
+                prop="interfaceFieIdName"
+                :label="$t('interfacePlatform.parameterName')"
+              >
               </el-table-column>
-              <el-table-column prop="interfaceFieIdDataType" label="数据类型">
+              <el-table-column
+                prop="interfaceFieIdDataType"
+                :label="$t('interfacePlatform.dataTypeLabel')"
+              >
                 <template slot-scope="scope">
                   <span>{{
                     selectDictLabel(
@@ -61,21 +74,32 @@
               </el-table-column>
               <el-table-column
                 prop="interfaceFieIdDescription"
-                label="参数说明"
+                :label="$t('interfacePlatform.parameterDescription')"
               >
               </el-table-column>
-              <el-table-column prop="interfaceFieIdRemark" label="参数备注">
+              <el-table-column
+                prop="interfaceFieIdRemark"
+                :label="$t('interfacePlatform.parameterRemark')"
+              >
               </el-table-column>
             </el-table>
           </div>
         </div>
         <div class="inner-content">
-          <div class="inner-title">产品响应结果</div>
+          <div class="inner-title">
+            {{ $t('interfacePlatform.productResponseResult') }}
+          </div>
           <div class="inner-data inner-table">
             <el-table border :data="reslist" style="width: 100%" height="250px">
-              <el-table-column prop="interfaceFieIdName" label="参数名称">
+              <el-table-column
+                prop="interfaceFieIdName"
+                :label="$t('interfacePlatform.parameterName')"
+              >
               </el-table-column>
-              <el-table-column prop="interfaceFieIdDataType" label="数据类型">
+              <el-table-column
+                prop="interfaceFieIdDataType"
+                :label="$t('interfacePlatform.dataTypeLabel')"
+              >
                 <template slot-scope="scope">
                   <span>{{
                     selectDictLabel(
@@ -87,34 +111,51 @@
               </el-table-column>
               <el-table-column
                 prop="interfaceFieIdDescription"
-                label="参数说明"
+                :label="$t('interfacePlatform.parameterDescription')"
               >
               </el-table-column>
-              <el-table-column prop="interfaceFieIdRemark" label="参数备注">
+              <el-table-column
+                prop="interfaceFieIdRemark"
+                :label="$t('interfacePlatform.parameterRemark')"
+              >
               </el-table-column>
             </el-table>
           </div>
         </div>
       </div>
-      <div class="inner-content" v-show="form.radio == '返回码'">
-        <div class="inner-title">返回状态码</div>
+      <div class="inner-content" v-show="form.radio == radioOptions.returnCode">
+        <div class="inner-title">
+          {{ $t('interfacePlatform.returnStatusCode') }}
+        </div>
         <div class="inner-data inner-table">
           <el-table border :data="codeList" style="width: 100%" height="200px">
-            <el-table-column prop="dictValue" label="名称"> </el-table-column>
-            <el-table-column prop="dictLabel" label="说明"> </el-table-column>
+            <el-table-column
+              prop="dictValue"
+              :label="$t('interfacePlatform.name')"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="dictLabel"
+              :label="$t('interfacePlatform.description')"
+            >
+            </el-table-column>
           </el-table>
         </div>
       </div>
-      <div class="inner-content" v-show="form.radio == '接口测试'">
+      <div
+        class="inner-content"
+        v-show="form.radio == radioOptions.interfaceTest"
+      >
         <div class="inner-title">
-          <span>请求参数</span>
+          <span>{{ $t('interfacePlatform.requestParam') }}</span>
           <el-button
             type="primary"
             style="border-radius: 6px"
             v-if="options.length > 0"
             @click="handleTest"
             :disabled="btnLoading"
-            ><i v-if="btnLoading" class="el-icon-loading"></i> 测试</el-button
+            ><i v-if="btnLoading" class="el-icon-loading"></i>
+            {{ $t('interfacePlatform.test') }}</el-button
           >
         </div>
         <div class="inner-select">
@@ -133,7 +174,7 @@
             >
               <div style="display: flex">
                 <el-input
-                  placeholder="请输入"
+                  :placeholder="$t('common.pleaseInput')"
                   v-model="interfaceForm[item.interfaceFieIdAlias]"
                 ></el-input>
               </div>
@@ -143,14 +184,14 @@
       </div>
       <div
         class="inner-content"
-        v-show="form.radio == '接口测试'"
+        v-show="form.radio == radioOptions.interfaceTest"
         style="min-height: 135px"
       >
         <div
           class="inner-title"
           style="position: sticky; top: 0px; left: 0px; z-index: 99"
         >
-          响应结果
+          {{ $t('interfacePlatform.responseResultTitle') }}
         </div>
         <div class="json-container" v-if="res">
           <json-viewer
@@ -186,7 +227,7 @@ export default {
       reslist: [],
       tableData: [],
       form: {
-        radio: '产品详情',
+        radio: '',
       },
       interfaceForm: {},
       rules: {},
@@ -204,6 +245,16 @@ export default {
       ]),
     }
   },
+  computed: {
+    radioOptions() {
+      return {
+        productDetail: this.$t('interfacePlatform.productDetail'),
+        businessParam: this.$t('interfacePlatform.businessParam'),
+        returnCode: this.$t('interfacePlatform.returnCode'),
+        interfaceTest: this.$t('interfacePlatform.interfaceTest'),
+      }
+    },
+  },
   watch: {
     itemInfo: {
       handler(n, o) {
@@ -217,14 +268,14 @@ export default {
     },
     form: {
       handler(n, o) {
-        if (n.radio == '业务参数') {
+        if (n.radio == this.radioOptions.businessParam) {
           // this.getApiserviceheaders()
           this.getfindInterfaceFieIdInfo()
         }
-        if (n.radio == '返回码') {
+        if (n.radio == this.radioOptions.returnCode) {
           this.getCode()
         }
-        if (n.radio == '接口测试') {
+        if (n.radio == this.radioOptions.interfaceTest) {
           this.getOption()
         }
       },
@@ -233,6 +284,8 @@ export default {
     },
   },
   mounted() {
+    // 初始化 radio 值为产品详情
+    this.form.radio = this.radioOptions.productDetail
     getDicts('decision_data_type')
       .then((res) => {
         if (res.code == 200) {

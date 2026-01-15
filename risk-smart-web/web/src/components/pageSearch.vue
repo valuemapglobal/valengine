@@ -53,8 +53,8 @@
           type="daterange"
           range-separator="-"
           :value-format="'yyyy-MM-dd'"
-          start-placeholder="创建时间(起)"
-          end-placeholder="创建时间(止)"
+          :start-placeholder="$t('common.createTimeStart')"
+          :end-placeholder="$t('common.createTimeEnd')"
           @change="
             ($event) => {
               if (item.change) {
@@ -70,7 +70,7 @@
           v-model="weekRange"
           type="week"
           :format="selectWeekTime"
-          placeholder="选择周"
+          :placeholder="$t('common.selectWeek')"
           :picker-options="pickerOptions"
           @change="
             ($event) => {
@@ -80,8 +80,12 @@
         />
       </li>
     </ul>
-    <el-button type="primary" @click="search" v-if="onlySearch">搜索</el-button>
-    <el-button type="primary" v-else @click="reset">重置</el-button>
+    <el-button type="primary" @click="search" v-if="onlySearch">{{
+      $t('common.search')
+    }}</el-button>
+    <el-button type="primary" v-else @click="reset">{{
+      $t('common.reset')
+    }}</el-button>
   </div>
 </template>
 

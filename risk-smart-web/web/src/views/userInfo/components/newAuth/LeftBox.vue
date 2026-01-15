@@ -15,7 +15,7 @@
             :src="
               userInfo && userInfo.avatar
                 ? userInfo.avatar
-                : avatarUrl[Number(userInfo.sex) || 0]
+                : avatarUrl[Number(userInfo.sex)]
             "
             fit="cover"
           ></el-image>

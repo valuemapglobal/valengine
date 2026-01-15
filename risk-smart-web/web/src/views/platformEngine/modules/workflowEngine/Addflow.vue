@@ -3,7 +3,7 @@
     <el-drawer
       class="feed-back-drawer"
       :visible.sync="this.drawer"
-      :title="title + '流程策略模型'"
+      :title="title + $t('platformEngine.processStrategyModel')"
       :hide-required-asterisk="false"
       :modal="false"
       :before-close="resetFields"
@@ -12,7 +12,7 @@
       <div class="step-warp">
         <div class="step" v-if="step == 1">
           <div class="icon current-step">1</div>
-          <div class="text">基本信息</div>
+          <div class="text">{{ $t('platformEngine.basicInfo') }}</div>
         </div>
         <img
           src="../../image/finish.png"
@@ -23,23 +23,34 @@
         <div class="line"></div>
         <div :class="['step']" @click="changeSetp(2)" style="cursor: pointer">
           <div :class="['icon', step == 2 ? 'current-step' : '']">2</div>
-          <div class="text">流程配置</div>
+          <div class="text">{{ $t('platformEngine.processConfig') }}</div>
         </div>
       </div>
       <div v-show="step === 1">
         <div class="form-warp">
-          <el-form label-width="130px" :model="form" :rules="rules" ref="form">
+          <el-form
+            :label-width="isEnglish() ? '200px' : '130px'"
+            :model="form"
+            :rules="rules"
+            ref="form"
+          >
             <el-form-item
               v-if="form.id"
-              label="流程策略ID："
+              :label="$t('platformEngine.processStrategyId')"
               prop="processStrategy"
             >
               <el-input disabled v-model="form.id"></el-input>
             </el-form-item>
-            <el-form-item label="流程策略名称：" prop="processStrategy">
+            <el-form-item
+              :label="$t('platformEngine.processStrategyName')"
+              prop="processStrategy"
+            >
               <el-input v-model="form.processStrategy"></el-input>
             </el-form-item>
-            <el-form-item label="关联产品：" prop="productName">
+            <el-form-item
+              :label="$t('platformEngine.relatedProduct')"
+              prop="productName"
+            >
               <el-select
                 v-model="form.productName"
                 placeholder=""
@@ -53,7 +64,10 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="描述：" prop="content">
+            <el-form-item
+              :label="$t('platformEngine.description')"
+              prop="content"
+            >
               <el-input
                 v-model="form.content"
                 type="textarea"
@@ -64,9 +78,9 @@
         </div>
         <div class="bottomBtns">
           <el-button type="primary" @click="goNextStep('form')"
-            >下一步
+            >{{ $t('platformEngine.nextStep') }}
           </el-button>
-          <el-button @click="cancel">取消</el-button>
+          <el-button @click="cancel">{{ $t('common.cancel') }}</el-button>
         </div>
       </div>
       <div v-show="step === 2">
@@ -74,17 +88,20 @@
           <div class="step-line"></div>
           <div>
             <el-form
-              label-width="80px"
+              :label-width="isEnglish() ? '140px' : '100px'"
               :model="form"
               ref="ruleform"
               :rules="rules"
             >
               <div class="circle-warp">
                 <div class="circle-one">1</div>
-                <el-form-item label="业务场景" prop="businessCode">
+                <el-form-item
+                  :label="$t('platformEngine.businessScene')"
+                  prop="businessCode"
+                >
                   <el-select
                     v-model="form.businessCode"
-                    placeholder="请选择"
+                    :placeholder="$t('platformEngine.selectBusinessScene')"
                     style="width: 377px; height: 48px"
                     @change="
                       () => {
@@ -105,7 +122,7 @@
             </el-form>
             <div v-if="fromList.length > 0">
               <el-form
-                label-width="80px"
+                :label-width="isEnglish() ? '140px' : '100px'"
                 :model="item"
                 v-for="(item, index) in fromList"
                 :key="index"
@@ -113,12 +130,14 @@
                 <div class="circle-warp">
                   <div class="circle-one">{{ index + 2 }}</div>
 
-                  <el-form-item label="策略模型">
+                  <el-form-item :label="$t('platformEngine.strategyModel')">
                     <el-row :gutter="10">
                       <el-col :span="11">
                         <el-select
                           v-model="item.moduleId"
-                          placeholder="请选择策略模型"
+                          :placeholder="
+                            $t('platformEngine.selectStrategyModel')
+                          "
                           @change="changeScore(item, index)"
                         >
                           <el-option
@@ -133,7 +152,9 @@
                       <el-col :span="10">
                         <el-select
                           v-model="item.ruleCode"
-                          placeholder="请选择策略模型名称"
+                          :placeholder="
+                            $t('platformEngine.selectStrategyModelName')
+                          "
                           @change="changeName(item, index)"
                         >
                           <el-option
@@ -168,19 +189,21 @@
                   font-size: 14px;
                 "
                 icon="el-icon-plus"
-                >新建流程策略模型
+                >{{ $t('platformEngine.newProcessStrategyModel') }}
               </el-button>
             </div>
           </div>
         </div>
       </div>
       <div class="button-list" v-if="step === 2">
-        <el-button type="primary" @click="confirm">确认</el-button>
+        <el-button type="primary" @click="confirm">{{
+          $t('common.confirm')
+        }}</el-button>
         <el-button
           type="info"
           style="background-color: #e4e6ef; color: #3f4254; border: none"
           @click="cancel"
-          >取消
+          >{{ $t('common.cancel') }}
         </el-button>
       </div>
     </el-drawer>
@@ -221,28 +244,44 @@ export default {
       srcodeKey: null, //如果评分模型的值为2.评级3.额度4.评级，则带上srcodeKey
       addIndex: 0,
       fromList: [],
-      rules: {
-        processStrategy: [
-          { required: true, message: '请输入名称', trigger: 'blur' },
-          {
-            min: 2,
-            max: 20,
-            message: '长度在 2 到 20 个字符',
-            trigger: 'blur',
-          },
-        ],
-        productName: [
-          { required: true, message: '请选择管理产品', trigger: 'change' },
-        ],
-        businessCode: [
-          { required: true, message: '请选择业务场景', trigger: 'change' },
-        ],
-      },
       step: 1, // 当前在第几步
       form: {},
       drawer: false,
       productList: [],
     }
+  },
+  computed: {
+    rules() {
+      return {
+        processStrategy: [
+          {
+            required: true,
+            message: this.$t('platformEngine.inputName'),
+            trigger: 'blur',
+          },
+          {
+            min: 2,
+            max: 20,
+            message: this.$t('platformEngine.length2To20'),
+            trigger: 'blur',
+          },
+        ],
+        productName: [
+          {
+            required: true,
+            message: this.$t('platformEngine.selectManageProduct'),
+            trigger: 'change',
+          },
+        ],
+        businessCode: [
+          {
+            required: true,
+            message: this.$t('platformEngine.selectBusinessScene'),
+            trigger: 'change',
+          },
+        ],
+      }
+    },
   },
   mounted() {
     // this.getListByDeptId()
@@ -492,7 +531,9 @@ export default {
     confirm() {
       debounce(2000)(() => {
         if (!this.fromList.length) {
-          this.$message.warning('请先新建流程策略模型')
+          this.$message.warning(
+            this.$t('platformEngine.pleaseNewProcessStrategyModel')
+          )
           return
         }
         let flag = null
@@ -503,7 +544,9 @@ export default {
             flag = true
           } else {
             flag = false
-            this.$message.error('策略模型或名称不能为空')
+            this.$message.error(
+              this.$t('platformEngine.strategyModelOrNameCannotBeEmpty')
+            )
           }
         })
         if (!flag) return
@@ -598,7 +641,9 @@ export default {
             return
           }
           if (this.fromList.length >= 6) {
-            return this.$message.error('已到新增最大限度')
+            return this.$message.error(
+              this.$t('platformEngine.maxLimitReached')
+            )
           }
           let flag = null
           this.fromList.map((item) => {
@@ -612,7 +657,7 @@ export default {
               flag = true
             } else {
               flag = false
-              this.$message.error('请完整输入')
+              this.$message.error(this.$t('platformEngine.pleaseCompleteInput'))
             }
           })
           if (flag) {
@@ -633,7 +678,9 @@ export default {
             this.getmodule()
             this.getListByDeptId()
           } else {
-            this.$message.error('请先完成选择')
+            this.$message.error(
+              this.$t('platformEngine.pleaseCompleteSelection')
+            )
           }
         }
       })
@@ -743,11 +790,19 @@ export default {
   display: flex;
   position: relative;
 
+  .el-form {
+    width: 100%;
+  }
+
   ::v-deep .el-input__inner {
-    width: 371px;
+    // width: 371px;
     height: 45px;
     background: var(--bg-color);
     // border: none;
+  }
+
+  ::v-deep .el-select {
+    width: 100%;
   }
 
   ::v-deep .el-textarea__inner {

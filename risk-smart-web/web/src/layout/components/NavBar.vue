@@ -86,7 +86,7 @@
                 <div style="display: flex; align-items: center">
                   <el-image
                     fit="cover"
-                    :src="userInfo.avatar || avatarUrl[Number(userInfo.sex) || 0]"
+                    :src="userInfo.avatar || avatarUrl[Number(userInfo.sex)]"
                     alt=""
                   />
                   <div class="person-info-head-center">
@@ -104,8 +104,9 @@
                   <img src="../../../public/images/home/user-1.png" alt="" />
                 </div>
                 <div class="person-info-item-content">
-                  <div class="item-content-title">个人信息</div>
-                  <!-- <div class="item-content-dec">基本资料和编辑</div> -->
+                  <div class="item-content-title">
+                    {{ $t('common.userInfo') }}
+                  </div>
                 </div>
               </div>
               <div class="person-info-item" @click="exit">
@@ -113,7 +114,9 @@
                   <img src="../../../public/images/home/user-6.png" alt="" />
                 </div>
                 <div class="person-info-item-content">
-                  <div class="item-content-title">退出登录</div>
+                  <div class="item-content-title">
+                    {{ $t('common.logout') }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -121,13 +124,14 @@
               <span>{{ userInfo.nickName }}</span>
               <el-avatar
                 :size="30"
-                :src="userInfo.avatar || avatarUrl[Number(userInfo.sex) || 0]"
+                :src="userInfo.avatar || avatarUrl[Number(userInfo.sex)]"
               >
               </el-avatar>
             </div>
           </el-popover>
         </template>
 
+        <LanguageSwitch />
         <div class="theme-btn" @click="changeTheme">
           <i class="el-icon-sunny" v-if="theme == 'light'" />
           <i class="el-icon-moon" v-else />
@@ -154,8 +158,13 @@
 </template>
 
 <script>
+import LanguageSwitch from '@/components/LanguageSwitch.vue'
+
 export default {
   name: 'NavBar',
+  components: {
+    LanguageSwitch,
+  },
   props: {
     userInfo: { type: Object },
     //导航栏是否固定
@@ -175,167 +184,7 @@ export default {
       navBackground: 'rgba(255,255,255,0)', //导航栏背景色
       navTextColor: '#ffffff', //导航栏及昵称字体颜色
       activeTextColor: 'var(--primary-color)', //导航栏选中字体颜色
-      baseNavList: [
-        {
-          label: '接口平台',
-          name: 'InterfacePlatform',
-          // show: 'Interface:Platform:show',
-          // isChange: true,
-          values: [
-            {
-              label: '数据场景管理',
-              name: 'SmartDecision',
-            },
-            {
-              label: '接口管理',
-              name: 'InterfaceManagement',
-            },
-            {
-              label: '数据审计',
-              name: 'DataDuditing',
-            },
-            {
-              label: '数据报表',
-              name: 'InterfaceUser',
-            },
-          ],
-        },
-        {
-          label: '数据平台',
-          name: 'DataCenter',
-          // isChange: true,
-          // show: 'Data:Platform2:show',
-          values: [
-            {
-              label: '元数据',
-              name: 'BasicVariables',
-            },
-            {
-              label: '特征变量',
-              name: 'FeatureVariable',
-            },
-            {
-              label: '分析指标',
-              name: 'AnalysisTarget',
-            },
-          ],
-        },
-        {
-          label: '规则池',
-          name: 'RulePool',
-          values: [
-            {
-              label: '策略规则池',
-              name: 'Strategy',
-            },
-          ],
-        },
-        {
-          label: '决策中台',
-          name: 'ProductDecision',
-          // isChange: true,
-          // show: 'Decision:making:platformshow',
-          values: [
-            {
-              label: '产品模型',
-              name: 'ProductDecision',
-            },
-            // 暂时注释 20260105
-            // {
-            //   label: '审批列表',
-            //   name: 'Review',
-            // },
-          ],
-        },
-        {
-          label: '平台引擎',
-          name: 'PlatformEngine',
-          // isChange: true,
-          // show: 'Platform:engine:show',
-          values: [
-            {
-              label: '流程管理',
-              name: 'WorkflowEngine',
-            },
-            {
-              label: '任务列表',
-              name: 'ProcessTask',
-            },
-          ],
-        },
-        // 暂时注释 20260105
-        // {
-        //   label: '流程回溯',
-        //   name: 'Backtrack',
-        //   values: [
-        //     {
-        //       label: '历史任务列表',
-        //       name: 'HistoryTask',
-        //     },
-        //     {
-        //       label: '回溯任务列表',
-        //       name: 'BacktrackTask',
-        //     },
-        //   ],
-        // },
-        // 暂时注释监测菜单
-        // {
-        //   label: '监测',
-        //   name: 'Monitor',
-        //   isChange: true,
-        //   values: [
-        //     {
-        //       label: '预警任务',
-        //       name: 'WarningTask',
-        //     },
-        //   ],
-        // },
-        {
-          label: '系统管理',
-          name: 'System',
-          // show: 'system:router:show',
-          // isChange: false,
-          values: [
-            {
-              label: '用户管理',
-              name: 'UserManage',
-            },
-            {
-              label: '角色管理',
-              name: 'RoleManage',
-            },
-            {
-              label: '菜单管理',
-              name: 'MenuManage',
-            },
-            {
-              label: '字典管理',
-              name: 'DictionaryManagement',
-            },
-            {
-              label: '部门管理',
-              name: 'Department',
-            },
-            // 暂时注释 20260105
-            // {
-            //   label: '审批授权',
-            //   name: 'ApprovalAuth',
-            // },
-            {
-              label: '操作日志',
-              name: 'OperlogManage',
-            },
-            {
-              label: '决策日志',
-              name: 'DecisionManage',
-            },
-            {
-              label: '登录日志',
-              name: 'RegisterLog',
-            },
-          ],
-        },
-      ],
+      baseNavList: [],
       navList: [], //导航栏展示数据
       tipUrl: require('../../../public/images/home/message_icon.png'), //消息icon路径
       avatarUrl: [
@@ -355,35 +204,161 @@ export default {
       if (localStorage.getItem('userInfo'))
         return JSON.parse(localStorage.getItem('userInfo')).logoUrl
     },
+    // 获取导航列表（支持国际化）
+    navListData() {
+      return [
+        {
+          label: this.$t('route.InterfacePlatform'),
+          name: 'InterfacePlatform',
+          show: 'Interface:Platform:show',
+          values: [
+            {
+              label: this.$t('route.SmartDecision'),
+              name: 'SmartDecision',
+            },
+            {
+              label: this.$t('route.InterfaceManagement'),
+              name: 'InterfaceManagement',
+            },
+            {
+              label: this.$t('route.DataDuditing'),
+              name: 'DataDuditing',
+            },
+            {
+              label: this.$t('route.InterfaceUser'),
+              name: 'InterfaceUser',
+            },
+          ],
+        },
+        {
+          label: this.$t('route.DataCenter'),
+          name: 'DataCenter',
+          show: 'Data:Platform2:show',
+          values: [
+            {
+              label: this.$t('route.BasicVariables'),
+              name: 'BasicVariables',
+            },
+            {
+              label: this.$t('route.FeatureVariable'),
+              name: 'FeatureVariable',
+            },
+            {
+              label: this.$t('route.AnalysisTarget'),
+              name: 'AnalysisTarget',
+            },
+          ],
+        },
+        {
+          label: this.$t('route.RulePool'),
+          name: 'RulePool',
+          values: [
+            {
+              label: this.$t('route.Strategy'),
+              name: 'Strategy',
+            },
+          ],
+        },
+        {
+          label: this.$t('route.DecisionPlatform'),
+          name: 'ProductDecision',
+          show: 'Decision:making:platformshow',
+          values: [
+            {
+              label: this.$t('route.ProductDecision'),
+              name: 'ProductDecision',
+            },
+          ],
+        },
+        {
+          label: this.$t('route.PlatformEngine'),
+          name: 'PlatformEngine',
+          values: [
+            {
+              label: this.$t('route.WorkflowEngine'),
+              name: 'WorkflowEngine',
+            },
+            {
+              label: this.$t('route.ProcessTask'),
+              name: 'ProcessTask',
+            },
+          ],
+        },
+        {
+          label: this.$t('route.Monitor'),
+          name: 'Monitor',
+          // isChange: true,
+          values: [
+            {
+              label: this.$t('route.WarningTask'),
+              name: 'WarningTask',
+            },
+          ],
+        },
+        {
+          label: this.$t('route.System'),
+          name: 'System',
+          show: 'system:router:show',
+          values: [
+            {
+              label: this.$t('route.UserManage'),
+              name: 'UserManage',
+            },
+            {
+              label: this.$t('route.RoleManage'),
+              name: 'RoleManage',
+            },
+            {
+              label: this.$t('route.MenuManage'),
+              name: 'MenuManage',
+            },
+            {
+              label: this.$t('route.DictionaryManagement'),
+              name: 'DictionaryManagement',
+            },
+            {
+              label: this.$t('route.Department'),
+              name: 'Department',
+            },
+            {
+              label: this.$t('route.OperlogManage'),
+              name: 'OperlogManage',
+            },
+            {
+              label: this.$t('route.DecisionManage'),
+              name: 'DecisionManage',
+            },
+            {
+              label: this.$t('route.RegisterLog'),
+              name: 'RegisterLog',
+            },
+          ],
+        },
+      ]
+    },
   },
   watch: {
     '$route.name': {
       handler(cur) {
         this.activeName = cur
-        this.navList = this.handleNavList(this.baseNavList)
+        this.navList = this.handleNavList(this.navListData)
         this.setValuesData()
       },
       deep: true,
       immediate: true,
     },
-    // isFixed: {
-    //   handler(cur) {
-    //     if (cur) {
-    //       this.navBackground = 'rgba(255,255,255,1)'
-    //       this.navTextColor = 'rgba(0, 0, 0, 0.85)'
-    //       this.tipUrl = require('../../../public/images/home/msg_icon.png')
-    //     } else {
-    //       this.navBackground = 'rgba(255,255,255,0)'
-    //       this.navTextColor = 'rgba(255,255,255,1)'
-    //       this.tipUrl = require('../../../public/images/home/message_icon.png')
-    //     }
-    //   },
-    //   deep: true,
-    //   immediate: true,
-    // },
+    '$i18n.locale': {
+      handler() {
+        // 语言切换时更新导航列表
+        this.navList = this.handleNavList(this.navListData)
+      },
+      immediate: true,
+    },
   },
   mounted() {
     this.$store.dispatch('initTheme')
+    // 初始化导航列表
+    this.navList = this.handleNavList(this.navListData)
   },
   methods: {
     isShow() {
@@ -850,7 +825,7 @@ export default {
   }
 
   ::v-deep .el-menu--popup {
-    width: 105px;
+    width: auto;
     padding: 0;
     border-radius: 6px;
     overflow: hidden;

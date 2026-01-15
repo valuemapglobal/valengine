@@ -9,7 +9,7 @@
           :disabled="isDel"
           icon="el-icon-delete"
           @click="handleDelete"
-          >删除</el-button
+          >{{ $t('common.delete') }}</el-button
         >
         <el-button
           type="danger"
@@ -17,14 +17,14 @@
           :disabled="isDel"
           icon="el-icon-delete"
           @click="handleClean"
-          >清空</el-button
+          >{{ $t('operlogManage.clear') }}</el-button
         >
         <el-button
           type="warning"
           plain
           icon="el-icon-download"
           @click="handleExport"
-          >导出</el-button
+          >{{ $t('common.export') }}</el-button
         >
       </div>
     </div>
@@ -51,7 +51,7 @@
           <template slot-scope="{ row }">
             <div v-if="col.type === 'operation'">
               <span class="el-dropdown-link" @click="openChaneg(row)">
-                详情
+                {{ $t('operlogManage.detail') }}
               </span>
             </div>
             <div v-else-if="col.type === 'select'">
@@ -88,11 +88,11 @@
           :model="uploadForm"
           :rules="rules"
           ref="uploadForm"
-          label-width="100px"
+          :label-width="isEnglish() ? '160px' : '100px'"
         >
           <el-row>
             <el-col :span="12">
-              <el-form-item label="操作模块："
+              <el-form-item :label="$t('operlogManage.operationModule') + '：'"
                 >{{ uploadForm.title }} /
                 {{
                   uploadForm.businessType
@@ -101,54 +101,61 @@
                     : ''
                 }}</el-form-item
               >
-              <el-form-item label="登录信息："
+              <el-form-item :label="$t('operlogManage.loginInfo') + '：'"
                 >{{ uploadForm.operName }} /
                 {{ uploadForm.operIp }}</el-form-item
               >
             </el-col>
             <el-col :span="12">
-              <el-form-item label="请求地址：">{{
+              <el-form-item :label="$t('operlogManage.requestUrl') + '：'">{{
                 uploadForm.operUrl
               }}</el-form-item>
-              <el-form-item label="请求方式：">{{
+              <el-form-item :label="$t('operlogManage.requestMethod') + '：'">{{
                 uploadForm.requestMethod
               }}</el-form-item>
             </el-col>
             <el-col :span="24">
-              <el-form-item label="操作方法：">{{
-                uploadForm.method
-              }}</el-form-item>
+              <el-form-item
+                :label="$t('operlogManage.operationMethod') + '：'"
+                >{{ uploadForm.method }}</el-form-item
+              >
             </el-col>
             <el-col :span="24">
-              <el-form-item label="请求参数：">{{
+              <el-form-item :label="$t('operlogManage.requestParams') + '：'">{{
                 uploadForm.operParam
               }}</el-form-item>
             </el-col>
             <el-col :span="24">
-              <el-form-item label="返回参数：">{{
+              <el-form-item :label="$t('operlogManage.returnParams') + '：'">{{
                 uploadForm.jsonResult
               }}</el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="操作状态：">
-                <div v-if="uploadForm.status === 0">正常</div>
-                <div v-else-if="uploadForm.status === 1">失败</div>
+              <el-form-item :label="$t('operlogManage.operationStatus') + '：'">
+                <div v-if="uploadForm.status === 0">
+                  {{ $t('operlogManage.normal') }}
+                </div>
+                <div v-else-if="uploadForm.status === 1">
+                  {{ $t('operlogManage.failed') }}
+                </div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="操作时间：">{{
+              <el-form-item :label="$t('operlogManage.operationTime') + '：'">{{
                 uploadForm.operTime
               }}</el-form-item>
             </el-col>
             <el-col :span="24">
-              <el-form-item label="异常信息：" v-if="uploadForm.status === 1">{{
-                uploadForm.errorMsg
-              }}</el-form-item>
+              <el-form-item
+                :label="$t('operlogManage.exceptionInfo') + '：'"
+                v-if="uploadForm.status === 1"
+                >{{ uploadForm.errorMsg }}</el-form-item
+              >
             </el-col>
           </el-row>
         </el-form>
         <div class="bottomBtn">
-          <el-button @click="handleClose">关 闭</el-button>
+          <el-button @click="handleClose">{{ $t('common.close') }}</el-button>
         </div>
       </div>
     </el-drawer>
@@ -168,13 +175,12 @@ export default {
   components: {
     Search,
   },
-  data() {
-    return {
-      active: this,
-      list: [
+  computed: {
+    list() {
+      return [
         {
           type: 'input',
-          placeholder: '请输入系统模块',
+          placeholder: this.$t('operlogManage.inputSystemModule'),
           prop: {
             key: 'title',
             value: null,
@@ -182,7 +188,7 @@ export default {
         },
         {
           type: 'input',
-          placeholder: '请输入操作人员',
+          placeholder: this.$t('operlogManage.inputOperator'),
           prop: {
             key: 'operName',
             value: null,
@@ -190,8 +196,8 @@ export default {
         },
         {
           type: 'select',
-          placeholder: '请选择类型',
-          options: [],
+          placeholder: this.$t('operlogManage.selectType'),
+          options: this.listTypeOptions?.sys_oper_type || [],
           prop: {
             key: 'businessType',
             value: null,
@@ -199,8 +205,8 @@ export default {
         },
         {
           type: 'select',
-          placeholder: '请选择状态',
-          options: [],
+          placeholder: this.$t('operlogManage.selectStatus'),
+          options: this.listTypeOptions?.sys_common_status || [],
           prop: {
             key: 'status',
             value: null,
@@ -208,25 +214,27 @@ export default {
         },
         {
           type: 'time',
-          placeholder: '请选择时间',
+          placeholder: this.$t('operlogManage.selectTime'),
           prop: {
             key: 'time',
             value: null,
           },
         },
-      ],
-      tableHeader: [
+      ]
+    },
+    tableHeader() {
+      return [
         {
           prop: 'operId',
           id: 1,
-          label: '日志编号',
+          label: this.$t('operlogManage.logNo'),
           width: '100px',
           align: 'left',
         },
         {
           prop: 'title',
           id: 2,
-          label: '系统模块',
+          label: this.$t('operlogManage.systemModule'),
           align: 'left',
         },
         {
@@ -234,34 +242,34 @@ export default {
           prop: 'businessType',
           list: 'sys_oper_type',
           id: 3,
-          label: '操作类型',
+          label: this.$t('operlogManage.operationType'),
           align: 'center',
-          width: '80px',
+          width: this.isEnglish() ? '120px' : '80px',
         },
         {
           prop: 'requestMethod',
           id: 4,
-          label: '请求方式',
+          label: this.$t('operlogManage.requestMethod'),
           align: 'center',
-          width: '100px',
+          width: this.isEnglish() ? '120px' : '100px',
         },
         {
           prop: 'operName',
           id: 5,
-          label: '操作人员',
+          label: this.$t('operlogManage.operator'),
           align: 'left',
         },
         {
           prop: 'operIp',
           id: 6,
-          label: '主机',
+          label: this.$t('operlogManage.host'),
           align: 'left',
         },
         {
           type: 'select',
           prop: 'status',
           id: 7,
-          label: '操作状态',
+          label: this.$t('operlogManage.operationStatus'),
           width: '80px',
           align: 'center',
           list: 'sys_common_status',
@@ -269,7 +277,7 @@ export default {
         {
           prop: 'operTime',
           id: 8,
-          label: '操作日期',
+          label: this.$t('operlogManage.operationDate'),
           width: '180px',
           align: 'left',
         },
@@ -277,12 +285,18 @@ export default {
           type: 'operation',
           prop: 'operation',
           id: 9,
-          label: '操作',
+          label: this.$t('common.operation'),
           width: '180px',
           align: 'left',
         },
-      ],
+      ]
+    },
+  },
+  data() {
+    return {
+      active: this,
       listTypeInfo: {},
+      listTypeOptions: {},
       drawer: {
         title: '',
         visible: false,
@@ -323,7 +337,7 @@ export default {
             item.label = item.dictLabel
             item.value = item.dictValue
           })
-          this.list[2].options = res.data
+          this.$set(this.listTypeOptions, 'sys_oper_type', res.data)
           this.$set(this.listTypeInfo, 'sys_oper_type', res.data)
         }
       })
@@ -333,7 +347,7 @@ export default {
             item.label = item.dictLabel
             item.value = item.dictValue
           })
-          this.list[3].options = res.data
+          this.$set(this.listTypeOptions, 'sys_common_status', res.data)
           this.$set(this.listTypeInfo, 'sys_common_status', res.data)
         }
       })
@@ -363,7 +377,7 @@ export default {
         addDictionary({ ...this.uploadForm })
           .then((res) => {
             if (res.code == 200) {
-              this.$message.success('操作成功')
+              this.$message.success(this.$t('common.success'))
               this.handleClose()
               this.searchData()
             }
@@ -373,7 +387,7 @@ export default {
         updateType({ ...this.uploadForm })
           .then((res) => {
             if (res.code == 200) {
-              this.$message.success('操作成功')
+              this.$message.success(this.$t('common.success'))
               this.handleClose()
               this.searchData()
             }
@@ -394,16 +408,20 @@ export default {
     handleDelete(data) {
       console.log(data, 'data???')
       const dictIds = data.operId || this.ids
-      this.$confirm(`是否确认删除日志编号为${dictIds}的数据?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm(
+        this.$t('operlogManage.deleteConfirm', { id: dictIds }),
+        this.$t('common.systemTip'),
+        {
+          confirmButtonText: this.$t('common.sure'),
+          cancelButtonText: this.$t('common.cancel'),
+          type: 'warning',
+        }
+      )
         .then((res) => {
           delOperlog(dictIds)
             .then((res) => {
               if (res.code == 200) {
-                this.$message.success('操作成功')
+                this.$message.success(this.$t('common.success'))
                 this.searchData()
               }
             })
@@ -413,12 +431,12 @@ export default {
     },
     handleClean() {
       this.$modal
-        .confirm('是否确认清空所有操作日志数据项？')
+        .confirm(this.$t('operlogManage.clearConfirm'))
         .then(function () {
           return cleanOperlog()
         })
         .then(() => {
-          this.$modal.msgSuccess('清空成功')
+          this.$modal.msgSuccess(this.$t('operlogManage.clearSuccess'))
           this.searchData()
         })
         .catch(() => {})
@@ -427,7 +445,7 @@ export default {
     openChaneg(data) {
       this.uploadForm = {}
       this.uploadForm = data
-      this.drawer.title = '操作日志详细'
+      this.drawer.title = this.$t('operlogManage.operlogDetail')
       this.drawer.type = 'change'
       this.drawer.visible = true
     },
@@ -554,6 +572,9 @@ export default {
     .el-form-item__content {
       word-break: break-all;
       color: var(--text-color-tertiary);
+      border: 1px solid var(--border-color);
+      padding: 0px 10px;
+      border-radius: 4px;
     }
   }
 

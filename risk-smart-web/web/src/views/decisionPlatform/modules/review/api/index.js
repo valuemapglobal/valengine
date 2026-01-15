@@ -4,7 +4,7 @@
 
 import request from '@/utils/request'
 
-const url =  process.env.VUE_APP_ENV === 'production'? '/prod-api/smartDecision' : '/dev-api/smartDecision'
+const url =  process.env.VUE_APP_ENV === 'production'? '/prod-api/smartDecision' : '/dev-api/prod-api/smartDecision'
 
 
 //获取我的待处理审批任务

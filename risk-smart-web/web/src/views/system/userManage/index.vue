@@ -13,9 +13,11 @@
               $refs.AddUser.show()
             }
           "
-          >新增
+          >{{ $t('common.add') }}
         </el-button>
-        <el-button plain @click="handleExport">导出 </el-button>
+        <el-button plain @click="handleExport"
+          >{{ $t('common.export') }}
+        </el-button>
       </div>
     </div>
     <div class="content">
@@ -75,20 +77,20 @@
                 </div>
                 <div v-if="['operation'].includes(col.prop)">
                   <span class="el-dropdown-link" @click="edit(row)">
-                    修改
+                    {{ $t('common.modify') }}
                   </span>
-                  <span class="el-dropdown-link" @click="openResetPwd(row)"
-                    >重置密码</span
-                  >
-                  <span class="el-dropdown-link" @click="assignRoles(row)"
-                    >分配角色</span
-                  >
+                  <span class="el-dropdown-link" @click="openResetPwd(row)">{{
+                    $t('userManage.resetPassword')
+                  }}</span>
+                  <span class="el-dropdown-link" @click="assignRoles(row)">{{
+                    $t('userManage.assignRoles')
+                  }}</span>
                   <span
                     style="color: red"
                     class="el-dropdown-link"
                     @click="remove(row)"
                   >
-                    删除
+                    {{ $t('common.delete') }}
                   </span>
                 </div>
               </template>
@@ -141,12 +143,12 @@ export default {
     Reset,
     AssignRoles,
   },
-  data() {
-    return {
-      list: [
+  computed: {
+    list() {
+      return [
         {
           type: 'input',
-          placeholder: '请输入部门名称',
+          placeholder: this.$t('userManage.inputDeptName'),
           prop: {
             key: 'deptName',
             value: null,
@@ -154,7 +156,7 @@ export default {
         },
         {
           type: 'input',
-          placeholder: '请输入用户名称',
+          placeholder: this.$t('userManage.inputUserName'),
           prop: {
             key: 'userName',
             value: null,
@@ -162,7 +164,7 @@ export default {
         },
         {
           type: 'input',
-          placeholder: '请输入手机号码',
+          placeholder: this.$t('userManage.inputPhoneNumber'),
           prop: {
             key: 'phonenumber',
             value: null,
@@ -170,15 +172,15 @@ export default {
         },
         {
           type: 'select',
-          placeholder: '请输入选择用户状态',
+          placeholder: this.$t('userManage.selectUserStatus'),
           options: [
             {
               value: '0',
-              label: '正常',
+              label: this.$t('common.normal'),
             },
             {
               value: '1',
-              label: '停用',
+              label: this.$t('common.disabled'),
             },
           ],
           prop: {
@@ -188,56 +190,62 @@ export default {
         },
         {
           type: 'time',
-          placeholder: '请选择时间',
+          placeholder: this.$t('userManage.selectTime'),
           prop: {
             key: 'params',
             value: null,
           },
         },
-      ],
+      ]
+    },
+    tableHeader() {
+      return [
+        {
+          prop: 'userId',
+          id: 1,
+          label: this.$t('userManage.userId'),
+        },
+        {
+          prop: 'userName',
+          id: 2,
+          label: this.$t('userManage.userName'),
+        },
+        {
+          prop: 'nickName',
+          id: 3,
+          label: this.$t('userManage.nickName'),
+        },
+        {
+          prop: 'enterpriseName',
+          id: 4,
+          label: this.$t('userManage.enterpriseName'),
+        },
+        {
+          prop: 'dept',
+          id: 5,
+          label: this.$t('userManage.dept'),
+        },
+        {
+          prop: 'status',
+          id: 6,
+          label: this.$t('common.status'),
+        },
+        {
+          prop: 'operation',
+          id: 7,
+          width: this.isEnglish() ? '320px' : '220px',
+          label: this.$t('common.operation'),
+        },
+      ]
+    },
+  },
+  data() {
+    return {
       data: [],
       defaultProps: {
         children: 'children',
         label: 'label',
       },
-      tableHeader: [
-        {
-          prop: 'userId',
-          id: 1,
-          label: '用户编号',
-        },
-        {
-          prop: 'userName',
-          id: 2,
-          label: '用户名称',
-        },
-        {
-          prop: 'nickName',
-          id: 3,
-          label: '用户昵称',
-        },
-        {
-          prop: 'enterpriseName',
-          id: 4,
-          label: '用户企业',
-        },
-        {
-          prop: 'dept',
-          id: 5,
-          label: '部门',
-        },
-        {
-          prop: 'status',
-          id: 6,
-          label: '状态',
-        },
-        {
-          prop: 'operation',
-          id: 7,
-          width: '220px',
-          label: '操作',
-        },
-      ],
       tableData: [],
       searchFrom: {
         pageNum: 1,
@@ -292,11 +300,11 @@ export default {
         return arr
       }, [])
       this.$confirm(
-        `是否确认删除用户编号为"${data.join(',')}"的数据项？`,
-        '系统提示',
+        this.$t('userManage.deleteConfirmBatch', { ids: data.join(',') }),
+        this.$t('common.systemTip'),
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+          confirmButtonText: this.$t('common.sure'),
+          cancelButtonText: this.$t('common.cancel'),
           type: 'warning',
         }
       )
@@ -305,7 +313,7 @@ export default {
             this.getLists(this.deptId)
             this.$message({
               type: 'success',
-              message: '操作成功!',
+              message: this.$t('common.success'),
             })
           })
         })
@@ -313,11 +321,11 @@ export default {
     },
     remove(data) {
       this.$confirm(
-        `是否确认删除用户编号为"${data.userId}"的数据项？`,
-        '系统提示',
+        this.$t('userManage.deleteConfirm', { id: data.userId }),
+        this.$t('common.systemTip'),
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+          confirmButtonText: this.$t('common.sure'),
+          cancelButtonText: this.$t('common.cancel'),
           type: 'warning',
         }
       )
@@ -326,7 +334,7 @@ export default {
             this.searchData(this.$refs.search.formData)
             this.$message({
               type: 'success',
-              message: '操作成功!',
+              message: this.$t('common.success'),
             })
           })
         })
@@ -355,11 +363,11 @@ export default {
     },
     switchChange(bl, data) {
       let st = !bl
-        ? `确认要"停用""${data.userName}"用户吗？`
-        : `确认要"启用""${data.userName}"用户吗？`
-      this.$confirm(st, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+        ? this.$t('userManage.disableConfirm', { name: data.userName })
+        : this.$t('userManage.enableConfirm', { name: data.userName })
+      this.$confirm(st, this.$t('userManage.tip'), {
+        confirmButtonText: this.$t('common.sure'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       })
         .then(() => {
@@ -367,7 +375,7 @@ export default {
             (res) => {
               this.$message({
                 type: 'success',
-                message: '操作成功!',
+                message: this.$t('common.success'),
               })
             }
           )

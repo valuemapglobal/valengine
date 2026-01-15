@@ -21,7 +21,7 @@
         <template #trigger>
           <div class="upload">
             <img src="@/assets/images/comment/upload.png" alt="" />
-            下载模板并完善信息后，可直接将文件拖拽至此处进行上传
+            {{ $t('monitor.uploadTip') }}
           </div>
         </template>
       </el-upload>
@@ -44,14 +44,16 @@
       </div>
 
       <div class="uploadTip">
-        <div class="title">上传提示：</div>
+        <div class="title">{{ $t('monitor.uploadTipTitle') }}</div>
         <p>
-          1.请根据模版格式进行上传
-          <span @click="downloadTemplate"> 下载模版 </span>
+          {{ $t('monitor.uploadTip1') }}
+          <span @click="downloadTemplate">
+            {{ $t('monitor.downloadTemplate') }}
+          </span>
         </p>
-        <p>2.单个任务只能由同一种类型的监控主体</p>
-        <p>3.单次上传数量最多为50个，超出该数量的部分将不计入本次导入名单中</p>
-        <p>4.支持的文件格式：.xlsx, .xls, .csv</p>
+        <p>{{ $t('monitor.uploadTip2') }}</p>
+        <p>{{ $t('monitor.uploadTip3') }}</p>
+        <p>{{ $t('monitor.uploadTip4') }}</p>
       </div>
     </div>
 
@@ -62,7 +64,7 @@
         :loading="uploading"
         :disabled="fileList.length === 0"
       >
-        {{ uploading ? '导入中' : '导入' }}
+        {{ uploading ? $t('monitor.importing') : $t('monitor.import') }}
       </el-button>
     </div>
   </el-dialog>
@@ -86,7 +88,7 @@ export default {
     return {
       dialog: {
         visible: false,
-        title: '批量添加监测名单',
+        title: '',
         width: '560px',
       },
       fileList: [],
@@ -96,6 +98,7 @@ export default {
   methods: {
     handleOpen() {
       this.fileList = []
+      this.dialog.title = this.$t('monitor.batchAddMonitorList')
       this.dialog.visible = true
     },
     handleClose() {
@@ -122,13 +125,13 @@ export default {
         'text/csv',
       ].includes(file.type)
       if (!isValidType) {
-        this.$message.error('只能上传 Excel 或 CSV 文件!')
+        this.$message.error(this.$t('monitor.onlyExcelOrCsv'))
         return false
       }
 
       const isLt10M = file.size / 1024 / 1024 < 10
       if (!isLt10M) {
-        this.$message.error('文件大小不能超过 10MB!')
+        this.$message.error(this.$t('monitor.fileSizeLimit'))
         return false
       }
 
@@ -147,9 +150,13 @@ export default {
       const aEl = document.createElement('a')
 
       // 正确设置下载路径 (href) 和文件名 (download)
-      const fileName = `${
-        this.subjectType === 0 ? '企业' : '个人'
-      }批量监测模版.xlsx`
+      const subjectTypeName =
+        this.subjectType === 0
+          ? this.$t('monitor.enterprise')
+          : this.$t('monitor.personal')
+      const fileName = `${subjectTypeName}${this.$t(
+        'monitor.batchMonitorTemplate'
+      )}`
       const filePath = `${
         window.location.origin + window.location.pathname
       }/${fileName}` // 👉 替换为实际模板路径
@@ -169,7 +176,7 @@ export default {
     // 确认上传
     async handleConfirmUpload() {
       if (this.fileList.length === 0) {
-        this.$message.warning('请先选择要上传的文件')
+        this.$message.warning(this.$t('monitor.pleaseSelectFile'))
         return
       }
 
@@ -183,7 +190,7 @@ export default {
         batchAdd(formData)
           .then((res) => {
             if (res.code == 200) {
-              this.$message.success('文件上传成功！')
+              this.$message.success(this.$t('monitor.uploadSuccess'))
               this.handleClose()
               this.$emit('refresh')
             }
@@ -194,7 +201,7 @@ export default {
           })
       } catch (error) {
         console.error('上传失败:', error)
-        this.$message.error('文件上传失败，请重试')
+        this.$message.error(this.$t('monitor.uploadFailed'))
       }
     },
   },
@@ -229,6 +236,7 @@ export default {
     align-items: center;
     background: var(--primary-color-lighter);
     color: rgba(#000, 0.85);
+    padding: 0px 20px;
 
     img {
       width: 65px;

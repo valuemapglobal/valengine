@@ -9,11 +9,23 @@
       :model="ruleForm"
       :rules="rules"
       ref="ruleForm"
-      :label-width="grade == 3 ? '160px' : '110px'"
+      :label-width="
+        grade == 3
+          ? isEnglish()
+            ? '240px'
+            : '160px'
+          : isEnglish()
+          ? '180px'
+          : '110px'
+      "
       class="demo-ruleForm"
     >
       <el-form-item
-        :label="grade == 2 ? '关联元数据' : '关联元数据/特征变量'"
+        :label="
+          grade == 2
+            ? $t('dataCenter.relateMetadata')
+            : $t('dataCenter.relateMetadataOrFeatureVariable')
+        "
         v-if="
           grade != 1 &&
           ruleForm.id &&
@@ -30,28 +42,31 @@
           clearable
         />
       </el-form-item>
-      <el-form-item label="模块名称" prop="name">
+      <el-form-item :label="$t('dataCenter.moduleName')" prop="name">
         <el-input
           v-model="ruleForm.name"
           @change="checkHandle($event, 'name')"
-          placeholder="请输入"
+          :placeholder="$t('common.pleaseInput')"
         />
       </el-form-item>
-      <el-form-item label="模块唯一标识" prop="code">
+      <el-form-item
+        :label="$t('dataCenter.moduleUniqueIdentifier')"
+        prop="code"
+      >
         <el-input
           v-model="ruleForm.code"
           @input="(e) => (ruleForm.code = e.replace(/\s*/g, ''))"
           @change="checkHandle($event, 'code')"
-          placeholder="请输入"
+          :placeholder="$t('common.pleaseInput')"
         />
       </el-form-item>
       <el-form-item>
         <span slot="label">
-          接口地址
+          {{ $t('dataCenter.interfaceAddress') }}
           <el-tooltip
             class="item"
             effect="dark"
-            content="通过此API地址访问此模块对应的数据"
+            :content="$t('dataCenter.interfaceAddressTip')"
             placement="top"
           >
             <i class="el-icon-question"></i>
@@ -59,34 +74,58 @@
         </span>
         <el-input
           :value="InterfaceAddress"
-          placeholder="请输入"
+          :placeholder="$t('common.pleaseInput')"
           disabled
         ></el-input>
       </el-form-item>
-      <el-form-item label="模块类型" prop="type">
-        <el-select v-model="ruleForm.type" placeholder="请选择">
-          <el-option label="对象" :value="0"></el-option>
-          <el-option label="集合" :value="1" disabled></el-option>
+      <el-form-item :label="$t('dataCenter.moduleType')" prop="type">
+        <el-select
+          v-model="ruleForm.type"
+          :placeholder="$t('common.pleaseSelect')"
+        >
+          <el-option
+            :label="$t('dataCenter.objectTypeValue')"
+            :value="0"
+          ></el-option>
+          <el-option
+            :label="$t('dataCenter.collection')"
+            :value="1"
+            disabled
+          ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="数据分类" prop="dataType">
+      <el-form-item
+        :label="$t('dataCenter.dataClassification')"
+        prop="dataType"
+      >
         <el-radio-group v-model="ruleForm.dataType">
-          <el-radio :label="0" border>企业</el-radio>
-          <el-radio :label="1" border>个体</el-radio>
-          <el-radio :label="2" border>实体资产</el-radio>
-          <el-radio :label="3" border>供应链</el-radio>
+          <el-radio :label="0" border>{{
+            $t('dataCenter.enterprise')
+          }}</el-radio>
+          <el-radio :label="1" border>{{
+            $t('dataCenter.individual')
+          }}</el-radio>
+          <el-radio :label="2" border>{{
+            $t('dataCenter.entityAsset')
+          }}</el-radio>
+          <el-radio :label="3" border>{{
+            $t('dataCenter.supplyChain')
+          }}</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="备注">
-        <el-input v-model="ruleForm.remark" placeholder="请输入"></el-input>
+      <el-form-item :label="$t('common.remark')">
+        <el-input
+          v-model="ruleForm.remark"
+          :placeholder="$t('common.pleaseInput')"
+        ></el-input>
       </el-form-item>
       <el-form-item v-if="ruleForm.id">
         <div slot="label">
-          请求体展示
+          {{ $t('dataCenter.requestBodyDisplay') }}
           <el-tooltip
             class="item"
             effect="dark"
-            content="关联元数据时自动生成"
+            :content="$t('dataCenter.requestBodyAutoGenerateTip')"
             placement="top"
           >
             <svg
@@ -125,9 +164,18 @@
           :row-style="IntelligentExtensionRowStyle"
           style="width: 100%"
         >
-          <el-table-column prop="nameEn" label="参数名称"></el-table-column>
-          <el-table-column prop="nameZh" label="说明"></el-table-column>
-          <el-table-column label="参数类型" align="center">
+          <el-table-column
+            prop="nameEn"
+            :label="$t('dataCenter.parameterName')"
+          ></el-table-column>
+          <el-table-column
+            prop="nameZh"
+            :label="$t('dataCenter.parameterDescription')"
+          ></el-table-column>
+          <el-table-column
+            :label="$t('dataCenter.parameterType')"
+            align="center"
+          >
             <template slot-scope="{ row }">
               <el-tag
                 :type="typeOptions[row.type].type"
@@ -141,10 +189,12 @@
       </el-form-item>
     </el-form>
     <div class="drawer-footer">
-      <el-button type="primary" :loading="loading" @click="onSubmit"
-        >提交</el-button
-      >
-      <el-button :loading="loading" @click="closeDrawer">取消</el-button>
+      <el-button type="primary" :loading="loading" @click="onSubmit">{{
+        $t('common.submit')
+      }}</el-button>
+      <el-button :loading="loading" @click="closeDrawer">{{
+        $t('common.cancel')
+      }}</el-button>
     </div>
   </el-drawer>
 </template>
@@ -194,32 +244,9 @@ export default {
         dataType: '', //数据分类：0-企业，1-个人，2-实体资产，3-供应链
         remark: undefined,
       },
-      rules: {
-        metadata: [
-          { required: true, message: '请选择关联元数据', trigger: 'blur' },
-        ],
-        name: [{ required: true, message: '请输入模块名称', trigger: 'blur' }],
-        code: [
-          { required: true, message: '请输入模块唯一标识', trigger: 'blur' },
-        ],
-        type: [{ required: true, message: '请选择模块类型', trigger: 'blur' }],
-        dataType: [
-          { required: true, message: '请选择数据分类', trigger: 'blur' },
-        ],
-      },
+      rules: {},
       //请求体展示数据
       tableData: [],
-      //参数类型
-      typeOptions: {
-        0: { type: 'primary', name: '数值' },
-        1: { type: 'success', name: '字符串' },
-        2: { type: 'success', name: '日期' },
-        3: { type: 'primary', name: '对象' },
-        4: { type: 'primary', name: '数组' },
-        5: { type: 'success', name: '文件' },
-        6: { type: 'success', name: '布尔' },
-        7: { type: 'primary', name: '小数' },
-      },
       //提交按钮loading
       loading: false,
     }
@@ -229,6 +256,57 @@ export default {
       return `localhost:8990/${
         this.grade == 2 ? 'feature' : 'metrics'
       }/entry-point/${this.ruleForm.code}`
+    },
+    rules() {
+      return {
+        metadata: [
+          {
+            required: true,
+            message: this.$t('dataCenter.pleaseSelectRelateMetadata'),
+            trigger: 'blur',
+          },
+        ],
+        name: [
+          {
+            required: true,
+            message: this.$t('dataCenter.pleaseInputModuleName'),
+            trigger: 'blur',
+          },
+        ],
+        code: [
+          {
+            required: true,
+            message: this.$t('dataCenter.pleaseInputModuleUniqueIdentifier'),
+            trigger: 'blur',
+          },
+        ],
+        type: [
+          {
+            required: true,
+            message: this.$t('dataCenter.pleaseSelectModuleType'),
+            trigger: 'blur',
+          },
+        ],
+        dataType: [
+          {
+            required: true,
+            message: this.$t('dataCenter.pleaseSelectDataClassification'),
+            trigger: 'blur',
+          },
+        ],
+      }
+    },
+    typeOptions() {
+      return {
+        0: { type: 'primary', name: this.$t('dataCenter.number') },
+        1: { type: 'success', name: this.$t('dataCenter.string') },
+        2: { type: 'success', name: this.$t('dataCenter.date') },
+        3: { type: 'primary', name: this.$t('dataCenter.objectTypeValue') },
+        4: { type: 'primary', name: this.$t('dataCenter.array') },
+        5: { type: 'success', name: this.$t('dataCenter.file') },
+        6: { type: 'success', name: this.$t('dataCenter.boolean') },
+        7: { type: 'primary', name: this.$t('dataCenter.decimal') },
+      }
     },
   },
   methods: {
@@ -276,12 +354,17 @@ export default {
       this.drawer = true
     },
     closeDrawer(done) {
-      if (this.rules.name.length >= 2) {
-        this.rules.name.splice(1, 2)
+      console.log(this.rules, 'this.rules')
+
+      if (Object.keys(this.rules).length) {
+        if (this.rules.name.length >= 2) {
+          this.rules.name.splice(1, 2)
+        }
+        if (this.rules.code.length >= 2) {
+          this.rules.code.splice(1, 2)
+        }
       }
-      if (this.rules.code.length >= 2) {
-        this.rules.code.splice(1, 2)
-      }
+
       this.$refs.ruleForm.clearValidate()
       if (typeof done === 'function') {
         done()
@@ -309,14 +392,16 @@ export default {
                 Object.assign(params, {
                   name: this.ruleForm.name,
                 })
-                validatorInner = '当前模块名称重复'
+                validatorInner = this.$t('dataCenter.moduleNameDuplicate')
                 break
               case 'code':
                 API = featureModuleCheckCode
                 Object.assign(params, {
                   code: this.ruleForm.code,
                 })
-                validatorInner = '当前模块唯一标识重复'
+                validatorInner = this.$t(
+                  'dataCenter.moduleUniqueIdentifierDuplicate'
+                )
                 break
             }
             break
@@ -328,14 +413,16 @@ export default {
                 Object.assign(params, {
                   name: this.ruleForm.name,
                 })
-                validatorInner = '当前模块名称重复'
+                validatorInner = this.$t('dataCenter.moduleNameDuplicate')
                 break
               case 'code':
                 API = analysisModuleCheckCode
                 Object.assign(params, {
                   code: this.ruleForm.code,
                 })
-                validatorInner = '当前模块唯一标识重复'
+                validatorInner = this.$t(
+                  'dataCenter.moduleUniqueIdentifierDuplicate'
+                )
                 break
             }
             break

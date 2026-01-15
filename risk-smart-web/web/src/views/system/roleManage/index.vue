@@ -3,7 +3,9 @@
     <div class="statusBar">
       <Search :list="list" @search="searchData" />
       <div class="btnss">
-        <el-button type="primary" class="add" @click="openAdd">新增</el-button>
+        <el-button type="primary" class="add" @click="openAdd">{{
+          $t('common.add')
+        }}</el-button>
       </div>
     </div>
     <div class="content">
@@ -49,14 +51,14 @@
                   "
                 >
                   <span class="el-dropdown-link" @click="edit(row)">
-                    修改
+                    {{ $t('common.modify') }}
                   </span>
                   <span
                     style="color: red"
                     class="el-dropdown-link"
                     @click="remove(row)"
                   >
-                    删除
+                    {{ $t('common.delete') }}
                   </span>
                 </div>
               </template>
@@ -102,12 +104,12 @@ export default {
     Upload,
     DataAccess,
   },
-  data() {
-    return {
-      list: [
+  computed: {
+    list() {
+      return [
         {
           type: 'input',
-          placeholder: '请输入角色名称',
+          placeholder: this.$t('roleManage.inputRoleName'),
           prop: {
             key: 'roleName',
             value: null,
@@ -115,7 +117,7 @@ export default {
         },
         {
           type: 'input',
-          placeholder: '请输入权限字符',
+          placeholder: this.$t('roleManage.inputRoleKey'),
           prop: {
             key: 'roleKey',
             value: null,
@@ -123,15 +125,15 @@ export default {
         },
         {
           type: 'select',
-          placeholder: '请输入选择角色状态',
+          placeholder: this.$t('roleManage.selectRoleStatus'),
           options: [
             {
               value: '0',
-              label: '正常',
+              label: this.$t('common.normal'),
             },
             {
               value: '1',
-              label: '停用',
+              label: this.$t('common.disabled'),
             },
           ],
           prop: {
@@ -141,55 +143,61 @@ export default {
         },
         {
           type: 'time',
-          placeholder: '请选择时间',
+          placeholder: this.$t('userManage.selectTime'),
           prop: {
             key: 'params',
             value: null,
           },
         },
-      ],
-      defaultProps: {
-        children: 'children',
-        label: 'label',
-      },
-      tableHeader: [
+      ]
+    },
+    tableHeader() {
+      return [
         {
           prop: 'roleId',
           id: 1,
-          label: '角色编号',
+          label: this.$t('roleManage.roleId'),
         },
         {
           prop: 'roleName',
           id: 2,
-          label: '角色名称',
+          label: this.$t('roleManage.roleName'),
         },
         {
           prop: 'roleKey',
           id: 3,
-          label: '权限字符',
+          label: this.$t('roleManage.roleKey'),
         },
         {
           prop: 'roleSort',
           id: 4,
-          label: '显示顺序',
+          label: this.$t('roleManage.roleSort'),
         },
         {
           prop: 'status',
           id: 5,
-          label: '状态',
+          label: this.$t('common.status'),
         },
         {
           prop: 'createTime',
           id: 6,
-          label: '创建时间',
+          label: this.$t('common.createTime'),
         },
         {
           prop: 'operation',
           id: 7,
           width: '220px',
-          label: '操作',
+          label: this.$t('common.operation'),
         },
-      ],
+      ]
+    },
+  },
+  data() {
+    return {
+      defaultProps: {
+        children: 'children',
+        label: 'label',
+      },
       tableData: [],
       searchFrom: {
         pageNum: 1,
@@ -267,11 +275,11 @@ export default {
      },*/
     remove(data) {
       this.$confirm(
-        `是否确认删除用户编号为"${data.roleId}"的数据项？`,
-        '系统提示',
+        this.$t('roleManage.deleteConfirm', { id: data.roleId }),
+        this.$t('common.systemTip'),
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+          confirmButtonText: this.$t('common.sure'),
+          cancelButtonText: this.$t('common.cancel'),
           type: 'warning',
         }
       )
@@ -280,7 +288,7 @@ export default {
             this.getLists(this.deptId)
             this.$message({
               type: 'success',
-              message: '操作成功!',
+              message: this.$t('common.success'),
             })
           })
         })
@@ -292,35 +300,24 @@ export default {
         // ...deptId,
         ...data,
       }).then((res) => {
-        // 兼容两种返回格式：res.rows 或 res.data
-        const rows = res.rows || res.data || []
-        if (Array.isArray(rows)) {
-          this.tableData = rows.reduce((arr, item) => {
-            arr.push({
-              ...item,
-              status: !Number(item.status),
-            })
-            return arr
-          }, [])
-          this.totalNum = res.total || rows.length || 0
-        } else {
-          this.tableData = []
-          this.totalNum = 0
-        }
-      }).catch((err) => {
-        console.error('获取角色列表失败:', err)
-        this.tableData = []
-        this.totalNum = 0
+        this.tableData = res.rows.reduce((arr, item) => {
+          arr.push({
+            ...item,
+            status: !Number(item.status),
+          })
+          return arr
+        }, [])
+        this.totalNum = res.total
       })
     },
     switchChange(bl, data) {
       console.log(bl, data)
       let st = !bl
-        ? `确认要"停用""${data.roleName}"用户吗？`
-        : `确认要"启用""${data.roleName}"用户吗？`
-      this.$confirm(st, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+        ? this.$t('roleManage.disableConfirm', { name: data.roleName })
+        : this.$t('roleManage.enableConfirm', { name: data.roleName })
+      this.$confirm(st, this.$t('roleManage.tip'), {
+        confirmButtonText: this.$t('common.sure'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       })
         .then(() => {
@@ -328,7 +325,7 @@ export default {
             (res) => {
               this.$message({
                 type: 'success',
-                message: '操作成功!',
+                message: this.$t('common.success'),
               })
             }
           )
@@ -337,7 +334,7 @@ export default {
           data.status = !bl
           this.$message({
             type: 'info',
-            message: '已取消',
+            message: this.$t('roleManage.cancelled'),
           })
         })
     },

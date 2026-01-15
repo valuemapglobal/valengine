@@ -1,13 +1,17 @@
 <template>
-  <el-dialog title="重置密码" :visible.sync="dialogVisible" width="507px">
+  <el-dialog
+    :title="$t('userManage.resetPassword')"
+    :visible.sync="dialogVisible"
+    width="507px"
+  >
     <el-form
       :model="ruleForm"
       :rules="rules"
       ref="ruleForm"
-      label-width="100px"
+      :label-width="isEnglish() ? '140px' : '100px'"
       class="demo-ruleForm"
     >
-      <el-form-item label="新的密码" prop="password">
+      <el-form-item :label="$t('userManage.newPassword')" prop="password">
         <el-input
           type="password"
           show-password
@@ -17,8 +21,12 @@
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
-      <el-button class="btn" @click="submit">确认修改</el-button>
-      <el-button @click="dialogVisible = false">取消</el-button>
+      <el-button class="btn" @click="submit">{{
+        $t('userManage.confirmModify')
+      }}</el-button>
+      <el-button @click="dialogVisible = false">{{
+        $t('common.cancel')
+      }}</el-button>
     </span>
   </el-dialog>
 </template>
@@ -33,18 +41,26 @@ export default {
         password: null,
       },
       userId: null,
-      rules: {
+    }
+  },
+  computed: {
+    rules() {
+      return {
         password: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('userManage.inputPasswordRequired'),
+            trigger: 'blur',
+          },
           {
             min: 5,
             max: 20,
-            message: '用户密码长度必须介于 5 和 20 之间',
+            message: this.$t('userManage.passwordLengthMsg'),
             trigger: 'blur',
           },
         ],
-      },
-    }
+      }
+    },
   },
   methods: {
     submit() {
@@ -60,7 +76,7 @@ export default {
               this.$emit('success')
               this.$message({
                 type: 'success',
-                message: '操作成功!',
+                message: this.$t('common.success'),
               })
             })
             .catch(() => {

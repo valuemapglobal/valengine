@@ -6,7 +6,7 @@
         <el-input
           type="text"
           v-model="queryParams.name"
-          placeholder="请输入"
+          :placeholder="$t('decisionPlatform.inputPlaceholder')"
           clearable
           @clear="search"
           @keyup.enter.native="search"
@@ -175,7 +175,7 @@
           alt="load-more"
           class="rotate"
         />
-        {{ '加载更多' }}
+        {{ $t('decisionPlatform.loadMore') }}
       </div>
     </main>
     <el-dialog
@@ -183,11 +183,19 @@
       :visible.sync="addVisible"
       width="26%"
     >
-      <el-input placeholder="请输入产品名称" v-model.trim="nameValue" clearable>
+      <el-input
+        :placeholder="$t('decisionPlatform.inputProductName')"
+        v-model.trim="nameValue"
+        clearable
+      >
       </el-input>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="addVisible = false">取消</el-button>
-        <el-button type="primary" @click="addFormSubmit">确定</el-button>
+        <el-button @click="addVisible = false">{{
+          $t('common.cancel')
+        }}</el-button>
+        <el-button type="primary" @click="addFormSubmit">{{
+          $t('common.sure')
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -217,7 +225,7 @@ export default {
       activeIndex: 0,
       showLoadMore: false,
       loadingShow: true, //列表加载
-      addOrEditProductTitle: '',
+      addOrEditType: '', // 'add' or 'edit'
       addVisible: false,
       nameValue: '',
       editId: undefined,
@@ -225,6 +233,11 @@ export default {
   },
   computed: {
     ...mapState(['dataRisk']),
+    addOrEditProductTitle() {
+      return this.addOrEditType === 'add'
+        ? this.$t('decisionPlatform.add')
+        : this.$t('decisionPlatform.edit')
+    },
   },
   mounted() {
     this.dataList = []
@@ -242,19 +255,19 @@ export default {
     },
     addBtnClick() {
       //初始化表单
-      this.addOrEditProductTitle = '新增'
+      this.addOrEditType = 'add'
       this.nameValue = ''
       this.addVisible = true
     },
     addFormSubmit() {
       const name = this.nameValue
       if (!name) {
-        this.$message.warning('请输入产品名称')
+        this.$message.warning(this.$t('decisionPlatform.inputProductName'))
       } else {
         this.addVisible = false
         let params = { name },
           API = newlyAddProduct
-        if (this.addOrEditProductTitle === '编辑') {
+        if (this.addOrEditType === 'edit') {
           Object.assign(params, {
             id: this.editId,
           })
@@ -262,22 +275,26 @@ export default {
         }
         API(params).then((res) => {
           if (res.code === 200) {
-            this.$message.success(`${this.addOrEditProductTitle}成功`)
+            const successMsg =
+              this.addOrEditType === 'add'
+                ? this.$t('decisionPlatform.addSuccess')
+                : this.$t('decisionPlatform.editSuccess')
+            this.$message.success(successMsg)
             this.search()
           }
         })
       }
     },
     editProductHandle(item) {
-      this.addOrEditProductTitle = '编辑'
+      this.addOrEditType = 'edit'
       this.nameValue = item.productName
       this.editId = item.id
       this.addVisible = true
     },
     deleteProductHandle(item) {
-      this.$confirm('是否确认删除?', '', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('common.deleteConfirm'), '', {
+        confirmButtonText: this.$t('common.sure'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       })
         .then(() => {
@@ -286,7 +303,7 @@ export default {
               if (res.data) {
                 this.$message({
                   type: 'success',
-                  message: '删除成功!',
+                  message: this.$t('decisionPlatform.deleteSuccess'),
                 })
 
                 this.search()
@@ -302,7 +319,7 @@ export default {
         .catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消删除',
+            message: this.$t('decisionPlatform.deleteCancelled'),
           })
         })
     },

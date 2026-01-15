@@ -5,14 +5,14 @@
         <el-input
           style="height: 42px; width: 240px; margin-right: 10px"
           v-model="searchFrom.menuName"
-          placeholder="请输入菜单名称"
+          :placeholder="$t('menuManage.inputMenuName')"
           size="normal"
           clearable
         ></el-input>
         <el-select
           style="height: 42px; width: 240px; margin-right: 10px"
           v-model="searchFrom.status"
-          placeholder="菜单状态"
+          :placeholder="$t('menuManage.menuStatus')"
           clearable
           @clear="searchFrom.status = null"
         >
@@ -25,9 +25,9 @@
           </el-option>
         </el-select>
       </div>
-      <el-button class="btn" size="default" @click="add" icon="el-icon-plus"
-        >增加</el-button
-      >
+      <el-button class="btn" size="default" @click="add" icon="el-icon-plus">{{
+        $t('menuManage.add')
+      }}</el-button>
     </div>
     <div class="main">
       <el-table
@@ -65,19 +65,19 @@
                 type="text"
                 style="color: var(--primary-color)"
                 @click="add(row)"
-                >新增</el-button
+                >{{ $t('common.add') }}</el-button
               >
               <el-button
                 type="text"
                 style="color: var(--primary-color)"
                 @click="modifyThe(row)"
-                >修改</el-button
+                >{{ $t('common.modify') }}</el-button
               >
               <el-button
                 type="text"
                 style="color: #fa5151"
                 @click="Delete(row.menuId, row.menuName)"
-                >删除</el-button
+                >{{ $t('common.delete') }}</el-button
               >
             </div>
             <div
@@ -131,6 +131,49 @@ export default {
   components: {
     Drawer,
   },
+  computed: {
+    tableHeader() {
+      return [
+        {
+          prop: 'menuName',
+          id: 1,
+          label: this.$t('menuManage.menuName'),
+          width: 'auto',
+        },
+        {
+          prop: 'perms',
+          id: 3,
+          label: this.$t('menuManage.perms'),
+          width: 'auto',
+        },
+        {
+          prop: 'path',
+          id: 4,
+          label: this.$t('menuManage.path'),
+          width: 'auto',
+        },
+        {
+          prop: 'status',
+          id: 5,
+          label: this.$t('common.status'),
+          width: 200,
+        },
+        {
+          prop: 'createTime',
+          id: 6,
+          label: this.$t('common.createTime'),
+          width: 200,
+        },
+        {
+          prop: 'operation',
+          id: 7,
+          label: this.$t('common.operation'),
+          width: 160,
+          align: 'center',
+        },
+      ]
+    },
+  },
   data() {
     return {
       totalNum: 0,
@@ -145,51 +188,6 @@ export default {
       //表格数据
       tableData: [],
       tableLoading: false,
-      tableHeader: [
-        {
-          prop: 'menuName',
-          id: 1,
-          label: '菜单名称',
-          width: 'auto',
-        },
-        // {
-        //   prop: 'icon',
-        //   id: 2,
-        //   label: '图标',
-        //   width: 150,
-        // },
-        {
-          prop: 'perms',
-          id: 3,
-          label: '权限标识',
-          width: 'auto',
-        },
-        {
-          prop: 'path',
-          id: 4,
-          label: '组件路径',
-          width: 'auto',
-        },
-        {
-          prop: 'status',
-          id: 5,
-          label: '状态',
-          width: 200,
-        },
-        {
-          prop: 'createTime',
-          id: 6,
-          label: '创建时间',
-          width: 200,
-        },
-        {
-          prop: 'operation',
-          id: 7,
-          label: '操作',
-          width: 160,
-          align: 'center',
-        },
-      ],
       TypeOptions: [],
     }
   },
@@ -215,9 +213,9 @@ export default {
     // 处理状态
     processingState: function (val) {
       if (val == 0) {
-        return '正常'
+        return this.$t('common.normal')
       } else {
-        return '停用'
+        return this.$t('common.disabled')
       }
     },
   },
@@ -298,18 +296,22 @@ export default {
     },
     // 删除菜单
     Delete(id, title) {
-      this.$confirm(`是否确认删除"${title}"的数据项吗?`, '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm(
+        this.$t('menuManage.deleteConfirm', { name: title }),
+        this.$t('common.systemTip'),
+        {
+          confirmButtonText: this.$t('common.sure'),
+          cancelButtonText: this.$t('common.cancel'),
+          type: 'warning',
+        }
+      )
         .then(async () => {
           await DeleteMenuList(id)
           // 重新获取菜单列表
           this.toGetMenuList()
           this.$message({
             type: 'success',
-            message: '删除成功!',
+            message: this.$t('common.success'),
           })
         })
         .catch(() => {

@@ -9,7 +9,7 @@
           :disabled="isDel"
           icon="el-icon-delete"
           @click="handleDelete"
-          >删除</el-button
+          >{{ $t('common.delete') }}</el-button
         >
         <el-button
           type="danger"
@@ -17,14 +17,14 @@
           :disabled="isDel"
           icon="el-icon-delete"
           @click="handleClean"
-          >清空</el-button
+          >{{ $t('operlogManage.clear') }}</el-button
         >
         <el-button
           type="warning"
           plain
           icon="el-icon-download"
           @click="handleExport"
-          >导出</el-button
+          >{{ $t('common.export') }}</el-button
         >
       </div>
     </div>
@@ -101,87 +101,8 @@ export default {
   data() {
     return {
       active: this,
-      list: [
-        {
-          type: 'input',
-          placeholder: '请输入登录地址',
-          prop: {
-            key: 'ipaddr',
-            value: null,
-          },
-        },
-        {
-          type: 'input',
-          placeholder: '请输入用户名称',
-          prop: {
-            key: 'userName',
-            value: null,
-          },
-        },
-        {
-          type: 'select',
-          placeholder: '登录状态',
-          options: [],
-          prop: {
-            key: 'status',
-            value: null,
-          },
-        },
-        {
-          type: 'time',
-          placeholder: '请选择时间',
-          prop: {
-            key: 'time',
-            value: null,
-          },
-        },
-      ],
-      tableHeader: [
-        {
-          prop: 'infoId',
-          id: 1,
-          label: '访问编号',
-          width: '100px',
-          align: 'left',
-        },
-        {
-          prop: 'userName',
-          id: 2,
-          label: '用户名称',
-          align: 'left',
-          type: 'sort',
-        },
-        {
-          prop: 'ipaddr',
-          id: 3,
-          label: '地址',
-          align: 'left',
-        },
-        {
-          type: 'select',
-          prop: 'status',
-          id: 4,
-          label: '登录状态',
-          width: '80px',
-          align: 'center',
-          list: 'sys_common_status',
-        },
-        {
-          prop: 'msg',
-          id: 5,
-          label: '描述',
-          align: 'center',
-          width: '100px',
-        },
-        {
-          prop: 'accessTime',
-          id: 6,
-          label: '访问时间',
-          align: 'left',
-          type: 'sort',
-        },
-      ],
       listTypeInfo: {},
+      listTypeOptions: {},
       drawer: {
         title: '',
         visible: false,
@@ -212,6 +133,92 @@ export default {
       ids: [],
     }
   },
+  computed: {
+    list() {
+      return [
+        {
+          type: 'input',
+          placeholder: this.$t('registerLog.inputLoginAddress'),
+          prop: {
+            key: 'ipaddr',
+            value: null,
+          },
+        },
+        {
+          type: 'input',
+          placeholder: this.$t('registerLog.inputUserName'),
+          prop: {
+            key: 'userName',
+            value: null,
+          },
+        },
+        {
+          type: 'select',
+          placeholder: this.$t('registerLog.selectLoginStatus'),
+          options: this.listTypeOptions?.sys_common_status || [],
+          prop: {
+            key: 'status',
+            value: null,
+          },
+        },
+        {
+          type: 'time',
+          placeholder: this.$t('operlogManage.selectTime'),
+          prop: {
+            key: 'time',
+            value: null,
+          },
+        },
+      ]
+    },
+    tableHeader() {
+      return [
+        {
+          prop: 'infoId',
+          id: 1,
+          label: this.$t('registerLog.accessNo'),
+          width: '100px',
+          align: 'left',
+        },
+        {
+          prop: 'userName',
+          id: 2,
+          label: this.$t('registerLog.userName'),
+          align: 'left',
+          type: 'sort',
+        },
+        {
+          prop: 'ipaddr',
+          id: 3,
+          label: this.$t('registerLog.address'),
+          align: 'left',
+        },
+        {
+          type: 'select',
+          prop: 'status',
+          id: 4,
+          label: this.$t('registerLog.loginStatus'),
+          width: '80px',
+          align: 'center',
+          list: 'sys_common_status',
+        },
+        {
+          prop: 'msg',
+          id: 5,
+          label: this.$t('registerLog.description'),
+          align: 'center',
+          width: '100px',
+        },
+        {
+          prop: 'accessTime',
+          id: 6,
+          label: this.$t('registerLog.accessTime'),
+          align: 'left',
+          type: 'sort',
+        },
+      ]
+    },
+  },
   mounted() {
     this.init()
     this.searchData()
@@ -225,7 +232,7 @@ export default {
             item.label = item.dictLabel
             item.value = item.dictValue
           })
-          this.list[2].options = res.data
+          this.$set(this.listTypeOptions, 'sys_common_status', res.data)
           this.$set(this.listTypeInfo, 'sys_common_status', res.data)
         }
       })
@@ -268,16 +275,20 @@ export default {
     },
     handleDelete(data) {
       const dictIds = data.infoId || this.ids
-      this.$confirm(`是否确认删除访问编号为${dictIds}的数据?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm(
+        this.$t('registerLog.deleteConfirm', { id: dictIds }),
+        this.$t('common.systemTip'),
+        {
+          confirmButtonText: this.$t('common.sure'),
+          cancelButtonText: this.$t('common.cancel'),
+          type: 'warning',
+        }
+      )
         .then((res) => {
           delLogininfor(dictIds)
             .then((res) => {
               if (res.code == 200) {
-                this.$message.success('操作成功')
+                this.$message.success(this.$t('common.success'))
                 this.searchData()
               }
             })
@@ -287,12 +298,12 @@ export default {
     },
     handleClean() {
       this.$modal
-        .confirm('是否确认清空所有操作日志数据项？')
+        .confirm(this.$t('registerLog.clearConfirm'))
         .then(function () {
           return cleanLogininfor()
         })
         .then(() => {
-          this.$modal.msgSuccess('清空成功')
+          this.$modal.msgSuccess(this.$t('operlogManage.clearSuccess'))
           this.searchData()
         })
         .catch(() => {})

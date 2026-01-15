@@ -1,7 +1,7 @@
 <template>
   <el-drawer
     size="800px"
-    title="添加用户"
+    :title="drawerTitle"
     :visible.sync="drawer"
     :before-close="handleClose"
   >
@@ -9,24 +9,24 @@
       :model="ruleForm"
       :rules="rules"
       ref="ruleForm"
-      label-width="100px"
+      :label-width="isEnglish() ? '140px' : '100px'"
       class="demo-ruleForm"
     >
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="角色名称" prop="roleName">
+          <el-form-item :label="$t('roleManage.roleName')" prop="roleName">
             <el-input
               size="medium"
-              placeholder="请输入角色名称"
+              :placeholder="$t('roleManage.inputRoleName')"
               v-model="ruleForm.roleName"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="权限字符" prop="roleKey">
+          <el-form-item :label="$t('roleManage.roleKey')" prop="roleKey">
             <el-input
               size="medium"
-              placeholder="请输入权限字符"
+              :placeholder="$t('roleManage.inputRoleKey')"
               v-model="ruleForm.roleKey"
             ></el-input>
           </el-form-item>
@@ -34,7 +34,7 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="角色顺序" prop="roleSort">
+          <el-form-item :label="$t('roleManage.roleSort')" prop="roleSort">
             <el-input-number
               v-model="ruleForm.roleSort"
               controls-position="right"
@@ -43,17 +43,21 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="状态" prop="status">
-            <el-radio v-model="ruleForm.status" label="0">正常</el-radio>
-            <el-radio v-model="ruleForm.status" label="1">停用</el-radio>
+          <el-form-item :label="$t('common.status')" prop="status">
+            <el-radio v-model="ruleForm.status" label="0">{{
+              $t('common.normal')
+            }}</el-radio>
+            <el-radio v-model="ruleForm.status" label="1">{{
+              $t('common.disabled')
+            }}</el-radio>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="备注" prop="remark">
+          <el-form-item :label="$t('common.remark')" prop="remark">
             <el-input
-              placeholder="请输入备注"
+              :placeholder="$t('userManage.inputRemark')"
               type="textarea"
               size="medium"
               v-model="ruleForm.remark"
@@ -63,22 +67,22 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="菜单权限" prop="menuIds">
+          <el-form-item :label="$t('roleManage.menuPermission')" prop="menuIds">
             <div>
               <el-checkbox
                 v-model="group1"
                 @change="handleCheckedTreeExpand($event, 'menu')"
-                >展开/折叠</el-checkbox
+                >{{ $t('roleManage.expandCollapse') }}</el-checkbox
               >
               <el-checkbox
                 v-model="group2"
                 @change="handleCheckedTreeNodeAll($event, 'menu')"
-                >全选/全不选</el-checkbox
+                >{{ $t('roleManage.selectAll') }}</el-checkbox
               >
               <el-checkbox
                 v-model="group3"
                 @change="handleCheckedTreeConnect($event, 'menu')"
-                >父子联动</el-checkbox
+                >{{ $t('roleManage.parentChildLink') }}</el-checkbox
               >
             </div>
             <div class="box">
@@ -97,10 +101,12 @@
       </el-row>
     </el-form>
     <div class="demo-drawer__footer">
-      <el-button class="btn" @click="postUser" v-loading="loading"
-        >立即添加</el-button
-      >
-      <el-button @click="handleClose">取消</el-button>
+      <el-button class="btn" @click="postUser" v-loading="loading">{{
+        edit
+          ? $t('userManage.immediatelyModify')
+          : $t('roleManage.immediatelyAdd')
+      }}</el-button>
+      <el-button @click="handleClose">{{ $t('common.cancel') }}</el-button>
     </div>
   </el-drawer>
 </template>
@@ -136,31 +142,6 @@ export default {
         // children: "zones",
       },
       count: 1,
-      rules: {
-        roleName: [
-          { required: true, message: '请输入角色名称', trigger: 'blur' },
-        ],
-        roleKey: [
-          { required: true, message: '请输入权限字符', trigger: 'blur' },
-        ],
-        roleSort: [
-          { required: true, message: '请输入角色顺序', trigger: 'blur' },
-        ],
-      },
-      sexOptions: [
-        {
-          label: '男',
-          value: '0',
-        },
-        {
-          label: '女',
-          value: '1',
-        },
-        {
-          label: '未知',
-          value: '2',
-        },
-      ],
       postOptions: [],
       roleOptions: [],
       group1: false,
@@ -170,6 +151,38 @@ export default {
       checkedKeys: [],
       strictly: false,
     }
+  },
+  computed: {
+    drawerTitle() {
+      return this.edit
+        ? this.$t('roleManage.editRole')
+        : this.$t('roleManage.addRole')
+    },
+    rules() {
+      return {
+        roleName: [
+          {
+            required: true,
+            message: this.$t('roleManage.inputRoleNameMsg'),
+            trigger: 'blur',
+          },
+        ],
+        roleKey: [
+          {
+            required: true,
+            message: this.$t('roleManage.inputRoleKeyMsg'),
+            trigger: 'blur',
+          },
+        ],
+        roleSort: [
+          {
+            required: true,
+            message: this.$t('roleManage.inputRoleSortMsg'),
+            trigger: 'blur',
+          },
+        ],
+      }
+    },
   },
   watch: {},
   created() {
@@ -239,7 +252,7 @@ export default {
                 this.$emit('success')
                 this.$message({
                   type: 'success',
-                  message: '操作成功!',
+                  message: this.$t('common.success'),
                 })
               })
               .catch((err) => {
@@ -258,7 +271,7 @@ export default {
                 this.reset()
                 this.$message({
                   type: 'success',
-                  message: '操作成功!',
+                  message: this.$t('common.success'),
                 })
               })
               .catch((err) => {

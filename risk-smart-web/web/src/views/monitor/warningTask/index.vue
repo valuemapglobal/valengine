@@ -11,7 +11,7 @@
           <el-input
             v-model="queryParams.keyword"
             prefix-icon="el-icon-search"
-            placeholder="请输入任务编号/流程策略"
+            :placeholder="$t('monitor.inputTaskNo')"
             clearable
             @clear="queryParams.keyword = null"
           ></el-input>
@@ -20,11 +20,11 @@
           <el-input
             v-model="queryParams.customerName"
             prefix-icon="el-icon-search"
-            placeholder="请输入监控客户名称"
+            :placeholder="$t('monitor.inputCustomerName')"
           ></el-input>
           <el-select
             v-model="queryParams.subjectType"
-            placeholder="请选择监控客户类型"
+            :placeholder="$t('monitor.selectCustomerType')"
             clearable
           >
             <el-option
@@ -36,7 +36,7 @@
           </el-select>
           <el-select
             v-model="queryParams.processPolicyId"
-            placeholder="预警模型"
+            :placeholder="$t('monitor.warningModel')"
             clearable
             filterable
             @clear="queryParams.processPolicyId = null"
@@ -67,12 +67,12 @@
           <GutuSelect
             :data.sync="queryParams.status"
             :config="{
-              placeholder: '状态',
+              placeholder: $t('monitor.status'),
             }"
-            :options="collectionList.statusOptions"
+            :options="statusOptions"
             :flatten="true"
             :adaptiveWidth="{
-              minWidth: '60px',
+              minWidth: '80px',
               enable: true,
             }"
           />
@@ -81,8 +81,8 @@
             type="daterange"
             range-separator="-"
             value-format="yyyy-MM-dd"
-            start-placeholder="创建开始日期"
-            end-placeholder="创建结束日期"
+            :start-placeholder="$t('monitor.createStartDate')"
+            :end-placeholder="$t('monitor.createEndDate')"
           >
           </el-date-picker>
         </div>
@@ -91,7 +91,7 @@
             v-if="currentTab == 'list'"
             type="warning"
             @click="handleOpenAddTask()"
-            >新增监测任务</el-button
+            >{{ $t('monitor.addMonitorTask') }}</el-button
           >
         </div>
       </div>
@@ -106,42 +106,47 @@
         @handleSwitchChange="handleChangeTaskStatus"
       >
         <template #slotHeader_monitorTime="scope">
-          监测时间
+          {{ $t('monitor.monitorTime') }}
           <el-tooltip effect="dark" placement="top">
-            <div slot="content" class="tip">
-              监测时间目前为1天,7天,30天<br />备注：目前页面上一旦选择监测时间不可更改
-            </div>
+            <div
+              slot="content"
+              class="tip"
+              v-html="$t('monitor.monitorTimeTip')"
+            ></div>
             <i class="el-icon-question" />
           </el-tooltip>
         </template>
         <template #slotHeader_monitorStatus="scope">
-          监测状态
+          {{ $t('monitor.monitorStatus') }}
           <el-tooltip effect="dark" placement="top">
-            <div slot="content" class="tip">
-              点击按钮时弹出弹窗。<br />内容为：请确认是否将此任务进行关闭/开启。
-              备注：新增时默认为关闭,监测名单无数据时强制关闭
-            </div>
+            <div
+              slot="content"
+              class="tip"
+              v-html="$t('monitor.monitorStatusTip')"
+            ></div>
             <i class="el-icon-question" />
           </el-tooltip>
         </template>
         <template #bt_handle="{ data }">
           <div class="operateBtns" v-if="currentTab == 'list'">
-            <el-button type="text" @click="hadleOpenMonitoringList(data.row)"
-              >监测名单列表</el-button
-            >
-            <el-button type="text" @click="handleOpenAddTask(data.row)"
-              >编辑</el-button
-            >
+            <el-button type="text" @click="hadleOpenMonitoringList(data.row)">{{
+              $t('monitor.monitoringList')
+            }}</el-button>
+            <el-button type="text" @click="handleOpenAddTask(data.row)">{{
+              $t('monitor.edit')
+            }}</el-button>
             <el-button
               class="delete"
               type="text"
               @click="handleDelete(data.row)"
-              >删除</el-button
+              >{{ $t('monitor.delete') }}</el-button
             >
           </div>
           <div class="operateBtns" v-else>
-            <el-button type="text" @click="handleOpenDynamicsDetail(data.row)"
-              >查看详情</el-button
+            <el-button
+              type="text"
+              @click="handleOpenDynamicsDetail(data.row)"
+              >{{ $t('monitor.viewDetail') }}</el-button
             >
           </div>
         </template>
@@ -189,10 +194,6 @@ export default {
   data() {
     return {
       currentTab: 'list',
-      filterOptions: [
-        { label: '监测列表', value: 'list' },
-        { label: '监测动态', value: 'dynamics' },
-      ],
       resetStatus: true,
       params: {
         pageNum: 1,
@@ -211,103 +212,119 @@ export default {
       tableLoading: false,
       dataList: [],
       total: 0,
-      columnConfig: [
-        {
-          type: 'serial',
-          label: '序号',
-          width: '80',
-        },
-        {
-          label: '任务编号',
-          field: 'taskNo',
-          width: '280',
-        },
-        {
-          label: '申请用户',
-          field: 'applyUser',
-        },
-        {
-          label: '预警模型',
-          field: 'processPolicyName',
-        },
-        {
-          label: '监控主体',
-          field: 'subjectType',
-          type: 'tag',
-          pairedList: 'ric_monitor_subject',
-          styleList: 'subjectStyle',
-        },
-        {
-          label: '监测时间',
-          field: 'monitorDays',
-          slotHeader: 'monitorTime',
-          type: 'tag',
-          pairedList: 'ric_monitor_time',
-        },
-        {
-          label: '创建时间',
-          field: 'createTime',
-          type: 'timeStamp',
-        },
-        {
-          label: '监测状态',
-          field: 'status',
-          slotHeader: 'monitorStatus',
-          type: 'switch',
-          activeValue: 1,
-          inactiveValue: 0,
-          activeText: '开启',
-          inactiveText: '关闭',
-        },
-      ],
-      recordColumnConfig: [
-        {
-          label: '客户名称',
-          field: 'customerName',
-          width: '',
-        },
-        {
-          label: '风险程度',
-          field: 'riskLevel',
-          width: '',
-          type: 'tag',
-          pairedList: 'ric_monitor_riskLevel',
-        },
-        {
-          label: '风险类别',
-          field: 'riskType',
-          width: '',
-        },
-        {
-          label: '预警内容',
-          field: 'warningContent',
-          width: '',
-        },
-        {
-          label: '预警时间',
-          field: 'warningTime',
-          width: '',
-        },
-      ],
-      tableHandle: {
-        fixed: 'right',
-        width: '220',
-        label: '操作',
-        align: 'center',
-        slot: true,
-      },
       collectionList: {
         policyOptions: [],
-        statusOptions: [
-          { label: '开启', value: '1' },
-          { label: '关闭', value: '0' },
-        ],
         subjectStyle: new Map([
           [0, { color: 'var(--primary-color)', bgColor: true }],
           [1, { color: '#00B578', bgColor: true }],
         ]),
       },
     }
+  },
+  computed: {
+    filterOptions() {
+      return [
+        { label: this.$t('monitor.monitorListTab'), value: 'list' },
+        { label: this.$t('monitor.monitorDynamics'), value: 'dynamics' },
+      ]
+    },
+    columnConfig() {
+      return [
+        {
+          type: 'serial',
+          label: this.$t('monitor.serialNumber'),
+          width: '80',
+        },
+        {
+          label: this.$t('monitor.taskNo'),
+          field: 'taskNo',
+          width: '280',
+        },
+        {
+          label: this.$t('monitor.applyUser'),
+          field: 'applyUser',
+        },
+        {
+          label: this.$t('monitor.warningModel'),
+          field: 'processPolicyName',
+        },
+        {
+          label: this.$t('monitor.monitorSubject'),
+          field: 'subjectType',
+          type: 'tag',
+          pairedList: 'ric_monitor_subject',
+          styleList: 'subjectStyle',
+        },
+        {
+          label: this.$t('monitor.monitorTime'),
+          field: 'monitorDays',
+          slotHeader: 'monitorTime',
+          type: 'tag',
+          pairedList: 'ric_monitor_time',
+        },
+        {
+          label: this.$t('monitor.createTime'),
+          field: 'createTime',
+          type: 'timeStamp',
+        },
+        {
+          label: this.$t('monitor.monitorStatus'),
+          field: 'status',
+          slotHeader: 'monitorStatus',
+          type: 'switch',
+          activeValue: 1,
+          inactiveValue: 0,
+          activeText: this.$t('monitor.open'),
+          inactiveText: this.$t('monitor.close'),
+        },
+      ]
+    },
+    recordColumnConfig() {
+      return [
+        {
+          label: this.$t('monitor.customerName'),
+          field: 'customerName',
+          width: '',
+        },
+        {
+          label: this.$t('monitor.riskLevel'),
+          field: 'riskLevel',
+          width: '',
+          type: 'tag',
+          pairedList: 'ric_monitor_riskLevel',
+        },
+        {
+          label: this.$t('monitor.riskType'),
+          field: 'riskType',
+          width: '',
+        },
+        {
+          label: this.$t('monitor.warningContent'),
+          field: 'warningContent',
+          width: '',
+        },
+        {
+          label: this.$t('monitor.warningTime'),
+          field: 'warningTime',
+          width: '',
+        },
+      ]
+    },
+    tableHandle() {
+      return {
+        fixed: 'right',
+        width: '220',
+        label: this.$t('monitor.operation'),
+        align: 'center',
+        slot: true,
+      }
+    },
+    statusOptions() {
+      return [
+        { label: this.$t('monitor.open'), value: '1' },
+        { label: this.$t('monitor.close'), value: '0' },
+      ]
+    },
   },
   watch: {
     currentTab: {
@@ -392,15 +409,19 @@ export default {
         .catch((err) => {})
     },
     handleDelete(data) {
-      this.$confirm(`确定删除该监测任务吗？`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm(
+        this.$t('monitor.confirmDeleteTask'),
+        this.$t('common.tip'),
+        {
+          confirmButtonText: this.$t('common.confirm'),
+          cancelButtonText: this.$t('common.cancel'),
+          type: 'warning',
+        }
+      )
         .then(() => {
           deleteTask(data.taskId).then((res) => {
             if (res.code == 200) {
-              this.$message.success('删除成功')
+              this.$message.success(this.$t('monitor.deleteSuccess'))
               this.getDataList()
             }
           })
@@ -408,16 +429,19 @@ export default {
         .catch((err) => {})
     },
     handleChangeTaskStatus(data) {
-      let str = data.status == 1 ? '开启' : '关闭'
-      this.$confirm(`确定${str}该监测任务吗？`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      const confirmMsg =
+        data.status == 1
+          ? this.$t('monitor.confirmOpenTask')
+          : this.$t('monitor.confirmCloseTask')
+      this.$confirm(confirmMsg, this.$t('common.tip'), {
+        confirmButtonText: this.$t('common.confirm'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning',
       })
         .then(() => {
           changeTaskStatus(data).then((res) => {
             if (res.code == 200) {
-              this.$message.success('修改成功')
+              this.$message.success(this.$t('monitor.modifySuccess'))
               this.getDataList()
             }
           })
@@ -492,10 +516,6 @@ export default {
         align-items: center;
 
         ::v-deep .el-date-editor {
-          border: none;
-          .el-icon-date {
-            display: none;
-          }
           .el-range-input {
             background: rgba(#000, 0.05);
           }

@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-const url = process.env.VUE_APP_ENV === "production" ? "/prod-api" : "/dev-api";
+const url = process.env.VUE_APP_ENV === "production" ? "/prod-api" : "/dev-api/prod-api";
 
 
 //查询操作日志

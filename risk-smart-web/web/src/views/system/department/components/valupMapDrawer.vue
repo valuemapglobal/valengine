@@ -3,43 +3,68 @@
     <el-form
       ref="formDataRef"
       :model="formData"
-      label-width="140px"
+      :label-width="isEnglish() ? '200px' : '140px'"
       :rules="rules"
     >
       <el-row :gutter="24">
         <el-col :span="12">
-          <el-form-item label="appkey" prop="appKey">
-            <el-input v-model="formData.appKey" placeholder="请输入"></el-input>
+          <el-form-item
+            :label="$t('departmentManagement.appKey')"
+            prop="appKey"
+          >
+            <el-input
+              v-model="formData.appKey"
+              :placeholder="$t('common.pleaseInput')"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="秘钥" prop="secret">
-            <el-input v-model="formData.secret" placeholder="请输入"></el-input>
+          <el-form-item
+            :label="$t('departmentManagement.secret')"
+            prop="secret"
+          >
+            <el-input
+              v-model="formData.secret"
+              :placeholder="$t('common.pleaseInput')"
+            ></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="24">
         <el-col :span="12">
-          <el-form-item label="接口地址" prop="url">
-            <el-input v-model="formData.url" placeholder="请输入"></el-input>
+          <el-form-item :label="$t('departmentManagement.apiUrl')" prop="url">
+            <el-input
+              v-model="formData.url"
+              :placeholder="$t('common.pleaseInput')"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="司法数据更新时间" prop="cacheTime">
-            <el-input v-model.number="formData.cacheTime" placeholder="请输入">
-              <template slot="append">天</template>
+          <el-form-item
+            :label="$t('departmentManagement.judicialDataUpdateTime')"
+            prop="cacheTime"
+          >
+            <el-input
+              v-model.number="formData.cacheTime"
+              :placeholder="$t('common.pleaseInput')"
+            >
+              <template slot="append">{{
+                $t('departmentManagement.days')
+              }}</template>
             </el-input>
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <div class="bottomBtns">
-      <el-button type="primary" @click="submit">确 定</el-button>
-      <el-button @click="handleCloase">取 消</el-button>
+      <el-button type="primary" @click="submit">{{
+        $t('common.sure')
+      }}</el-button>
+      <el-button @click="handleCloase">{{ $t('common.cancel') }}</el-button>
     </div>
   </div>
 </template>
-{ required: true, message: '请输入appkey', trigger: 'blur' }
+
 <script>
 import { getValueMapInfo, submitValueMapInfo } from '@/api/system/department.js'
 export default {
@@ -59,28 +84,53 @@ export default {
         cacheTime: null,
         url: null,
       },
-      rules: {
-        appKey: [{ required: true, message: '请输入appkey', trigger: 'blur' }],
-        secret: [{ required: true, message: '请输入秘钥', trigger: 'blur' }],
-        url: [{ required: true, message: '请输入接口地址', trigger: 'blur' }],
+      deptId: null,
+    }
+  },
+  computed: {
+    rules() {
+      return {
+        appKey: [
+          {
+            required: true,
+            message: this.$t('departmentManagement.inputAppKey'),
+            trigger: 'blur',
+          },
+        ],
+        secret: [
+          {
+            required: true,
+            message: this.$t('departmentManagement.inputSecret'),
+            trigger: 'blur',
+          },
+        ],
+        url: [
+          {
+            required: true,
+            message: this.$t('departmentManagement.inputApiUrl'),
+            trigger: 'blur',
+          },
+        ],
         cacheTime: [
           {
             required: true,
-            message: '请输入司法数据更新时间',
+            message: this.$t(
+              'departmentManagement.inputJudicialDataUpdateTime'
+            ),
             trigger: 'blur',
           },
           {
             validator: (rule, value, callback) => {
               let checkNumber = /^\d+$/
-              if (!checkNumber.test(value)) callback('请输入正整数')
+              if (!checkNumber.test(value))
+                callback(this.$t('departmentManagement.inputPositiveInteger'))
               callback()
             },
             trigger: 'blur',
           },
         ],
-      },
-      deptId: null,
-    }
+      }
+    },
   },
   watch: {
     dataInfo: {
@@ -114,7 +164,7 @@ export default {
           submitValueMapInfo({ deptId: this.deptId, ...this.formData })
             .then((res) => {
               if (res.code == 200) {
-                this.$message.success('操作成功')
+                this.$message.success(this.$t('common.success'))
                 this.handleCloase()
               }
             })

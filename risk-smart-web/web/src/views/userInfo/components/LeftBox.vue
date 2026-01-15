@@ -5,7 +5,7 @@
       <el-avatar
         shape="square"
         :size="100"
-        :src="getUserInfo.avatar || avatarUrl[Number(getUserInfo.sex) || 0]"
+        :src="getUserInfo.avatar || avatarUrl[Number(getUserInfo.sex)]"
       />
       <span>{{ getUserInfo.nickName || '' }}</span>
       <span>

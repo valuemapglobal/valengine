@@ -1,28 +1,28 @@
 <template>
-  <el-drawer size="1400px" title="添加用户" :visible.sync="drawer">
+  <el-drawer size="1400px" :title="drawerTitle" :visible.sync="drawer">
     <el-form
       :model="ruleForm"
       :rules="rules"
       ref="ruleForm"
-      label-width="100px"
+      :label-width="isEnglish() ? '140px' : '100px'"
       class="demo-ruleForm"
     >
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="用户昵称" prop="nickName">
+          <el-form-item :label="$t('userManage.nickName')" prop="nickName">
             <el-input
               size="medium"
-              placeholder="请输入用户昵称"
+              :placeholder="$t('userManage.inputNickName')"
               v-model="ruleForm.nickName"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="归属部门" prop="deptId">
+          <el-form-item :label="$t('userManage.dept')" prop="deptId">
             <el-cascader
               size="medium"
               v-model="ruleForm.deptId"
-              placeholder="请输入归属部门"
+              :placeholder="$t('userManage.inputDept')"
               :options="options"
               :props="{ checkStrictly: true, value: 'id' }"
             ></el-cascader>
@@ -31,19 +31,22 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="手机号码" prop="phonenumber">
+          <el-form-item
+            :label="$t('userManage.phonenumber')"
+            prop="phonenumber"
+          >
             <el-input
               size="medium"
-              placeholder="请输入手机号码"
+              :placeholder="$t('userManage.inputPhonenumber')"
               v-model="ruleForm.phonenumber"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="邮箱" prop="email">
+          <el-form-item :label="$t('userManage.email')" prop="email">
             <el-input
               size="medium"
-              placeholder="请输入邮箱"
+              :placeholder="$t('userManage.inputEmail')"
               v-model="ruleForm.email"
             ></el-input>
           </el-form-item>
@@ -51,18 +54,18 @@
       </el-row>
       <el-row :gutter="20" v-if="!edit">
         <el-col :span="12">
-          <el-form-item label="用户名称" prop="userName">
+          <el-form-item :label="$t('userManage.userName')" prop="userName">
             <el-input
               size="medium"
-              placeholder="请输入用户名称"
+              :placeholder="$t('userManage.inputUserName')"
               v-model="ruleForm.userName"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="用户密码" prop="password">
+          <el-form-item :label="$t('userManage.password')" prop="password">
             <el-input
-              placeholder="请输入用户密码"
+              :placeholder="$t('userManage.inputPassword')"
               size="medium"
               show-password
               v-model="ruleForm.password"
@@ -72,11 +75,11 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="用户性别" prop="sex">
+          <el-form-item :label="$t('userManage.sex')" prop="sex">
             <!-- <el-input size="medium" v-model="ruleForm.sex"></el-input> -->
             <el-select
               v-model="ruleForm.sex"
-              placeholder="请选择性别"
+              :placeholder="$t('userManage.selectSex')"
               size="medium"
               clearable
             >
@@ -91,23 +94,24 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="状态" prop="status">
+          <el-form-item :label="$t('common.status')" prop="status">
             <el-radio-group v-model="ruleForm.status" fill="#ff4040">
-              <el-radio label="0">正常</el-radio>
-              <el-radio label="1">停用</el-radio>
+              <el-radio label="0">{{ $t('common.normal') }}</el-radio>
+              <el-radio label="1">{{ $t('common.disabled') }}</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
-          <el-form-item label="岗位" prop="postIds">
+          <el-form-item :label="$t('userManage.post')" prop="postIds">
             <el-select
               v-model="ruleForm.postIds"
-              placeholder="请选择岗位"
+              :placeholder="$t('userManage.selectPost')"
               size="medium"
               clearable
               multiple
+              collapse-tags
             >
               <el-option
                 v-for="val in postOptions"
@@ -120,13 +124,14 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="角色" prop="roleIds">
+          <el-form-item :label="$t('userManage.role')" prop="roleIds">
             <el-select
               v-model="ruleForm.roleIds"
-              placeholder="请选择角色"
+              :placeholder="$t('userManage.selectRole')"
               size="medium"
               clearable
               multiple
+              collapse-tags
             >
               <el-option
                 v-for="val in roleOptions"
@@ -141,9 +146,9 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-form-item label="备注" prop="remark">
+          <el-form-item :label="$t('common.remark')" prop="remark">
             <el-input
-              placeholder="请输入备注"
+              :placeholder="$t('userManage.inputRemark')"
               type="textarea"
               size="medium"
               v-model="ruleForm.remark"
@@ -154,7 +159,9 @@
     </el-form>
     <div class="demo-drawer__footer">
       <el-button class="btn" @click="postUser" v-loading="loading">{{
-        edit ? '立即修改' : '立即添加'
+        edit
+          ? $t('userManage.immediatelyModify')
+          : $t('userManage.immediatelyAdd')
       }}</el-button>
       <el-button
         @click="
@@ -163,7 +170,7 @@
             this.reset()
           }
         "
-        >取消</el-button
+        >{{ $t('common.cancel') }}</el-button
       >
     </div>
   </el-drawer>
@@ -196,43 +203,70 @@ export default {
         roleIds: null, //角色
       },
       loading: false,
-      rules: {
+      postOptions: [],
+      roleOptions: [],
+    }
+  },
+  computed: {
+    drawerTitle() {
+      return this.edit
+        ? this.$t('userManage.editUser')
+        : this.$t('userManage.addUser')
+    },
+    rules() {
+      return {
         nickName: [
-          { required: true, message: '请输入用户昵称', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('userManage.inputNickNameMsg'),
+            trigger: 'blur',
+          },
         ],
         userName: [
-          { required: true, message: '请输入用户名称', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('userManage.inputUserNameMsg'),
+            trigger: 'blur',
+          },
           {
             min: 2,
             max: 20,
-            message: '请输入最少2个最多20个的字符',
+            message: this.$t('userManage.userNameLengthMsg'),
             trigger: 'blur',
           },
         ],
         password: [
-          { required: true, message: '请输入用户密码', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('userManage.inputPasswordMsg'),
+            trigger: 'blur',
+          },
         ],
         roleIds: [
-          { required: true, message: '请选择用户角色', trigger: 'change' },
+          {
+            required: true,
+            message: this.$t('userManage.selectRoleMsg'),
+            trigger: 'change',
+          },
         ],
-      },
-      sexOptions: [
+      }
+    },
+    sexOptions() {
+      return [
         {
-          label: '男',
+          label: this.$t('userManage.male'),
           value: '0',
         },
         {
-          label: '女',
+          label: this.$t('userManage.female'),
           value: '1',
         },
         {
-          label: '未知',
+          label: this.$t('userManage.unknown'),
           value: '2',
         },
-      ],
-      postOptions: [],
-      roleOptions: [],
-    }
+      ]
+    },
   },
   created() {
     this.init()
@@ -283,7 +317,7 @@ export default {
                 this.$emit('success')
                 this.$message({
                   type: 'success',
-                  message: '操作成功!',
+                  message: this.$t('common.success'),
                 })
               })
               .catch((err) => {
@@ -304,7 +338,7 @@ export default {
                 this.reset()
                 this.$message({
                   type: 'success',
-                  message: '操作成功!',
+                  message: this.$t('common.success'),
                 })
               })
               .catch((err) => {
