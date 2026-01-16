@@ -80,7 +80,7 @@ public class InterfaceFieldIdManage implements Serializable {
     /**
      * 参数备注
      */
-    @TableField(updateStrategy = FieldStrategy.IGNORED)
+    @TableField(updateStrategy = FieldStrategy.ALWAYS)
     private String interfaceFieldIdRemark;
 
     /**

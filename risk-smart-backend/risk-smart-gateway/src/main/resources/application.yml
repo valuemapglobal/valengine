@@ -1,3 +1,6 @@
+# Gateway Service Configuration
+# 使用 spring.config.import 替代 bootstrap.yml (Spring Cloud Alibaba 2025.x)
+
 server:
   port: ${SERVER_PORT:8080}
 
@@ -8,28 +11,32 @@ spring:
     web-application-type: reactive
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
+  # 使用 spring.config.import 导入 Nacos 配置
+  config:
+    import:
+      - optional:nacos:${spring.application.name}-${spring.profiles.active}.yml?group=${NACOS_GROUP:DEFAULT_GROUP}&refreshEnabled=true
+      - optional:nacos:application-${spring.profiles.active}.yml?group=${NACOS_GROUP:DEFAULT_GROUP}&refreshEnabled=true
   cloud:
     nacos:
-      discovery:
-        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
-        username: ${NACOS_USERNAME:nacos}
-        password: ${NACOS_PASSWORD:nacos}
-        namespace: ${NACOS_NAMESPACE:}
-        group: ${NACOS_GROUP:DEFAULT_GROUP}
+      # Nacos 服务器地址
+      server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+      username: ${NACOS_USERNAME:nacos}
+      password: ${NACOS_PASSWORD:nacos}
+      # Nacos 配置中心
       config:
-        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
         username: ${NACOS_USERNAME:nacos}
         password: ${NACOS_PASSWORD:nacos}
         namespace: ${NACOS_NAMESPACE:}
         group: ${NACOS_GROUP:DEFAULT_GROUP}
         file-extension: yml
-        # 主配置文件（自动加载 risk-smart-gateway.yml 和 risk-smart-gateway-dev.yml）
-        extension-configs:
-          - data-id: risk-smart-gateway-${spring.profiles.active}.yml
-            group: DEFAULT_GROUP
-            refresh: true
-        shared-configs:
-          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+      # Nacos 服务发现
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+        username: ${NACOS_USERNAME:nacos}
+        password: ${NACOS_PASSWORD:nacos}
+        namespace: ${NACOS_NAMESPACE:}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
     sentinel:
       eager: true
       transport:
@@ -37,7 +44,7 @@ spring:
       datasource:
         ds1:
           nacos:
-            server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+            server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
             username: ${NACOS_USERNAME:nacos}
             password: ${NACOS_PASSWORD:nacos}
             dataId: sentinel-risk-smart-gateway

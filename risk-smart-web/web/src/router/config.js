@@ -450,42 +450,43 @@ export const configRoutes = [
           //       '@/views/system/accountResources/index.vue'
           //     ),
           // },
-          {
-            path: 'DecisionManage',
-            name: 'DecisionManage',
-            meta: {
-              title: '操作日志',
-            },
-            component: () =>
-              import(
-                /* webpackChunkName:"DecisionManage"*/
-                '@/views/system/decisionManage/index.vue'
-              ),
-          },
-          {
-            path: 'OperlogManage',
-            name: 'OperlogManage',
-            meta: {
-              title: '操作日志',
-            },
-            component: () =>
-              import(
-                /* webpackChunkName:"OperlogManage"*/
-                '@/views/system/operlogManage/index.vue'
-              ),
-          },
-          {
-            path: 'RegisterLog',
-            name: 'RegisterLog',
-            meta: {
-              title: '操作日志',
-            },
-            component: () =>
-              import(
-                /* webpackChunkName:"RegisterLog"*/
-                '@/views/system/registerLog/index.vue'
-              ),
-          },
+          // 日志功能暂未实现，先注释掉
+          // {
+          //   path: 'DecisionManage',
+          //   name: 'DecisionManage',
+          //   meta: {
+          //     title: '决策日志',
+          //   },
+          //   component: () =>
+          //     import(
+          //       /* webpackChunkName:"DecisionManage"*/
+          //       '@/views/system/decisionManage/index.vue'
+          //     ),
+          // },
+          // {
+          //   path: 'OperlogManage',
+          //   name: 'OperlogManage',
+          //   meta: {
+          //     title: '操作日志',
+          //   },
+          //   component: () =>
+          //     import(
+          //       /* webpackChunkName:"OperlogManage"*/
+          //       '@/views/system/operlogManage/index.vue'
+          //     ),
+          // },
+          // {
+          //   path: 'RegisterLog',
+          //   name: 'RegisterLog',
+          //   meta: {
+          //     title: '登录日志',
+          //   },
+          //   component: () =>
+          //     import(
+          //       /* webpackChunkName:"RegisterLog"*/
+          //       '@/views/system/registerLog/index.vue'
+          //     ),
+          // },
         ],
       },
     ],

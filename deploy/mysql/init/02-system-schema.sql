@@ -102,6 +102,7 @@ CREATE TABLE `sys_menu` (
   `order_num` int(4) DEFAULT '0' COMMENT '显示顺序',
   `path` varchar(200) DEFAULT '' COMMENT '路由地址',
   `component` varchar(255) DEFAULT NULL COMMENT '组件路径',
+  `route_name` varchar(50) DEFAULT '' COMMENT '路由名称',
   `query` varchar(255) DEFAULT NULL COMMENT '路由参数',
   `is_frame` int(1) DEFAULT '1' COMMENT '是否为外链（0是 1否）',
   `is_cache` int(1) DEFAULT '0' COMMENT '是否缓存（0缓存 1不缓存）',

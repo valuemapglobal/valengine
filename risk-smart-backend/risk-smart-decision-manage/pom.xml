@@ -20,16 +20,14 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- 依赖版本 -->
-        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
         <drools.version>7.73.0.Final</drools.version>
         <fastjson.version>2.0.43</fastjson.version>
-        <druid.version>1.2.16</druid.version>
         <redisson.version>3.17.7</redisson.version>
         <hutool.version>5.8.22</hutool.version>
         <easyexcel.version>3.3.2</easyexcel.version>
         <knife4j.version>3.0.3</knife4j.version>
         <poi.version>5.2.3</poi.version>
-        <pagehelper.version>1.4.6</pagehelper.version>
+        <pagehelper.version>2.1.0</pagehelper.version>
     </properties>
 
     <dependencies>
@@ -112,7 +110,7 @@
             <artifactId>ruoyi-common-security</artifactId>
             <version>3.2.0</version>
             <exclusions>
-                <!-- 排除旧版mybatis-plus，使用本项目统一的3.5.3.1版本 -->
+                <!-- 排除旧版mybatis-plus，使用本项目统一的3.5.14版本 -->
                 <exclusion>
                     <groupId>com.baomidou</groupId>
                     <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -128,6 +126,19 @@
                 <exclusion>
                     <groupId>com.baomidou</groupId>
                     <artifactId>mybatis-plus-extension</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-annotation</artifactId>
+                </exclusion>
+                <!-- 排除旧版pagehelper和jsqlparser -->
+                <exclusion>
+                    <groupId>com.github.pagehelper</groupId>
+                    <artifactId>pagehelper-spring-boot-starter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.github.jsqlparser</groupId>
+                    <artifactId>jsqlparser</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -136,7 +147,7 @@
             <artifactId>ruoyi-api-system</artifactId>
             <version>3.2.9</version>
             <exclusions>
-                <!-- 排除旧版mybatis-plus，使用本项目统一的3.5.3.1版本 -->
+                <!-- 排除旧版mybatis-plus，使用本项目统一的3.5.14版本 -->
                 <exclusion>
                     <groupId>com.baomidou</groupId>
                     <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -152,6 +163,19 @@
                 <exclusion>
                     <groupId>com.baomidou</groupId>
                     <artifactId>mybatis-plus-extension</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-annotation</artifactId>
+                </exclusion>
+                <!-- 排除旧版pagehelper和jsqlparser -->
+                <exclusion>
+                    <groupId>com.github.pagehelper</groupId>
+                    <artifactId>pagehelper-spring-boot-starter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.github.jsqlparser</groupId>
+                    <artifactId>jsqlparser</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -167,42 +191,14 @@
         </dependency>
 
         <!-- ==================== Database ==================== -->
-        <!-- MyBatis Plus - 显式声明所有组件强制版本 -->
+        <!-- MyBatis Plus for Spring Boot 3.x -->
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-spring-boot-autoconfigure</artifactId>
-            <version>${mybatis-plus.version}</version>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-core</artifactId>
-            <version>${mybatis-plus.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-extension</artifactId>
-            <version>${mybatis-plus.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-annotation</artifactId>
-            <version>${mybatis-plus.version}</version>
-        </dependency>
-        <!-- MyBatis Core - 强制使用兼容版本 -->
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>3.5.13</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-spring</artifactId>
-            <version>3.0.3</version>
+            <artifactId>mybatis-plus-jsqlparser</artifactId>
         </dependency>
         <!-- MySQL -->
         <dependency>
@@ -213,7 +209,7 @@
         <!-- Druid -->
         <dependency>
             <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
+            <artifactId>druid-spring-boot-3-starter</artifactId>
             <version>${druid.version}</version>
         </dependency>
         <!-- PageHelper -->
@@ -221,6 +217,18 @@
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>${pagehelper.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.github.jsqlparser</groupId>
+                    <artifactId>jsqlparser</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- JSqlParser 5.0 (兼容 PageHelper 2.x) -->
+        <dependency>
+            <groupId>com.github.jsqlparser</groupId>
+            <artifactId>jsqlparser</artifactId>
+            <version>5.0</version>
         </dependency>
 
         <!-- ==================== Redis ==================== -->

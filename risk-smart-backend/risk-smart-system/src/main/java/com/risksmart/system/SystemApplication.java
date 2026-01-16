@@ -1,5 +1,6 @@
 package com.risksmart.system;
 
+import com.github.pagehelper.autoconfigure.PageHelperAutoConfiguration;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,7 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
  *
  * @author RiskSmart
  */
-@SpringBootApplication
+@SpringBootApplication(exclude = {PageHelperAutoConfiguration.class})
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = "com.risksmart")
 @ComponentScan(basePackages = {"com.risksmart"})

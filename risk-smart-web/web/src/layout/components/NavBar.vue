@@ -321,18 +321,19 @@ export default {
             //   label: '审批授权',
             //   name: 'ApprovalAuth',
             // },
-            {
-              label: '操作日志',
-              name: 'OperlogManage',
-            },
-            {
-              label: '决策日志',
-              name: 'DecisionManage',
-            },
-            {
-              label: '登录日志',
-              name: 'RegisterLog',
-            },
+            // 日志功能暂未实现，先注释掉
+            // {
+            //   label: '操作日志',
+            //   name: 'OperlogManage',
+            // },
+            // {
+            //   label: '决策日志',
+            //   name: 'DecisionManage',
+            // },
+            // {
+            //   label: '登录日志',
+            //   name: 'RegisterLog',
+            // },
           ],
         },
       ],

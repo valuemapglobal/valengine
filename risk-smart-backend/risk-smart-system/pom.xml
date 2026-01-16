@@ -18,8 +18,7 @@
 
     <properties>
         <!-- 本地依赖版本 -->
-        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
-        <pagehelper.version>1.4.6</pagehelper.version>
+        <pagehelper.version>2.1.0</pagehelper.version>
         <fastjson.version>2.0.43</fastjson.version>
         <hutool-all.version>5.8.25</hutool-all.version>
     </properties>
@@ -74,11 +73,14 @@
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
 
-        <!-- MyBatis Plus -->
+        <!-- MyBatis Plus for Spring Boot 3.x -->
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus.version}</version>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-jsqlparser</artifactId>
         </dependency>
 
         <!-- PageHelper -->
@@ -95,7 +97,17 @@
                     <groupId>org.mybatis</groupId>
                     <artifactId>mybatis</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.github.jsqlparser</groupId>
+                    <artifactId>jsqlparser</artifactId>
+                </exclusion>
             </exclusions>
+        </dependency>
+        <!-- JSqlParser 5.0 (兼容 PageHelper 2.x) -->
+        <dependency>
+            <groupId>com.github.jsqlparser</groupId>
+            <artifactId>jsqlparser</artifactId>
+            <version>5.0</version>
         </dependency>
 
         <!-- MySQL Driver -->

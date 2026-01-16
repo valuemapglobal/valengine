@@ -1,5 +1,6 @@
 package com.value.decision;
 
+import com.github.pagehelper.autoconfigure.PageHelperAutoConfiguration;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,7 +18,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  */
 @SpringBootApplication(
         scanBasePackages = {"com.value.decision", "com.risksmart.system", "com.risksmart.common.core"},
-        exclude = {DataSourceAutoConfiguration.class}
+        exclude = {DataSourceAutoConfiguration.class, PageHelperAutoConfiguration.class}
 )
 @MapperScan({"com.value.decision.**.mapper", "com.risksmart.system.mapper"})
 @EnableFeignClients(basePackages = {"com.value.decision", "com.risksmart.system.api"})

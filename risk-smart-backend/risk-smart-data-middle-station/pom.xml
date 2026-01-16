@@ -17,8 +17,7 @@
         <fastjson.version>2.0.43</fastjson.version>
         <hutool-all.version>5.8.25</hutool-all.version>
         <nashorn-core.version>15.4</nashorn-core.version>
-        <pagehelper.version>1.4.6</pagehelper.version>
-        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+        <pagehelper.version>2.1.0</pagehelper.version>
         <feign-core.version>11.10</feign-core.version>
         <feign-form.version>3.8.0</feign-form.version>
         <feign-form-spring.version>3.8.0</feign-form-spring.version>
@@ -88,18 +87,26 @@
                     <groupId>org.mybatis</groupId>
                     <artifactId>mybatis</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.github.jsqlparser</groupId>
+                    <artifactId>jsqlparser</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
-        <!-- Mybatis 依赖配置 -->
+        <!-- JSqlParser 5.0 (兼容 PageHelper 2.x) -->
+        <dependency>
+            <groupId>com.github.jsqlparser</groupId>
+            <artifactId>jsqlparser</artifactId>
+            <version>5.0</version>
+        </dependency>
+        <!-- MyBatis Plus for Spring Boot 3.x -->
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus.version}</version>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-annotation</artifactId>
-            <version>${mybatis-plus.version}</version>
+            <artifactId>mybatis-plus-jsqlparser</artifactId>
         </dependency>
         <!-- SpringBoot Boot Redis -->
         <dependency>
@@ -156,12 +163,7 @@
             <artifactId>feign-form-spring</artifactId>
             <version>${feign-form-spring.version}</version>
         </dependency>
-        <!-- Align JSqlParser with MyBatis-Plus 3.5.x -->
-        <dependency>
-            <groupId>com.github.jsqlparser</groupId>
-            <artifactId>jsqlparser</artifactId>
-            <version>4.5</version>
-        </dependency>
+        <!-- JSqlParser 由 mybatis-plus-jsqlparser 提供，不需要单独声明 -->
         <!-- bootstrap 启动器 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -183,6 +185,29 @@
             <groupId>com.vm.cloud.ruoyi</groupId>
             <artifactId>ruoyi-api-system</artifactId>
             <version>${ruoyi.version}</version>
+            <exclusions>
+                <!-- 排除旧版mybatis-plus，使用本项目统一的3.5.14版本 -->
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-boot-starter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-spring-boot-autoconfigure</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-extension</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.baomidou</groupId>
+                    <artifactId>mybatis-plus-annotation</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- 参数效验 -->
         <dependency>
