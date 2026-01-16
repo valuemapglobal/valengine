@@ -56,7 +56,6 @@ let path = []
 let whiteList = [
   '/login',
   '/MiddleWare',
-  '/xinde/login',
   '/WaterTutorial',
   '/Collection',
   '/PersonalPrivacyAuthorization',
@@ -75,6 +74,7 @@ router.beforeEach(async (to, from, next) => {
 
   // 每次路由跳转获取token 如果没有token并且第一次进来则回到登录页，token过期同上
   if (!id_token) {
+    status = true // 重置状态，下次登录后需要重新获取权限
     next({ name: 'login', replace: true })
     return
   }
@@ -84,16 +84,23 @@ router.beforeEach(async (to, from, next) => {
     status = true
   }
 
+  // 登录成功后需要重新获取权限（通过 needRefreshAuth 标志触发）
+  let needRefreshAuth = localStorage.getItem('needRefreshAuth')
+  if (needRefreshAuth) {
+    localStorage.removeItem('needRefreshAuth')
+    status = true
+  }
+
   let tos = to.path === '/' ? [] : to.path.split('/')
   path = to.path
   // let routerList = []
   // 取消路由权限配置方案
   // 如果不在login页并且token存在切是第一次进入则去请求路由权限
+  // 注意：只在 status 为 true 时获取权限，获取后立即设置 status = false 防止重复请求
   if (status && !path.includes('login') && id_token) {
+    status = false // 立即设置为 false，防止重复请求
     let res = await authority()
     store.commit('setButtonList', res[1])
-    // 处理路由权限为自己可用状态
-    status = false
     // 判断是否有路径没有默认正常跳转
     if (tos.length) {
       next({ ...to, replace: true })

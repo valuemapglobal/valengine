@@ -116,6 +116,7 @@ export default {
     authority() {
       localStorage.setItem('time', +new Date())
       localStorage.removeItem('dmp_secreat')
+      localStorage.setItem('needRefreshAuth', 'true') // 标记需要重新获取权限
       this.$router.push({ path: '/' })
     },
     getLogin() {

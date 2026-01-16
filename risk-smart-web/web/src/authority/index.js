@@ -34,24 +34,29 @@ export default function () {
   let two = new Promise((resolve, reject) => {
     getPermission(url + '/system/user/getLoginInfo')
       .then((res) => {
-        console.log(res, 'res78975646123131646631')
-
         localStorage.setItem('userInfo', JSON.stringify(res.user))
         store.commit('setUserInfo', res.user)
         store.commit('setBenefitAccount', res.benefitAccount)
+
+        // 获取权限并设置到 store
+        let permissions = res.permissions || []
+        let data = permissions.filter(
+          (i) => i.match(/:/g) && i.match(/:/g).length === 2
+        )
+        // 直接设置按钮权限
+        store.commit('setButtonList', data)
+        console.log('[authority] setButtonList:', data)
+
         try {
-          let { permissions } = res
           store.commit('setUserPreference', {
             list: res.userPreferenceList,
             status: res.userGuidePageStatus,
           })
-          let data = permissions.filter(
-            (i) => i.match(/:/g) && i.match(/:/g).length === 2
-          )
-          resolve(data)
         } catch (error) {
-          resolve([])
+          console.error('[authority] setUserPreference error:', error)
         }
+
+        resolve(data)
       })
       .catch((err) => {
         reject(err)
