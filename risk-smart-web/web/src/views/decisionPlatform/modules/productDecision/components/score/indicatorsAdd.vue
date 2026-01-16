@@ -1,21 +1,33 @@
 <template>
   <div class="addTactics">
-    <el-form ref="formRef" :model="cardForm" :rules="rules" label-width="100px">
-      <el-form-item label="指标名称" prop="primaryIndex">
+    <el-form
+      ref="formRef"
+      :model="cardForm"
+      :rules="rules"
+      :label-width="isEnglish() ? '160px' : '100px'"
+    >
+      <el-form-item
+        :label="$t('decisionPlatform.indicatorName')"
+        prop="primaryIndex"
+      >
         <el-input
           v-model="cardForm.primaryIndex"
           @input="(e) => (cardForm.primaryIndex = e.replace(/\s*/g, ''))"
           clearable
-          placeholder="请输入"
+          :placeholder="$t('decisionPlatform.inputPlaceholder')"
           @change="handleScoreCode"
           :disabled="readOnly"
           :class="{ noDisabledColor: readOnly }"
         />
       </el-form-item>
-      <el-form-item label="权重" prop="weight" class="inputTips">
+      <el-form-item
+        :label="$t('decisionPlatform.weight')"
+        prop="weight"
+        class="inputTips"
+      >
         <el-input
           v-model="cardForm.weight"
-          placeholder="请输入"
+          :placeholder="$t('decisionPlatform.inputPlaceholder')"
           clearable
           :disabled="readOnly"
           :class="{ noDisabledColor: readOnly }"
@@ -23,14 +35,17 @@
           <span slot="suffix">%</span>
         </el-input>
         <div class="tips">
-          <p>同级权重总和为100</p>
+          <p>{{ $t('decisionPlatform.weightSumTip') }}</p>
         </div>
       </el-form-item>
-      <el-form-item label="描述" prop="description">
+      <el-form-item
+        :label="$t('decisionPlatform.description')"
+        prop="description"
+      >
         <el-input
           v-model="cardForm.description"
           type="textarea"
-          placeholder="请输入描述"
+          :placeholder="$t('decisionPlatform.inputDescription')"
           clearable
           :rows="5"
           maxlength="200"
@@ -42,9 +57,11 @@
     </el-form>
     <div class="btnBottom" v-if="status">
       <el-button type="primary" @click="submit" v-preventReClick
-        >确定
+        >{{ $t('decisionPlatform.confirm') }}
       </el-button>
-      <el-button @click="handleClose">取消</el-button>
+      <el-button @click="handleClose">{{
+        $t('decisionPlatform.cancel')
+      }}</el-button>
     </div>
     <!--		<confirmDialog ref="confirmDialog" :disabled="fullscreenLoading" @update="update" @reserved="reserved"
           @cancel='closeDialog'>
@@ -98,25 +115,6 @@ export default {
     },
   },
   data() {
-    var checkWeight = (rule, value, callback) => {
-      let seq = /^(\d{1,2}(\.\d{1,2})?|100(\.0{1,2})?)$/
-      const weightTotalPercentage = Number(
-          localStorage.getItem('weightTotalPercentage')
-        ),
-        weightLastPercentage = localStorage.getItem('weightLast')
-          ? Number(JSON.parse(localStorage.getItem('weightLast')).weight)
-          : 0
-      if (!seq.test(value)) {
-        callback(new Error('请输入0-100的数字'))
-      }
-      if (
-        Number(value) >
-        Number(100 - weightTotalPercentage + weightLastPercentage)
-      ) {
-        callback(new Error('总权重不得超过100%'))
-      }
-      callback()
-    }
     return {
       fullscreenLoading: false,
       tabs: {
@@ -136,15 +134,6 @@ export default {
         description: null,
         scoreCardId: null,
         parentCardId: null,
-      },
-      rules: {
-        primaryIndex: [
-          { required: true, message: '评分卡名称不能为空', trigger: 'blur' },
-        ],
-        weight: [
-          { required: true, message: '权重不能为空', trigger: 'blur' },
-          { validator: checkWeight, trigger: 'blur' },
-        ],
       },
       argument: '自动生成参数',
       professionList: [],
@@ -173,11 +162,56 @@ export default {
       )
       return findObj
     },
+    rules() {
+      return {
+        primaryIndex: [
+          {
+            required: true,
+            message: this.$t('decisionPlatform.indicatorNameCannotBeEmpty'),
+            trigger: 'blur',
+          },
+        ],
+        weight: [
+          {
+            required: true,
+            message: this.$t('decisionPlatform.weightCannotBeEmpty'),
+            trigger: 'blur',
+          },
+          { validator: this.checkWeight, trigger: 'blur' },
+        ],
+      }
+    },
   },
   mounted() {
     this.init()
   },
   methods: {
+    isEnglish() {
+      return this.$i18n.locale === 'en'
+    },
+    checkWeight(rule, value, callback) {
+      let seq = /^(\d{1,2}(\.\d{1,2})?|100(\.0{1,2})?)$/
+      const weightTotalPercentage = Number(
+          localStorage.getItem('weightTotalPercentage')
+        ),
+        weightLastPercentage = localStorage.getItem('weightLast')
+          ? Number(JSON.parse(localStorage.getItem('weightLast')).weight)
+          : 0
+      if (!seq.test(value)) {
+        callback(new Error(this.$t('decisionPlatform.inputNumber0To100')))
+        return
+      }
+      if (
+        Number(value) >
+        Number(100 - weightTotalPercentage + weightLastPercentage)
+      ) {
+        callback(
+          new Error(this.$t('decisionPlatform.totalWeightCannotExceed100'))
+        )
+        return
+      }
+      callback()
+    },
     mapType(customerType) {
       // let type = null
       // switch (customerType) {
@@ -385,13 +419,17 @@ export default {
                   versionControl: weightLast.versionControl,
                 }).then((res) => {
                   if (res.code == 200) {
-                    this.$message.success('操作成功')
+                    this.$message.success(
+                      this.$t('decisionPlatform.operationSuccess')
+                    )
                     this.$emit('success')
                     this.handleClose()
                   }
                 })
               } else {
-                this.$message.success('操作成功')
+                this.$message.success(
+                  this.$t('decisionPlatform.operationSuccess')
+                )
                 this.$emit('success')
                 this.handleClose()
               }
@@ -431,9 +469,11 @@ export default {
           .catch((err) => {})
       }
     },
-    checkCodeNo: (rule, value, callback) => {
+    checkCodeNo(rule, value, callback) {
       if (value) {
-        return callback(new Error('评分卡名称重复'))
+        return callback(
+          new Error(this.$t('decisionPlatform.indicatorNameDuplicate'))
+        )
       } else {
         callback()
       }

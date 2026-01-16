@@ -40,7 +40,7 @@
             <el-avatar
               shape="square"
               :size="120"
-              :src="formData.avatar || avatarUrl[Number(formData.sex) || 0]"
+              :src="formData.avatar || avatarUrl[Number(formData.sex)]"
             />
           </div>
         </el-form-item>
@@ -123,7 +123,7 @@ export default {
     this.uploadImgUrl =
       process.env.VUE_APP_ENV === 'production'
         ? '/prod-api'
-        : '/dev-api' + '/bankCashflow/analysis/uploadFile'
+        : '/dev-api/prod-api' + '/bankCashflow/analysis/uploadFile'
     this.headers.Authorization = localStorage.getItem('id_token')
   },
   methods: {

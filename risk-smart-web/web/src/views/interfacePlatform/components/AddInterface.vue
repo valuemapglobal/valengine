@@ -9,7 +9,11 @@
       :wrapperClosable="false"
       size="58%"
       :before-close="resetFields"
-      :title="isEdit ? '编辑接口' : '新增接口'"
+      :title="
+        isEdit
+          ? $t('interfacePlatform.editInterface')
+          : $t('interfacePlatform.addInterface')
+      "
     >
       <el-form
         :model="form"
@@ -20,12 +24,18 @@
       >
         <el-row :gutter="30">
           <el-col :span="12">
-            <el-form-item label="接口编号：" prop="interfaceNo">
+            <el-form-item
+              :label="$t('interfacePlatform.interfaceNo')"
+              prop="interfaceNo"
+            >
               <el-input v-model="form.interfaceNo"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="接口名称：" prop="interfaceName">
+            <el-form-item
+              :label="$t('interfacePlatform.interfaceName')"
+              prop="interfaceName"
+            >
               <el-input v-model="form.interfaceName"></el-input>
             </el-form-item>
           </el-col>
@@ -33,26 +43,45 @@
 
         <el-row :gutter="30">
           <el-col :span="12">
-            <el-form-item label="选择类型：" prop="interfaceType">
+            <el-form-item
+              :label="$t('interfacePlatform.selectType')"
+              prop="interfaceType"
+            >
               <el-select
                 v-model="form.interfaceType"
                 :popper-append-to-body="false"
+                placeholder=""
               >
-                <el-option label="个人接口" :value="0"></el-option>
-                <el-option label="企业接口" :value="1"></el-option>
-                <el-option label="司法接口" :value="2"></el-option>
+                <el-option
+                  :label="$t('interfacePlatform.personalInterface')"
+                  :value="0"
+                ></el-option>
+                <el-option
+                  :label="$t('interfacePlatform.enterpriseInterface')"
+                  :value="1"
+                ></el-option>
+                <el-option
+                  :label="$t('interfacePlatform.judicialInterface')"
+                  :value="2"
+                ></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="接口描述：" prop="interfaceDescription">
+            <el-form-item
+              :label="$t('interfacePlatform.interfaceDescription')"
+              prop="interfaceDescription"
+            >
               <el-input v-model="form.interfaceDescription"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="30">
           <el-col :span="12">
-            <el-form-item label="接口单价(元)：" prop="price">
+            <el-form-item
+              :label="$t('interfacePlatform.interfacePrice')"
+              prop="price"
+            >
               <el-input v-model="form.price"></el-input>
             </el-form-item>
           </el-col>
@@ -60,7 +89,10 @@
 
         <el-row :gutter="30">
           <el-col :span="12">
-            <el-form-item label="接口特点：" prop="interfaceFeatures">
+            <el-form-item
+              :label="$t('interfacePlatform.interfaceFeatures')"
+              prop="interfaceFeatures"
+            >
               <el-input
                 v-model="form.interfaceFeatures"
                 type="textarea"
@@ -69,7 +101,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="接口场景：" prop="interfaceScenes">
+            <el-form-item
+              :label="$t('interfacePlatform.interfaceScenes')"
+              prop="interfaceScenes"
+            >
               <el-input
                 v-model="form.interfaceScenes"
                 type="textarea"
@@ -80,30 +115,42 @@
         </el-row>
         <el-row :gutter="30">
           <el-col :span="12">
-            <el-form-item label="接口覆盖体量：" prop="interfaceCoveringVolume">
+            <el-form-item
+              :label="$t('interfacePlatform.interfaceCoveringVolume')"
+              prop="interfaceCoveringVolume"
+            >
               <el-input v-model="form.interfaceCoveringVolume"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="接口标签：" prop="interfaceTag">
+            <el-form-item
+              :label="$t('interfacePlatform.interfaceTag')"
+              prop="interfaceTag"
+            >
               <el-input v-model="form.interfaceTag"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="30">
           <el-col :span="12">
-            <el-form-item label="请求地址：" prop="interfaceLink">
+            <el-form-item
+              :label="$t('interfacePlatform.requestAddress')"
+              prop="interfaceLink"
+            >
               <el-input v-model="form.interfaceLink"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="排序：" prop="interfaceIndex">
+            <el-form-item
+              :label="$t('interfacePlatform.sort')"
+              prop="interfaceIndex"
+            >
               <el-input v-model="form.interfaceIndex" type="number"></el-input>
             </el-form-item>
           </el-col>
           <!-- <el-col :span="12">
             <el-form-item
-              label="测试条数："
+              :label="$t('interfacePlatform.testCount')"
               prop="interfaceQuota"
             >
               <el-input
@@ -116,10 +163,14 @@
 
         <el-row :gutter="30">
           <el-col :span="12">
-            <el-form-item label="参数类型：" prop="paramType">
+            <el-form-item
+              :label="$t('interfacePlatform.paramType')"
+              prop="paramType"
+            >
               <el-select
                 v-model="form.paramType"
                 :popper-append-to-body="false"
+                placeholder=""
               >
                 <el-option label="Json" :value="0"></el-option>
                 <el-option label="from-data" :value="1"></el-option>
@@ -127,10 +178,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="请求类型：" prop="requestType">
+            <el-form-item
+              :label="$t('interfacePlatform.requestType')"
+              prop="requestType"
+            >
               <el-select
                 v-model="form.requestType"
                 :popper-append-to-body="false"
+                placeholder=""
               >
                 <el-option label="POST" :value="0"></el-option>
                 <el-option label="GET" :value="1"></el-option>
@@ -140,26 +195,41 @@
         </el-row>
         <el-row :gutter="30">
           <el-col :span="12">
-            <el-form-item label="返回值类型：" prop="returnType">
+            <el-form-item
+              :label="$t('interfacePlatform.returnType')"
+              prop="returnType"
+            >
               <el-select
                 v-model="form.returnType"
                 :popper-append-to-body="false"
+                placeholder=""
               >
-                <el-option label="对象" :value="0"></el-option>
-                <el-option label="数组" :value="5"></el-option>
+                <el-option
+                  :label="$t('interfacePlatform.object')"
+                  :value="0"
+                ></el-option>
+                <el-option
+                  :label="$t('interfacePlatform.array')"
+                  :value="5"
+                ></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="超时时间(毫秒)：" prop="timeout">
+            <el-form-item
+              :label="$t('interfacePlatform.timeout')"
+              prop="timeout"
+            >
               <el-input v-model="form.timeout"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <div class="bottomBtns">
-        <el-button type="primary" @click="confirm('ruleForm')">确定</el-button>
-        <el-button @click="resetFields">关闭</el-button>
+        <el-button type="primary" @click="confirm('ruleForm')">{{
+          $t('common.sure')
+        }}</el-button>
+        <el-button @click="resetFields">{{ $t('common.cancel') }}</el-button>
       </div>
     </el-drawer>
   </div>
@@ -207,69 +277,142 @@ export default {
       headers: {
         Authorization: 'Bearer ' + getToken(),
       },
-      rules: {
+      rules: {},
+      drawer: false,
+    }
+  },
+  computed: {
+    rules() {
+      return {
         interfaceNo: [
-          { required: true, message: '请输入接口编号', trigger: 'blur' },
-          { min: 1, max: 50, message: '长度在 1到 50个字符', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('interfacePlatform.inputInterfaceNo'),
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 50,
+            message: this.$t('interfacePlatform.length1to50'),
+            trigger: 'blur',
+          },
         ],
         interfaceName: [
-          { required: true, message: '请输入接口名称', trigger: 'blur' },
-          { min: 1, max: 30, message: '长度在 1到 30个字符', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('interfacePlatform.inputInterfaceName'),
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 30,
+            message: this.$t('interfacePlatform.length1to30'),
+            trigger: 'blur',
+          },
         ],
         price: [
-          { required: true, message: '请输入接口单价', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('interfacePlatform.inputInterfacePrice'),
+            trigger: 'blur',
+          },
           {
             validator: (rule, value, callback) => {
               let req = /^\d+(.\d{1,2})?$/
               if (!req.test(value))
-                callback('请输入0-99999之间的金额，可保留两位小数')
+                callback(this.$t('interfacePlatform.priceFormatError'))
               callback()
             },
             trigger: 'blur',
           },
         ],
         interfaceDescription: [
-          { required: true, message: '请输入接口描述', trigger: 'blur' },
-          { min: 1, max: 30, message: '长度在 1到 30个字符', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('interfacePlatform.inputInterfaceDescription'),
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 30,
+            message: this.$t('interfacePlatform.length1to30'),
+            trigger: 'blur',
+          },
         ],
         interfaceFeatures: [
-          { required: true, message: '请输入接口特点', trigger: 'blur' },
-          { min: 1, max: 30, message: '长度在 1到 200个字符', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('interfacePlatform.inputInterfaceFeatures'),
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 200,
+            message: this.$t('interfacePlatform.length1to200'),
+            trigger: 'blur',
+          },
         ],
         interfaceScenes: [
-          { required: true, message: '请输入接口场景', trigger: 'blur' },
-          { min: 1, max: 30, message: '长度在 1到 200个字符', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('interfacePlatform.inputInterfaceScenes'),
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 200,
+            message: this.$t('interfacePlatform.length1to200'),
+            trigger: 'blur',
+          },
         ],
         interfaceCoveringVolume: [
-          { required: true, message: '请输入接口覆盖体量', trigger: 'blur' },
-          { min: 1, max: 30, message: '长度在 1到 30个字符', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('interfacePlatform.inputInterfaceCoveringVolume'),
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 30,
+            message: this.$t('interfacePlatform.length1to30'),
+            trigger: 'blur',
+          },
         ],
         interfaceTag: [
-          { required: true, message: '请输入接口标签', trigger: 'blur' },
-          { min: 1, max: 30, message: '长度在 1到 30个字符', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('interfacePlatform.inputInterfaceTag'),
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 30,
+            message: this.$t('interfacePlatform.length1to30'),
+            trigger: 'blur',
+          },
         ],
-        //
         interfaceQuota: {
           required: true,
           pattern: /^[1-9]*[1-9][0-9]*$/,
-          message: '只能输入数字且大于0',
+          message: this.$t('interfacePlatform.onlyNumberGreaterThanZero'),
           trigger: 'blur',
         },
         interfaceLink: {
           required: true,
-          message: '请输入请求地址',
+          message: this.$t('interfacePlatform.inputRequestAddress'),
           trigger: 'blur',
         },
         interfaceIndex: [
           {
             required: true,
-            message: '请输入排序',
+            message: this.$t('interfacePlatform.inputSort'),
             trigger: 'blur',
           },
           {
             validator: (rule, value, callback) => {
               let req = /^-?[1-9]\d*$|^0$/
-              if (!req.test(value)) callback('请输入整数')
+              if (!req.test(value))
+                callback(this.$t('interfacePlatform.inputInteger'))
               callback()
             },
             trigger: 'blur',
@@ -277,28 +420,27 @@ export default {
         ],
         paramType: {
           required: true,
-          message: '请选择参数类型',
+          message: this.$t('interfacePlatform.selectParamType'),
           trigger: 'change',
         },
         requestType: {
           required: true,
-          message: '请选择请求类型',
+          message: this.$t('interfacePlatform.selectRequestType'),
           trigger: 'change',
         },
         returnType: {
           required: true,
-          message: '请选择返回值类型',
+          message: this.$t('interfacePlatform.selectReturnType'),
           trigger: 'change',
         },
         timeout: {
           required: true,
           pattern: /^[1-9]*[1-9][0-9]*$/,
-          message: '只能输入数字且大于0',
+          message: this.$t('interfacePlatform.onlyNumberGreaterThanZero'),
           trigger: 'blur',
         },
-      },
-      drawer: false,
-    }
+      }
+    },
   },
   watch: {
     drawer: {
@@ -354,7 +496,9 @@ export default {
           if (this.isEdit) {
             updateInterfaceInfo(this.form).then((res) => {
               this.drawer = false
-              this.$message.success('修改成功!')
+              this.$message.success(
+                this.$t('interfacePlatform.modifySuccessExclamation')
+              )
               this.form = {}
               this.$emit('getList')
             })
@@ -362,7 +506,9 @@ export default {
             saveInterfaceInfo(this.form).then((res) => {
               if (res.code == 200) {
                 this.drawer = false
-                this.$message.success('添加成功!')
+                this.$message.success(
+                  this.$t('interfacePlatform.addSuccessExclamation')
+                )
                 this.form = {}
                 this.$emit('getList')
               }
@@ -629,5 +775,9 @@ export default {
 
 /deep/ .el-input-number--small {
   line-height: 44px;
+}
+
+::v-deep .el-select {
+  width: 100%;
 }
 </style>

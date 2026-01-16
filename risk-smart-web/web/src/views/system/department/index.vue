@@ -5,9 +5,9 @@
       <Search :list="list" @search="getList" />
       <div class="btnss">
         <!-- <el-button type="danger" plain icon="el-icon-delete">删除</el-button> -->
-        <el-button icon="el-icon-plus" size="default" @click="handleAdd"
-          >新增</el-button
-        >
+        <el-button icon="el-icon-plus" size="default" @click="handleAdd">{{
+          $t('common.add')
+        }}</el-button>
       </div>
     </div>
     <div class="content">
@@ -29,30 +29,32 @@
       >
         <el-table-column
           prop="deptName"
-          label="部门名称"
+          :label="$t('departmentManagement.deptName')"
           width="550"
         ></el-table-column>
         <el-table-column
           prop="orderNum"
-          label="排序"
+          :label="$t('departmentManagement.sort')"
           width=""
         ></el-table-column>
-        <el-table-column prop="status" label="状态" width="">
+        <el-table-column prop="status" :label="$t('common.status')" width="">
           <template slot-scope="{ row }">
             <!-- <dict-tag
             :options="dict.type.sys_normal_disable"
             :value="scope.row.status"
           /> -->
             <div class="column_status">
-              <span v-if="row.status === '0'" class="normal">正常</span>
-              <span v-else-if="row.status === '1'" class="deactivate"
-                >停用</span
-              >
+              <span v-if="row.status === '0'" class="normal">{{
+                $t('common.normal')
+              }}</span>
+              <span v-else-if="row.status === '1'" class="deactivate">{{
+                $t('common.disabled')
+              }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column
-          label="创建时间"
+          :label="$t('common.createTime')"
           align="left"
           prop="createTime"
           width=""
@@ -62,7 +64,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="操作"
+          :label="$t('common.operation')"
           align="left"
           class="table_button"
           width="300"
@@ -72,19 +74,19 @@
               class="el-dropdown-link"
               @click="openAccountNumber(scope.row, 1)"
             >
-              百融账号
+              {{ $t('departmentManagement.bairongAccount') }}
             </span> -->
             <span
               class="el-dropdown-link"
               @click="openAccountNumber(scope.row, 2)"
             >
-              估图账号
+              {{ $t('departmentManagement.gutuAccount') }}
             </span>
             <span class="el-dropdown-link" @click="handleUpdate(scope.row)">
-              修改
+              {{ $t('common.modify') }}
             </span>
             <span class="el-dropdown-link" @click="handleAdd(scope.row)">
-              新增
+              {{ $t('common.add') }}
             </span>
             <span
               style="color: red"
@@ -92,7 +94,7 @@
               @click="handleDelete(scope.row)"
               v-if="scope.row.parentId != 0"
             >
-              删除
+              {{ $t('common.delete') }}
             </span>
             <!-- <el-button type="text" @click="handleUpdate(scope.row)"
               >修改</el-button
@@ -114,17 +116,25 @@
     <!-- 添加或修改部门对话框 -->
     <el-drawer :title="title" :visible.sync="open" size="60%" direction="rtl">
       <div class="drawerContent" v-if="drawerType == 'default'">
-        <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+        <el-form
+          ref="form"
+          :model="form"
+          :rules="rules"
+          :label-width="isEnglish() ? '160px' : '100px'"
+        >
           <el-row>
             <el-col :span="24" v-if="form.parentId !== 0">
-              <el-form-item label="上级部门" prop="parentId">
+              <el-form-item
+                :label="$t('departmentManagement.parentDept')"
+                prop="parentId"
+              >
                 <!-- <el-input
                   v-model="form.deptName"
-                  placeholder="请输入部门名称"
+                  :placeholder="$t('departmentManagement.inputDeptName')"
                 /> -->
                 <el-cascader
                   v-model="form.parentId"
-                  placeholder="选择上级部门"
+                  :placeholder="$t('departmentManagement.selectParentDept')"
                   :options="deptOptions"
                   :props="{ checkStrictly: true, value: 'id' }"
                 ></el-cascader>
@@ -132,25 +142,31 @@
                   v-model="form.parentId"
                   :options="deptOptions"
                   :normalizer="normalizer"
-                  placeholder="选择上级部门"
+                  :placeholder="$t('departmentManagement.selectParentDept')"
                 /> -->
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="部门名称" prop="deptName">
+              <el-form-item
+                :label="$t('departmentManagement.deptName')"
+                prop="deptName"
+              >
                 <el-input
                   v-model="form.deptName"
-                  placeholder="请输入部门名称"
+                  :placeholder="$t('departmentManagement.inputDeptName')"
                 />
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="所属地区" prop="areaId">
+              <el-form-item
+                :label="$t('departmentManagement.area')"
+                prop="areaId"
+              >
                 <el-select
                   v-model="form.areaId"
-                  placeholder="请选择所属地区"
+                  :placeholder="$t('departmentManagement.selectArea')"
                   clearable
                 >
                   <el-option
@@ -165,7 +181,10 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="显示排序" prop="orderNum">
+              <el-form-item
+                :label="$t('dictionaryManagement.displaySort')"
+                prop="orderNum"
+              >
                 <el-input-number
                   v-model="form.orderNum"
                   controls-position="right"
@@ -174,10 +193,13 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="负责人" prop="leader">
+              <el-form-item
+                :label="$t('departmentManagement.leader')"
+                prop="leader"
+              >
                 <el-input
                   v-model="form.leader"
-                  placeholder="请输入负责人"
+                  :placeholder="$t('departmentManagement.inputLeader')"
                   maxlength="20"
                 />
               </el-form-item>
@@ -185,19 +207,25 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="联系电话" prop="phone">
+              <el-form-item
+                :label="$t('departmentManagement.phone')"
+                prop="phone"
+              >
                 <el-input
                   v-model="form.phone"
-                  placeholder="请输入联系电话"
+                  :placeholder="$t('departmentManagement.inputPhone')"
                   maxlength="11"
                 />
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="邮箱" prop="email">
+              <el-form-item
+                :label="$t('departmentManagement.email')"
+                prop="email"
+              >
                 <el-input
                   v-model="form.email"
-                  placeholder="请输入邮箱"
+                  :placeholder="$t('departmentManagement.inputEmail')"
                   maxlength="50"
                 />
               </el-form-item>
@@ -205,24 +233,34 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="部门状态">
-                <el-radio v-model="form.status" label="0">正常</el-radio>
-                <el-radio v-model="form.status" label="1">停用</el-radio>
+              <el-form-item :label="$t('departmentManagement.deptStatus')">
+                <el-radio v-model="form.status" label="0">{{
+                  $t('common.normal')
+                }}</el-radio>
+                <el-radio v-model="form.status" label="1">{{
+                  $t('common.disabled')
+                }}</el-radio>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="授权状态">
-                <el-radio v-model="form.accredit" :label="1">已授权</el-radio>
-                <el-radio v-model="form.accredit" :label="0">未授权</el-radio>
+              <el-form-item :label="$t('departmentManagement.authStatus')">
+                <el-radio v-model="form.accredit" :label="1">{{
+                  $t('departmentManagement.authorized')
+                }}</el-radio>
+                <el-radio v-model="form.accredit" :label="0">{{
+                  $t('departmentManagement.unauthorized')
+                }}</el-radio>
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
-          <el-button @click="cancel">取 消</el-button>
+          <el-button type="primary" @click="submitForm">{{
+            $t('common.sure')
+          }}</el-button>
+          <el-button @click="cancel">{{ $t('common.cancel') }}</el-button>
         </div>
       </div>
       <BairongDrawer
@@ -296,40 +334,62 @@ export default {
       // 表单参数
       form: {},
       dataList: [],
-      // 表单校验
-      rules: {
+      drawerType: 'default',
+      currentRow: null,
+    }
+  },
+  computed: {
+    rules() {
+      return {
         parentId: [
-          { required: true, message: '上级部门不能为空', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('departmentManagement.parentDeptRequired'),
+            trigger: 'blur',
+          },
         ],
         deptName: [
-          { required: true, message: '部门名称不能为空', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('departmentManagement.deptNameRequired'),
+            trigger: 'blur',
+          },
         ],
         orderNum: [
-          { required: true, message: '显示排序不能为空', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('departmentManagement.displaySortRequired'),
+            trigger: 'blur',
+          },
         ],
         email: [
           {
             type: 'email',
-            message: "'请输入正确的邮箱地址",
+            message: this.$t('departmentManagement.invalidEmail'),
             trigger: ['blur', 'change'],
           },
         ],
         areaId: [
-          { required: true, message: '显示排序不能为空', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('departmentManagement.areaRequired'),
+            trigger: 'blur',
+          },
         ],
         phone: [
           {
             pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
-            message: '请输入正确的手机号码',
+            message: this.$t('departmentManagement.invalidPhone'),
             trigger: 'blur',
           },
         ],
-      },
-
-      list: [
+      }
+    },
+    list() {
+      return [
         {
           type: 'input',
-          placeholder: '请输入部门名称',
+          placeholder: this.$t('departmentManagement.inputDeptName'),
           prop: {
             key: 'deptName',
             value: null,
@@ -337,20 +397,19 @@ export default {
         },
         {
           type: 'select',
-          placeholder: '请选择状态',
+          placeholder:
+            this.$t('common.pleaseSelect') + this.$t('common.status'),
           prop: {
             key: 'status',
             value: null,
           },
           options: [
-            { label: '正常', value: '0' },
-            { label: '停用', value: '1' },
+            { label: this.$t('common.normal'), value: '0' },
+            { label: this.$t('common.disabled'), value: '1' },
           ],
         },
-      ],
-      drawerType: 'default',
-      currentRow: null,
-    }
+      ]
+    },
   },
   created() {
     // this.getList()
@@ -369,7 +428,7 @@ export default {
         dictType: 'nyr_service_Area',
         status: 0,
       }).then((response) => {
-        let data = response.rows || response.data || []
+        let data = response.rows
         data.forEach((item) => {
           item.dictValue = parseInt(item.dictValue)
         })
@@ -386,7 +445,10 @@ export default {
     openAccountNumber(data, type) {
       this.currentRow = JSON.parse(JSON.stringify(data))
       this.drawerType = type == 1 ? 'baiRong' : 'valueMap'
-      this.title = type == 1 ? '添加部门-百融' : '添加部门-估图'
+      this.title =
+        type == 1
+          ? this.$t('departmentManagement.addDeptBairong')
+          : this.$t('departmentManagement.addDeptGutu')
       this.open = true
     },
     /** 转换部门数据结构 */
@@ -436,7 +498,7 @@ export default {
       }
       this.drawerType = 'default'
       this.open = true
-      this.title = '添加部门'
+      this.title = this.$t('departmentManagement.addDept')
     },
     /** 展开/折叠操作 */
     toggleExpandAll() {
@@ -456,7 +518,7 @@ export default {
       getDept(row.deptId).then((response) => {
         this.form = response.data
         this.open = true
-        this.title = '修改部门'
+        this.title = this.$t('departmentManagement.editDept')
       })
     },
     /** 提交按钮 */
@@ -469,13 +531,13 @@ export default {
           }
           if (this.form.deptId != undefined) {
             updateDept(this.form).then((response) => {
-              this.$message.success('修改成功')
+              this.$message.success(this.$t('departmentManagement.editSuccess'))
               this.open = false
               this.getList()
             })
           } else {
             addDept(this.form).then((response) => {
-              this.$message.success('新增成功')
+              this.$message.success(this.$t('departmentManagement.addSuccess'))
               this.open = false
               this.getList()
             })
@@ -486,11 +548,11 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       this.$confirm(
-        '是否确认删除名称为"' + row.deptName + '"的数据项？',
-        '提示',
+        this.$t('departmentManagement.deleteConfirm', { name: row.deptName }),
+        this.$t('common.systemTip'),
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+          confirmButtonText: this.$t('common.sure'),
+          cancelButtonText: this.$t('common.cancel'),
           type: 'warning',
         }
       )
@@ -499,7 +561,7 @@ export default {
         })
         .then(() => {
           this.getList()
-          this.$message.success('删除成功')
+          this.$message.success(this.$t('departmentManagement.deleteSuccess'))
         })
         .catch(() => {})
     },
@@ -587,7 +649,7 @@ export default {
         let value = formatObj[key]
         // Note: getDay() returns 0 on Sunday
         if (key === 'a') {
-          return ['日', '一', '二', '三', '四', '五', '六'][value]
+          return this.$t('departmentManagement.weekDays')[value]
         }
         if (result.length > 0 && value < 10) {
           value = '0' + value

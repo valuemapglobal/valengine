@@ -10,9 +10,9 @@
     <div class="login_background">
       <img src="./img/login.png" alt="" srcset="" />
       <div class="login_background-top">
-        <div class="title">ValEngine评估引擎平台</div>
+        <div class="title">{{ $t('login.title') }}</div>
         <div class="subtitle">
-          依托智能决策实现数据到决策的全链路优化，积淀行业标准知识库支持业务快速部署。<br />以智能阈值与行业经验双引擎构建精准风控闭环，为业务增长筑牢防线
+          {{ $t('login.subtitle') }}
         </div>
       </div>
     </div>
@@ -44,9 +44,9 @@
       />
     </div>
     <div class="tips" v-if="!showTips">
-      <div>建议您使用</div>
-      <span>Chrome、火狐浏览器</span>
-      <div>使用本产品获得更好使用体验</div>
+      <div>{{ $t('login.browserTip') }}</div>
+      <span>{{ $t('login.browserTip2') }}</span>
+      <div>{{ $t('login.browserTip3') }}</div>
       <i
         style="font-size: 20px; cursor: pointer"
         class="el-icon-close"

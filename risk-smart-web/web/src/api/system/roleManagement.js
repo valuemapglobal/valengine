@@ -6,7 +6,7 @@
  * @FilePath: /vmkj/src/api/roleManagement/index.js
  */
 import request from '@/utils/request'
-const url = process.env.VUE_APP_ENV === 'production' ? '/prod-api' : '/dev-api'
+const url = process.env.VUE_APP_ENV === 'production' ? '/prod-api' : '/dev-api/prod-api'
 
 export function getTreeselect(cname) {
   return request({

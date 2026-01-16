@@ -1,20 +1,28 @@
 <template>
   <div class="addTactics">
-    <el-form ref="formRef" :model="cardForm" :rules="rules" label-width="100px">
-      <el-form-item label="评分卡名称" prop="scoreCard">
+    <el-form
+      ref="formRef"
+      :model="cardForm"
+      :rules="rules"
+      :label-width="isEnglish() ? '160px' : '100px'"
+    >
+      <el-form-item
+        :label="$t('decisionPlatform.scoreCardName')"
+        prop="scoreCard"
+      >
         <el-input
           v-model="cardForm.scoreCard"
           @input="(e) => (cardForm.scoreCard = e.replace(/\s*/g, ''))"
           clearable
-          placeholder="请输入"
+          :placeholder="$t('decisionPlatform.inputPlaceholder')"
           @change="handleScoreCode"
         />
       </el-form-item>
-      <el-form-item label="行业" prop="profession">
+      <el-form-item :label="$t('decisionPlatform.industry')" prop="profession">
         <el-select
           v-model="cardForm.profession"
           :popper-append-to-body="false"
-          placeholder="请选择"
+          :placeholder="$t('decisionPlatform.pleaseSelect')"
         >
           <el-option
             v-for="(item, index) in professionList"
@@ -27,38 +35,49 @@
       <!--			<el-form-item label="参数">
               <el-input v-model="argument" disabled class="noDisabledColor" />
             </el-form-item>-->
-      <el-form-item label="描述" prop="description">
+      <el-form-item
+        :label="$t('decisionPlatform.description')"
+        prop="description"
+      >
         <el-input
           v-model="cardForm.description"
           type="textarea"
-          placeholder="请输入描述"
+          :placeholder="$t('decisionPlatform.inputDescription')"
           clearable
           :rows="5"
           maxlength="200"
           show-word-limit
         ></el-input>
       </el-form-item>
-      <el-form-item label="最高分" prop="modelScore">
-        <el-input v-model="cardForm.modelScore" placeholder="请输入最高分" />
+      <el-form-item
+        :label="$t('decisionPlatform.highestScore')"
+        prop="modelScore"
+      >
+        <el-input
+          v-model="cardForm.modelScore"
+          :placeholder="$t('decisionPlatform.inputHighestScore')"
+        />
       </el-form-item>
-      <el-form-item label="版本号">
+      <el-form-item :label="$t('decisionPlatform.versionNumber')">
         <el-input
           v-model="cardForm.versionControl"
           disabled
-          placeholder="自动生成版本号"
+          :placeholder="$t('decisionPlatform.autoGenerateVersionNumber')"
         />
       </el-form-item>
     </el-form>
     <div class="btnBottom" v-if="status">
       <el-button type="primary" @click="submit" v-preventReClick
-        >确定
+        >{{ $t('decisionPlatform.confirm') }}
       </el-button>
-      <el-button @click="handleClose">取消</el-button>
+      <el-button @click="handleClose">{{
+        $t('decisionPlatform.cancel')
+      }}</el-button>
     </div>
     <div class="hint-box">
-      <div class="text">提示：</div>
+      <div class="text">{{ $t('decisionPlatform.tip') }}</div>
       <div>
-        版本号会根据产品名称、业务场景、修改时间等自动生成,版本号不可修改。
+        {{ $t('decisionPlatform.versionNumberAutoGenerateTip') }}
       </div>
     </div>
     <!--		<confirmDialog ref="confirmDialog" @update="update" :disabled="fullscreenLoading" @reserved="reserved"
@@ -124,21 +143,6 @@ export default {
         id: null,
         modelScore: null,
       },
-      rules: {
-        scoreCard: [
-          { required: true, message: '评分卡名称不能为空', trigger: 'blur' },
-        ],
-        profession: [
-          { required: true, message: '请选择行业', trigger: 'change' },
-        ],
-        modelScore: [
-          { required: true, message: '最高分不能为空' },
-          {
-            pattern: /^(0\.\d{1,2}|[1-9]\d*\.\d{1,2}|0|[1-9]\d*)$/,
-            message: '最高分必须为数字值，且只能保留两位小数',
-          },
-        ],
-      },
       argument: '自动生成参数',
       professionList: [],
     }
@@ -167,9 +171,40 @@ export default {
       )
       return findObj
     },
+    rules() {
+      return {
+        scoreCard: [
+          {
+            required: true,
+            message: this.$t('decisionPlatform.scoreCardNameCannotBeEmpty'),
+            trigger: 'blur',
+          },
+        ],
+        profession: [
+          {
+            required: true,
+            message: this.$t('decisionPlatform.selectIndustry'),
+            trigger: 'change',
+          },
+        ],
+        modelScore: [
+          {
+            required: true,
+            message: this.$t('decisionPlatform.highestScoreCannotBeEmpty'),
+          },
+          {
+            pattern: /^(0\.\d{1,2}|[1-9]\d*\.\d{1,2}|0|[1-9]\d*)$/,
+            message: this.$t('decisionPlatform.highestScoreMustBeNumber'),
+          },
+        ],
+      }
+    },
   },
   mounted() {},
   methods: {
+    isEnglish() {
+      return this.$i18n.locale === 'en'
+    },
     /*// 取消
       closeDialog() {
         // this.$emit('success')
@@ -276,7 +311,7 @@ export default {
           return API({ ...params })
             .then((res) => {
               if (res.code == 200) {
-                this.$message.success('操作成功')
+                this.$message.success(this.$t('decisionPlatform.operationSuccess'))
                 this.$emit('success')
               }
             })
@@ -304,7 +339,9 @@ export default {
           API(params)
             .then((res) => {
               if (res.code == 200) {
-                this.$message.success('操作成功')
+                this.$message.success(
+                  this.$t('decisionPlatform.operationSuccess')
+                )
                 this.$emit('success')
                 this.handleClose()
               }
@@ -341,9 +378,11 @@ export default {
           .catch((err) => {})
       }
     },
-    checkCodeNo: (rule, value, callback) => {
+    checkCodeNo(rule, value, callback) {
       if (value) {
-        return callback(new Error('评分卡名称重复'))
+        return callback(
+          new Error(this.$t('decisionPlatform.scoreCardNameDuplicate'))
+        )
       } else {
         callback()
       }

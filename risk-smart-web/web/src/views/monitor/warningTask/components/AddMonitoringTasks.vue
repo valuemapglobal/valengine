@@ -10,12 +10,15 @@
         ref="formRef"
         :model="taskForm"
         :rules="rules"
-        label-width="80px"
+        :label-width="isEnglish() ? '140px' : '80px'"
       >
-        <el-form-item label="流程策略" prop="processPolicyId">
+        <el-form-item
+          :label="$t('monitor.processStrategy')"
+          prop="processPolicyId"
+        >
           <el-select
             v-model="taskForm.processPolicyId"
-            placeholder="请选择"
+            :placeholder="$t('monitor.pleaseSelect')"
             clearable
             filterable
           >
@@ -28,7 +31,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="监测时间" prop="monitorDays">
+        <el-form-item :label="$t('monitor.monitorTime')" prop="monitorDays">
           <div class="select-box">
             <div
               class="select-box_item"
@@ -43,7 +46,7 @@
             </div>
           </div>
         </el-form-item>
-        <el-form-item label="监测主体" prop="subjectType">
+        <el-form-item :label="$t('monitor.monitorSubject')" prop="subjectType">
           <div class="select-box">
             <div
               class="select-box_item"
@@ -58,19 +61,19 @@
             </div>
           </div>
         </el-form-item>
-        <el-form-item label="备注" prop="remark">
+        <el-form-item :label="$t('monitor.remark')" prop="remark">
           <el-input
             v-model="taskForm.remark"
             type="textarea"
             :rows="5"
-            placeholder="请输入"
+            :placeholder="$t('monitor.pleaseInput')"
           />
         </el-form-item>
       </el-form>
       <div class="bottomBtns">
         <el-button type="primary" @click="handleSubmit">
           <i class="el-icon-loading" v-if="btnLoading" />
-          {{ btnLoading ? '提交中...' : '提交' }}
+          {{ btnLoading ? $t('monitor.submitting') : $t('monitor.submit') }}
         </el-button>
       </div>
     </div>
@@ -92,8 +95,8 @@ export default {
     return {
       drawer: {
         visible: false,
-        title: '新增监测任务',
-        width: '450px',
+        title: '',
+        width: '40%',
       },
       btnLoading: false,
       taskForm: {
@@ -103,20 +106,35 @@ export default {
         subjectType: '0',
         remark: null,
       },
-      rules: {
-        processPolicyId: [
-          { required: true, message: '请输入流程策略', trigger: 'change' },
-        ],
-        monitorDays: [
-          { required: true, message: '请输入监测时间', trigger: 'change' },
-        ],
-        subjectType: [
-          { required: true, message: '请输入监控主体', trigger: 'change' },
-        ],
-      },
-
       policyOptions: [],
     }
+  },
+  computed: {
+    rules() {
+      return {
+        processPolicyId: [
+          {
+            required: true,
+            message: this.$t('monitor.inputProcessStrategy'),
+            trigger: 'change',
+          },
+        ],
+        monitorDays: [
+          {
+            required: true,
+            message: this.$t('monitor.inputMonitorTime'),
+            trigger: 'change',
+          },
+        ],
+        subjectType: [
+          {
+            required: true,
+            message: this.$t('monitor.inputMonitorSubject'),
+            trigger: 'change',
+          },
+        ],
+      }
+    },
   },
   methods: {
     init() {
@@ -138,7 +156,7 @@ export default {
           saveOrUpdate({ ...this.taskForm })
             .then((res) => {
               if (res.code == 200) {
-                this.$message.success('操作成功')
+                this.$message.success(this.$t('monitor.operationSuccess'))
                 this.handleClose()
                 this.$emit('refresh')
               }
@@ -153,11 +171,14 @@ export default {
     handleOpen(data) {
       this.init()
       this.taskForm = this.$options.data().taskForm
-      if (this.$refs.taskFormRef) this.$refs.taskFormRef.clearValidate()
+      if (this.$refs.formRef) this.$refs.formRef.clearValidate()
       if (data) {
         for (let key in this.taskForm) {
           if (data[key] != null) this.taskForm[key] = data[key] + ''
         }
+        this.drawer.title = this.$t('monitor.editMonitorTask')
+      } else {
+        this.drawer.title = this.$t('monitor.addMonitorTask')
       }
       this.drawer.visible = true
     },
@@ -182,14 +203,12 @@ export default {
     .el-select {
       width: 100%;
       .el-input__inner {
-        border: none;
         background: rgba(#000, 0.04);
         height: 42px;
       }
     }
     .el-textarea {
       .el-textarea__inner {
-        border: none;
         background: rgba(#000, 0.04);
       }
     }

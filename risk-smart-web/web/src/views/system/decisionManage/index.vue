@@ -4,14 +4,14 @@
       <div class="search">
         <el-input
           v-model="searchFrom.operName"
-          placeholder="请输入操作用户"
+          :placeholder="$t('decisionManage.inputOperator')"
           suffix-icon="el-icon-search"
           style="width: 300; height: 42px"
           clearable
           @clear="getlogData"
         ></el-input>
         <el-button type="primary" class="search_btn" @click="getlogData">
-          搜索
+          {{ $t('common.search') }}
         </el-button>
       </div>
     </div>
@@ -21,7 +21,7 @@
           <el-select
             :popper-append-to-body="false"
             v-model="searchFrom.deptId"
-            placeholder="用户归属机构"
+            :placeholder="$t('decisionManage.selectUserDept')"
             clearable
             @change="getlogData"
           >
@@ -37,19 +37,19 @@
           <el-select
             :popper-append-to-body="false"
             v-model="searchFrom.businessType"
-            placeholder="操作类型"
+            :placeholder="$t('decisionManage.selectOperationType')"
             clearable
             @change="getlogData"
           >
-            <el-option :value="1" label="新增"></el-option>
-            <el-option :value="2" label="修改"></el-option>
-            <el-option :value="3" label="删除"></el-option>
-            <!-- <el-option :value="12" label="启停"></el-option> -->
+            <el-option :value="1" :label="$t('common.add')"></el-option>
+            <el-option :value="2" :label="$t('common.modify')"></el-option>
+            <el-option :value="3" :label="$t('common.delete')"></el-option>
+            <!-- <el-option :value="12" :label="$t('decisionManage.enableDisable')"></el-option> -->
           </el-select>
           <el-select
             :popper-append-to-body="false"
             v-model="searchFrom.businessCode"
-            placeholder="业务场景"
+            :placeholder="$t('decisionManage.selectBusinessScene')"
             clearable
             @change="getlogData"
           >
@@ -64,37 +64,43 @@
           <el-select
             :popper-append-to-body="false"
             v-model="searchFrom.ruleCode"
-            placeholder="策略模型"
+            :placeholder="$t('decisionManage.selectStrategyModel')"
             clearable
             @change="getlogData"
           >
-            <el-option :value="1" label="评分模型"> </el-option>
-            <el-option :value="2" label="评级模型"> </el-option>
-            <el-option :value="3" label="额度模型"> </el-option>
-            <el-option :value="4" label="定价模型"> </el-option>
-            <el-option :value="5" label="规则模型"> </el-option>
-            <el-option :value="6" label="分类模型"> </el-option>
+            <el-option :value="1" :label="$t('decisionManage.scoreModel')">
+            </el-option>
+            <el-option :value="2" :label="$t('decisionManage.ratingModel')">
+            </el-option>
+            <el-option :value="3" :label="$t('decisionManage.limitModel')">
+            </el-option>
+            <el-option :value="4" :label="$t('decisionManage.priceModel')">
+            </el-option>
+            <el-option :value="5" :label="$t('decisionManage.ruleModel')">
+            </el-option>
+            <el-option :value="6" :label="$t('decisionManage.classifyModel')">
+            </el-option>
           </el-select>
           <el-date-picker
             v-model="selectForm.time"
             type="datetimerange"
             @change="changeTime"
             range-separator="-"
-            start-placeholder="运行时间(起)"
-            end-placeholder="运行时间(止)"
+            :start-placeholder="$t('decisionManage.runTimeStart')"
+            :end-placeholder="$t('decisionManage.runTimeEnd')"
             value-format="yyyy-MM-dd HH:mm:ss"
           >
           </el-date-picker>
         </div>
 
-        <!-- <span style="margin-left:10px;color: rgba(0,0,0,0.4);" @click="reset">重置</span> -->
+        <!-- <span style="margin-left:10px;color: rgba(0,0,0,0.4);" @click="reset">{{ $t('common.reset') }}</span> -->
         <el-button
           type="primary"
           style="margin-left: 10px"
           class="search_btn"
           @click="reset"
         >
-          重置
+          {{ $t('common.reset') }}
         </el-button>
       </div>
       <el-table
@@ -118,21 +124,39 @@
               {{ mapSceneList(row[item.value]) }}
             </span>
             <span v-if="item.scope === 'ruleCode'">
-              <div v-if="row[item.value] == 1">评分模型</div>
-              <div v-if="row[item.value] == 2">评级模型</div>
-              <div v-if="row[item.value] == 3">额度模型</div>
-              <div v-if="row[item.value] == 4">定价模型</div>
-              <div v-if="row[item.value] == 5">规则模型</div>
-              <div v-if="row[item.value] == 6">分类模型</div>
+              <div v-if="row[item.value] == 1">
+                {{ $t('decisionManage.scoreModel') }}
+              </div>
+              <div v-if="row[item.value] == 2">
+                {{ $t('decisionManage.ratingModel') }}
+              </div>
+              <div v-if="row[item.value] == 3">
+                {{ $t('decisionManage.limitModel') }}
+              </div>
+              <div v-if="row[item.value] == 4">
+                {{ $t('decisionManage.priceModel') }}
+              </div>
+              <div v-if="row[item.value] == 5">
+                {{ $t('decisionManage.ruleModel') }}
+              </div>
+              <div v-if="row[item.value] == 6">
+                {{ $t('decisionManage.classifyModel') }}
+              </div>
             </span>
             <span v-else-if="item.scope === 'businessType'">
               <!-- <span v-if="row[item.value] == '0'">{{
-                  "其他"
+                  $t('common.other')
                 }}</span> -->
-              <span v-if="row[item.value] == '1'">{{ '新增' }}</span>
-              <span v-if="row[item.value] == '2'">{{ '修改' }}</span>
-              <span v-if="row[item.value] == '3'">{{ '删除' }}</span>
-              <span v-if="row[item.value] == '12'">{{ '启停' }}</span>
+              <span v-if="row[item.value] == '1'">{{ $t('common.add') }}</span>
+              <span v-if="row[item.value] == '2'">{{
+                $t('common.modify')
+              }}</span>
+              <span v-if="row[item.value] == '3'">{{
+                $t('common.delete')
+              }}</span>
+              <span v-if="row[item.value] == '12'">{{
+                $t('decisionManage.enableDisable')
+              }}</span>
             </span>
 
             <span v-else-if="!item.scope">
@@ -141,17 +165,21 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="160px" fixed="right">
+        <el-table-column
+          :label="$t('common.operation')"
+          width="160px"
+          fixed="right"
+        >
           <template slot-scope="{ row }">
             <div class="handler">
-              <!-- <el-link :underline="false" type="" @click="openDrawer(row)">审批
+              <!-- <el-link :underline="false" type="" @click="openDrawer(row)">{{ $t('common.approve') }}
                               </el-link> -->
               <el-link
                 type="danger"
                 style="color: #3662ec"
                 :underline="false"
                 @click="handleDetail(row)"
-                >详情
+                >{{ $t('operlogManage.detail') }}
               </el-link>
             </div>
           </template>
@@ -198,69 +226,6 @@ export default {
       activeBtn: 0,
       tableData: [],
       tableLoading: false,
-      tableList: [
-        {
-          value: 'operId',
-          label: '操作编号',
-          width: '100px',
-          align: 'left',
-        },
-        {
-          value: 'operName',
-          label: '操作用户',
-          width: '190px',
-          align: 'left',
-        },
-        {
-          value: 'deptName',
-          label: '用户归属机构',
-          width: '170px',
-          align: 'left',
-        },
-        {
-          value: 'businessType',
-          label: '操作类型',
-          // width: '130px',
-          //   align: "left",
-          scope: 'businessType',
-        },
-        // {
-        //   value: "productName",
-        //   label: "金融产品",
-        //   // width: '130px',
-        //   align: "left",
-        // },
-        {
-          value: 'businessCode',
-          label: '业务场景',
-          align: 'left',
-          scope: 'businessCode',
-        },
-
-        {
-          value: 'ruleCode',
-          label: '策略模型',
-          width: '240px',
-          align: 'left',
-          scope: 'ruleCode',
-        },
-        // {
-        //   value: "ruleName",
-        //   label: "流程策略",
-        //   width: "240px",
-        //   align: "left",
-        //   scope: 'ruleName'
-        // },
-        {
-          value: 'operTime',
-          label: '操作时间',
-          width: '240px',
-          align: 'left',
-          // scope: 'scope_time'
-        },
-
-        //
-      ],
       searchFrom: {
         pageNum: 1,
         pageSize: 10,
@@ -275,7 +240,73 @@ export default {
       },
     }
   },
-  computed: {},
+  computed: {
+    tableList() {
+      return [
+        {
+          value: 'operId',
+          label: this.$t('decisionManage.operationNo'),
+          width: '100px',
+          align: 'left',
+        },
+        {
+          value: 'operName',
+          label: this.$t('decisionManage.operator'),
+          width: '190px',
+          align: 'left',
+        },
+        {
+          value: 'deptName',
+          label: this.$t('decisionManage.userDept'),
+          width: '170px',
+          align: 'left',
+        },
+        {
+          value: 'businessType',
+          label: this.$t('decisionManage.operationType'),
+          // width: '130px',
+          //   align: "left",
+          scope: 'businessType',
+        },
+        // {
+        //   value: "productName",
+        //   label: this.$t('decisionManage.financialProduct'),
+        //   // width: '130px',
+        //   align: "left",
+        // },
+        {
+          value: 'businessCode',
+          label: this.$t('decisionManage.businessScene'),
+          align: 'left',
+          scope: 'businessCode',
+        },
+
+        {
+          value: 'ruleCode',
+          label: this.$t('decisionManage.strategyModel'),
+          width: '240px',
+          align: 'left',
+          scope: 'ruleCode',
+        },
+        // {
+        //   value: "ruleName",
+        //   label: this.$t('decisionManage.processStrategy'),
+        //   width: "240px",
+        //   align: "left",
+        //   scope: 'ruleName'
+        // },
+        {
+          value: 'operTime',
+          label: this.$t('decisionManage.operationTime'),
+          width: '240px',
+          align: 'left',
+          // scope: 'scope_time'
+        },
+
+        //
+      ]
+    },
+  },
   watch: {},
   mounted() {
     this.getType()
@@ -397,15 +428,19 @@ export default {
     },
 
     handleDelete(row) {
-      this.$confirm('是否确认删除这条记录?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm(
+        this.$t('decisionManage.deleteConfirm'),
+        this.$t('common.warning'),
+        {
+          confirmButtonText: this.$t('common.sure'),
+          cancelButtonText: this.$t('common.cancel'),
+          type: 'warning',
+        }
+      )
         .then(() => {
           deleteById(row.id)
             .then((res) => {
-              this.$message.success('操作成功')
+              this.$message.success(this.$t('common.success'))
               this.getlogData()
             })
             .catch((err) => {})

@@ -1,7 +1,11 @@
 <template>
   <div style="position: relative">
     <el-drawer
-      :title="isEdit ? '编辑数据场景' : '新增数据场景'"
+      :title="
+        isEdit
+          ? $t('interfacePlatform.editDataScenario')
+          : $t('interfacePlatform.addDataScenario')
+      "
       :visible.sync="this.drawer"
       :destroy-on-close="true"
       :hide-required-asterisk="false"
@@ -14,48 +18,70 @@
         :model="form"
         :rules="rules"
         ref="ruleForm"
-        label-width="120px"
+        :label-width="isEnglish() ? '150px' : '120px'"
         label-position="left"
       >
-        <el-form-item label="数据场景名称：" prop="dataName">
+        <el-form-item
+          :label="$t('interfacePlatform.dataScenarioName')"
+          prop="dataName"
+        >
           <el-input v-model="form.dataName"></el-input>
         </el-form-item>
 
-        <el-form-item label="来源：" prop="source" style="margin-top: 20px">
+        <el-form-item
+          :label="$t('interfacePlatform.source')"
+          prop="source"
+          style="margin-top: 20px"
+        >
           <el-input v-model="form.source"></el-input>
         </el-form-item>
-        <el-form-item label="网址：" prop="webLink" style="margin-top: 20px">
+        <el-form-item
+          :label="$t('interfacePlatform.website')"
+          prop="webLink"
+          style="margin-top: 20px"
+        >
           <el-input v-model="form.webLink"></el-input>
         </el-form-item>
         <el-form-item
-          label="负责人："
+          :label="$t('interfacePlatform.adminName')"
           prop="adminName"
           style="margin-top: 20px"
         >
           <el-input v-model="form.adminName"></el-input>
         </el-form-item>
         <el-form-item
-          label="联系方式："
+          :label="$t('interfacePlatform.contactDetails')"
           prop="contactDetails"
           style="margin-top: 20px"
         >
           <el-input v-model="form.contactDetails"></el-input>
         </el-form-item>
         <el-form-item
-          label="数据类型："
+          :label="$t('interfacePlatform.dataType')"
           prop="interfaceDataType"
           style="margin-top: 20px"
         >
           <el-select v-model="form.interfaceDataType" disabled>
-            <el-option label="元数据" :value="0"></el-option>
-            <el-option label="特征变量" :value="1"></el-option>
-            <el-option label="分析指标" :value="2"></el-option>
+            <el-option
+              :label="$t('interfacePlatform.metadata')"
+              :value="0"
+            ></el-option>
+            <el-option
+              :label="$t('interfacePlatform.featureVariable')"
+              :value="1"
+            ></el-option>
+            <el-option
+              :label="$t('interfacePlatform.analysisTarget')"
+              :value="2"
+            ></el-option>
           </el-select>
         </el-form-item>
       </el-form>
       <div class="bottomBtns">
-        <el-button type="primary" @click="comfirm('ruleForm')">确定</el-button>
-        <el-button @click="resetFields">关闭</el-button>
+        <el-button type="primary" @click="comfirm('ruleForm')">{{
+          $t('common.sure')
+        }}</el-button>
+        <el-button @click="resetFields">{{ $t('common.cancel') }}</el-button>
       </div>
     </el-drawer>
   </div>
@@ -90,37 +116,77 @@ export default {
       headers: {
         Authorization: 'Bearer ' + getToken(),
       },
-      rules: {
+      rules: {},
+      drawer: false,
+    }
+  },
+  computed: {
+    rules() {
+      return {
         dataName: [
-          { required: true, message: '请输入场景名称', trigger: 'blur' },
-          { min: 1, max: 30, message: '长度在 1到 30个字符', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('interfacePlatform.inputScenarioName'),
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 30,
+            message: this.$t('interfacePlatform.length1to30'),
+            trigger: 'blur',
+          },
         ],
         source: [
-          { required: true, message: '请输入来源', trigger: 'blur' },
-          { min: 1, max: 30, message: '长度在 1到 30个字符', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('interfacePlatform.inputSource'),
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 30,
+            message: this.$t('interfacePlatform.length1to30'),
+            trigger: 'blur',
+          },
         ],
-        webLink: { required: true, message: '请输入网址', trigger: 'blur' },
+        webLink: {
+          required: true,
+          message: this.$t('interfacePlatform.inputWebsite'),
+          trigger: 'blur',
+        },
         adminName: [
-          { required: true, message: '请输入负责人', trigger: 'blur' },
-          { min: 1, max: 30, message: '长度在 1到 30个字符', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('interfacePlatform.inputAdminName'),
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 30,
+            message: this.$t('interfacePlatform.length1to30'),
+            trigger: 'blur',
+          },
         ],
         contactDetails: [
-          { required: true, message: '请输入手机号', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('interfacePlatform.inputPhone'),
+            trigger: 'blur',
+          },
           {
             required: true,
             pattern: /^1[3456789]\d{9}$/,
-            message: '手机号格式不正确',
+            message: this.$t('interfacePlatform.phoneFormatError'),
             trigger: 'blur',
           },
         ],
         interfaceDataType: {
           required: true,
-          message: '请选择数据类型',
+          message: this.$t('interfacePlatform.selectDataType'),
           trigger: 'change',
         },
-      },
-      drawer: false,
-    }
+      }
+    },
   },
   mounted() {},
   methods: {
@@ -142,7 +208,9 @@ export default {
             updateSourceInfo({ ...this.form }).then((res) => {
               if (res.code == 200) {
                 this.resetFields()
-                this.$message.success('修改成功')
+                this.$message.success(
+                  this.$t('interfacePlatform.modifySuccess')
+                )
                 this.$emit('getList')
               }
             })
@@ -150,7 +218,7 @@ export default {
             saveSourceInfo({ ...this.form }).then((res) => {
               if (res.code == 200) {
                 this.resetFields()
-                this.$message.success('新增成功')
+                this.$message.success(this.$t('interfacePlatform.addSuccess'))
                 this.$emit('getList')
               }
             })
@@ -191,12 +259,12 @@ export default {
   }
 }
 
-// /deep/ .el-form-item {
+// ::v-deep .el-form-item {
 //   // height: 60px !important;
 //   margin-bottom: 0px;
 // }
 
-// /deep/ .el-form .ets {
+// ::v-deep .el-form .ets {
 //   height: 200px !important;
 // }
 
@@ -388,12 +456,12 @@ export default {
   margin-bottom: 30px;
 }
 
-/deep/ .el-dialog {
+::v-deep .el-dialog {
   width: 432px !important;
   height: 170px !important;
 }
 
-/deep/ .el-dialog__body {
+::v-deep .el-dialog__body {
   padding: 0px !important;
 }
 
@@ -408,17 +476,21 @@ export default {
   box-sizing: border-box;
 }
 
-/deep/ .el-switch {
+::v-deep .el-switch {
   vertical-align: bottom;
   margin-left: 20px;
 }
 
-/deep/ .el-form-item .el-input__inner {
+::v-deep .el-form-item .el-input__inner {
   padding: 14px;
   width: 100%;
 }
 
-/deep/ .el-input-number--small {
+::v-deep .el-input-number--small {
   line-height: 44px;
+}
+
+::v-deep .el-select {
+  width: 100%;
 }
 </style>

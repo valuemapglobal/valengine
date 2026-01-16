@@ -4,27 +4,33 @@
       <el-form
         ref="codeForm"
         :model="codeForm"
-        label-width="100px"
+        :label-width="isEnglish() ? '240px' : '100px'"
         :rules="rules"
       >
         <el-row>
           <el-col :span="24">
-            <el-form-item label="决策CODE" prop="code">
+            <el-form-item
+              :label="$t('decisionPlatform.decisionCode')"
+              prop="code"
+            >
               <el-input
                 v-model="codeForm.code"
                 @input="(e) => (codeForm.code = e.replace(/\s*/g, ''))"
                 @change="handleCode"
-                placeholder="请输入code"
+                :placeholder="$t('decisionPlatform.inputCode')"
                 :disabled="readOnly"
                 :class="{ noDisabledColor: readOnly }"
               />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="决策等级" prop="level">
+            <el-form-item
+              :label="$t('decisionPlatform.decisionLevel')"
+              prop="level"
+            >
               <el-select
                 v-model="codeForm.level"
-                placeholder="请选择等级"
+                :placeholder="$t('decisionPlatform.selectLevel')"
                 :disabled="readOnly"
                 :class="{ noDisabledColor: readOnly }"
                 clearable
@@ -40,21 +46,27 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="额度" prop="quatoRate">
+            <el-form-item
+              :label="$t('decisionPlatform.limit')"
+              prop="quatoRate"
+            >
               <el-input
                 v-model="codeForm.quatoRate"
-                placeholder="请输入额度"
+                :placeholder="$t('decisionPlatform.inputLimit')"
                 :disabled="readOnly"
                 :class="{ noDisabledColor: readOnly }"
               />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="决策说明" prop="content">
+            <el-form-item
+              :label="$t('decisionPlatform.decisionDescription')"
+              prop="content"
+            >
               <el-input
                 type="textarea"
                 v-model.trim="codeForm.content"
-                placeholder="请输入说明"
+                :placeholder="$t('decisionPlatform.inputDescription')"
                 maxlength="200"
                 :rows="5"
                 :disabled="readOnly"
@@ -63,46 +75,56 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="执行优先级" prop="salience">
+            <el-form-item
+              :label="$t('decisionPlatform.executionPriority')"
+              prop="salience"
+            >
               <el-input
                 v-model="codeForm.salience"
-                placeholder="请输入执行优先级"
+                :placeholder="$t('decisionPlatform.inputExecutionPriority')"
                 :disabled="readOnly"
                 :class="{ noDisabledColor: readOnly }"
                 clearable
                 @clear="codeForm.salience = 0"
-              /><span class="tips"
-                >规则优先级，值越高的规则，优先级越高，越先执行</span
-              >
+              /><span class="tips">{{
+                $t('decisionPlatform.rulePriorityTip')
+              }}</span>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="是否强拒绝">
+            <el-form-item :label="$t('decisionPlatform.whetherStrongReject')">
               <el-radio-group
                 v-model="codeForm.stronglyReject"
                 :disabled="readOnly"
                 :class="{ noDisabledColor: readOnly }"
               >
-                <el-radio label="1">拒绝</el-radio>
-                <el-radio label="0">通过</el-radio>
+                <el-radio label="1">{{
+                  $t('decisionPlatform.reject')
+                }}</el-radio>
+                <el-radio label="0">{{ $t('decisionPlatform.pass') }}</el-radio>
                 <!--								<el-radio label="2">转人工</el-radio>-->
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="是否转人工">
+            <el-form-item
+              :label="$t('decisionPlatform.whetherTransferToPerson')"
+            >
               <el-radio-group
                 v-model="codeForm.transferToPerson"
                 :disabled="readOnly"
                 :class="{ noDisabledColor: readOnly }"
               >
-                <el-radio label="1">是</el-radio>
-                <el-radio label="0">否</el-radio>
+                <el-radio label="1">{{ $t('decisionPlatform.yes') }}</el-radio>
+                <el-radio label="0">{{ $t('decisionPlatform.no') }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="复杂条件配置" class="logicGroupFormItem">
+            <el-form-item
+              :label="$t('decisionPlatform.complexConditionConfiguration')"
+              class="logicGroupFormItem"
+            >
               <div
                 class="logicGroup"
                 v-for="(item, index) in logicGroupArray"
@@ -110,7 +132,7 @@
               >
                 <div class="logicGroup-header">
                   <div class="logicGroup-header-title">
-                    逻辑组{{ index + 1 }}
+                    {{ $t('decisionPlatform.logicGroup') }}{{ index + 1 }}
                   </div>
                   <el-button
                     v-if="!readOnly"
@@ -118,7 +140,7 @@
                     icon="el-icon-plus"
                     size="mini"
                     @click="addTemplate()"
-                    >新增逻辑组</el-button
+                    >{{ $t('decisionPlatform.addLogicGroup') }}</el-button
                   >
                   <el-button
                     v-if="index > 0 && !readOnly"
@@ -126,7 +148,7 @@
                     icon="el-icon-delete"
                     size="mini"
                     @click="delNodeTemplate(index)"
-                    >删除</el-button
+                    >{{ $t('decisionPlatform.delete') }}</el-button
                   >
                 </div>
                 <div class="logicGroup-content">
@@ -138,7 +160,10 @@
                     :key="conditionIndex"
                   >
                     <div class="item-title">
-                      <span>条件{{ conditionIndex + 1 }}</span>
+                      <span
+                        >{{ $t('decisionPlatform.condition')
+                        }}{{ conditionIndex + 1 }}</span
+                      >
                     </div>
                     <div class="item-condition">
                       <el-row
@@ -146,7 +171,11 @@
                         :key="ix"
                       >
                         <el-col :span="1.5" class="title">
-                          {{ ix === 0 ? '如果：' : ' 或者：' }}
+                          {{
+                            ix === 0
+                              ? $t('decisionPlatform.if')
+                              : $t('decisionPlatform.or')
+                          }}
                         </el-col>
                         <el-col :span="18">
                           <el-form
@@ -160,7 +189,9 @@
                             <el-form-item prop="selectObj">
                               <el-cascader
                                 v-model="obj.selectObj"
-                                placeholder="选择决策条件"
+                                :placeholder="
+                                  $t('decisionPlatform.selectDecisionCondition')
+                                "
                                 :options="options"
                                 :props="{ checkStrictly: true }"
                                 filterable
@@ -177,7 +208,9 @@
                             <el-form-item prop="operator">
                               <el-select
                                 v-model="obj.operator"
-                                placeholder="逻辑运算符"
+                                :placeholder="
+                                  $t('decisionPlatform.logicalOperator')
+                                "
                                 clearable
                                 :disabled="readOnly"
                                 :class="{ noDisabledColor: readOnly }"
@@ -193,7 +226,7 @@
                             <el-form-item prop="result">
                               <el-input
                                 v-model.trim="obj.result"
-                                placeholder="请输入值"
+                                :placeholder="$t('decisionPlatform.inputValue')"
                                 clearable
                                 :disabled="readOnly"
                                 :class="{ noDisabledColor: readOnly }"
@@ -208,7 +241,7 @@
                             size="mini"
                             @click="addNodeTemplate(index, conditionIndex)"
                           >
-                            或者
+                            {{ $t('decisionPlatform.or') }}
                           </el-button>
                           <el-button
                             type="danger"
@@ -217,7 +250,7 @@
                             size="mini"
                             @click="delNodeTemplate(index, conditionIndex, ix)"
                           >
-                            删除
+                            {{ $t('decisionPlatform.delete') }}
                           </el-button>
                           <el-button
                             type="danger"
@@ -226,7 +259,7 @@
                             size="mini"
                             @click="delNodeTemplate(index, conditionIndex)"
                           >
-                            删除
+                            {{ $t('decisionPlatform.delete') }}
                           </el-button>
                         </el-col>
                       </el-row>
@@ -237,17 +270,19 @@
                     v-if="!readOnly"
                     @click="addTemplate(index)"
                   >
-                    <span>新增并且判断条件</span>
+                    <span>{{
+                      $t('decisionPlatform.addAndJudgeCondition')
+                    }}</span>
                   </div>
                 </div>
               </div>
             </el-form-item>
           </el-col>
           <el-col :span="24" class="dataTotal">
-            <el-form-item label="数据总数">
+            <el-form-item :label="$t('decisionPlatform.dataTotal')">
               <el-select
                 v-model="codeForm.DT_operator"
-                placeholder="请选择"
+                :placeholder="$t('decisionPlatform.pleaseSelect')"
                 clearable
                 :disabled="readOnly"
                 :class="{ noDisabledColor: readOnly }"
@@ -263,7 +298,7 @@
             <el-form-item prop="DT_result">
               <el-input
                 v-model="codeForm.DT_result"
-                placeholder="请输入"
+                :placeholder="$t('decisionPlatform.inputPlaceholder')"
                 clearable
                 :disabled="readOnly"
                 :class="{ noDisabledColor: readOnly }"
@@ -275,11 +310,15 @@
               class="longLabel"
               prop="generateRuleVO.objResultCompare"
             >
-              <template slot="label">预警数据<br />对比属性</template>
+              <template slot="label"
+                >{{ $t('decisionPlatform.warningData') }}<br />{{
+                  $t('decisionPlatform.compareAttribute')
+                }}</template
+              >
               <el-cascader
                 style="width: 100%"
                 v-model="codeForm.generateRuleVO.objResultCompare"
-                placeholder="选择决策条件"
+                :placeholder="$t('decisionPlatform.selectDecisionCondition')"
                 :options="options"
                 collapse-tags
                 :props="{ multiple: true }"
@@ -291,12 +330,12 @@
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="备注" prop="remark">
+            <el-form-item :label="$t('decisionPlatform.remark')" prop="remark">
               <el-input
                 type="textarea"
                 :rows="5"
                 v-model="codeForm.remark"
-                placeholder="请输入备注"
+                :placeholder="$t('decisionPlatform.inputRemark')"
                 :disabled="readOnly"
                 :class="{ noDisabledColor: readOnly }"
               />
@@ -305,8 +344,12 @@
         </el-row>
       </el-form>
       <div class="btnBottom" v-if="info && info.type != 0 && !readOnly">
-        <el-button type="primary" @click="handleBeforeSubmit">确定</el-button>
-        <el-button @click="handleClose">取消</el-button>
+        <el-button type="primary" @click="handleBeforeSubmit">{{
+          $t('decisionPlatform.confirm')
+        }}</el-button>
+        <el-button @click="handleClose">{{
+          $t('decisionPlatform.cancel')
+        }}</el-button>
       </div>
     </div>
   </div>
@@ -381,6 +424,284 @@ export default {
       )
       return findObj
     },
+    rules() {
+      return {
+        salience: [
+          {
+            required: true,
+            message: this.$t('decisionPlatform.executionPriorityCannotBeEmpty'),
+            trigger: 'blur',
+          },
+          {
+            pattern: /^(-)?\d+$/,
+            message: this.$t('decisionPlatform.executionPriorityOnlyInteger'),
+            trigger: ['blur', 'change'],
+          },
+        ],
+        code: [
+          {
+            required: true,
+            message: this.$t('decisionPlatform.decisionCodeCannotBeEmpty'),
+            trigger: 'blur',
+          },
+        ],
+        level: [
+          {
+            required: true,
+            message: this.$t('decisionPlatform.decisionLevelCannotBeEmpty'),
+            trigger: 'blur',
+          },
+          {
+            pattern: /^(-)?\d+$/,
+            message: this.$t('decisionPlatform.decisionLevelOnlyNumber'),
+            trigger: ['blur', 'change'],
+          },
+        ],
+        content: [
+          {
+            required: true,
+            message: this.$t(
+              'decisionPlatform.decisionDescriptionCannotBeEmpty'
+            ),
+            trigger: 'blur',
+          },
+        ],
+        remark: [
+          {
+            max: 200,
+            message: this.$t('decisionPlatform.remarkLengthExceeded'),
+            trigger: 'blur',
+          },
+        ],
+        DT_result: [
+          {
+            pattern: /^(-)?\d+$/,
+            message: this.$t('decisionPlatform.inputNumber'),
+            trigger: ['blur', 'change'],
+          },
+        ],
+        'generateRuleVO.objResultCompare': [
+          {
+            required: true,
+            message: this.$t(
+              'decisionPlatform.warningDataCompareAttributeCannotBeEmpty'
+            ),
+            trigger: 'change',
+          },
+        ],
+      }
+    },
+    objRules() {
+      return {
+        selectObj: [
+          {
+            required: true,
+            message: this.$t('decisionPlatform.decisionConditionCannotBeEmpty'),
+            trigger: 'change',
+          },
+        ],
+        operator: [
+          {
+            required: true,
+            message: this.$t('decisionPlatform.logicalOperatorCannotBeEmpty'),
+            trigger: 'change',
+          },
+        ],
+        result: [
+          {
+            required: true,
+            message: this.$t('decisionPlatform.valueCannotBeEmpty'),
+            trigger: 'blur',
+          },
+        ],
+      }
+    },
+    conditionList() {
+      return [
+        {
+          value: '==',
+          label: this.$t('decisionPlatform.equals'),
+          check: 'number',
+        },
+        {
+          value: '!=',
+          label: this.$t('decisionPlatform.notEquals'),
+          check: 'number',
+        },
+        {
+          value: '&gt;',
+          label: this.$t('decisionPlatform.greaterThan'),
+          check: 'number',
+        },
+        {
+          value: '&lt;',
+          label: this.$t('decisionPlatform.lessThan'),
+          check: 'number',
+        },
+        {
+          value: '&gt;=',
+          label: this.$t('decisionPlatform.greaterThanOrEqual'),
+          check: 'number',
+        },
+        {
+          value: '&lt;=',
+          label: this.$t('decisionPlatform.lessThanOrEqual'),
+          check: 'number',
+        },
+        {
+          value: 'contains',
+          label: this.$t('decisionPlatform.contains'),
+          check: 'string',
+        },
+        {
+          value: 'not contains',
+          label: this.$t('decisionPlatform.notContains'),
+        },
+        { value: 'memberOf', label: this.$t('decisionPlatform.exists') },
+        { value: 'not memberOf', label: this.$t('decisionPlatform.notExists') },
+        { value: 'matches', label: this.$t('decisionPlatform.regexMatch') },
+        {
+          value: 'not matches',
+          label: this.$t('decisionPlatform.regexNotMatch'),
+        },
+        {
+          value: 'checkDateDayNum',
+          label: this.$t('decisionPlatform.dateDiffLessThanDay'),
+        },
+        {
+          value: 'checkDateMonthNum',
+          label: this.$t('decisionPlatform.dateDiffLessThanMonth'),
+        },
+        {
+          value: 'checkDateYearNum',
+          label: this.$t('decisionPlatform.dateDiffLessThanYear'),
+        },
+        {
+          value: 'checkDateDayNumBig',
+          label: this.$t('decisionPlatform.dateDiffGreaterThanDay'),
+        },
+        {
+          value: 'checkDateMonthNumBig',
+          label: this.$t('decisionPlatform.dateDiffGreaterThanMonth'),
+        },
+        {
+          value: 'checkDateYearNumBig',
+          label: this.$t('decisionPlatform.dateDiffGreaterThanYear'),
+        },
+        {
+          value: 'notArrayOr',
+          label: this.$t('decisionPlatform.multiConditionSetNotExists'),
+        },
+        {
+          value: 'ArrayOr',
+          label: this.$t('decisionPlatform.multiConditionSetExists'),
+        },
+      ]
+    },
+    operatorList() {
+      return [
+        {
+          value: '==',
+          label: this.$t('decisionPlatform.equals'),
+          check: 'number',
+        },
+        {
+          value: '&gt;',
+          label: this.$t('decisionPlatform.greaterThan'),
+          check: 'number',
+        },
+        {
+          value: '&lt;',
+          label: this.$t('decisionPlatform.lessThan'),
+          check: 'number',
+        },
+        {
+          value: '&gt;=',
+          label: this.$t('decisionPlatform.greaterThanOrEqual'),
+          check: 'number',
+        },
+        {
+          value: '&lt;=',
+          label: this.$t('decisionPlatform.lessThanOrEqual'),
+          check: 'number',
+        },
+      ]
+    },
+    levelOptions() {
+      return [
+        { value: '1', label: this.$t('decisionPlatform.lowRisk') },
+        { value: '2', label: this.$t('decisionPlatform.mediumLowRisk') },
+        { value: '3', label: this.$t('decisionPlatform.mediumRisk') },
+        { value: '4', label: this.$t('decisionPlatform.mediumHighRisk') },
+        { value: '5', label: this.$t('decisionPlatform.highRisk') },
+      ]
+    },
+    editSearchList() {
+      return [
+        {
+          type: 'input',
+          placeholder: this.$t('decisionPlatform.inputDecisionCode'),
+          prop: {
+            key: 'code',
+            value: null,
+          },
+        },
+        {
+          type: 'input',
+          placeholder: this.$t('decisionPlatform.inputDescriptionSearch'),
+          prop: {
+            key: 'content',
+            value: null,
+          },
+        },
+      ]
+    },
+    enterpriseTableConfig() {
+      return {
+        dataList: [],
+        loading: false,
+        tableBottom: 185,
+        totalNum: 0,
+        searchForm: {
+          pageNum: 1,
+          pageSize: 10,
+          themeIds: null,
+          type: 1,
+        },
+        list: [
+          {
+            prop: 'code',
+            width: '200px',
+            label: this.$t('decisionPlatform.ruleCodeLabel'),
+          },
+          {
+            prop: 'content',
+            width: '',
+            label: this.$t('decisionPlatform.descriptionLabel'),
+          },
+        ],
+        pagination: 'prev, pager, next, jumper',
+      }
+    },
+    selectTableConfig() {
+      return {
+        dataList: [],
+        tableBottom: 120,
+        loading: false,
+        list: [
+          {
+            prop: 'code',
+            width: '200px',
+            label: this.$t('decisionPlatform.ruleCodeLabel'),
+          },
+          {
+            prop: 'content',
+            width: '',
+            label: this.$t('decisionPlatform.descriptionLabel'),
+          },
+        ],
+      }
+    },
   },
   data() {
     return {
@@ -414,56 +735,6 @@ export default {
         salience: 0,
         termWarn: [],
       },
-      rules: {
-        salience: [
-          { required: true, message: '执行优先级不能为空', trigger: 'blur' },
-          {
-            pattern: /^(-)?\d+$/,
-            message: '执行优先级只能输入整数',
-            trigger: ['blur', 'change'],
-          },
-        ],
-        code: [
-          { required: true, message: '决策code不能为空', trigger: 'blur' },
-          // {
-          //   validator: (rule, value, callback) => {
-          //     let check = /^[\u4E00-\u9FA5A-Za-z0-9_]+$/
-          //     if (!check.test(value)) {
-          //       callback('请输入不包含特殊字符的名称')
-          //     }
-          //     callback()
-          //   }, trigger: 'blur'
-          // },
-        ],
-        level: [
-          { required: true, message: '决策等级不能为空', trigger: 'blur' },
-          {
-            pattern: /^(-)?\d+$/,
-            message: '决策等级只能输入数字',
-            trigger: ['blur', 'change'],
-          },
-        ],
-        content: [
-          { required: true, message: '决策说明不能为空', trigger: 'blur' },
-        ],
-        remark: [
-          { max: 200, message: '备注文字长度不能超过200', trigger: 'blur' },
-        ],
-        DT_result: [
-          {
-            pattern: /^(-)?\d+$/,
-            message: '请输入数字',
-            trigger: ['blur', 'change'],
-          },
-        ],
-        'generateRuleVO.objResultCompare': [
-          {
-            required: true,
-            message: '预警数据对比属性不能为空',
-            trigger: 'change',
-          },
-        ],
-      },
       logicGroupArray: [
         {
           conditionArray: [
@@ -479,52 +750,6 @@ export default {
             },
           ],
         },
-      ],
-      objRules: {
-        selectObj: [
-          { required: true, message: '决策条件不能为空', trigger: 'change' },
-        ],
-        operator: [
-          { required: true, message: '逻辑运算符不能为空', trigger: 'change' },
-        ],
-        result: [{ required: true, message: '值不能为空', trigger: 'blur' }],
-      },
-      conditionList: [
-        { value: '==', label: '等于', check: 'number' },
-        { value: '!=', label: '不等于', check: 'number' },
-        // { value: '>', label: '大于', check: 'number' },
-        // { value: '<', label: '小于', check: 'number' },
-        // { value: '>=', label: '大于等于', check: 'number' },
-        // { value: '<=', label: '小于等于', check: 'number' },
-        { value: '&gt;', label: '大于', check: 'number' },
-        { value: '&lt;', label: '小于', check: 'number' },
-        { value: '&gt;=', label: '大于等于', check: 'number' },
-        { value: '&lt;=', label: '小于等于', check: 'number' },
-        { value: 'contains', label: '包含', check: 'string' },
-        { value: 'not contains', label: '不包含' },
-        { value: 'memberOf', label: '存在' },
-        { value: 'not memberOf', label: '不存在' },
-        { value: 'matches', label: '正则命中' },
-        { value: 'not matches', label: '正则取反' },
-        { value: 'checkDateDayNum', label: '和当前日期相差小于天' },
-        { value: 'checkDateMonthNum', label: '和当前日期相差小于月' },
-        { value: 'checkDateYearNum', label: '和当前日期相差小于年' },
-        { value: 'checkDateDayNumBig', label: '和当前日期相差大于天' },
-        { value: 'checkDateMonthNumBig', label: '和当前日期相差大于月' },
-        { value: 'checkDateYearNumBig', label: '和当前日期相差大于年' },
-        { value: 'notArrayOr', label: '多条件集合不存在' },
-        { value: 'ArrayOr', label: '多条件集合存在' },
-      ],
-      operatorList: [
-        { value: '==', label: '等于', check: 'number' },
-        // { value: '>', label: '大于', check: 'number' },
-        // { value: '<', label: '小于', check: 'number' },
-        // { value: '>=', label: '大于等于', check: 'number' },
-        // { value: '<=', label: '小于等于', check: 'number' },
-        { value: '&gt;', label: '大于', check: 'number' },
-        { value: '&lt;', label: '小于', check: 'number' },
-        { value: '&gt;=', label: '大于等于', check: 'number' },
-        { value: '&lt;=', label: '小于等于', check: 'number' },
       ],
       cidx: 1,
       coidx: 1,
@@ -550,31 +775,6 @@ export default {
       //更新对象
       modifyOptions: [],
       loading: false,
-      editSearchList: [
-        {
-          type: 'input',
-          placeholder: '请输入决策code',
-          prop: {
-            key: 'code',
-            value: null,
-          },
-        },
-        {
-          type: 'input',
-          placeholder: '请输入说明',
-          prop: {
-            key: 'content',
-            value: null,
-          },
-        },
-      ],
-      levelOptions: [
-        { value: '1', label: '低风险' },
-        { value: '2', label: '中低风险' },
-        { value: '3', label: '中风险' },
-        { value: '4', label: '中高风险' },
-        { value: '5', label: '高风险' },
-      ],
       enterpriseTable: {
         dataList: [],
         loading: false,
@@ -586,36 +786,14 @@ export default {
           themeIds: null,
           type: 1,
         },
-        list: [
-          {
-            prop: 'code',
-            width: '200px',
-            label: '规则code',
-          },
-          {
-            prop: 'content',
-            width: '',
-            label: '说明',
-          },
-        ],
+        list: [],
         pagination: 'prev, pager, next, jumper',
       },
       selectTable: {
         dataList: [],
         tableBottom: 120,
         loading: false,
-        list: [
-          {
-            prop: 'code',
-            width: '200px',
-            label: '规则code',
-          },
-          {
-            prop: 'content',
-            width: '',
-            label: '说明',
-          },
-        ],
+        list: [],
       },
       searchSelectCode: [],
       ObjectIdList: [],
@@ -637,6 +815,10 @@ export default {
         changeType: null, //CREATED,UPDATED,DELETED
       },
     }
+  },
+  created() {
+    this.enterpriseTable.list = this.enterpriseTableConfig.list
+    this.selectTable.list = this.selectTableConfig.list
   },
   watch: {
     info: {
@@ -661,6 +843,10 @@ export default {
       },
       immediate: true,
       deep: true,
+    },
+    '$i18n.locale'() {
+      this.enterpriseTable.list = this.enterpriseTableConfig.list
+      this.selectTable.list = this.selectTableConfig.list
     },
 
     valueMapSize: {
@@ -720,20 +906,24 @@ export default {
         }
       }
     },
-    checkNumber: (rule, value, callback) => {
+    checkNumber(rule, value, callback) {
       console.log(value)
       let check = /^([1-9]\d*.?|0.)\d*$/
       if (!value) {
-        return callback(new Error('值不能为空'))
+        return callback(
+          new Error(this.$t('decisionPlatform.valueCannotBeEmpty'))
+        )
       } else if (!check.test(value)) {
-        return callback(new Error('只能输入数字'))
+        return callback(new Error(this.$t('decisionPlatform.onlyInputNumber')))
       } else {
         callback()
       }
     },
-    checkString: (rule, value, callback) => {
+    checkString(rule, value, callback) {
       if (!value) {
-        return callback(new Error('值不能为空'))
+        return callback(
+          new Error(this.$t('decisionPlatform.valueCannotBeEmpty'))
+        )
       } else {
         callback()
       }
@@ -781,9 +971,11 @@ export default {
       }
     },
 
-    checkCodeNo: (rule, value, callback) => {
+    checkCodeNo(rule, value, callback) {
       if (value) {
-        return callback(new Error('当前决策code重复'))
+        return callback(
+          new Error(this.$t('decisionPlatform.currentDecisionCodeDuplicate'))
+        )
       } else {
         callback()
       }
@@ -1234,15 +1426,15 @@ export default {
     },
     getFieldLabel(field) {
       const fieldMap = {
-        code: '规则code',
-        level: '规则等级',
-        content: '决策说明',
-        remark: '备注',
-        stronglyReject: '是否强拒',
-        transferToPerson: '是否转人工',
-        quatoRate: '配额',
-        DT_operator: '数据总数运算符', //数据总数运算符
-        DT_result: '数据总数值', //数据总数值
+        code: this.$t('decisionPlatform.ruleCode'),
+        level: this.$t('decisionPlatform.ruleLevel'),
+        content: this.$t('decisionPlatform.decisionDescription'),
+        remark: this.$t('decisionPlatform.remark'),
+        stronglyReject: this.$t('decisionPlatform.whetherStrongRejectLabel'),
+        transferToPerson: this.$t('decisionPlatform.whetherTransferToPerson'),
+        quatoRate: this.$t('decisionPlatform.quota'),
+        DT_operator: this.$t('decisionPlatform.dataTotalOperator'),
+        DT_result: this.$t('decisionPlatform.dataTotalValue'),
       }
       return fieldMap[field] || field
     },
@@ -1302,7 +1494,7 @@ export default {
         .then((res) => {
           if (res.code == 200) {
             this.loading = false
-            this.$message.success('操作成功')
+            this.$message.success(this.$t('decisionPlatform.operationSuccess'))
             // this.handleCheckLock() 暂时注释 20260105
             this.$emit('success', 2)
             this.reset()
@@ -1310,7 +1502,7 @@ export default {
         })
         .catch((err) => {
           this.loading = false
-          this.$message.error('操作失败')
+          this.$message.error(this.$t('decisionPlatform.operationFailed'))
         })
     },
     handleClose() {
@@ -1620,7 +1812,7 @@ export default {
       align-items: start;
 
       .item-title {
-        width: 60px;
+        width: 75px;
         white-space: nowrap;
         line-height: 42px;
       }

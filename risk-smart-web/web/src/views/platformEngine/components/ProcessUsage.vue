@@ -1,31 +1,41 @@
 <template>
   <!--流程使用弹窗-->
-  <el-drawer title="流程使用" size="70%" :visible.sync="drawer">
+  <el-drawer
+    :title="$t('platformEngine.processUsage')"
+    size="70%"
+    :visible.sync="drawer"
+  >
     <div class="process-usage">
       <div class="process-usage-right">
         <div class="search">
-          <el-select class="post" value="post" placeholder="请选择">
+          <el-select
+            class="post"
+            value="post"
+            :placeholder="$t('platformEngine.pleaseSelect')"
+          >
             <el-option label="post" value="post"></el-option>
           </el-select>
           <div class="api-url">
             <span>{{ API }}</span>
             <div class="copy" @click="copyText(API)">
               <i class="el-icon-document-copy"></i>
-              复制
+              {{ $t('platformEngine.copy') }}
             </div>
           </div>
           <el-tooltip
             class="item"
             effect="dark"
-            content="点击触发流程"
+            :content="$t('platformEngine.clickToTriggerProcess')"
             placement="right-start"
           >
-            <el-button type="primary" @click="submit">发送</el-button>
+            <el-button type="primary" @click="submit">{{
+              $t('platformEngine.send')
+            }}</el-button>
           </el-tooltip>
           <el-select
             v-model="isBatch"
             clearable
-            placeholder="请选择是否批量"
+            :placeholder="$t('platformEngine.selectBatch')"
             @clear="isBatch = false"
           >
             <el-option
@@ -39,7 +49,7 @@
           <el-select
             v-model="params.responseForm"
             clearable
-            placeholder="请选择响应形式"
+            :placeholder="$t('platformEngine.selectResponseForm')"
           >
             <el-option
               v-for="item in options"
@@ -52,7 +62,7 @@
           <el-select
             v-if="!isBatch"
             v-model="requestMethod"
-            placeholder="请选择请求形式"
+            :placeholder="$t('platformEngine.selectRequestForm')"
           >
             <el-option
               v-for="(item, index) in requestOptions"
@@ -65,7 +75,9 @@
         </div>
         <div class="content">
           <div class="content-item">
-            <div class="content-item-title">请求参数</div>
+            <div class="content-item-title">
+              {{ $t('platformEngine.requestParams') }}
+            </div>
             <el-table
               v-loading="tableLoading"
               :data="tableData"
@@ -73,22 +85,39 @@
               height="calc(100% - 58px)"
               v-if="!isBatch"
             >
-              <el-table-column prop="name" label="参数名称"></el-table-column>
-              <el-table-column prop="nameZh" label="参数说明"></el-table-column>
-              <el-table-column label="参数类型" align="center">
+              <el-table-column
+                prop="name"
+                :label="$t('platformEngine.paramName')"
+              ></el-table-column>
+              <el-table-column
+                prop="nameZh"
+                :label="$t('platformEngine.paramDescription')"
+              ></el-table-column>
+              <el-table-column
+                :label="$t('platformEngine.paramType')"
+                align="center"
+              >
                 <el-tag type="primary" slot-scope="{ row }">{{
                   row.typeName
                 }}</el-tag>
               </el-table-column>
-              <el-table-column label="是否必填" align="center">
+              <el-table-column
+                :label="$t('platformEngine.isRequired')"
+                align="center"
+              >
                 <span slot-scope="{ row }">{{
-                  row.isRequired ? '是' : '否'
+                  row.isRequired
+                    ? $t('platformEngine.yes')
+                    : $t('platformEngine.no')
                 }}</span>
               </el-table-column>
-              <el-table-column label="参数值" align="center">
+              <el-table-column
+                :label="$t('platformEngine.paramValue')"
+                align="center"
+              >
                 <template slot-scope="{ row }">
                   <el-input
-                    placeholder="请输入"
+                    :placeholder="$t('platformEngine.inputPlaceholder')"
                     v-model="params[row.name]"
                     clearable
                   ></el-input>
@@ -113,12 +142,14 @@
               >
                 <div class="upload">
                   <i class="el-icon-upload" />
-                  <div class="upload-text">将文件拖到此处或选择文件</div>
+                  <div class="upload-text">
+                    {{ $t('platformEngine.dragFileOrSelect') }}
+                  </div>
                   <div class="upload-tip">
-                    支持 xlsx,.xls 格式，单个文件最大 10MB
+                    {{ $t('platformEngine.uploadFileTip') }}
                   </div>
                   <div class="download-example" @click.stop="downloadExample">
-                    下载示例文件
+                    {{ $t('platformEngine.downloadExampleFile') }}
                   </div>
                 </div>
               </el-upload>
@@ -151,12 +182,12 @@
           </div>
           <div class="content-item">
             <div class="content-item-title">
-              响应参数
+              {{ $t('platformEngine.responseParams') }}
               <el-button
                 v-if="!requestMethod"
                 type="primary"
                 @click="lookHandle"
-                >查看结果</el-button
+                >{{ $t('platformEngine.viewResult') }}</el-button
               >
             </div>
             <div
@@ -179,16 +210,25 @@
               style="width: 100%"
               height="calc(100% - 58px)"
             >
-              <el-table-column prop="name" label="参数名称"></el-table-column>
-              <el-table-column prop="nameZh" label="参数说明"></el-table-column>
-              <el-table-column label="参数类型" align="center">
+              <el-table-column
+                prop="name"
+                :label="$t('platformEngine.paramName')"
+              ></el-table-column>
+              <el-table-column
+                prop="nameZh"
+                :label="$t('platformEngine.paramDescription')"
+              ></el-table-column>
+              <el-table-column
+                :label="$t('platformEngine.paramType')"
+                align="center"
+              >
                 <el-tag type="primary" slot-scope="{ row }">{{
                   row.typeName
                 }}</el-tag>
               </el-table-column>
               <el-table-column
                 prop="value"
-                label="参数值"
+                :label="$t('platformEngine.paramValue')"
                 align="center"
               ></el-table-column>
             </el-table>
@@ -228,27 +268,7 @@ export default {
 
       fileList: [],
       isBatch: false,
-      batchOptions: [
-        {
-          label: '单次',
-          value: false,
-        },
-        {
-          label: '批量',
-          value: true,
-        },
-      ],
       requestMethod: false,
-      requestOptions: [
-        {
-          label: '异步',
-          value: false,
-        },
-        {
-          label: '同步',
-          value: true,
-        },
-      ],
       //请求参数
       tableLoading: false,
       tableData: [],
@@ -257,6 +277,32 @@ export default {
       tableData2: [],
       API: process.env.VUE_APP_PROCESS,
     }
+  },
+  computed: {
+    batchOptions() {
+      return [
+        {
+          label: this.$t('platformEngine.single'),
+          value: false,
+        },
+        {
+          label: this.$t('platformEngine.batch'),
+          value: true,
+        },
+      ]
+    },
+    requestOptions() {
+      return [
+        {
+          label: this.$t('platformEngine.async'),
+          value: false,
+        },
+        {
+          label: this.$t('platformEngine.sync'),
+          value: true,
+        },
+      ]
+    },
   },
   mounted() {
     this.init()
@@ -298,7 +344,7 @@ export default {
       dom.select()
       document.execCommand('copy')
       document.body.removeChild(dom)
-      this.$message.success('文本已复制到剪贴板')
+      this.$message.success(this.$t('platformEngine.textCopiedToClipboard'))
     },
     /**
      * 获取请求参数表格数据
@@ -323,7 +369,9 @@ export default {
      */
     submit() {
       if (!this.params.responseForm) {
-        return this.$message.warning('请选择响应形式')
+        return this.$message.warning(
+          this.$t('platformEngine.selectResponseFormWarning')
+        )
       }
       const { responseForm, ...processEntry } = this.params
       let params = null
@@ -337,7 +385,9 @@ export default {
               processEntry[item.name] === undefined ||
               this.params[item.name] === null)
           ) {
-            return this.$message.warning(`${item.name}是必填`)
+            return this.$message.warning(
+              this.$t('platformEngine.paramIsRequired', { name: item.name })
+            )
           }
           if (
             processEntry[item.name] !== '' &&
@@ -361,7 +411,9 @@ export default {
             ...this.fileList[0],
           }
         } else {
-          this.$message.warning('请先上传请求参数')
+          this.$message.warning(
+            this.$t('platformEngine.pleaseUploadRequestParams')
+          )
           return
         }
       }
@@ -397,8 +449,8 @@ export default {
                 this.tableData2 = [
                   {
                     name: 'taskNo',
-                    nameZh: '任务号',
-                    typeName: '字符型',
+                    nameZh: this.$t('platformEngine.taskNo'),
+                    typeName: this.$t('platformEngine.stringType'),
                     value: res.data.taskNo,
                   },
                 ]
@@ -406,8 +458,8 @@ export default {
                 this.tableData2 = [
                   {
                     name: 'batchNo',
-                    nameZh: '任务号',
-                    typeName: '字符型',
+                    nameZh: this.$t('platformEngine.taskNo'),
+                    typeName: this.$t('platformEngine.stringType'),
                     value: res.data.batchNo,
                   },
                 ]
@@ -438,7 +490,7 @@ export default {
         let url = window.URL.createObjectURL(blob)
         let a = document.createElement('a')
         a.href = url
-        a.download = '示例文件.xlsx'
+        a.download = this.$t('platformEngine.exampleFile')
         a.click()
         window.URL.revokeObjectURL(url)
         a.remove()
@@ -447,7 +499,7 @@ export default {
     beforeUpload(file) {
       // 文件大小限制50M
       if (file.size > 10 * 1024 * 1024) {
-        this.$message.error('文件大小不能超过10MB')
+        this.$message.error(this.$t('platformEngine.fileSizeExceeded'))
         return false
       }
 
@@ -459,7 +511,7 @@ export default {
       )
 
       if (!hasValidExtension) {
-        this.$message.error('只能上传Excel格式的文件（.xlsx, .xls）')
+        this.$message.error(this.$t('platformEngine.onlyExcelFiles'))
         return false
       }
 
@@ -473,7 +525,7 @@ export default {
       ]
 
       if (!allowedMimeTypes.includes(file.type)) {
-        this.$message.error('文件格式不正确，请上传Excel文件')
+        this.$message.error(this.$t('platformEngine.incorrectFileFormat'))
         return false
       }
 

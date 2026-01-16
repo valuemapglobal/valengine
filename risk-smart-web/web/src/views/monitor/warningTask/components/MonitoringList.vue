@@ -11,7 +11,7 @@
           <el-input
             v-model="queryParams.customerName"
             type="primary"
-            placeholder="请输入客户名称"
+            :placeholder="$t('monitor.inputCustomerName')"
             clearable
           />
           <!-- <el-select
@@ -31,12 +31,12 @@
           </el-select> -->
         </div>
         <div class="ml-top_operate">
-          <el-button type="primary" @click="handleOpenBatchAdd"
-            >批量添加</el-button
-          >
-          <el-button type="warning" @click="handleOpenAddMonitor"
-            >添加名单</el-button
-          >
+          <el-button type="primary" @click="handleOpenBatchAdd">{{
+            $t('monitor.batchAdd')
+          }}</el-button>
+          <el-button type="warning" @click="handleOpenAddMonitor">{{
+            $t('monitor.addList')
+          }}</el-button>
         </div>
       </div>
       <GutuTable
@@ -51,9 +51,9 @@
       >
         <template #bt_handle="{ data }">
           <div class="operateBtns">
-            <el-button type="text" @click="handleCancelMonitor(data.row)"
-              >取消监测</el-button
-            >
+            <el-button type="text" @click="handleCancelMonitor(data.row)">{{
+              $t('monitor.cancelMonitor')
+            }}</el-button>
           </div>
         </template>
       </GutuTable>
@@ -64,7 +64,7 @@
           plain
           :disabled="!selectList.length"
           @click="handleCancelMonitor()"
-          >取消监测</el-button
+          >{{ $t('monitor.cancelMonitor') }}</el-button
         >
       </div>
     </el-drawer>
@@ -110,7 +110,7 @@ export default {
     return {
       drawer: {
         visible: false,
-        title: '新增监测任务',
+        title: '',
         width: '960px',
       },
       params: {
@@ -127,40 +127,47 @@ export default {
       total: 10,
       loading: false,
       dataList: [],
-      columnConfig: [
+      selectList: [],
+      currentData: null,
+    }
+  },
+  computed: {
+    columnConfig() {
+      return [
         {
-          label: '客户名称',
+          label: this.$t('monitor.customerName'),
           field: 'customerName',
           width: '260px',
         },
         {
-          label: '监控主体',
+          label: this.$t('monitor.monitorSubject'),
           field: 'subjectType',
           type: 'tag',
           pairedList: 'ric_monitor_subject',
+          width: '180px',
         },
         {
-          label: '预警模型',
+          label: this.$t('monitor.warningModel'),
           field: 'processPolicyName',
           width: '180px',
         },
         {
-          label: '创建时间',
+          label: this.$t('monitor.createTime'),
           field: 'createTime',
           type: 'format',
           width: '180px',
         },
-      ],
-      tableHandle: {
+      ]
+    },
+    tableHandle() {
+      return {
         fixed: 'right',
         width: '140',
-        label: '操作',
+        label: this.$t('monitor.operation'),
         align: 'center',
         slot: true,
-      },
-      selectList: [],
-      currentData: null,
-    }
+      }
+    },
   },
   watch: {
     queryParams: {
@@ -195,27 +202,27 @@ export default {
         list = [...this.selectList]
       }
       if (!list.length) {
-        this.$message.warning('请先选择要取消监测的客户')
+        this.$message.warning(this.$t('monitor.pleaseSelectCustomer'))
         return
       }
 
-      this.$confirm(
-        `确定取消客户<span style="color: var(--primary-color);"> ${list
-          .map((item) => item.customerName)
-          .join('，')} </span>的监测吗？`,
-        '提示',
-        {
-          dangerouslyUseHTMLString: true,
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-        }
-      )
+      const customerNames = list.map((item) => item.customerName).join('，')
+      const confirmMsg = `${this.$t(
+        'monitor.confirmCancelMonitor'
+      )}<span style="color: var(--primary-color);"> ${customerNames} </span>${this.$t(
+        'monitor.confirmCancelMonitorSuffix'
+      )}`
+      this.$confirm(confirmMsg, this.$t('common.tip'), {
+        dangerouslyUseHTMLString: true,
+        confirmButtonText: this.$t('common.confirm'),
+        cancelButtonText: this.$t('common.cancel'),
+        type: 'warning',
+      })
         .then(() => {
           batchCancel({ targetIds: list.map((item) => item.targetId) }).then(
             (res) => {
               if (res.code == 200) {
-                this.$message.success('取消监测成功')
+                this.$message.success(this.$t('monitor.cancelMonitorSuccess'))
                 this.getDataList()
               }
             }
@@ -239,6 +246,7 @@ export default {
     handleOpen(data) {
       this.currentData = { ...data }
       this.taskId = data.taskId
+      this.drawer.title = this.$t('monitor.monitoringList')
       this.getDataList()
       this.init()
       this.drawer.visible = true
@@ -292,7 +300,6 @@ export default {
         .el-input__inner {
           height: 40px;
           background: rgba(#000, 0.04);
-          border: none;
         }
       }
       .el-select {

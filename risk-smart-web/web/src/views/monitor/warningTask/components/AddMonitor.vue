@@ -21,7 +21,7 @@
       <div v-if="activeTabs == 0">
         <el-input
           v-model="queryParams.cname"
-          placeholder="请输入企业名称或社会统一信用代码"
+          :placeholder="$t('monitor.inputEnterpriseNameOrCreditCode')"
           clearable
         />
         <div class="cardList" ref="cardRef">
@@ -29,8 +29,16 @@
             <div class="info">
               <div class="title">{{ item?.cname || '' }}</div>
               <div class="flex">
-                <span>法人：{{ item?.operName || '' }}</span>
-                <span>信用代码：{{ item?.creditCode || '' }}</span>
+                <span
+                  >{{ $t('monitor.legalPerson') }}：{{
+                    item?.operName || ''
+                  }}</span
+                >
+                <span
+                  >{{ $t('monitor.creditCode') }}：{{
+                    item?.creditCode || ''
+                  }}</span
+                >
               </div>
             </div>
             <el-button
@@ -38,11 +46,13 @@
               @click="handleAdd(item)"
               :loading="item.loading"
               :disabled="item.loading"
-              >添加监控</el-button
+              >{{ $t('monitor.addMonitor') }}</el-button
             >
           </div>
           <div class="loadDiv" v-if="loading">
-            <i class="el-icon-loading" style="margin-right: 5px" />数据加载中
+            <i class="el-icon-loading" style="margin-right: 5px" />{{
+              $t('monitor.dataLoading')
+            }}
           </div>
         </div>
       </div>
@@ -54,29 +64,35 @@
         :rules="rules"
         label-width="80px"
       >
-        <el-form-item label="客户名称" prop="customerName">
+        <el-form-item :label="$t('monitor.customerName')" prop="customerName">
           <el-input
             v-model="formData.customerName"
-            placeholder="请输入客户名称"
+            :placeholder="$t('monitor.inputCustomerName')"
           />
         </el-form-item>
-        <el-form-item label="身份证号" prop="idNumber">
-          <el-input v-model="formData.idNumber" placeholder="请输入身份证号" />
+        <el-form-item :label="$t('monitor.idNumber')" prop="idNumber">
+          <el-input
+            v-model="formData.idNumber"
+            :placeholder="$t('monitor.inputIdNumber')"
+          />
         </el-form-item>
-        <el-form-item label="手机号" prop="mobilePhone">
-          <el-input v-model="formData.mobilePhone" placeholder="请输入手机号" />
+        <el-form-item :label="$t('monitor.mobilePhone')" prop="mobilePhone">
+          <el-input
+            v-model="formData.mobilePhone"
+            :placeholder="$t('monitor.inputMobilePhone')"
+          />
         </el-form-item>
       </el-form>
     </div>
 
     <div slot="footer" class="dialog-footer" v-if="activeTabs == 1">
-      <el-checkbox v-if="activeTabs == 1" v-model="checked"
-        >已获得客户本人信息使用授权</el-checkbox
-      >
+      <el-checkbox v-if="activeTabs == 1" v-model="checked">{{
+        $t('monitor.hasAuthorization')
+      }}</el-checkbox>
       <div class="btns">
-        <el-button @click="handleClose">取消</el-button>
+        <el-button @click="handleClose">{{ $t('common.cancel') }}</el-button>
         <el-button type="primary" @click="handleSubmit" :disabled="btnLoading">
-          {{ btnLoading ? '确认中' : '确认' }}
+          {{ btnLoading ? $t('monitor.confirming') : $t('monitor.confirm') }}
           <i
             style="margin-left: 4px"
             class="el-icon-loading"
@@ -105,13 +121,9 @@ export default {
   },
   data() {
     return {
-      tabsList: [
-        { label: '企业', value: 0 },
-        { label: '个人', value: 1 },
-      ],
       dialog: {
         visible: false,
-        title: '新增监控名单',
+        title: '',
         width: '600px',
       },
       activeTabs: null,
@@ -134,32 +146,50 @@ export default {
         idNumber: null,
         mobilePhone: null,
       },
-      rules: {
+      checked: false,
+    }
+  },
+  computed: {
+    tabsList() {
+      return [
+        { label: this.$t('monitor.enterprise'), value: 0 },
+        { label: this.$t('monitor.personal'), value: 1 },
+      ]
+    },
+    rules() {
+      return {
         customerName: {
           required: true,
-          message: '请输入客户名称',
+          message: this.$t('monitor.inputCustomerName'),
           trigger: 'blur',
         },
         idNumber: [
-          { required: true, message: '请输入身份证号', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('monitor.inputIdNumber'),
+            trigger: 'blur',
+          },
           {
             pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}[\dXx]$)/,
-            message: '请输入正确的身份证号',
+            message: this.$t('monitor.inputCorrectIdNumber'),
             trigger: 'blur',
           },
         ],
         mobilePhone: [
-          { required: true, message: '请输入手机号', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('monitor.inputMobilePhone'),
+            trigger: 'blur',
+          },
           {
             pattern:
               /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/,
-            message: '请输入正确的手机号码',
+            message: this.$t('monitor.inputCorrectMobilePhone'),
             trigger: 'blur',
           },
         ],
-      },
-      checked: false,
-    }
+      }
+    },
   },
   watch: {
     // subjectType: {
@@ -214,14 +244,14 @@ export default {
       this.$refs.formRef.validate((valid) => {
         if (valid) {
           if (!this.checked) {
-            this.$message.warning('请先勾选是否已获得客户本人信息使用授权')
+            this.$message.warning(this.$t('monitor.pleaseCheckAuthorization'))
             return
           }
           this.btnLoading = true
           addMonitor({ ...this.formData, taskId: this.taskId })
             .then((res) => {
               if (res.code == 200) {
-                this.$message.success('添加成功')
+                this.$message.success(this.$t('monitor.addSuccess'))
                 this.$emit('refresh')
                 this.handleClose()
               }
@@ -244,7 +274,7 @@ export default {
       addMonitor(form)
         .then((res) => {
           if (res.code == 200) {
-            this.$message.success('添加成功')
+            this.$message.success(this.$t('monitor.addSuccess'))
             this.$emit('refresh')
             this.handleClose()
           }
@@ -261,6 +291,7 @@ export default {
       this.taskId = taskId
       this.dataList = []
       this.checked = false
+      this.dialog.title = this.$t('monitor.addMonitorList')
       this.handleTabClick(this.isChange ? 0 : this.subjectType)
       this.queryParams = this.$options.data().queryParams
       this.formData = this.$options.data().formData

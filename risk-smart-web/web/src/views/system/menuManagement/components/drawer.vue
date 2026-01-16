@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-drawer
-      :title="flag === 0 ? '添加菜单' : '修改菜单'"
+      :title="drawerTitle"
       :before-close="handleClose"
       :visible.sync="dialog"
       :wrapperClosable="false"
@@ -15,7 +15,7 @@
           <div class="permutation">
             <el-form-item
               class="perSon"
-              label="上级菜单"
+              :label="$t('menuManagement.parentMenu')"
               :label-width="formLabelWidth"
               prop="parentId"
             >
@@ -30,13 +30,15 @@
             </el-form-item>
             <el-form-item
               class="perSon"
-              label="菜单目录"
+              :label="$t('menuManagement.menuDirectory')"
               :label-width="formLabelWidth"
             >
               <el-radio-group v-model="form.menuType">
-                <el-radio label="M">目录</el-radio>
-                <el-radio label="C">菜单</el-radio>
-                <el-radio label="F">按钮</el-radio>
+                <el-radio label="M">{{
+                  $t('menuManagement.directory')
+                }}</el-radio>
+                <el-radio label="C">{{ $t('menuManagement.menu') }}</el-radio>
+                <el-radio label="F">{{ $t('menuManagement.button') }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </div>
@@ -76,19 +78,19 @@
             </el-form-item>-->
             <el-form-item
               class="perSon"
-              label="菜单名称"
+              :label="$t('menuManagement.menuName')"
               :label-width="formLabelWidth"
               prop="menuName"
             >
               <el-input
                 v-model="form.menuName"
                 autocomplete="off"
-                placeholder="请输入"
+                :placeholder="$t('menuManagement.inputPlaceholder')"
               ></el-input>
             </el-form-item>
             <el-form-item
               class="perSon"
-              label="显示顺序"
+              :label="$t('menuManagement.displayOrder')"
               :label-width="formLabelWidth"
               prop="orderNum"
             >
@@ -105,32 +107,32 @@
             <el-form-item :label-width="formLabelWidth" class="perSon">
               <span slot="label">
                 <el-tooltip
-                  content="选择停用则路由将不会出现在侧边栏，也不能被访问"
+                  :content="$t('menuManagement.disableTooltip')"
                   placement="top"
                 >
                   <i class="el-icon-question"></i>
                 </el-tooltip>
-                是否外链
+                {{ $t('menuManagement.isExternalLink') }}
               </span>
               <el-radio-group v-model="form.isFrame">
-                <el-radio label="0">是</el-radio>
-                <el-radio label="1">否</el-radio>
+                <el-radio label="0">{{ $t('menuManagement.yes') }}</el-radio>
+                <el-radio label="1">{{ $t('menuManagement.no') }}</el-radio>
               </el-radio-group>
             </el-form-item>
-            <div class="perSon" style="display: flex; align-item: center">
+            <div class="perSon" style="display: flex; align-items: center">
               <el-form-item :label-width="formLabelWidth">
                 <span slot="label">
                   <el-tooltip
-                    content="选择隐藏则路由将不会出现在侧边栏，但仍然可以访问"
+                    :content="$t('menuManagement.hideTooltip')"
                     placement="top"
                   >
                     <i class="el-icon-question"></i>
                   </el-tooltip>
-                  显示状态
+                  {{ $t('menuManagement.displayStatus') }}
                 </span>
                 <el-radio-group v-model="form.visible">
-                  <el-radio label="0">显示</el-radio>
-                  <el-radio label="1">隐藏</el-radio>
+                  <el-radio label="0">{{ $t('menuManagement.show') }}</el-radio>
+                  <el-radio label="1">{{ $t('menuManagement.hide') }}</el-radio>
                 </el-radio-group>
               </el-form-item>
             </div>
@@ -143,17 +145,17 @@
             >
               <span slot="label">
                 <el-tooltip
-                  content="访问的路由地址，如：`user`，如外网地址需内链访问则以`http(s)://`开头"
+                  :content="$t('menuManagement.routeTooltip')"
                   placement="top"
                 >
                   <i class="el-icon-question"></i>
                 </el-tooltip>
-                路由地址
+                {{ $t('menuManagement.routeAddress') }}
               </span>
               <el-input
                 v-model="form.path"
                 autocomplete="off"
-                placeholder="请输入"
+                :placeholder="$t('menuManagement.inputPlaceholder')"
               >
               </el-input>
             </el-form-item>
@@ -162,11 +164,11 @@
               :label-width="formLabelWidth"
               prop="perms"
             >
-              <span slot="label"> 权限标识 </span>
+              <span slot="label">{{ $t('menuManagement.permissionKey') }}</span>
               <el-input
                 v-model="form.perms"
                 autocomplete="off"
-                placeholder="请输入"
+                :placeholder="$t('menuManagement.inputPlaceholder')"
               >
               </el-input>
             </el-form-item>
@@ -175,25 +177,27 @@
             <el-form-item class="perSon" :label-width="formLabelWidth">
               <span slot="label">
                 <el-tooltip
-                  content="选择停用则路由将不会出现在侧边栏，也不能被访问"
+                  :content="$t('menuManagement.disableTooltip')"
                   placement="top"
                 >
                   <i class="el-icon-question"></i>
                 </el-tooltip>
-                菜单状态
+                {{ $t('menuManagement.menuStatus') }}
               </span>
               <el-radio-group v-model="form.status">
-                <el-radio label="0">正常</el-radio>
-                <el-radio label="1">停用</el-radio>
+                <el-radio label="0">{{ $t('common.normal') }}</el-radio>
+                <el-radio label="1">{{ $t('common.disabled') }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </div>
         </el-form>
         <div class="demo-drawer__footer">
           <el-button type="primary" @click="applyImmediate">{{
-            this.flag === 0 ? '立即添加' : '立即修改'
+            flag === 0
+              ? $t('menuManagement.immediatelyAdd')
+              : $t('menuManagement.immediatelyModify')
           }}</el-button>
-          <el-button @click="cancelForm">取消</el-button>
+          <el-button @click="cancelForm">{{ $t('common.cancel') }}</el-button>
         </div>
       </div>
     </el-drawer>
@@ -227,27 +231,38 @@ export default {
         status: '0',
       },
       rowData: {},
-      formLabelWidth: '100px',
       labelPosition: 'top',
-      rules: {
+    }
+  },
+  computed: {
+    drawerTitle() {
+      return this.flag === 0
+        ? this.$t('menuManagement.addMenu')
+        : this.$t('menuManagement.editMenu')
+    },
+    formLabelWidth() {
+      return this.isEnglish() ? '140px' : '100px'
+    },
+    rules() {
+      return {
         parentId: [
           {
             required: true,
-            message: '请选择上级菜单',
+            message: this.$t('menuManagement.selectParentMenu'),
             trigger: 'blur',
           },
         ],
         menuName: [
           {
             required: true,
-            message: '请输入菜单名称',
+            message: this.$t('menuManagement.inputMenuName'),
             trigger: 'blur',
           },
         ],
         orderNum: [
           {
             required: true,
-            message: '请选择菜单顺序',
+            message: this.$t('menuManagement.selectMenuOrder'),
             trigger: 'blur',
           },
         ],
@@ -258,8 +273,8 @@ export default {
         //     trigger: 'blur',
         //   },
         // ],
-      },
-    }
+      }
+    },
   },
   created() {},
   mounted() {},
@@ -340,11 +355,15 @@ export default {
             await AddOrUpdateMenuList(data, dig)
             this.$emit('refresh')
             this.$message.success(
-              this.flag === 0 ? '添加菜单成功' : '修改菜单成功'
+              this.flag === 0
+                ? this.$t('menuManagement.addMenuSuccess')
+                : this.$t('menuManagement.editMenuSuccess')
             )
           } catch (error) {
             this.$message.error(
-              this.flag === 0 ? '添加菜单失败' : '修改菜单失败'
+              this.flag === 0
+                ? this.$t('menuManagement.addMenuFailed')
+                : this.$t('menuManagement.editMenuFailed')
             )
             return console.log(error)
           }

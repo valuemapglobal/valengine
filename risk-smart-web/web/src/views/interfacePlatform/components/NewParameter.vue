@@ -12,7 +12,9 @@
       size="30%"
     >
       <Headline @click="resetFields">{{
-        isEdit ? '编辑参数' : '新增参数'
+        isEdit
+          ? $t('interfacePlatform.editParameter')
+          : $t('interfacePlatform.addParameter')
       }}</Headline>
       <!--  -->
       <el-form
@@ -24,7 +26,7 @@
         style="margin-top: 38px"
       >
         <el-form-item
-          label="参数名称："
+          :label="$t('interfacePlatform.parameterName')"
           prop="interfaceFieIdName"
           style="margin-top: 20px"
         >
@@ -32,33 +34,40 @@
         </el-form-item>
 
         <el-form-item
-          label="参数别名："
+          :label="$t('interfacePlatform.parameterAlias')"
           prop="interfaceFieIdAlias"
           style="margin-top: 20px"
         >
           <el-input v-model="form.interfaceFieIdAlias"></el-input>
         </el-form-item>
         <el-form-item
-          label="参数说明："
+          :label="$t('interfacePlatform.parameterDescription')"
           prop="interfaceFieIdDescription"
           style="margin-top: 20px"
         >
           <el-input v-model="form.interfaceFieIdDescription"></el-input>
         </el-form-item>
-        <el-row type="flex" class="row-bg" justify="center" :gutter="20">
-          <el-col :span="16">
+        <el-row type="flex" justify="center" :gutter="20">
+          <el-col :span="14">
             <el-form-item
-              label="参数类型："
+              :label="$t('interfacePlatform.parameterType')"
               prop="interfaceFieIdType"
               style="margin-top: 20px"
             >
               <el-select v-model="form.interfaceFieIdType">
-                <el-option label="入参" :value="0"></el-option>
-                <el-option label="出参" :value="1"></el-option>
-              </el-select> </el-form-item
-          ></el-col>
+                <el-option
+                  :label="$t('interfacePlatform.inputParameter')"
+                  :value="0"
+                ></el-option>
+                <el-option
+                  :label="$t('interfacePlatform.outputParameter')"
+                  :value="1"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
           <el-col
-            :span="8"
+            :span="10"
             style="
               display: flex;
               align-items: center;
@@ -70,20 +79,24 @@
               v-model="form.interfaceFieIdRequired"
               v-if="showRadio"
             >
-              <el-radio :label="0">必填</el-radio>
-              <el-radio :label="1">非必填</el-radio>
+              <el-radio :label="0">{{
+                $t('interfacePlatform.required')
+              }}</el-radio>
+              <el-radio :label="1">{{
+                $t('interfacePlatform.optional')
+              }}</el-radio>
             </el-radio-group>
             <div
               class="msg"
               style="font-size: 12px; color: red; margin-top: 10px"
               v-if="showRadio && showRadioMsg"
             >
-              请选择是否必填
+              {{ $t('interfacePlatform.selectRequired') }}
             </div>
           </el-col>
         </el-row>
         <el-form-item
-          label="数据类型："
+          :label="$t('interfacePlatform.dataTypeLabel')"
           prop="interfaceFieIdDataType"
           style="margin-top: 20px"
         >
@@ -97,41 +110,39 @@
           </el-select>
         </el-form-item>
         <el-form-item
-          label="排序："
+          :label="$t('interfacePlatform.sort')"
           prop="interfaceFieIdIndex"
           style="margin-top: 20px"
         >
           <el-input v-model="form.interfaceFieIdIndex"></el-input>
         </el-form-item>
         <el-form-item
-          label="参数备注："
+          :label="$t('interfacePlatform.parameterRemark')"
           prop="interfaceFieIdRemark"
           style="margin-top: 20px"
         >
           <el-input v-model="form.interfaceFieIdRemark"></el-input>
         </el-form-item>
         <el-form-item
-          label="默认值："
+          :label="$t('interfacePlatform.defaultValue')"
           prop="interfaceFieIdDefultValue"
           style="margin-top: 20px"
         >
           <el-input v-model="form.interfaceFieIdDefultValue"></el-input>
         </el-form-item>
         <el-form-item
-          label="父级属性："
+          :label="$t('interfacePlatform.parentProperty')"
           prop="interfaceFieIdFather"
           style="margin-top: 20px"
         >
           <el-input v-model="form.interfaceFieIdFather"></el-input>
         </el-form-item>
       </el-form>
-      <div class="table_button">
-        <div class="table_button_right">
-          <el-button class="button_btn" @click="comfirm('ruleForm')"
-            >确定</el-button
-          >
-          <el-button class="button_close" @click="resetFields">关闭</el-button>
-        </div>
+      <div class="bottomBtns">
+        <el-button type="primary" @click="confirm('ruleForm')">{{
+          $t('common.sure')
+        }}</el-button>
+        <el-button @click="resetFields">{{ $t('common.cancel') }}</el-button>
       </div>
     </el-drawer>
   </div>
@@ -179,52 +190,87 @@ export default {
       headers: {
         Authorization: 'Bearer ' + getToken(),
       },
-      rules: {
+      rules: {},
+      dataTypeList: [],
+      drawer: false,
+    }
+  },
+  computed: {
+    rules() {
+      return {
         interfaceFieIdName: [
-          { required: true, message: '请输入参数名称', trigger: 'blur' },
-          { min: 1, max: 50, message: '长度在 1到 50个字符', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('interfacePlatform.inputParameterName'),
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 50,
+            message: this.$t('interfacePlatform.length1to50'),
+            trigger: 'blur',
+          },
         ],
         interfaceFieIdAlias: [
-          { required: true, message: '请输入参数别名', trigger: 'blur' },
-          { min: 1, max: 50, message: '长度在 1到 50个字符', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('interfacePlatform.inputParameterAlias'),
+            trigger: 'blur',
+          },
+          {
+            min: 1,
+            max: 50,
+            message: this.$t('interfacePlatform.length1to50'),
+            trigger: 'blur',
+          },
         ],
         interfaceFieIdDescription: [
-          { required: true, message: '请输入参数说明', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('interfacePlatform.inputParameterDescription'),
+            trigger: 'blur',
+          },
           {
             min: 1,
             max: 200,
-            message: '长度在 1到 200个字符',
+            message: this.$t('interfacePlatform.length1to200'),
             trigger: 'blur',
           },
         ],
         interfaceFieIdType: {
           required: true,
-          message: '请选择参数类型',
+          message: this.$t('interfacePlatform.selectParameterType'),
           trigger: 'change',
         },
         interfaceFieIdIndex: {
           required: true,
           pattern: /^[0-9]*$/,
-          message: '只能输入数字',
+          message: this.$t('interfacePlatform.onlyNumbers'),
           trigger: 'blur',
         },
         interfaceFieIdRemark: [
-          { required: true, message: '请输入备注', trigger: 'blur' },
-          { min: 1, max: 30, message: '长度在 1到 30个字符', trigger: 'blur' },
-        ],
-        interfaceFieIdDefultValue: [
-          // { required: true, message: '请输入默认值', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('interfacePlatform.inputRemark'),
+            trigger: 'blur',
+          },
           {
             min: 1,
-            max: 200,
-            message: '长度在 1到 200个字符',
+            max: 30,
+            message: this.$t('interfacePlatform.length1to30'),
             trigger: 'blur',
           },
         ],
-      },
-      dataTypeList: [],
-      drawer: false,
-    }
+        interfaceFieIdDefultValue: [
+          {
+            min: 1,
+            max: 200,
+            message: this.$t('interfacePlatform.length1to200'),
+            trigger: 'blur',
+          },
+        ],
+      }
+    },
   },
   mounted() {
     getDicts('decision_data_type')
@@ -288,7 +334,9 @@ export default {
               .then((res) => {
                 if (res.code == 200) {
                   this.resetFields()
-                  this.$message.success('修改成功')
+                  this.$message.success(
+                    this.$t('interfacePlatform.modifySuccess')
+                  )
                   this.$emit('getList')
                 }
               })
@@ -303,7 +351,7 @@ export default {
             }).then((res) => {
               if (res.code == 200) {
                 this.resetFields()
-                this.$message.success('新增成功')
+                this.$message.success(this.$t('interfacePlatform.addSuccess'))
                 this.$emit('getList')
               }
             })
@@ -318,7 +366,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '@/assets/scss/productConfiguration';
+// @import '@/assets/scss/productConfiguration';
 
 ::v-deep .el-form-item__label {
   justify-content: flex-end;
@@ -345,17 +393,17 @@ export default {
 }
 
 .detailFile {
-  /deep/ .el-form-item .upload-demo .el-upload-dragger {
+  ::v-deep .el-form-item .upload-demo .el-upload-dragger {
     display: none !important;
   }
 }
 
-/deep/ .el-form-item {
+::v-deep .el-form-item {
   // height: 60px !important;
   margin-bottom: 0px;
 }
 
-/deep/ .el-form .ets {
+::v-deep .el-form .ets {
   height: 200px !important;
 }
 
@@ -371,35 +419,16 @@ export default {
   }
 }
 
-.table_button {
-  padding-left: 35px;
-  padding-right: 20px;
-  margin-top: 50px;
+.bottomBtns {
   width: 100%;
-  height: 60px;
-  z-index: 99;
   display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  background-color: #fff;
-
-  .button_close {
-    background-color: white;
-    color: black;
-  }
-
-  .button_btn {
-    background-color: #2071e1;
-    color: white;
-  }
-
-  .table_button_left {
-    flex: 1;
-  }
-
-  .table_button_right {
-    flex: 2;
-    text-align: right;
+  justify-content: flex-end;
+  margin-top: 20px;
+  .el-button {
+    padding: 0px 24px;
+    height: 42px;
+    font-size: 14px;
+    border-radius: 8px;
   }
 }
 
@@ -424,7 +453,7 @@ export default {
   border-radius: 4px 4px 4px 4px;
 }
 
-/deep/ .action-btn {
+::v-deep .action-btn {
   padding: 12px 5px 12px 9px;
   background: #3d7fff;
   border: none;
@@ -451,7 +480,7 @@ export default {
   }
 }
 
-/deep/ .el-drawer {
+::v-deep .el-drawer {
   user-select: none;
   box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.16);
 
@@ -578,12 +607,12 @@ export default {
   margin-bottom: 30px;
 }
 
-/deep/ .el-dialog {
+::v-deep .el-dialog {
   width: 432px !important;
   height: 170px !important;
 }
 
-/deep/ .el-dialog__body {
+::v-deep .el-dialog__body {
   padding: 0px !important;
 }
 
@@ -598,17 +627,21 @@ export default {
   box-sizing: border-box;
 }
 
-/deep/ .el-switch {
+::v-deep .el-switch {
   vertical-align: bottom;
   margin-left: 20px;
 }
 
-/deep/ .el-form-item .el-input__inner {
+::v-deep .el-form-item .el-input__inner {
   padding: 14px;
   width: 100%;
 }
 
-/deep/ .el-input-number--small {
+::v-deep .el-input-number--small {
   line-height: 44px;
+}
+
+::v-deep .el-select {
+  width: 100%;
 }
 </style>

@@ -3,21 +3,21 @@
     <div class="tableCard">
       <template v-for="(cardItem, cardIndex) in cardList">
         <div
-          class="card"
           :key="cardIndex"
-          element-loading-text="数据加载中"
+          class="card"
+          :element-loading-text="$t('decisionPlatform.dataLoading')"
           v-loading="mine[cardItem.dataSources].loading"
         >
           <div class="top">
             <div class="title">
-              {{ cardItem.cardTitle }}
+              {{ $t(cardItem.cardTitleKey) }}
               <div class="search-button">
                 <el-input
                   :class="{ isFocus: cardItem.isFocus }"
                   ref="searchInputRef"
                   v-model="cardItem.filterParams.name"
                   clearable
-                  placeholder="请输入"
+                  :placeholder="$t('decisionPlatform.inputPlaceholder')"
                   @clear="onsearch($event, cardIndex)"
                   @keyup.enter.native="onsearch($event, cardIndex)"
                   @focus="onFocus(cardItem.filterParams, cardIndex)"
@@ -28,7 +28,10 @@
                     class="search-button-icon"
                     @click="$refs.searchInputRef[cardIndex].focus()"
                   >
-                    <img src="../../../images/search.svg" alt="搜索" />
+                    <img
+                      src="../../../images/search.svg"
+                      :alt="$t('decisionPlatform.search')"
+                    />
                   </div>
                 </el-input>
               </div>
@@ -55,14 +58,16 @@
                   <div class="operateBtn" v-if="!cardItem.isFocus">
                     <img
                       src="../../../images/DueDiligence_active.png"
-                      alt="导入策略"
+                      :alt="$t('decisionPlatform.importStrategy')"
                     />
-                    <span ref="importButtonTextRef">导入策略</span>
+                    <span ref="importButtonTextRef">{{
+                      $t('decisionPlatform.importStrategy')
+                    }}</span>
                   </div>
                   <img
                     v-else
                     src="../../../images/DueDiligence_active.png"
-                    alt="导入策略"
+                    :alt="$t('decisionPlatform.importStrategy')"
                   />
                 </div>
               </el-upload>
@@ -74,10 +79,19 @@
                 @click.stop="openDrawer('reuse', cardItem)"
               >
                 <div class="operateBtn" v-if="!cardItem.isFocus">
-                  <img src="../../../images/copy-green.png" alt="复用" />
-                  <span ref="copyButtonTextRef">复用</span>
+                  <img
+                    src="../../../images/copy-green.png"
+                    :alt="$t('decisionPlatform.reuse')"
+                  />
+                  <span ref="copyButtonTextRef">{{
+                    $t('decisionPlatform.reuse')
+                  }}</span>
                 </div>
-                <img v-else src="../../../images/copy-green.png" alt="复用" />
+                <img
+                  v-else
+                  src="../../../images/copy-green.png"
+                  :alt="$t('decisionPlatform.reuse')"
+                />
               </div>
               <div
                 ref="addButtonRef"
@@ -90,10 +104,19 @@
                 "
               >
                 <div class="operateBtn" v-if="!cardItem.isFocus">
-                  <img src="@/assets/images/dataRisk/add.png" alt="新增" />
-                  <span ref="addButtonTextRef">新增</span>
+                  <img
+                    src="@/assets/images/dataRisk/add.png"
+                    :alt="$t('decisionPlatform.add')"
+                  />
+                  <span ref="addButtonTextRef">{{
+                    $t('decisionPlatform.add')
+                  }}</span>
                 </div>
-                <img v-else src="@/assets/images/dataRisk/add.png" alt="新增" />
+                <img
+                  v-else
+                  src="@/assets/images/dataRisk/add.png"
+                  :alt="$t('decisionPlatform.add')"
+                />
               </div>
             </div>
           </div>
@@ -108,13 +131,13 @@
                 v-for="(item, index) in mine[cardItem.dataSources].dataList"
               >
                 <div
+                  :key="index"
                   class="dataCard"
                   @click="mine[cardItem.searchDataFun](item, true)"
                   :class="{
                     activeCard: item.id == mine[cardItem.dataSources].activeId,
                     defaultModel: handleOperate(item),
                   }"
-                  :key="index"
                 >
                   <div
                     class="detail"
@@ -129,6 +152,9 @@
                             ? item.code
                             : item.name
                         "
+                        :style="`max-width: calc(100% - ${
+                          isEnglish() ? '130px' : '95px'
+                        });`"
                       >
                         {{
                           cardItem.dataSources === 'rule'
@@ -139,11 +165,15 @@
                       <el-tag
                         :type="item.deptFlag == 1 ? 'primary' : 'warning'"
                       >
-                        {{ item.deptFlag == 1 ? '默认' : '自建' }}
+                        {{
+                          item.deptFlag == 1
+                            ? $t('decisionPlatform.default')
+                            : $t('decisionPlatform.selfBuilt')
+                        }}
                       </el-tag>
                     </div>
                     <span class="descr"
-                      >描述：{{
+                      >{{ $t('decisionPlatform.description') }}：{{
                         cardItem.dataSources === 'rule' ? item.name : item.descr
                       }}</span
                     >
@@ -157,7 +187,8 @@
                         placement="top"
                       >
                         <div>
-                          当前版本：{{
+                          {{ $t('decisionPlatform.currentVersion')
+                          }}{{
                             item.versionObj ? item.versionObj.newVersion : ''
                           }}
                         </div>
@@ -171,7 +202,8 @@
                         placement="top"
                       >
                         <div style="white-space: nowrap">
-                          正在使用版本：{{
+                          {{ $t('decisionPlatform.usingVersion')
+                          }}{{
                             item.versionObj ? item.versionObj.userVersion : ''
                           }}
                         </div>
@@ -187,7 +219,7 @@
                           src="@/assets/images/dataRisk/champion-icon.png"
                           class="champion-icon"
                         />
-                        A/B测试冠军
+                        {{ $t('decisionPlatform.abTestChampion') }}
                       </div>
                     </div>
                   </div>
@@ -206,7 +238,9 @@
                           class="operate_img"
                           src="@/assets/images/dataRisk/edit.png"
                         />
-                        <span class="operate_span_edit">编辑</span>
+                        <span class="operate_span_edit">{{
+                          $t('decisionPlatform.edit')
+                        }}</span>
                       </button>
                       <button
                         v-if="hasButton('Strategy:deletion:show')"
@@ -217,7 +251,9 @@
                           class="operate_img"
                           src="@/assets/images/dataRisk/del.png"
                         />
-                        <span class="operate_span_del">删除</span>
+                        <span class="operate_span_del">{{
+                          $t('decisionPlatform.delete')
+                        }}</span>
                       </button>
                     </div>
                     <div class="export-button">
@@ -229,7 +265,7 @@
                         "
                         @click="exportTactics(item)"
                       >
-                        导出
+                        {{ $t('decisionPlatform.export') }}
                       </el-button>
                     </div>
                     <div @click.stop class="switch">
@@ -243,7 +279,7 @@
                         "
                         @click.stop="openDrawer('testModel', item)"
                       >
-                        测试
+                        {{ $t('decisionPlatform.test') }}
                       </div>
                       <div
                         style="
@@ -257,8 +293,8 @@
                           v-model="item.status"
                           active-color="#D6D3D3"
                           inactive-color="var(--primary-color)"
-                          active-text="禁用"
-                          inactive-text="使用"
+                          :active-text="$t('decisionPlatform.disabled')"
+                          :inactive-text="$t('decisionPlatform.enabled')"
                           active-value="0"
                           inactive-value="1"
                           @change="mine[cardItem.switchFun](item)"
@@ -345,13 +381,13 @@
       :disabled="disabledVersion"
       @update="update"
       @reserved="reserved"
-      updateText="确定并更新版本"
-      reservedText="确定并保留版本"
+      :updateText="$t('decisionPlatform.confirmAndUpdateVersion')"
+      :reservedText="$t('decisionPlatform.confirmAndReserveVersion')"
       @cancel="cancel"
     >
       <div>
         <div>{{ deleteText }}</div>
-        <div>您可以同时选择是否更新版本</div>
+        <div>{{ $t('decisionPlatform.youCanChooseToUpdateVersion') }}</div>
       </div>
     </confirmDialog>
   </div>
@@ -416,7 +452,7 @@ export default {
       operationInfo: {}, // 删除,是否使用操作信息
       cardList: [
         {
-          cardTitle: '策略',
+          cardTitleKey: 'decisionPlatform.strategy',
           dataSources: 'tactics',
           searchDataFun: 'searchRuleGroup',
           delFun: 'delTactics',
@@ -431,7 +467,7 @@ export default {
           isFocus: false, //搜索框是否获取焦点
         },
         {
-          cardTitle: '规则组',
+          cardTitleKey: 'decisionPlatform.ruleGroup',
           dataSources: 'ruleGroup',
           searchDataFun: 'searchRuleList',
           delFun: 'delRuleGroup',
@@ -446,7 +482,7 @@ export default {
           isFocus: false, //搜索框是否获取焦点
         },
         {
-          cardTitle: '规则',
+          cardTitleKey: 'decisionPlatform.rule',
           dataSources: 'rule',
           searchDataFun: 'handleRuleClick',
           delFun: 'delRule',
@@ -472,7 +508,6 @@ export default {
         btDisable: false, //规则组和规则switch是否启用
         showIcon: '1',
         loading: false,
-        _requestId: 0, // 用于追踪请求版本，忽略过期响应
       },
       ruleGroup: {
         total: 0,
@@ -527,54 +562,48 @@ export default {
     'dataRisk.decision': {
       handler(val) {
         this.decision = val
-        // 使用防抖延迟调用，避免watcher多次触发导致的竞态条件
-        // 注意：不在这里重置 tactics/ruleGroup/rule 的 dataList，避免清空正在显示的数据
-        // dataList 的重置移到 searchTacticsData 中，在请求返回后处理
-        if (this._searchDebounceTimer) {
-          clearTimeout(this._searchDebounceTimer)
+        //切换产品时，初始化搜索和滚动加载参数
+        const defaultFilterParams = {
+          pageNum: 1,
+          pageSize: 10,
+          scoreCard: undefined,
         }
-        this._searchDebounceTimer = setTimeout(() => {
-          // 如果正在加载中，不重复请求
-          if (this.tactics.loading) {
-            return
+        this.cardList = this.cardList.map((item, index) => {
+          this.onBlur(defaultFilterParams, index)
+          return {
+            ...item,
+            loadingMore: false, //正在获取更多内容……
+            noMore: false, //没有更多了
+            filterParams: { ...defaultFilterParams },
+            isFocus: false, //搜索框是否获取焦点
           }
-          // 重置搜索参数（在防抖回调中执行，避免多次重置）
-          const defaultFilterParams = {
-            pageNum: 1,
-            pageSize: 10,
-            scoreCard: undefined,
-          }
-          this.cardList = this.cardList.map((item, index) => {
-            return {
-              ...item,
-              loadingMore: false,
-              noMore: false,
-              filterParams: { ...defaultFilterParams },
-              isFocus: false,
-            }
-          })
-          // 重置其他状态（但不清空 dataList）
-          Object.assign(this.tactics, {
-            activeId: null,
-            tacticsRowData: {},
-            projectCode: undefined,
-            switchStatus: '',
-            btDisable: false,
-            showIcon: '1',
-          })
-          Object.assign(this.ruleGroup, {
-            activeId: null,
-            ruleGroupData: {},
-            projectCode: undefined,
-            switchStatus: '',
-            btDisable: false,
-          })
-          Object.assign(this.rule, {
-            activeId: null,
-            ruleData: {},
-          })
-          this.searchTacticsData(true)
-        }, 500)
+        })
+        const defaultListParams = {
+          total: 0,
+          dataList: [],
+          activeId: null,
+          loading: false,
+        }
+        Object.assign(this.tactics, {
+          ...defaultListParams,
+          tacticsRowData: {}, //策略列表行数据
+          projectCode: undefined, //当前策略的projectCode
+          switchStatus: '', //当前策略列选择行的switch状态
+          btDisable: false, //规则组和规则switch是否启用
+          showIcon: '1',
+        })
+        Object.assign(this.ruleGroup, {
+          ...defaultListParams,
+          ruleGroupData: {}, //规则组行数据
+          projectCode: undefined, //当前规则组的projectCode
+          switchStatus: '', //当前规则组列选择行的switch状态
+          btDisable: false, //规则switch是否启用
+        })
+        Object.assign(this.rule, {
+          ...defaultListParams,
+          ruleData: {},
+        })
+        this.searchTacticsData(true)
       },
       deep: true,
       immediate: true,
@@ -719,7 +748,7 @@ export default {
           if (res2.code == 200) {
             this.$refs.confirmDialog.visible = false
             this.disabledVersion = false
-            this.$message.success('发布成功，版本同步需等待10s-20s后完成！')
+            this.$message.success(this.$t('decisionPlatform.releaseSuccess'))
             this.searchTacticsData(true)
           }
         })
@@ -738,7 +767,7 @@ export default {
           if (res2.code == 200) {
             this.$refs.confirmDialog.visible = false
             this.disabledVersion = false
-            this.$message.success('发布成功，版本同步需等待10s-20s后完成！')
+            this.$message.success(this.$t('decisionPlatform.releaseSuccess'))
             this.searchTacticsData(true)
           }
         })
@@ -749,12 +778,19 @@ export default {
       return false
     },
     handleTacticsSwitch(data, event) {
+      const action =
+        data.status === '1'
+          ? this.$t('decisionPlatform.enable')
+          : this.$t('decisionPlatform.close')
       this.$confirm(
-        `是否${data.status === '1' ? '启用' : '关闭'}策略【${data.name}】?`,
-        '提示',
+        this.$t('decisionPlatform.enableOrDisableStrategy', {
+          action: action,
+          name: data.name,
+        }),
+        this.$t('decisionPlatform.tip'),
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+          confirmButtonText: this.$t('decisionPlatform.confirm'),
+          cancelButtonText: this.$t('decisionPlatform.cancel'),
           type: 'warning',
         }
       )
@@ -783,12 +819,19 @@ export default {
         })
     },
     handleRuleGroupSwitch(data) {
+      const action =
+        data.status === '1'
+          ? this.$t('decisionPlatform.enable')
+          : this.$t('decisionPlatform.close')
       this.$confirm(
-        `是否${data.status === '1' ? '启用' : '关闭'}规则组【${data.name}】?`,
-        '提示',
+        this.$t('decisionPlatform.enableOrDisableRuleGroup', {
+          action: action,
+          name: data.name,
+        }),
+        this.$t('decisionPlatform.tip'),
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+          confirmButtonText: this.$t('decisionPlatform.confirm'),
+          cancelButtonText: this.$t('decisionPlatform.cancel'),
           type: 'warning',
         }
       )
@@ -810,12 +853,19 @@ export default {
         })
     },
     handleRuleSwitch(data) {
+      const action =
+        data.status === '1'
+          ? this.$t('decisionPlatform.enable')
+          : this.$t('decisionPlatform.close')
       this.$confirm(
-        `是否${data.status === '1' ? '启用' : '关闭'}规则【${data.code}】?`,
-        '提示',
+        this.$t('decisionPlatform.enableOrDisableRule', {
+          action: action,
+          code: data.code,
+        }),
+        this.$t('decisionPlatform.tip'),
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+          confirmButtonText: this.$t('decisionPlatform.confirm'),
+          cancelButtonText: this.$t('decisionPlatform.cancel'),
           type: 'warning',
         }
       )
@@ -839,7 +889,7 @@ export default {
     handleSubmitSwitch(form) {
       updateState({ ...form })
         .then((res) => {
-          this.$message.success('操作成功')
+          this.$message.success(this.$t('decisionPlatform.operationSuccess'))
           switch (form.classify) {
             case 2:
               //如果是规则组加载数据，初始化规则列表参数
@@ -862,7 +912,7 @@ export default {
     handleDelSwitch(form) {
       delAntiProjectFraud({ ...form })
         .then((res) => {
-          this.$message.success('操作成功')
+          this.$message.success(this.$t('decisionPlatform.operationSuccess'))
           this.searchTacticsData()
         })
         .catch((err) => {})
@@ -881,7 +931,7 @@ export default {
         })
           .then((res) => {
             if (res.code == 200) {
-              this.$message.success('发布成功，版本同步需等待10s-20s后完成！')
+              this.$message.success(this.$t('decisionPlatform.releaseSuccess'))
               this.searchTacticsData(true)
               versionControlFraud(this.getqueryData()).then((res2) => {})
             }
@@ -889,7 +939,7 @@ export default {
           .catch((err) => {})
       } else {
         // 非标准部门——触发更改版本的弹窗进行去除,点击发布的时候弹出是否更新版本弹窗
-        this.dataText = `是否确认发布？`
+        this.dataText = this.$t('decisionPlatform.confirmRelease')
         this.$refs.confirmDialog.visible = true
       }
     },
@@ -905,10 +955,10 @@ export default {
           this.drawer.width = '40%'
           if (data) {
             this.tactics.tacticsRowData = JSON.parse(JSON.stringify(data))
-            this.drawer.title = '修改策略'
+            this.drawer.title = this.$t('decisionPlatform.editStrategy')
             if (this.$refs.addTactics) this.$refs.addTactics.clearForm()
           } else {
-            this.drawer.title = '新增策略'
+            this.drawer.title = this.$t('decisionPlatform.addStrategy')
             this.tactics.tacticsRowData = {}
             if (this.$refs.addTactics) {
               this.$refs.addTactics.resetForm()
@@ -920,34 +970,38 @@ export default {
           this.drawer.width = '40%'
           if (data) {
             this.ruleGroup.ruleGroupData = JSON.parse(JSON.stringify(data))
-            this.drawer.title = '修改规则组'
+            this.drawer.title = this.$t('decisionPlatform.editRuleGroup')
             if (this.$refs.addRuleGroup) this.$refs.addRuleGroup.clearForm()
           } else {
             this.ruleGroup.ruleGroupData = {
               modelId: this.tactics.activeId,
               name: '',
             }
-            this.drawer.title = '新增规则组'
+            this.drawer.title = this.$t('decisionPlatform.addRuleGroup')
             if (this.$refs.addRuleGroup) this.$refs.addRuleGroup.resetForm()
           }
           break
         case 'rule':
           if (this.ruleGroup.dataList.length == 0) {
-            this.$message.warning('请先增加规则组')
+            this.$message.warning(
+              this.$t('decisionPlatform.pleaseAddRuleGroupFirst')
+            )
             return
           }
-          this.drawer.width = '1200px'
+          this.drawer.width = '1300px'
           if (data) {
-            this.drawer.title = '修改规则'
+            this.drawer.title = this.$t('decisionPlatform.editRule')
             this.rule.ruleData = JSON.parse(JSON.stringify(data))
           } else {
-            this.drawer.title = '新建规则'
+            this.drawer.title = this.$t('decisionPlatform.newRule')
             this.rule.ruleData = {}
           }
           break
         case 'testModel':
           if (data.status != 1) {
-            return this.$message.warning('请先将模型进行启用')
+            return this.$message.warning(
+              this.$t('decisionPlatform.pleaseEnableModelFirst')
+            )
           }
           this.drawer.title = data.name
           this.drawer.type = 'testModel'
@@ -964,13 +1018,13 @@ export default {
           }
           break
         case 'reuse':
-          this.drawer.title = `标准${
+          const titleKey =
             data.dataSources === 'ruleGroup'
-              ? '规则组'
+              ? 'decisionPlatform.standardRuleGroupReuse'
               : data.dataSources === 'rule'
-              ? '规则'
-              : '策略'
-          }复用`
+              ? 'decisionPlatform.standardRuleReuse'
+              : 'decisionPlatform.standardStrategyReuse'
+          this.drawer.title = this.$t(titleKey)
           this.drawer.type = `${data.dataSources}Reuse`
           this.drawer.width = 'auto'
           this.reuseParams = {
@@ -996,11 +1050,15 @@ export default {
     async delTactics(data) {
       // if (!(await this.handleCheckLock())) return 暂时注释 20260105
       if (this.handleOperate(data)) return
-      this.$confirm(`是否删除策略【${data.name}】?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm(
+        this.$t('decisionPlatform.deleteStrategyConfirm', { name: data.name }),
+        this.$t('decisionPlatform.tip'),
+        {
+          confirmButtonText: this.$t('decisionPlatform.confirm'),
+          cancelButtonText: this.$t('decisionPlatform.cancel'),
+          type: 'warning',
+        }
+      )
         .then(() => {
           // 暂时注释 20260105
           // this.handleLogBaseData(data)
@@ -1045,7 +1103,7 @@ export default {
           //             this.$message.warning(res.msg)
           //             return
           //           }
-          //           this.$message.success('操作成功')
+          //           this.$message.success(this.$t('decisionPlatform.operationSuccess'))
           //           this.initRuleGroupData()
           //           this.initRuleData()
           //           this.searchTacticsData(true)
@@ -1087,7 +1145,9 @@ export default {
                 this.$message.warning(res.msg)
                 return
               }
-              this.$message.success('操作成功')
+              this.$message.success(
+                this.$t('decisionPlatform.operationSuccess')
+              )
               this.initRuleGroupData()
               this.initRuleData()
               this.searchTacticsData(true)
@@ -1102,11 +1162,15 @@ export default {
      */
     delRuleGroup(data) {
       if (this.handleOperate(data)) return
-      this.$confirm(`是否删除规则组【${data.name}】?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm(
+        this.$t('decisionPlatform.deleteRuleGroupConfirm', { name: data.name }),
+        this.$t('decisionPlatform.tip'),
+        {
+          confirmButtonText: this.$t('decisionPlatform.confirm'),
+          cancelButtonText: this.$t('decisionPlatform.cancel'),
+          type: 'warning',
+        }
+      )
         .then(() => {
           // 暂时注释 20260105
           // this.handleLogBaseData(data)
@@ -1147,7 +1211,7 @@ export default {
           //             }
           //       API(paramsData)
           //         .then((res) => {
-          //           this.$message.success('操作成功')
+          //           this.$message.success(this.$t('decisionPlatform.operationSuccess'))
           //           this.initRuleData()
           //           this.searchRuleGroup(this.tactics.activeId, true)
           //         })
@@ -1179,7 +1243,9 @@ export default {
                 }
           API(paramsData)
             .then((res) => {
-              this.$message.success('操作成功')
+              this.$message.success(
+                this.$t('decisionPlatform.operationSuccess')
+              )
               this.initRuleData()
               this.searchRuleGroup(this.tactics.activeId, true)
             })
@@ -1189,11 +1255,15 @@ export default {
     },
     delRule(data) {
       if (this.handleOperate(data)) return
-      this.$confirm(`是否删除规则【${data.code}】?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm(
+        this.$t('decisionPlatform.deleteRuleConfirm', { code: data.code }),
+        this.$t('decisionPlatform.tip'),
+        {
+          confirmButtonText: this.$t('decisionPlatform.confirm'),
+          cancelButtonText: this.$t('decisionPlatform.cancel'),
+          type: 'warning',
+        }
+      )
         .then(() => {
           // 暂时注释 20260105
           // this.handleLogBaseData(data)
@@ -1236,7 +1306,7 @@ export default {
           //             }
           //       API(paramsData)
           //         .then((res) => {
-          //           this.$message.success('操作成功')
+          //           this.$message.success(this.$t('decisionPlatform.operationSuccess'))
           //           this.searchRuleList(this.ruleGroup.activeId, true)
           //         })
           //         .catch((err) => {})
@@ -1269,7 +1339,9 @@ export default {
                 }
           API(paramsData)
             .then((res) => {
-              this.$message.success('操作成功')
+              this.$message.success(
+                this.$t('decisionPlatform.operationSuccess')
+              )
               this.searchRuleList(this.ruleGroup.activeId, true)
             })
             .catch((err) => {})
@@ -1302,12 +1374,7 @@ export default {
      * @param isFirst 是否为首次加载
      */
     searchTacticsData(isFirst) {
-      // 递增请求ID，用于忽略过期响应
-      this.tactics._requestId = (this.tactics._requestId || 0) + 1
-      const currentRequestId = this.tactics._requestId
-
       let filterParams = this.cardList[0].filterParams
-
       if (isFirst) {
         this.tactics.loading = true
         this.cardList[0].loadingMore = false
@@ -1323,20 +1390,16 @@ export default {
         ...this.decision,
       })
         .then(async (res) => {
-          // 检查是否为过期响应
-          if (currentRequestId !== this.tactics._requestId) {
-            return
-          }
           if (res.code == 200) {
             const { list, pages } = res.data
-            const isStandard = isStandardDept()
+            console.log(isStandardDept(), 'isStandardDept()')
             list.forEach((item) => {
               /**
                * 非标准部门下自己新建产品 & 标准部门下的产品
                */
               if (
-                isStandard ||
-                (!isStandard && item.deptFlag == 2)
+                isStandardDept() ||
+                (!isStandardDept() && item.deptFlag == 2)
               ) {
                 return getVersion({
                   modelId: item.id,
@@ -1391,10 +1454,6 @@ export default {
           this.tactics.loading = false
         })
         .catch((err) => {
-          // 只处理当前请求的错误，忽略过期请求的错误
-          if (currentRequestId !== this.tactics._requestId) {
-            return
-          }
           this.tactics.loading = false
           this.cardList[0].loadingMore = false
         })
@@ -1722,7 +1781,9 @@ export default {
         )
       ) {
         setTimeout(() => {
-          this.$message.warning('请上传json文件！')
+          this.$message.warning(
+            this.$t('decisionPlatform.pleaseUploadJsonFile')
+          )
         }, 0)
         return false
       }
@@ -1754,7 +1815,9 @@ export default {
           if (this.$refs.uploadJSONRef[0])
             this.$refs.uploadJSONRef[0].clearFiles()
 
-          this.$message.success('导入策略成功')
+          this.$message.success(
+            this.$t('decisionPlatform.importStrategySuccess')
+          )
         }
       })
     },
@@ -1803,10 +1866,10 @@ export default {
         document.body.removeChild(link)
         window.URL.revokeObjectURL(url)
 
-        this.$message.success('策略导出成功')
+        this.$message.success(this.$t('decisionPlatform.exportStrategySuccess'))
       } catch (error) {
         console.error('下载失败:', error)
-        this.$message.error('策略导出失败')
+        this.$message.error(this.$t('decisionPlatform.exportStrategyFailed'))
       }
     },
   },
@@ -1955,7 +2018,7 @@ export default {
               border-radius: 6px;
               display: flex;
               align-items: center;
-              padding: 10px 15px;
+              padding: 10px;
               font-size: 14px;
               cursor: pointer;
             }
@@ -2037,7 +2100,6 @@ export default {
               width: 100%;
 
               > span {
-                max-width: calc(100% - 95px);
                 font-size: 16px;
                 font-weight: 500;
                 color: var(--text-color-secondary);
@@ -2102,11 +2164,12 @@ export default {
               display: flex;
 
               > button {
-                width: 68px;
+                min-width: 70px;
                 height: 32px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                padding: 0px 10px;
 
                 .operate_img {
                   width: 16px;

@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="分配角色"
+    :title="$t('userManage.assignRoles')"
     :destroy-on-close="true"
     :visible.sync="dialogVisible"
     width="1026px"
@@ -10,12 +10,12 @@
       :model="ruleForm"
       :rules="rules"
       ref="ruleForm"
-      label-width="100px"
+      :label-width="isEnglish() ? '140px' : '100px'"
       class="demo-ruleForm"
     >
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-form-item label="用户昵称" prop="nickName">
+          <el-form-item :label="$t('userManage.nickName')" prop="nickName">
             <el-input
               size="medium"
               disabled
@@ -24,7 +24,10 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="登录账号" prop="phonenumber">
+          <el-form-item
+            :label="$t('userManage.loginAccount')"
+            prop="phonenumber"
+          >
             <el-input
               size="medium"
               disabled
@@ -48,7 +51,11 @@
       @selection-change="handleSelectionChange"
       :data="roles.slice((pageNum - 1) * pageSize, pageNum * pageSize)"
     >
-      <el-table-column label="序号" type="index" align="center">
+      <el-table-column
+        :label="$t('userManage.serialNumber')"
+        type="index"
+        align="center"
+      >
         <template slot-scope="scope">
           <span>{{ (pageNum - 1) * pageSize + scope.$index + 1 }}</span>
         </template>
@@ -58,11 +65,23 @@
         :reserve-selection="true"
         width="55"
       ></el-table-column>
-      <el-table-column label="角色编号" align="center" prop="roleId" />
-      <el-table-column label="角色名称" align="center" prop="roleName" />
-      <el-table-column label="权限字符" align="center" prop="roleKey" />
       <el-table-column
-        label="创建时间"
+        :label="$t('userManage.roleId')"
+        align="center"
+        prop="roleId"
+      />
+      <el-table-column
+        :label="$t('userManage.roleName')"
+        align="center"
+        prop="roleName"
+      />
+      <el-table-column
+        :label="$t('userManage.roleKey')"
+        align="center"
+        prop="roleKey"
+      />
+      <el-table-column
+        :label="$t('common.createTime')"
         align="center"
         prop="createTime"
         width="180"
@@ -84,8 +103,10 @@
       </el-pagination>
     </div>
     <span slot="footer" class="dialog-footer">
-      <el-button class="btn" @click="handleSelectUser">确认添加</el-button>
-      <el-button @click="handleClose">取消</el-button>
+      <el-button class="btn" @click="handleSelectUser">{{
+        $t('userManage.confirmAdd')
+      }}</el-button>
+      <el-button @click="handleClose">{{ $t('common.cancel') }}</el-button>
     </span>
   </el-dialog>
 </template>
@@ -102,12 +123,6 @@ export default {
         nickName: null,
         phonenumber: null,
       },
-      rules: {
-        name: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' },
-        ],
-      },
       roles: [],
       total: 0,
       pageNum: 1,
@@ -118,6 +133,11 @@ export default {
       multiple: true,
       id: null,
     }
+  },
+  computed: {
+    rules() {
+      return {}
+    },
   },
   methods: {
     authRole(id) {
@@ -171,7 +191,7 @@ export default {
       if (userIds == '') {
         this.$message({
           type: 'error',
-          message: '请选择要分配的用户!',
+          message: this.$t('userManage.selectUserToAssign'),
         })
         return
       }
@@ -181,7 +201,7 @@ export default {
         if (res.code === 200) {
           this.$message({
             type: 'success',
-            message: '操作成功!',
+            message: this.$t('common.success'),
           })
           this.show()
         }
@@ -226,7 +246,7 @@ export default {
         let value = formatObj[key]
         // Note: getDay() returns 0 on Sunday
         if (key === 'a') {
-          return ['日', '一', '二', '三', '四', '五', '六'][value]
+          return this.$t('userManage.weekDays')[value]
         }
         if (result.length > 0 && value < 10) {
           value = '0' + value

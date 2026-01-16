@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import i18n from './i18n'
 
 Vue.config.productionTip = false
 
@@ -35,13 +36,13 @@ Vue.prototype.download = download
 //混入全局方法
 Vue.mixin({
   methods: {
+    isEnglish() {
+      // 判断当前是否为英文
+      return this.$i18n.locale === 'en'
+    },
     //判断按钮是否有权限
     hasButton(buttonCode) {
       const buttonList = store.state.buttonList
-      // 处理超级管理员通配符权限
-      if (buttonList.includes('*:*:*')) {
-        return true
-      }
       return buttonList.includes(buttonCode)
     },
     //金额千分位分割
@@ -205,5 +206,6 @@ Vue.prototype.$isNewUser = (guideType) => {
 new Vue({
   router,
   store,
+  i18n,
   render: (h) => h(App),
 }).$mount('#app')

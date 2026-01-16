@@ -5,7 +5,7 @@
         <div class="left">
           <el-select
             v-model="queryParams.businessCode"
-            placeholder="请选择业务场景"
+            :placeholder="$t('platformEngine.selectBusinessScene')"
             style="width: 100%; height: 100%"
             clearable
             @clear="getList"
@@ -20,16 +20,16 @@
           </el-select>
           <el-select
             v-model="queryParams.useIf"
-            placeholder="请选择是否使用"
+            :placeholder="$t('platformEngine.selectUseIf')"
             style="width: 100%; height: 100%"
             clearable
             @clear="getList"
           >
-            <el-option label="使用" :value="1" />
-            <el-option label="禁用" :value="0" />
+            <el-option :label="$t('platformEngine.use')" :value="1" />
+            <el-option :label="$t('platformEngine.disabled')" :value="0" />
           </el-select>
           <el-input
-            placeholder="请输入流程策略模型名称"
+            :placeholder="$t('platformEngine.inputProcessStrategy')"
             style="height: 42px"
             clearable
             suffix-icon="el-icon-search"
@@ -37,14 +37,14 @@
             @clear="getList"
           />
           <el-button style="margin-left: 20px" type="primary" @click="reset"
-            >重置
+            >{{ $t('common.reset') }}
           </el-button>
 
           <el-button
             type="warning"
             style="background: #ff8f1f; margin-left: 10px"
             @click="add"
-            >新建流程策略模型
+            >{{ $t('platformEngine.newProcessStrategy') }}
           </el-button>
         </div>
       </div>
@@ -54,23 +54,28 @@
             <div class="title-warp">
               <div class="title">{{ item.processStrategy }}</div>
               <div class="status successType" v-if="item.useIf == 1">
-                启用中
+                {{ $t('platformEngine.enabled') }}
               </div>
-              <div class="status errorType" v-else>禁用</div>
+              <div class="status errorType" v-else>
+                {{ $t('platformEngine.disabled') }}
+              </div>
             </div>
             <div class="btns-list">
-              <div class="usage" @click="usageHandle(item)">流程使用</div>
+              <div class="usage" @click="usageHandle(item)">
+                {{ $t('platformEngine.processUsage') }}
+              </div>
 
               <div class="edit" @click="edit(item)" style="cursor: pointer">
                 <img
                   src="../../image/edit.png"
-                  style="width: 68px; height: 32px"
+                  style="width: 16px; height: 16px"
                 />
+                <div class="text">{{ $t('common.edit') }}</div>
               </div>
 
               <template>
                 <el-popconfirm
-                  title="这是一段内容确定删除吗？"
+                  :title="$t('platformEngine.deleteConfirm')"
                   @confirm="del(item)"
                 >
                   <div class="del" slot="reference">
@@ -78,7 +83,7 @@
                       src="../../image/delete.png"
                       style="width: 16px; height: 16px"
                     />
-                    <div class="text">删除</div>
+                    <div class="text">{{ $t('common.delete') }}</div>
                   </div>
                 </el-popconfirm>
               </template>
@@ -86,13 +91,13 @@
           </div>
           <div class="card-content">
             <div class="info" style="margin-bottom: 20px">
-              <div class="key">业务场景：</div>
+              <div class="key">{{ $t('platformEngine.businessScene') }}</div>
               <div class="value">{{ mapScene(item.businessCode) }}</div>
             </div>
           </div>
           <div class="card-footer-text">
             <div class="dec">
-              <div class="key">描述：</div>
+              <div class="key">{{ $t('platformEngine.description') }}</div>
               <div class="value">{{ item.content ? item.content : '-' }}</div>
             </div>
 
@@ -106,8 +111,8 @@
               :width="50"
               active-color="var(--primary-color)"
               inactive-color="#D6D6D6"
-              active-text="启用"
-              inactive-text="禁用"
+              :active-text="$t('platformEngine.enabled')"
+              :inactive-text="$t('platformEngine.disabled')"
             >
             </el-switch>
           </div>
@@ -196,7 +201,9 @@ export default {
   methods: {
     usageHandle(item) {
       if (item.useIf != 1) {
-        return this.$message.warning('请先将流程进行启用')
+        return this.$message.warning(
+          this.$t('platformEngine.pleaseEnableProcessFirst')
+        )
       }
       Object.assign(this.$refs.processUsageRef.processData, {
         id: item.id,
@@ -207,7 +214,7 @@ export default {
     // 编辑
     edit(item) {
       this.currentRow = JSON.parse(JSON.stringify(item))
-      this.title = '修改'
+      this.title = this.$t('platformEngine.edit')
       const addflowRef = this.$refs.Addflow
       addflowRef.drawer = true
       addflowRef.getInfo(item)
@@ -219,11 +226,18 @@ export default {
     },
     changeSwicth(item) {
       this.currentRow = {}
-      this.$confirm(`是否${item.useIf == 0 ? '禁用' : '启用'}该风控流程`, {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      const action =
+        item.useIf == 0
+          ? this.$t('platformEngine.disable')
+          : this.$t('platformEngine.enable')
+      this.$confirm(
+        this.$t('platformEngine.enableOrDisableProcessConfirm', { action }),
+        {
+          confirmButtonText: this.$t('common.confirm'),
+          cancelButtonText: this.$t('common.cancel'),
+          type: 'warning',
+        }
+      )
         .then(() => {
           this.addModel({
             ...item,
@@ -248,7 +262,7 @@ export default {
       deletePolicy({ id: item.id })
         .then((res) => {
           if (res.code == 200) {
-            this.$message.success('删除成功!')
+            this.$message.success(this.$t('platformEngine.deleteSuccess'))
             this.getList()
           }
         })
@@ -321,7 +335,7 @@ export default {
       this.getList()
     },
     add() {
-      this.title = '新建'
+      this.title = this.$t('platformEngine.new')
       this.$refs.Addflow.drawer = true
     },
   },
@@ -443,10 +457,12 @@ export default {
           .btns-list {
             display: flex;
 
+            .edit,
             .usage,
             .del {
               cursor: pointer;
-              width: 68px;
+              // width: 68px;
+              padding: 0px 10px;
               height: 32px;
               display: flex;
               justify-content: center;
@@ -459,7 +475,6 @@ export default {
               font-size: 14px;
               font-weight: 400;
               background: #ff8f1f;
-              margin-right: 10px;
             }
 
             .del {
@@ -470,6 +485,17 @@ export default {
                 font-size: 14px;
                 font-weight: 400;
                 color: var(--text-color-secondary);
+                margin-left: 3px;
+              }
+            }
+            .edit {
+              background: var(--primary-color);
+              margin-left: 10px;
+
+              .text {
+                font-size: 14px;
+                font-weight: 400;
+                color: #fff;
                 margin-left: 3px;
               }
             }

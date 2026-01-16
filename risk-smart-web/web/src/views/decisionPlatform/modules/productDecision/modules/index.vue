@@ -4,6 +4,7 @@
       <div style="display: flex">
         <template v-for="(item, index) in btnList">
           <el-button
+            :key="index"
             class="btn"
             @click="clickActive(item)"
             :class="{
@@ -17,7 +18,6 @@
                 ? !hasButton(item.btnPermission)
                 : item.disabled
             "
-            :key="index"
           >
             {{ item.label }}
           </el-button>
@@ -29,11 +29,13 @@
         <el-tooltip
           class="item"
           effect="light"
-          content="点击这里，让功能操作同步到在线运行环境生效！"
+          :content="$t('decisionPlatform.releaseTip')"
           placement="bottom"
           v-if="hasButton('strategy:release:show')"
         >
-          <el-button type="primary" @click="releaseRule"> 确认发布 </el-button>
+          <el-button type="primary" @click="releaseRule">
+            {{ $t('decisionPlatform.confirmRelease') }}
+          </el-button>
         </el-tooltip>
         <!-- 暂时注释 20260105 -->
         <!-- <template v-if="active == 'rule'">
@@ -97,23 +99,43 @@ export default {
   name: 'PreApproval',
   data() {
     return {
-      btnList: [
-        { label: '规则模型', template: 'rule', disabled: false, ruleCode: 5 },
+      btnListData: [
         {
-          label: '分类模型',
+          labelKey: 'decisionPlatform.ruleModel',
+          template: 'rule',
+          disabled: false,
+          ruleCode: 5,
+        },
+        {
+          labelKey: 'decisionPlatform.classifyModel',
           template: 'classify',
           disabled: false,
           ruleCode: 6,
         },
-        { label: '评分模型', template: 'score', disabled: false, ruleCode: 1 },
         {
-          label: '评级模型',
+          labelKey: 'decisionPlatform.scoreModel',
+          template: 'score',
+          disabled: false,
+          ruleCode: 1,
+        },
+        {
+          labelKey: 'decisionPlatform.rateModel',
           template: 'rate',
           disabled: false,
           ruleCode: 2,
         },
-        { label: '额度模型', template: 'limit', disabled: false, ruleCode: 3 },
-        { label: '定价模型', template: 'price', disabled: false, ruleCode: 4 },
+        {
+          labelKey: 'decisionPlatform.limitModel',
+          template: 'limit',
+          disabled: false,
+          ruleCode: 3,
+        },
+        {
+          labelKey: 'decisionPlatform.priceModel',
+          template: 'price',
+          disabled: false,
+          ruleCode: 4,
+        },
       ],
       active: 'rule',
       step: 0,
@@ -127,6 +149,12 @@ export default {
   computed: {
     ...mapState(['dataRisk']),
     // ...mapGetters(['batchId']), 暂时注释 20260105
+    btnList() {
+      return this.btnListData.map((item) => ({
+        ...item,
+        label: this.$t(item.labelKey),
+      }))
+    },
   },
   watch: {
     active: {
@@ -191,7 +219,8 @@ export default {
       })
         .then((res) => {
           const fileName =
-            this.getFileNameFromHeaders(res.headers) || '版本对比'
+            this.getFileNameFromHeaders(res.headers) ||
+            this.$t('decisionPlatform.versionCompare')
           this.handleDownload(res.data, fileName)
         })
         .catch((err) => {})
@@ -200,7 +229,10 @@ export default {
         })
     },
 
-    handleDownload(file, fileName = '版本对比') {
+    handleDownload(file, fileName) {
+      if (!fileName) {
+        fileName = this.$t('decisionPlatform.versionCompare')
+      }
       const blob = new Blob([file], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       })

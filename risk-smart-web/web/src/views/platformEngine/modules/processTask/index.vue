@@ -9,7 +9,7 @@
       />
       <el-input
         v-if="!isBatch"
-        placeholder="请输入任务编号"
+        :placeholder="$t('platformEngine.inputTaskNo')"
         v-model="params.taskNo"
         clearable
         @input="paramsChange"
@@ -18,7 +18,7 @@
       </el-input>
       <el-input
         v-else
-        placeholder="请输入任务编号"
+        :placeholder="$t('platformEngine.inputTaskNo')"
         v-model="params.batchNo"
         clearable
         @input="paramsChange"
@@ -26,7 +26,7 @@
         <img slot="prefix" src="../../image/search.png" alt="" />
       </el-input>
       <el-input
-        placeholder="请输入流程策略"
+        :placeholder="$t('platformEngine.inputProcessStrategy')"
         v-model="params.processStrategy"
         clearable
         @input="paramsChange"
@@ -36,7 +36,7 @@
       <el-select
         v-model="params.responseForm"
         clearable
-        placeholder="请选择响应形式"
+        :placeholder="$t('platformEngine.selectResponseForm')"
         @change="paramsChange"
       >
         <el-option
@@ -51,7 +51,7 @@
         v-if="!isBatch"
         v-model="params.taskStatus"
         clearable
-        placeholder="请选择状态"
+        :placeholder="$t('platformEngine.selectStatus')"
         @change="paramsChange"
       >
         <el-option
@@ -66,7 +66,7 @@
         v-else
         v-model="params.batchStatus"
         clearable
-        placeholder="请选择状态"
+        :placeholder="$t('platformEngine.selectStatus')"
         @change="paramsChange"
       >
         <el-option
@@ -81,14 +81,16 @@
         v-model="params.startEndDate"
         type="daterange"
         range-separator="-"
-        start-placeholder="申请开始时间"
-        end-placeholder="申请结束时间"
+        :start-placeholder="$t('platformEngine.applicationStartTime')"
+        :end-placeholder="$t('platformEngine.applicationEndTime')"
         format="yyyy-MM-dd"
         value-format="yyyy-MM-dd"
         @change="paramsChange"
       >
       </el-date-picker>
-      <el-button type="primary" @click="onReset">重置</el-button>
+      <el-button type="primary" @click="onReset">{{
+        $t('common.reset')
+      }}</el-button>
     </div>
     <div class="process-task-wrapper">
       <el-table
@@ -100,7 +102,7 @@
         height="calc(var(--bgvh) - 243px)"
       >
         <el-table-column
-          label="序号"
+          :label="$t('platformEngine.serialNumber')"
           type="index"
           width="50"
           align="center"
@@ -108,28 +110,35 @@
         ></el-table-column>
         <el-table-column
           prop="taskNo"
-          label="任务编号"
+          :label="$t('platformEngine.taskNo')"
           width="220"
           align="center"
         ></el-table-column>
         <el-table-column
           prop="applicationUser"
-          label="申请用户"
+          :label="$t('platformEngine.applicationUser')"
           width="200"
           align="center"
         ></el-table-column>
-        <el-table-column label="流程入参" align="center">
+        <el-table-column
+          :label="$t('platformEngine.processEntry')"
+          align="center"
+        >
           <template slot-scope="{ row }">
             <el-button
               v-if="row.processEntry && row.processEntry.length"
               type="text"
               size="medium"
               @click="openDrawer('entryDetail', row.processEntry)"
-              >详情</el-button
+              >{{ $t('common.detail') }}</el-button
             >
           </template>
         </el-table-column>
-        <el-table-column label="业务场景" width="180" align="center">
+        <el-table-column
+          :label="$t('platformEngine.businessScene')"
+          width="180"
+          align="center"
+        >
           <template slot-scope="{ row }">
             <el-tag
               type="primary"
@@ -156,11 +165,15 @@
         </el-table-column>
         <el-table-column
           prop="processStrategy"
-          label="流程策略"
+          :label="$t('platformEngine.processStrategy')"
           width="180"
           align="center"
         ></el-table-column>
-        <el-table-column label="模型名称" width="240" align="center">
+        <el-table-column
+          :label="$t('platformEngine.modelName')"
+          width="240"
+          align="center"
+        >
           <template
             slot-scope="{ row }"
             v-if="row.modelNameList && row.modelNameList.length"
@@ -181,12 +194,20 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="申请时间" width="180" align="center">
+        <el-table-column
+          :label="$t('platformEngine.applicationTime')"
+          width="180"
+          align="center"
+        >
           <span slot-scope="{ row }">
             {{ formatTime(row.createTime, 'yyyy-MM-dd HH:mm:ss') }}
           </span>
         </el-table-column>
-        <el-table-column label="响应形式" width="160" align="center">
+        <el-table-column
+          :label="$t('platformEngine.responseForm')"
+          width="160"
+          align="center"
+        >
           <span slot-scope="{ row }">
             {{
               setShowValue(
@@ -198,7 +219,11 @@
             }}
           </span>
         </el-table-column>
-        <el-table-column label="状态" width="120" align="center">
+        <el-table-column
+          :label="$t('common.status')"
+          width="120"
+          align="center"
+        >
           <template slot-scope="{ row }">
             <el-tag
               v-if="row.taskStatus"
@@ -210,14 +235,17 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="响应结果" align="center">
+        <el-table-column
+          :label="$t('platformEngine.responseResult')"
+          align="center"
+        >
           <template slot-scope="{ row }">
             <el-button
               v-if="row.responseForm === 1 && row.taskStatus === 3"
               type="text"
               @click="openDrawer('responseResult', row.taskNo, row.taskStatus)"
             >
-              详情
+              {{ $t('common.detail') }}
             </el-button>
             <el-tooltip
               class="item"
@@ -228,7 +256,7 @@
               <el-button
                 type="text"
                 v-if="row.responseForm === 1 && row.taskStatus == 4"
-                >查看原因</el-button
+                >{{ $t('platformEngine.viewReason') }}</el-button
               >
             </el-tooltip>
             <el-button
@@ -236,7 +264,7 @@
               type="text"
               @click="openDrawer('riskReport', row.taskNo)"
             >
-              查看报告
+              {{ $t('platformEngine.viewReport') }}
             </el-button>
           </template>
         </el-table-column>
@@ -250,7 +278,7 @@
         height="calc(var(--bgvh) - 243px)"
       >
         <el-table-column
-          label="序号"
+          :label="$t('platformEngine.serialNumber')"
           type="index"
           width="50"
           align="center"
@@ -259,27 +287,34 @@
         <el-table-column
           v-if="isBatch"
           prop="batchNo"
-          label="批次号"
+          :label="$t('platformEngine.batchNo')"
           width="220"
           align="center"
         ></el-table-column>
         <el-table-column
           prop="applicationUser"
-          label="申请用户"
+          :label="$t('platformEngine.applicationUser')"
           width="200"
           align="center"
         ></el-table-column>
-        <el-table-column label="批次入参" align="center">
+        <el-table-column
+          :label="$t('platformEngine.batchEntry')"
+          align="center"
+        >
           <template slot-scope="{ row }">
             <el-button
               type="text"
               size="medium"
               @click="handleOpenBatchParams(row)"
-              >详情</el-button
+              >{{ $t('common.detail') }}</el-button
             >
           </template>
         </el-table-column>
-        <el-table-column label="业务场景" width="180" align="center">
+        <el-table-column
+          :label="$t('platformEngine.businessScene')"
+          width="180"
+          align="center"
+        >
           <template slot-scope="{ row }">
             <el-tag
               type="primary"
@@ -306,11 +341,15 @@
         </el-table-column>
         <el-table-column
           prop="processStrategy"
-          label="流程策略"
+          :label="$t('platformEngine.processStrategy')"
           width="180"
           align="center"
         ></el-table-column>
-        <el-table-column label="模型名称" width="240" align="center">
+        <el-table-column
+          :label="$t('platformEngine.modelName')"
+          width="240"
+          align="center"
+        >
           <template
             slot-scope="{ row }"
             v-if="row.modelNameList && row.modelNameList.length"
@@ -331,12 +370,20 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="申请时间" width="180" align="center">
+        <el-table-column
+          :label="$t('platformEngine.applicationTime')"
+          width="180"
+          align="center"
+        >
           <span slot-scope="{ row }">
             {{ formatTime(row.createTime, 'yyyy-MM-dd HH:mm:ss') }}
           </span>
         </el-table-column>
-        <el-table-column label="响应形式" width="160" align="center">
+        <el-table-column
+          :label="$t('platformEngine.responseForm')"
+          width="160"
+          align="center"
+        >
           <span slot-scope="{ row }">
             {{
               setShowValue(
@@ -348,7 +395,11 @@
             }}
           </span>
         </el-table-column>
-        <el-table-column label="状态" width="120" align="center">
+        <el-table-column
+          :label="$t('common.status')"
+          width="120"
+          align="center"
+        >
           <template slot-scope="{ row }">
             <el-tag
               v-if="row.batchStatus && isBatch"
@@ -365,21 +416,24 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="响应结果" align="center">
+        <el-table-column
+          :label="$t('platformEngine.responseResult')"
+          align="center"
+        >
           <template slot-scope="{ row }">
             <el-button
               v-if="row.batchStatus === 3 && row.responseForm === 1"
               type="text"
               @click="openBatchDetails(row)"
             >
-              详情
+              {{ $t('common.detail') }}
             </el-button>
             <el-button
               v-if="row.batchStatus === 3 && row.responseForm === 2"
               type="text"
               @click="openBatchDetails(row)"
             >
-              查看报告
+              {{ $t('platformEngine.viewReport') }}
             </el-button>
           </template>
         </el-table-column>
@@ -412,21 +466,35 @@
             style="width: 100%"
             :header-cell-style="tableHeaderColor"
           >
-            <el-table-column prop="name" label="参数名称"></el-table-column>
-            <el-table-column prop="nameZh" label="参数说明"></el-table-column>
-            <el-table-column label="参数类型" align="center">
+            <el-table-column
+              prop="name"
+              :label="$t('platformEngine.paramName')"
+            ></el-table-column>
+            <el-table-column
+              prop="nameZh"
+              :label="$t('platformEngine.paramDescription')"
+            ></el-table-column>
+            <el-table-column
+              :label="$t('platformEngine.paramType')"
+              align="center"
+            >
               <el-tag type="primary" slot-scope="{ row }">{{
                 row.typeName
               }}</el-tag>
             </el-table-column>
-            <el-table-column label="是否必填" align="center">
+            <el-table-column
+              :label="$t('platformEngine.isRequired')"
+              align="center"
+            >
               <span slot-scope="{ row }">{{
-                row.isRequired ? '是' : '否'
+                row.isRequired
+                  ? $t('platformEngine.yes')
+                  : $t('platformEngine.no')
               }}</span>
             </el-table-column>
             <el-table-column
               prop="value"
-              label="参数值"
+              :label="$t('platformEngine.paramValue')"
               align="center"
             ></el-table-column>
           </el-table>
@@ -485,21 +553,6 @@ export default {
       responseOptions: [],
       //业务场景
       businessList: [],
-      //状态选项
-      statusOptions: [
-        { label: '初始化', value: 1, type: 'default' },
-        { label: '生成中', value: 2, type: 'primary' },
-        { label: '生成成功', value: 3, type: 'success' },
-        { label: '生成失败', value: 4, type: 'danger' },
-      ],
-      batchStatusOptions: [
-        { label: '待处理', value: 1, type: 'default' },
-        { label: '处理中', value: 2, type: 'primary' },
-        { label: '全部成功', value: 3, type: 'success' },
-        { label: '部分失败', value: 4, type: 'danger' },
-        { label: '全部失败', value: 5, type: 'danger' },
-        { label: '校验失败', value: 6, type: 'danger' },
-      ],
       loadingShow: false,
       tableData: [],
       total: 0,
@@ -516,18 +569,75 @@ export default {
       currentResponse: {},
 
       isBatch: 0,
-      batchOptions: [
+    }
+  },
+  computed: {
+    statusOptions() {
+      return [
         {
-          label: '单次',
+          label: this.$t('platformEngine.initialized'),
+          value: 1,
+          type: 'default',
+        },
+        {
+          label: this.$t('platformEngine.generating'),
+          value: 2,
+          type: 'primary',
+        },
+        {
+          label: this.$t('platformEngine.generateSuccess'),
+          value: 3,
+          type: 'success',
+        },
+        {
+          label: this.$t('platformEngine.generateFailed'),
+          value: 4,
+          type: 'danger',
+        },
+      ]
+    },
+    batchStatusOptions() {
+      return [
+        { label: this.$t('platformEngine.pending'), value: 1, type: 'default' },
+        {
+          label: this.$t('platformEngine.processing'),
+          value: 2,
+          type: 'primary',
+        },
+        {
+          label: this.$t('platformEngine.allSuccess'),
+          value: 3,
+          type: 'success',
+        },
+        {
+          label: this.$t('platformEngine.partialFailed'),
+          value: 4,
+          type: 'danger',
+        },
+        {
+          label: this.$t('platformEngine.allFailed'),
+          value: 5,
+          type: 'danger',
+        },
+        {
+          label: this.$t('platformEngine.validationFailed'),
+          value: 6,
+          type: 'danger',
+        },
+      ]
+    },
+    batchOptions() {
+      return [
+        {
+          label: this.$t('platformEngine.single'),
           value: 0,
         },
-
         {
-          label: '批量',
+          label: this.$t('platformEngine.batch'),
           value: 1,
         },
-      ],
-    }
+      ]
+    },
   },
   watch: {
     isBatch: {
@@ -553,7 +663,7 @@ export default {
         case 'entryDetail':
           Object.assign(this.drawer, {
             type,
-            title: '入参详情',
+            title: this.$t('platformEngine.entryDetail'),
             size: '60%',
           })
           this.responseTableData = eval(data)
@@ -561,7 +671,7 @@ export default {
         case 'responseResult':
           Object.assign(this.drawer, {
             type,
-            title: '数据结果',
+            title: this.$t('platformEngine.dataResult'),
             size: '33%',
           })
           this.responseLoading = true

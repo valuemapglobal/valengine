@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 // import request2 from '@/utils/requestTest'
 const url =
-  process.env.VUE_APP_ENV === 'production' ? '/prod-api' : '/dev-api'
+  process.env.VUE_APP_ENV === 'production' ? '/prod-api' : '/dev-api/prod-api'
 // 获取菜单列表
 export const getMenuList = (params) => {
   return request({

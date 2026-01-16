@@ -11,27 +11,27 @@
       :model="ruleForm"
       :rules="rules"
       ref="ruleForm"
-      label-width="140px"
+      :label-width="isEnglish() ? '160px' : '140px'"
     >
-      <el-form-item label="分析指标名称" prop="name">
+      <el-form-item :label="$t('dataCenter.analysisTargetName')" prop="name">
         <el-input
           v-model="ruleForm.name"
           @change="checkHandle($event, 'name')"
-          placeholder="请输入"
+          :placeholder="$t('common.pleaseInput')"
         />
       </el-form-item>
-      <el-form-item label="参数名" prop="code">
+      <el-form-item :label="$t('dataCenter.paramName')" prop="code">
         <el-input
           v-model="ruleForm.code"
           @input="(e) => (ruleForm.code = e.replace(/\s*/g, ''))"
           @change="checkHandle($event, 'code')"
-          placeholder="请输入"
+          :placeholder="$t('common.pleaseInput')"
         />
       </el-form-item>
-      <el-form-item label="模块名称">
+      <el-form-item :label="$t('dataCenter.moduleName')">
         <el-input
           v-model="ruleForm.moduleName"
-          placeholder="固定关联上一级"
+          :placeholder="$t('dataCenter.fixedRelateUpperLevel')"
           disabled
         ></el-input>
       </el-form-item>
@@ -60,17 +60,19 @@
             </g>
           </g>
         </svg>
-        指标逻辑配置
+        {{ $t('dataCenter.indicatorLogicConfig') }}
       </div>
       <div class="group-content">
         <div style="display: flex; align-items: flex-end">
           <!--					预属性-->
           <div class="group-content-inner">
-            <div class="group-content-inner--title">预属性</div>
+            <div class="group-content-inner--title">
+              {{ $t('dataCenter.preAttribute') }}
+            </div>
             <div class="group-content-inner--content">
               <el-input
                 v-model="ruleForm.variableInput"
-                placeholder="搜索预属性"
+                :placeholder="$t('dataCenter.searchPreAttribute')"
                 class="search-input"
                 @input="preAttributeInput"
               >
@@ -110,7 +112,7 @@
                   :prop="'variable.' + key"
                   :rules="{
                     required: true,
-                    message: '请选择',
+                    message: $t('common.pleaseSelect'),
                     trigger: 'change',
                   }"
                 >
@@ -120,7 +122,7 @@
                     :options="cascadeOptions"
                     :props="cascadeProps"
                     clearable
-                    placeholder="请选择"
+                    :placeholder="$t('common.pleaseSelect')"
                   />
                 </el-form-item>
               </div>
@@ -131,7 +133,7 @@
                   plain
                   @click="addVariable"
                 >
-                  新增变量
+                  {{ $t('dataCenter.addVariable') }}
                 </el-button>
               </div>
             </div>
@@ -191,7 +193,7 @@
                 <div class="select-item">
                   <el-select
                     v-model="formulaValue.commonOperatorsValue"
-                    placeholder="常用运算符"
+                    :placeholder="$t('dataCenter.commonOperator')"
                     @change="formulaChange($event, 'CommonOperators')"
                   >
                     <el-option
@@ -205,7 +207,7 @@
                 <div class="select-item">
                   <el-select
                     v-model="formulaValue.statisticalValue"
-                    placeholder="统计函数"
+                    :placeholder="$t('dataCenter.statisticalFunction')"
                     @change="formulaChange($event, 'Statistical')"
                   >
                     <el-option
@@ -219,7 +221,7 @@
                 <div class="select-item">
                   <el-select
                     v-model="formulaValue.mathematicalValue"
-                    placeholder="数学函数"
+                    :placeholder="$t('dataCenter.mathematicalFunction')"
                     @change="formulaChange($event, 'Mathematical')"
                   >
                     <el-option
@@ -233,7 +235,7 @@
                 <div class="select-item">
                   <el-select
                     v-model="formulaValue.logicValue"
-                    placeholder="逻辑函数"
+                    :placeholder="$t('dataCenter.logicFunction')"
                     @change="formulaChange($event, 'LogicList')"
                   >
                     <el-option
@@ -264,7 +266,7 @@
             prop="formula"
             :rules="{
               required: true,
-              message: '请输入公式配置',
+              message: $t('dataCenter.pleaseInputFormulaConfig'),
               trigger: 'change',
             }"
           >
@@ -281,8 +283,10 @@
       </div>
     </el-form>
     <div class="drawer-footer">
-      <el-button type="primary" @click="onSubmit">提交</el-button>
-      <el-button @click="closeDrawer">取消</el-button>
+      <el-button type="primary" @click="onSubmit">{{
+        $t('common.submit')
+      }}</el-button>
+      <el-button @click="closeDrawer">{{ $t('common.cancel') }}</el-button>
     </div>
   </el-drawer>
 </template>
@@ -321,12 +325,7 @@ export default {
         formulaInput: '', //公式搜索值
       },
       variableFuzzy: {}, //预属性--模糊搜索的展示结果
-      rules: {
-        name: [
-          { required: true, message: '请输入分析指标名称', trigger: 'blur' },
-        ],
-        code: [{ required: true, message: '请输入参数名', trigger: 'blur' }],
-      },
+      rules: {},
       cascadeOptions: [],
       cascadeProps: {
         lazy: true, //是否动态加载子节点
@@ -578,7 +577,9 @@ export default {
             Object.assign(params, {
               code: this.ruleForm.code,
             })
-            validatorInner = '当前参数名重复'
+            validatorInner = this.$t(
+              'dataCenter.moduleUniqueIdentifierDuplicate'
+            )
             break
         }
         API(params).then((res) => {
@@ -723,11 +724,13 @@ export default {
       })
     },
     closeDrawer(done) {
-      if (this.rules.name.length >= 2) {
-        this.rules.name.splice(1, 2)
-      }
-      if (this.rules.code.length >= 2) {
-        this.rules.code.splice(1, 2)
+      if (Object.keys(this.rules).length) {
+        if (this.rules.name.length >= 2) {
+          this.rules.name.splice(1, 2)
+        }
+        if (this.rules.code.length >= 2) {
+          this.rules.code.splice(1, 2)
+        }
       }
       this.$refs.ruleForm.clearValidate()
       this.$refs.tributeEditorRef.tributeDestroy()

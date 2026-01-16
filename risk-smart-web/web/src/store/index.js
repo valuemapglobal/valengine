@@ -270,14 +270,6 @@ export default new Vuex.Store({
       const savedTheme = localStorage.getItem('theme')
       if (savedTheme) {
         commit('SET_THEME', savedTheme)
-      } else {
-        // 可选：根据系统偏好设置主题
-        const systemPrefersDark = window.matchMedia(
-          '(prefers-color-scheme: dark)'
-        ).matches
-        if (systemPrefersDark) {
-          commit('SET_THEME', 'dark')
-        }
       }
     },
   },

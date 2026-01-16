@@ -2,30 +2,30 @@
   <div class="bairongDrawer">
     <el-form
       :model="formData"
-      label-width="140px"
+      :label-width="isEnglish() ? '200px' : '140px'"
       ref="formDataRef"
       :rules="rules"
     >
       <el-row :gutter="24">
         <el-col :span="12">
           <el-form-item
-            label="appkey"
+            :label="$t('departmentManagement.appKey')"
             prop="appKey"
           >
             <el-input
               v-model="formData.appKey"
-              placeholder="请输入"
+              :placeholder="$t('common.pleaseInput')"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
-            label="令牌"
+            :label="$t('departmentManagement.token')"
             prop="apiCode"
           >
             <el-input
               v-model="formData.apiCode"
-              placeholder="请输入"
+              :placeholder="$t('common.pleaseInput')"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -33,152 +33,151 @@
       <el-row :gutter="24">
         <el-col :span="12">
           <el-form-item
-            label="手机号舆情"
+            :label="$t('departmentManagement.phoneNumberPublicOpinion')"
             prop="phoneNumberPublicOpinion"
           >
             <el-input
               v-model="formData.phoneNumberPublicOpinion"
-              placeholder="请输入"
+              :placeholder="$t('common.pleaseInput')"
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="12"> <el-form-item
-            label="自然人识别"
+        <el-col :span="12">
+          <el-form-item
+            :label="$t('departmentManagement.naturalPersonIdentification')"
             prop="naturalPersonIdentification"
           >
             <el-input
               v-model="formData.naturalPersonIdentification"
-              placeholder="请输入"
-            ></el-input>
-          </el-form-item></el-col>
+              :placeholder="$t('common.pleaseInput')"
+            ></el-input> </el-form-item
+        ></el-col>
       </el-row>
       <el-row :gutter="24">
         <el-col :span="12">
           <el-form-item
-            label="手机在网时长"
+            :label="$t('departmentManagement.telOnlineTime')"
             prop="telOnlineTime"
           >
             <el-input
               v-model="formData.telOnlineTime"
-              placeholder="请输入"
+              :placeholder="$t('common.pleaseInput')"
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="12"> <el-form-item
-            label="手机在网状态"
+        <el-col :span="12">
+          <el-form-item
+            :label="$t('departmentManagement.telOnlineStatus')"
             prop="telOnlineStatus"
           >
             <el-input
               v-model="formData.telOnlineStatus"
-              placeholder="请输入"
-            ></el-input>
-          </el-form-item></el-col>
+              :placeholder="$t('common.pleaseInput')"
+            ></el-input> </el-form-item
+        ></el-col>
       </el-row>
       <el-row :gutter="24">
         <el-col :span="12">
           <el-form-item
-            label="被执行人限高版"
+            :label="$t('departmentManagement.executionLimit')"
             prop="executionLimit"
           >
             <el-input
               v-model="formData.executionLimit"
-              placeholder="请输入"
+              :placeholder="$t('common.pleaseInput')"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
-            label="被执行人高级版"
+            :label="$t('departmentManagement.executionPro')"
             prop="executionPro"
           >
             <el-input
               v-model="formData.executionPro"
-              placeholder="请输入"
-            ></el-input>
-          </el-form-item></el-col>
+              :placeholder="$t('common.pleaseInput')"
+            ></el-input> </el-form-item
+        ></el-col>
       </el-row>
       <el-row :gutter="24">
         <el-col :span="12">
           <el-form-item
-            label="特殊名单验证"
+            :label="$t('departmentManagement.specialList')"
             prop="specialList"
           >
             <el-input
               v-model="formData.specialList"
-              placeholder="请输入"
+              :placeholder="$t('common.pleaseInput')"
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="12"> <el-form-item
-            label="借贷意向验证"
+        <el-col :span="12">
+          <el-form-item
+            :label="$t('departmentManagement.loanIntention')"
             prop="loanIntention"
           >
             <el-input
               v-model="formData.loanIntention"
-              placeholder="请输入"
-            ></el-input>
-          </el-form-item></el-col>
+              :placeholder="$t('common.pleaseInput')"
+            ></el-input> </el-form-item
+        ></el-col>
       </el-row>
       <el-row :gutter="24">
         <el-col :span="12">
           <el-form-item
-            label="偿债压力指数"
+            :label="$t('departmentManagement.debtServiceStressIndex')"
             prop="debtServiceStressIndex"
           >
             <el-input
               v-model="formData.debtServiceStressIndex"
-              placeholder="请输入"
+              :placeholder="$t('common.pleaseInput')"
             ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item
-            label="团伙欺诈排查"
+            :label="$t('departmentManagement.gangFraud')"
             prop="gangFraud"
           >
             <el-input
               v-model="formData.gangFraud"
-              placeholder="请输入"
-            ></el-input>
-          </el-form-item></el-col>
+              :placeholder="$t('common.pleaseInput')"
+            ></el-input> </el-form-item
+        ></el-col>
       </el-row>
       <el-row :gutter="24">
         <el-col :span="12">
           <el-form-item
-            label="百融数据更新时间"
+            :label="$t('departmentManagement.bairongDataUpdateTime')"
             prop="period"
           >
             <el-input
               v-model.number="formData.period"
-              placeholder="请输入"
+              :placeholder="$t('common.pleaseInput')"
             >
-              <template slot="append">天</template>
+              <template slot="append">{{
+                $t('departmentManagement.days')
+              }}</template>
             </el-input>
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <div class="bottomBtns">
-      <el-button
-        class="btn"
-        @click="submit"
-      >确 定</el-button>
-      <el-button @click="handleCloase">取 消</el-button>
+      <el-button class="btn" @click="submit">{{ $t('common.sure') }}</el-button>
+      <el-button @click="handleCloase">{{ $t('common.cancel') }}</el-button>
     </div>
   </div>
 </template>
 
 <script>
-import {
-  getBairongInfo,
-  submitBairongInfo
-} from '@/api/system/department.js'
+import { getBairongInfo, submitBairongInfo } from '@/api/system/department.js'
 export default {
   props: {
     dataInfo: {
       type: Object,
-      default: () => { }
-    }
+      default: () => {},
+    },
   },
   data() {
     return {
@@ -198,32 +197,120 @@ export default {
         gangFraud: null,
         period: null,
       },
-      rules: {
-        appKey: [{ required: true, message: '请输入appkey', trigger: 'blur' }],
-        apiCode: [{ required: true, message: '请输入令牌', trigger: 'blur' }],
-        phoneNumberPublicOpinion: [{ required: true, message: '请输入手机号舆情', trigger: 'blur' }],
-        naturalPersonIdentification: [{ required: true, message: '请输入自然人识别', trigger: 'blur' }],
-        telOnlineTime: [{ required: true, message: '请输入手机在网时长', trigger: 'blur' }],
-        telOnlineStatus: [{ required: true, message: '请输入手机在网状态', trigger: 'blur' }],
-        executionLimit: [{ required: true, message: '请输入被执行人限高版', trigger: 'blur' }],
-        executionPro: [{ required: true, message: '请输入被执行人高级版', trigger: 'blur' }],
-        specialList: [{ required: true, message: '请输入特殊名单验证', trigger: 'blur' }],
-        loanIntention: [{ required: true, message: '请输入借贷意向验证', trigger: 'blur' }],
-        debtServiceStressIndex: [{ required: true, message: '请输入偿债压力指数', trigger: 'blur' }],
-        gangFraud: [{ required: true, message: '请输入团伙欺诈排查', trigger: 'blur' }],
+      deptId: null,
+    }
+  },
+  computed: {
+    rules() {
+      return {
+        appKey: [
+          {
+            required: true,
+            message: this.$t('departmentManagement.inputAppKey'),
+            trigger: 'blur',
+          },
+        ],
+        apiCode: [
+          {
+            required: true,
+            message: this.$t('departmentManagement.inputToken'),
+            trigger: 'blur',
+          },
+        ],
+        phoneNumberPublicOpinion: [
+          {
+            required: true,
+            message: this.$t(
+              'departmentManagement.inputPhoneNumberPublicOpinion'
+            ),
+            trigger: 'blur',
+          },
+        ],
+        naturalPersonIdentification: [
+          {
+            required: true,
+            message: this.$t(
+              'departmentManagement.inputNaturalPersonIdentification'
+            ),
+            trigger: 'blur',
+          },
+        ],
+        telOnlineTime: [
+          {
+            required: true,
+            message: this.$t('departmentManagement.inputTelOnlineTime'),
+            trigger: 'blur',
+          },
+        ],
+        telOnlineStatus: [
+          {
+            required: true,
+            message: this.$t('departmentManagement.inputTelOnlineStatus'),
+            trigger: 'blur',
+          },
+        ],
+        executionLimit: [
+          {
+            required: true,
+            message: this.$t('departmentManagement.inputExecutionLimit'),
+            trigger: 'blur',
+          },
+        ],
+        executionPro: [
+          {
+            required: true,
+            message: this.$t('departmentManagement.inputExecutionPro'),
+            trigger: 'blur',
+          },
+        ],
+        specialList: [
+          {
+            required: true,
+            message: this.$t('departmentManagement.inputSpecialList'),
+            trigger: 'blur',
+          },
+        ],
+        loanIntention: [
+          {
+            required: true,
+            message: this.$t('departmentManagement.inputLoanIntention'),
+            trigger: 'blur',
+          },
+        ],
+        debtServiceStressIndex: [
+          {
+            required: true,
+            message: this.$t(
+              'departmentManagement.inputDebtServiceStressIndex'
+            ),
+            trigger: 'blur',
+          },
+        ],
+        gangFraud: [
+          {
+            required: true,
+            message: this.$t('departmentManagement.inputGangFraud'),
+            trigger: 'blur',
+          },
+        ],
         period: [
-          { required: true, message: '请输入百融数据更新时间', trigger: 'blur' },
+          {
+            required: true,
+            message: this.$t('departmentManagement.inputBairongDataUpdateTime'),
+            trigger: 'blur',
+          },
           {
             validator: (rule, value, callback) => {
               let checkNumber = /^\d+$/
-              if (!checkNumber.test(value)) callback('请输入正整数')
+              if (!checkNumber.test(value))
+                callback(this.$t('departmentManagement.inputPositiveInteger'))
               callback()
-            }, trigger: 'blur'
+            },
+            trigger: 'blur',
           },
         ],
-      },
-      deptId: null
-    }
+      }
+    },
   },
   watch: {
     dataInfo: {
@@ -232,45 +319,48 @@ export default {
           this.deptId = val.deptId
           this.getDataInfo()
         }
-      }, deep: true, immediate: true
-    }
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   methods: {
     getDataInfo() {
-      getBairongInfo({ deptId: this.deptId }).then((res) => {
-        if (res.code == 200 && res.hasOwnProperty('data')) {
-          let data = res.data
-          for (let key in this.formData) {
-            if (data[key] != null) this.formData[key] = data[key]
+      getBairongInfo({ deptId: this.deptId })
+        .then((res) => {
+          if (res.code == 200 && res.hasOwnProperty('data')) {
+            let data = res.data
+            for (let key in this.formData) {
+              if (data[key] != null) this.formData[key] = data[key]
+            }
           }
-        }
-      }).catch((err) => { });
+        })
+        .catch((err) => {})
     },
     submit() {
       this.$refs.formDataRef.validate((valid) => {
         if (valid) {
-          submitBairongInfo({ deptId: this.deptId, ...this.formData }).then((res) => {
-            if (res.code == 200) {
-              this.$message.success('操作成功')
-              this.handleCloase()
-            }
-          }).catch((err) => {
-
-          });
+          submitBairongInfo({ deptId: this.deptId, ...this.formData })
+            .then((res) => {
+              if (res.code == 200) {
+                this.$message.success(this.$t('common.success'))
+                this.handleCloase()
+              }
+            })
+            .catch((err) => {})
         }
       })
-
     },
     handleCloase() {
       this.formData = this.$options.data().formData
       this.deptId = null
       this.$emit('close')
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style lang='less' scoped>
+<style lang="less" scoped>
 .bairongDrawer {
   padding: 0px 20px 20px;
 

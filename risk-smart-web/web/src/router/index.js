@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import authority from '@/authority/index'
 import store from '@/store'
 import { configRoutes } from './config'
+import i18n from '@/i18n'
 
 Vue.use(VueRouter)
 const routes = [
@@ -50,10 +51,6 @@ const router = new VueRouter({
   routes,
 })
 
-// 使用 sessionStorage 来跟踪权限加载状态，避免热更新问题
-// 但页面刷新后Vuex store会被清空，需要重新加载权限
-// 因此在每次页面初始化时，清除permissionsLoaded标记
-sessionStorage.removeItem('permissionsLoaded')
 let status = true
 let path = []
 let whiteList = [
@@ -82,9 +79,8 @@ router.beforeEach(async (to, from, next) => {
     return
   }
   // 退出登录后，重新登录时需要重新拉取当前登录人的路由信息
-  if (loyout) {
+  if (loyout && !status) {
     localStorage.removeItem('loyout')
-    sessionStorage.removeItem('permissionsLoaded')
     status = true
   }
 
@@ -93,16 +89,11 @@ router.beforeEach(async (to, from, next) => {
   // let routerList = []
   // 取消路由权限配置方案
   // 如果不在login页并且token存在切是第一次进入则去请求路由权限
-  console.log('[路由守卫] status:', status, 'path:', path, 'id_token:', !!id_token)
   if (status && !path.includes('login') && id_token) {
-    console.log('[路由守卫] 开始加载权限...')
     let res = await authority()
-    console.log('[路由守卫] authority返回:', res)
-    console.log('[路由守卫] res[1]:', res[1])
     store.commit('setButtonList', res[1])
     // 处理路由权限为自己可用状态
     status = false
-    sessionStorage.setItem('permissionsLoaded', 'true')
     // 判断是否有路径没有默认正常跳转
     if (tos.length) {
       next({ ...to, replace: true })
@@ -111,6 +102,17 @@ router.beforeEach(async (to, from, next) => {
     }
   } else {
     next()
+  }
+})
+
+// 路由后置守卫：设置页面标题（国际化）
+router.afterEach((to) => {
+  if (to.meta && to.meta.title && to.name) {
+    if (i18n.te(`route.${to.name}`)) {
+      document.title = i18n.t(`route.${to.name}`)
+    } else {
+      document.title = to.meta.title
+    }
   }
 })
 export default router

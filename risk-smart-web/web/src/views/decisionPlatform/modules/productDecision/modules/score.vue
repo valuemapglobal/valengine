@@ -9,7 +9,7 @@
           class="card"
           :key="cardIndex"
           :class="{ marginLeft: cardIndex != (cardList.length && 0) }"
-          element-loading-text="数据加载中"
+          :element-loading-text="$t('decisionPlatform.dataLoading')"
           v-loading="
             mine[cardItem.dataSources]
               ? mine[cardItem.dataSources].loading
@@ -21,7 +21,7 @@
               class="title"
               :style="cardItem.dataSources === 'scoreCard' ? 'flex: 1;' : ''"
             >
-              {{ cardItem.cardTitle }}
+              {{ $t(cardItem.cardTitleKey) }}
               <div
                 class="search-button"
                 v-if="cardItem.dataSources === 'scoreCard'"
@@ -31,7 +31,7 @@
                   ref="searchInputRef"
                   v-model="cardItem.filterParams.scoreCard"
                   clearable
-                  placeholder="请输入"
+                  :placeholder="$t('decisionPlatform.inputPlaceholder')"
                   @clear="onsearch($event, cardIndex)"
                   @keyup.enter.native="onsearch($event, cardIndex)"
                   @focus="onFocus(cardItem.filterParams, cardIndex)"
@@ -42,7 +42,10 @@
                     class="search-button-icon"
                     @click="$refs.searchInputRef[cardIndex].focus()"
                   >
-                    <img src="../../../images/search.svg" alt="搜索" />
+                    <img
+                      src="../../../images/search.svg"
+                      :alt="$t('decisionPlatform.search')"
+                    />
                   </div>
                 </el-input>
               </div>
@@ -53,7 +56,7 @@
                 v-if="cardIndex != 1 && cardIndex == levelIndex"
                 @click="handleDelLevel"
               >
-                <span>删除</span>
+                <span>{{ $t('decisionPlatform.delete') }}</span>
               </div>
               <div
                 ref="copyButtonRef"
@@ -66,10 +69,19 @@
                 @click.stop="openDrawer('reuse', cardItem)"
               >
                 <div class="operateBtn" v-if="!cardItem.isFocus">
-                  <img src="../../../images/copy-green.png" alt="复用" />
-                  <span ref="copyButtonTextRef">复用</span>
+                  <img
+                    src="../../../images/copy-green.png"
+                    :alt="$t('decisionPlatform.reuse')"
+                  />
+                  <span ref="copyButtonTextRef">{{
+                    $t('decisionPlatform.reuse')
+                  }}</span>
                 </div>
-                <img v-else src="../../../images/copy-green.png" alt="复用" />
+                <img
+                  v-else
+                  src="../../../images/copy-green.png"
+                  :alt="$t('decisionPlatform.reuse')"
+                />
               </div>
               <div
                 ref="addButtonRef"
@@ -78,10 +90,19 @@
                 @click="openDrawer(cardItem.dataSources, null, cardIndex)"
               >
                 <div class="operateBtn" v-if="!cardItem.isFocus">
-                  <img src="@/assets/images/dataRisk/add.png" alt="新增" />
-                  <span ref="addButtonTextRef">新增</span>
+                  <img
+                    src="@/assets/images/dataRisk/add.png"
+                    :alt="$t('decisionPlatform.add')"
+                  />
+                  <span ref="addButtonTextRef">{{
+                    $t('decisionPlatform.add')
+                  }}</span>
                 </div>
-                <img v-else src="@/assets/images/dataRisk/add.png" alt="新增" />
+                <img
+                  v-else
+                  src="@/assets/images/dataRisk/add.png"
+                  :alt="$t('decisionPlatform.add')"
+                />
               </div>
             </div>
           </div>
@@ -147,7 +168,11 @@
                         <el-tag
                           :type="item.deptFlag == 1 ? 'primary' : 'warning'"
                         >
-                          {{ item.deptFlag == 1 ? '默认' : '自建' }}
+                          {{
+                            item.deptFlag == 1
+                              ? $t('decisionPlatform.default')
+                              : $t('decisionPlatform.selfBuilt')
+                          }}
                         </el-tag>
                       </div>
                       <span
@@ -156,15 +181,17 @@
                           cardIndex != 0 && cardIndex != cardList.length - 1
                         "
                       >
-                        权重：
+                        {{ $t('decisionPlatform.weight') }}：
                         <el-tooltip
                           class="item"
                           effect="light"
                           :content="
                             mine[cardItem.dataSources].dataList.length ===
                               index + 1 || item.weight == 100
-                              ? '你可以通过设置其他指标的权重更改此权重'
-                              : '权重'
+                              ? $t(
+                                  'decisionPlatform.youCanChangeWeightBySettingOtherIndicators'
+                                )
+                              : $t('decisionPlatform.weight')
                           "
                           placement="top"
                         >
@@ -193,10 +220,14 @@
                         class="weight"
                         v-if="cardIndex == cardList.length - 1"
                       >
-                        评分：{{ item.score || '-' }}
+                        {{ $t('decisionPlatform.score') }}：{{
+                          item.score || '-'
+                        }}
                       </span>
                       <div :class="cardIndex == 0 ? 'descr' : 'weight'">
-                        描述：{{ item.description || '-' }}
+                        {{ $t('decisionPlatform.description') }}：{{
+                          item.description || '-'
+                        }}
                       </div>
                       <div class="version-box" v-show="cardIndex === 0">
                         <el-tooltip
@@ -208,7 +239,8 @@
                           placement="top"
                         >
                           <div>
-                            当前版本：{{
+                            {{ $t('decisionPlatform.currentVersion')
+                            }}{{
                               item.versionObj ? item.versionObj.newVersion : ''
                             }}
                           </div>
@@ -222,7 +254,8 @@
                           placement="top"
                         >
                           <div style="white-space: nowrap">
-                            正在使用版本：{{
+                            {{ $t('decisionPlatform.usingVersion')
+                            }}{{
                               item.versionObj ? item.versionObj.userVersion : ''
                             }}
                           </div>
@@ -249,7 +282,7 @@
                           src="@/assets/images/dataRisk/champion-icon.png"
                           class="champion-icon"
                         />
-                        A/B测试冠军
+                        {{ $t('decisionPlatform.abTestChampion') }}
                       </div>
                     </div>
                     <div class="operate">
@@ -285,7 +318,9 @@
                             class="operate_img"
                             src="@/assets/images/dataRisk/edit.png"
                           />
-                          <span class="operate_span_edit">编辑</span>
+                          <span class="operate_span_edit">{{
+                            $t('decisionPlatform.edit')
+                          }}</span>
                         </button>
                         <button
                           class="delete"
@@ -308,7 +343,9 @@
                             class="operate_img"
                             src="@/assets/images/dataRisk/del.png"
                           />
-                          <span class="operate_span_del">删除</span>
+                          <span class="operate_span_del">{{
+                            $t('decisionPlatform.delete')
+                          }}</span>
                         </button>
                       </div>
                       <button
@@ -325,7 +362,7 @@
                           class="icon"
                           src="@/assets/images/dataRisk/add.png"
                         />
-                        新增评分层级
+                        {{ $t('decisionPlatform.addScoreLevel') }}
                       </button>
                       <div @click.stop class="switch">
                         <div
@@ -338,7 +375,7 @@
                           "
                           @click.stop="openDrawer('testModel', item)"
                         >
-                          测试
+                          {{ $t('decisionPlatform.test') }}
                         </div>
                         <div
                           style="
@@ -357,8 +394,8 @@
                             v-model="item.buttonState"
                             active-color="#D6D3D3"
                             inactive-color="var(--primary-color)"
-                            active-text="禁用"
-                            inactive-text="使用"
+                            :active-text="$t('decisionPlatform.disabled')"
+                            :inactive-text="$t('decisionPlatform.enabled')"
                             :active-value="0"
                             :inactive-value="1"
                             @change="
@@ -432,12 +469,14 @@
       @reserved="reserved"
       :disabled="disabledVersion"
       @cancel="closeDialog"
-      updateText="确定并更新版本"
-      reservedText="确定并保留版本"
+      :updateText="$t('decisionPlatform.confirmAndUpdateVersion')"
+      :reservedText="$t('decisionPlatform.confirmAndReserveVersion')"
     >
       <div>
         <div>{{ dataText }}</div>
-        <div>您可以同时选择是否更新版本?</div>
+        <div>
+          {{ $t('decisionPlatform.youCanChooseToUpdateVersionQuestion') }}
+        </div>
       </div>
     </confirmDialog>
     <testABDrawer
@@ -505,7 +544,7 @@ export default {
       dataText: '',
       cardList: [
         {
-          cardTitle: '评分卡',
+          cardTitleKey: 'decisionPlatform.scoreCard',
           dataSources: 'scoreCard',
           loadingMore: false, //正在获取更多内容……
           noMore: false, //没有更多了
@@ -517,7 +556,7 @@ export default {
           isFocus: false, //搜索框是否获取焦点
         },
         {
-          cardTitle: '一级指标',
+          cardTitleKey: 'decisionPlatform.firstLevelIndicator',
           dataSources: 'firstIndicators',
           loadingMore: false, //正在获取更多内容……
           noMore: false, //没有更多了
@@ -528,7 +567,7 @@ export default {
           isFocus: false, //搜索框是否获取焦点
         },
         {
-          cardTitle: '指标规则',
+          cardTitleKey: 'decisionPlatform.indicatorRule',
           dataSources: 'indicatorRules',
           hasDraggable: true,
           loadingMore: false, //正在获取更多内容……
@@ -645,14 +684,38 @@ export default {
       lastParentCardId: null,
       scordPrimaryIds: [],
       levelMap: new Map([
-        [1, { title: '一级指标', dataSources: 'firstIndicators' }],
-        [2, { title: '二级指标', dataSources: 'secondIndicators' }],
-        [3, { title: '三级指标', dataSources: 'thirdIndicators' }],
-        [4, { title: '四级指标', dataSources: 'fourthIndicators' }],
+        [
+          1,
+          {
+            titleKey: 'decisionPlatform.firstLevelIndicator',
+            dataSources: 'firstIndicators',
+          },
+        ],
+        [
+          2,
+          {
+            titleKey: 'decisionPlatform.secondLevelIndicator',
+            dataSources: 'secondIndicators',
+          },
+        ],
+        [
+          3,
+          {
+            titleKey: 'decisionPlatform.thirdLevelIndicator',
+            dataSources: 'thirdIndicators',
+          },
+        ],
+        [
+          4,
+          {
+            titleKey: 'decisionPlatform.fourthLevelIndicator',
+            dataSources: 'fourthIndicators',
+          },
+        ],
       ]),
       levelIndex: 1, //当前选中数据有多少级指标
       addLevel: {
-        cardTitle: null,
+        cardTitleKey: null,
         dataSources: null,
         type: 'add',
       },
@@ -780,7 +843,7 @@ export default {
             if (res2.code == 200) {
               this.$refs.confirmDialog.visible = false
               this.disabledVersion = false
-              this.$message.success('发布成功，版本同步需等待10s-20s后完成！')
+              this.$message.success(this.$t('decisionPlatform.releaseSuccess'))
               this.getFirstList(true)
             }
           })
@@ -801,7 +864,7 @@ export default {
           if (res2.code == 200) {
             this.$refs.confirmDialog.visible = false
             this.disabledVersion = false
-            this.$message.success('发布成功，版本同步需等待10s-20s后完成！')
+            this.$message.success(this.$t('decisionPlatform.releaseSuccess'))
             this.getFirstList(true)
           }
         })
@@ -986,7 +1049,7 @@ export default {
       setRuleSort(list)
         .then((res) => {
           if (res.code == 200) {
-            this.$message.success('操作成功')
+            this.$message.success(this.$t('decisionPlatform.operationSuccess'))
             this.noDraggable = false
             dataSources.loading = false
           }
@@ -1043,7 +1106,9 @@ export default {
       // this.drawer.size = '30%'
       switch (sources) {
         case 'scoreCard':
-          this.drawer.title = `${type ? '新增' : '编辑'}评分卡`
+          this.drawer.title = type
+            ? this.$t('decisionPlatform.addScoreCard')
+            : this.$t('decisionPlatform.editScoreCard')
           this.scoreFrom = {
             ...data,
             scordCardId: this.scoreCard.activeId,
@@ -1055,9 +1120,15 @@ export default {
         case 'thirdIndicators':
         case 'fourthIndicators':
           this.drawer.type = 'indicatorsAdd'
-          this.drawer.title = `${type ? '新增' : '编辑'}${this.numberChange(
-            index
-          )}级指标`
+          const levelTitleKey = this.levelMap.get(index).titleKey
+          const levelTitle = this.$t(levelTitleKey)
+          this.drawer.title = type
+            ? this.$t('decisionPlatform.addLevelIndicator', {
+                level: levelTitle,
+              })
+            : this.$t('decisionPlatform.editLevelIndicator', {
+                level: levelTitle,
+              })
           if (index > 1)
             dataSources = this[this.levelMap.get(index - 1).dataSources]
           params = {
@@ -1096,8 +1167,12 @@ export default {
           this.drawer.size = '60%'
           this.drawer.title =
             data && data.default
-              ? '编辑默认指标规则'
-              : `${type ? '新增' : '编辑'}规则`
+              ? this.$t('decisionPlatform.editDefaultIndicatorRule')
+              : type
+              ? this.$t('decisionPlatform.add') +
+                this.$t('decisionPlatform.rule')
+              : this.$t('decisionPlatform.edit') +
+                this.$t('decisionPlatform.rule')
           if (index > 1)
             dataSources = this[this.levelMap.get(index - 1).dataSources]
           this.scoreFrom = {
@@ -1111,7 +1186,9 @@ export default {
           break
         case 'testModel':
           if (!data.buttonState) {
-            return this.$message.warning('请先将模型进行启用')
+            return this.$message.warning(
+              this.$t('decisionPlatform.pleaseEnableModelFirst')
+            )
           }
           this.drawer.title = data.name
           this.drawer.type = 'testModel'
@@ -1128,7 +1205,7 @@ export default {
           }
           break
         case 'reuse':
-          this.drawer.title = '标准评分卡复用'
+          this.drawer.title = this.$t('decisionPlatform.standardScoreCardReuse')
           this.drawer.type = 'reuse'
           this.drawer.size = 'auto'
           this.reuseParams = {
@@ -1149,11 +1226,17 @@ export default {
       }
     },
     delScoreCard(data) {
-      this.$confirm(`是否删除评分卡【${data.scoreCard}】?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm(
+        this.$t('decisionPlatform.deleteScoreCardConfirm', {
+          name: data.scoreCard,
+        }),
+        this.$t('decisionPlatform.tip'),
+        {
+          confirmButtonText: this.$t('decisionPlatform.confirm'),
+          cancelButtonText: this.$t('decisionPlatform.cancel'),
+          type: 'warning',
+        }
+      )
         .then((res) => {
           const API =
             !isStandardDept() && data.deptFlag == 1
@@ -1179,7 +1262,9 @@ export default {
                 this.$message.warning(res.msg)
                 return
               }
-              this.$message.success('操作成功')
+              this.$message.success(
+                this.$t('decisionPlatform.operationSuccess')
+              )
               this.getFirstList(true)
             })
             .catch((err) => {})
@@ -1191,11 +1276,17 @@ export default {
        this.dataInfo.type = 1
        this.dataText = `是否删除指标卡【${data.primaryIndex}】?`
        this.$refs.confirmDialog.visible = true*/
-      this.$confirm(`是否删除指标卡【${data.primaryIndex}】?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm(
+        this.$t('decisionPlatform.deleteIndicatorCardConfirm', {
+          name: data.primaryIndex,
+        }),
+        this.$t('decisionPlatform.tip'),
+        {
+          confirmButtonText: this.$t('decisionPlatform.confirm'),
+          cancelButtonText: this.$t('decisionPlatform.cancel'),
+          type: 'warning',
+        }
+      )
         .then((res) => {
           deleteIndicators({
             ...this.decision,
@@ -1204,7 +1295,9 @@ export default {
             versionControl: this.getVersionControl,
           })
             .then((res) => {
-              this.$message.success('操作成功')
+              this.$message.success(
+                this.$t('decisionPlatform.operationSuccess')
+              )
               this.getIndicatorsLevelData(true)
             })
             .catch((err) => {})
@@ -1216,11 +1309,15 @@ export default {
        this.dataInfo.type = 3
        this.dataText = `是否删除规则【${data.indexRule}】?`
        this.$refs.confirmDialog.visible = true*/
-      this.$confirm(`是否删除规则【${data.indexRule}】?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm(
+        this.$t('decisionPlatform.deleteRuleConfirm', { code: data.indexRule }),
+        this.$t('decisionPlatform.tip'),
+        {
+          confirmButtonText: this.$t('decisionPlatform.confirm'),
+          cancelButtonText: this.$t('decisionPlatform.cancel'),
+          type: 'warning',
+        }
+      )
         .then((res) => {
           deleteRules({
             ...this.decision,
@@ -1229,7 +1326,9 @@ export default {
             versionControl: this.getVersionControl,
           })
             .then((res) => {
-              this.$message.success('操作成功')
+              this.$message.success(
+                this.$t('decisionPlatform.operationSuccess')
+              )
               this.getIndicatorsLevelData(true)
             })
             .catch((err) => {})
@@ -1237,12 +1336,19 @@ export default {
         .catch((err) => {})
     },
     handleScoreSwitch(data) {
+      const action =
+        data.buttonState == 1
+          ? this.$t('decisionPlatform.enable')
+          : this.$t('decisionPlatform.close')
       this.$confirm(
-        `是否${data.buttonState == 1 ? '启用' : '关闭'}策略 【${data.name}】?`,
-        '提示',
+        this.$t('decisionPlatform.enableOrDisableStrategy', {
+          action: action,
+          name: data.name,
+        }),
+        this.$t('decisionPlatform.tip'),
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+          confirmButtonText: this.$t('decisionPlatform.confirm'),
+          cancelButtonText: this.$t('decisionPlatform.cancel'),
           type: 'warning',
         }
       )
@@ -1259,7 +1365,9 @@ export default {
           updateScoreStatus(params)
             .then((res) => {
               if (res.code == 200) {
-                this.$message.success('操作成功')
+                this.$message.success(
+                  this.$t('decisionPlatform.operationSuccess')
+                )
                 this.getFirstList(true)
               }
             })
@@ -1278,14 +1386,19 @@ export default {
        this.dataInfo.type = 2
        this.dataText = `是否${data.buttonState == 1 ? '启用' : '关闭'}指标 【${data.primaryIndex}】?`
        this.$refs.confirmDialog.visible = true*/
+      const action =
+        data.buttonState == 1
+          ? this.$t('decisionPlatform.enable')
+          : this.$t('decisionPlatform.close')
       this.$confirm(
-        `是否${data.buttonState == 1 ? '启用' : '关闭'}指标 【${
-          data.primaryIndex
-        }】?`,
-        '提示',
+        this.$t('decisionPlatform.enableOrDisableIndicator', {
+          action: action,
+          name: data.primaryIndex,
+        }),
+        this.$t('decisionPlatform.tip'),
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+          confirmButtonText: this.$t('decisionPlatform.confirm'),
+          cancelButtonText: this.$t('decisionPlatform.cancel'),
           type: 'warning',
         }
       )
@@ -1298,7 +1411,9 @@ export default {
           })
             .then((res) => {
               if (res.code == 200) {
-                this.$message.success('操作成功')
+                this.$message.success(
+                  this.$t('decisionPlatform.operationSuccess')
+                )
                 this.getFirstList(true)
               }
             })
@@ -1317,14 +1432,19 @@ export default {
        this.dataInfo.type = 4
        this.dataText = `是否${data.buttonState == 1 ? '启用' : '关闭'}规则 【${data.indexRule}】?`
        this.$refs.confirmDialog.visible = true*/
+      const action =
+        data.buttonState == 1
+          ? this.$t('decisionPlatform.enable')
+          : this.$t('decisionPlatform.close')
       this.$confirm(
-        `是否${data.buttonState == 1 ? '启用' : '关闭'}规则 【${
-          data.indexRule
-        }】?`,
-        '提示',
+        this.$t('decisionPlatform.enableOrDisableRule', {
+          action: action,
+          name: data.indexRule,
+        }),
+        this.$t('decisionPlatform.tip'),
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+          confirmButtonText: this.$t('decisionPlatform.confirm'),
+          cancelButtonText: this.$t('decisionPlatform.cancel'),
           type: 'warning',
         }
       )
@@ -1337,7 +1457,9 @@ export default {
           })
             .then((res) => {
               if (res.code == 200) {
-                this.$message.success('操作成功')
+                this.$message.success(
+                  this.$t('decisionPlatform.operationSuccess')
+                )
                 this.getFirstList(true)
               }
             })
@@ -1356,7 +1478,7 @@ export default {
         this.levelIndex++
         let levelInfo = this.levelMap.get(this.levelIndex)
         let level = JSON.parse(JSON.stringify(this.addLevel))
-        level.cardTitle = levelInfo.title
+        level.cardTitleKey = levelInfo.titleKey
         level.dataSources = levelInfo.dataSources
         this.cardList.splice(this.levelIndex, 0, level)
       }
@@ -1365,12 +1487,15 @@ export default {
       /*this.dataInfo.type = 5
        this.dataText = `是否删除当前【${this.numberChange(this.levelIndex)}级指标卡】?`
        this.$refs.confirmDialog.visible = true*/
+      const levelTitle = this.$t(this.levelMap.get(this.levelIndex).titleKey)
       this.$confirm(
-        `是否删除当前【${this.numberChange(this.levelIndex)}级指标卡】?`,
-        '提示',
+        this.$t('decisionPlatform.deleteCurrentLevelIndicatorCardConfirm', {
+          level: levelTitle,
+        }),
+        this.$t('decisionPlatform.tip'),
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+          confirmButtonText: this.$t('decisionPlatform.confirm'),
+          cancelButtonText: this.$t('decisionPlatform.cancel'),
           type: 'warning',
         }
       )
@@ -1382,7 +1507,9 @@ export default {
           })
             .then((res) => {
               if (res.code == 200) {
-                this.$message.success('操作成功')
+                this.$message.success(
+                  this.$t('decisionPlatform.operationSuccess')
+                )
                 this.getFirstList(true)
                 // this.getIndicators(this.scoreCard.activeId, data.activeId, this.levelIndex)
                 // this.cardList.splice(this.levelIndex, 1)
@@ -1406,7 +1533,7 @@ export default {
         })
           .then((res) => {
             if (res.code == 200) {
-              this.$message.success('发布成功，版本同步需等待10s-20s后完成！')
+              this.$message.success(this.$t('decisionPlatform.releaseSuccess'))
               this.getFirstList(true)
               versionControlFraud(this.getqueryData()).then((res2) => {})
             }
@@ -1414,7 +1541,7 @@ export default {
           .catch((err) => {})
       } else {
         // 非标准部门——触发更改版本的弹窗进行去除,点击发布的时候弹出是否更新版本弹窗
-        this.dataText = `是否确认发布？`
+        this.dataText = this.$t('decisionPlatform.confirmRelease')
         this.$refs.confirmDialog.visible = true
       }
     },
@@ -1518,7 +1645,9 @@ export default {
         Number(e) >
         Number(maxPercentage - totalPercentage + list[list.length - 1].weight)
       ) {
-        return this.$message.error('总权重不得超过100%')
+        return this.$message.error(
+          this.$t('decisionPlatform.totalWeightCannotExceed')
+        )
       }
       this.mine[type].loading = true
       this.$refs[`${type}Input${index}`][0].blur()
@@ -2065,7 +2194,7 @@ export default {
               display: flex;
 
               > button {
-                width: 68px;
+                min-width: 70px;
                 height: 32px;
                 display: flex;
                 justify-content: center;
@@ -2130,7 +2259,7 @@ export default {
               font-size: 14px;
               border-radius: 6px;
               box-sizing: border-box;
-              padding: 5px 10px;
+              padding: 5px;
 
               .icon {
                 width: 20px;

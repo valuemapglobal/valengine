@@ -6,14 +6,16 @@
       <div class="transfer-box transfer-left">
         <div class="transfer-box-search">
           <el-input
-            placeholder="请输入code或详情"
+            :placeholder="$t('decisionPlatform.inputCodeOrDetail')"
             v-model="selfBuilt.params.name"
             clearable
             @clear="onSearch"
           >
             <img slot="suffix" src="../../../images/search.png" alt="" />
           </el-input>
-          <el-button type="primary" @click="onSearch">查询</el-button>
+          <el-button type="primary" @click="onSearch">{{
+            $t('decisionPlatform.search')
+          }}</el-button>
         </div>
         <div class="transfer-box-checkbox">
           <el-checkbox
@@ -22,7 +24,7 @@
             v-model="selfBuilt.checkAll"
             @change="handleCheckAllChange"
           >
-            自建策略列表
+            {{ $t('decisionPlatform.selfBuiltStrategyList') }}
           </el-checkbox>
           <el-checkbox-group
             v-model="selfBuilt.checked"
@@ -49,14 +51,20 @@
                       <el-tag
                         :type="selfItem.deptFlag == 1 ? 'primary' : 'warning'"
                       >
-                        {{ selfItem.deptFlag == 1 ? '默认' : '自建' }}
+                        {{
+                          selfItem.deptFlag == 1
+                            ? $t('decisionPlatform.default')
+                            : $t('decisionPlatform.selfBuilt')
+                        }}
                       </el-tag>
                     </div>
                     <div class="card-item-inner_description">
-                      描述：{{ selfItem.descr }}
+                      {{ $t('decisionPlatform.description')
+                      }}{{ selfItem.descr }}
                     </div>
                     <div class="card-item-inner_description">
-                      版本：{{ selfItem.versionControl || '-' }}
+                      {{ $t('decisionPlatform.version')
+                      }}{{ selfItem.versionControl || '-' }}
                     </div>
                   </div>
                   <el-button
@@ -64,7 +72,7 @@
                     type="text"
                     @click.stop="openDetail(selfItem)"
                   >
-                    查看详情
+                    {{ $t('decisionPlatform.viewDetail') }}
                   </el-button>
                 </div>
               </el-checkbox>
@@ -92,22 +100,22 @@
       <div class="transfer-box transfer-right">
         <div class="transfer-box-search">
           <el-input
-            placeholder="请输入code或详情"
+            :placeholder="$t('decisionPlatform.inputCodeOrDetail')"
             v-model="standardBuilt.params.name"
             clearable
             @clear="onSearch('standard')"
           >
             <img slot="suffix" src="../../../images/search.png" alt="" />
           </el-input>
-          <el-button type="primary" @click="onSearch('standard')"
-            >查询</el-button
-          >
+          <el-button type="primary" @click="onSearch('standard')">{{
+            $t('decisionPlatform.search')
+          }}</el-button>
         </div>
         <div class="transfer-box-search">
           <el-select
             v-model="standardBuilt.params.projectCode"
             clearable
-            placeholder="请选择产品列表"
+            :placeholder="$t('decisionPlatform.selectProductList')"
             @change="onSearch('standard')"
           >
             <el-option
@@ -121,7 +129,7 @@
           <el-select
             v-model="standardBuilt.params.businessCode"
             clearable
-            placeholder="请选择业务场景"
+            :placeholder="$t('decisionPlatform.selectBusinessScene')"
             @change="onSearch('standard')"
           >
             <el-option
@@ -141,7 +149,7 @@
             v-model="standardBuilt.checkAll"
             @change="handleCheckAllChange($event, 'standard')"
           >
-            标准策略列表
+            {{ $t('decisionPlatform.standardStrategyList') }}
           </el-checkbox>
           <el-checkbox-group
             v-model="standardBuilt.checked"
@@ -170,7 +178,11 @@
                           standardItem.deptFlag == 1 ? 'primary' : 'warning'
                         "
                       >
-                        {{ standardItem.deptFlag == 1 ? '默认' : '自建' }}
+                        {{
+                          standardItem.deptFlag == 1
+                            ? $t('decisionPlatform.default')
+                            : $t('decisionPlatform.selfBuilt')
+                        }}
                       </el-tag>
                       <i
                         v-if="standardItem.deptFlag == 1"
@@ -179,10 +191,12 @@
                       ></i>
                     </div>
                     <div class="card-item-inner_description">
-                      描述：{{ standardItem.descr }}
+                      {{ $t('decisionPlatform.description')
+                      }}{{ standardItem.descr }}
                     </div>
                     <div class="card-item-inner_description">
-                      版本：{{ standardItem.versionControl || '-' }}
+                      {{ $t('decisionPlatform.version')
+                      }}{{ standardItem.versionControl || '-' }}
                     </div>
                   </div>
                   <!-- <el-button
@@ -204,7 +218,7 @@
         type="success"
         :loading="reuseButtonLoading"
         @click="reuseHandle"
-        >复用</el-button
+        >{{ $t('decisionPlatform.reuse') }}</el-button
       >
     </div>
     <RuleTypeReuseDetail ref="ruleTypeReuseDetailRef" />
@@ -621,7 +635,7 @@ export default {
         ruleRecordData: this.formatList(ruleRecordData),
       }).then((res) => {
         this.reuseButtonLoading = false
-        this.$message.success('操作成功')
+        this.$message.success(this.$t('decisionPlatform.operationSuccess'))
         this.$emit('success', 0)
       })
     },
@@ -747,7 +761,7 @@ export default {
         }
 
         .el-input {
-          width: 178px;
+          width: 210px;
 
           .el-select__caret {
             font-weight: 600;

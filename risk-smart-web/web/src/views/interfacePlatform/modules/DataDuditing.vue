@@ -5,7 +5,7 @@
         <div class="input-warp">
           <el-input
             v-model="query.sourceName"
-            placeholder="请输入"
+            :placeholder="$t('common.pleaseInput')"
             suffix-icon="el-icon-search"
             style="width: 100%; height: 100%"
             clearable
@@ -27,14 +27,14 @@
               ;(this.query.pageNum = 1), this.getList()
             }
           "
-          >搜索</el-button
+          >{{ $t('common.search') }}</el-button
         >
       </div>
       <div class="left-content">
         <div class="list" v-if="list.length > 0">
           <div
             v-loading="loadingMore"
-            element-loading-text="加载中"
+            :element-loading-text="$t('common.loading')"
             id="scroll-container"
             ref="scrollContainer"
             @scroll="handleScroll"
@@ -58,7 +58,7 @@
                 margin-top: 20px;
               "
             >
-              没有更多了...
+              {{ $t('interfacePlatform.noMore') }}
             </div>
           </div>
         </div>
@@ -69,7 +69,9 @@
           v-else
         >
           <img src="../image/empty.png" class="empty" />
-          <div style="margin-top: 13px; color: #9e9e9e">暂无数据</div>
+          <div style="margin-top: 13px; color: #9e9e9e">
+            {{ $t('common.noData') }}
+          </div>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-const url = process.env.VUE_APP_ENV === "production" ? "/prod-api" : "/dev-api";
+const url = process.env.VUE_APP_ENV === "production" ? "/prod-api" : "/dev-api/prod-api";
 
 export function selectAll(params) {
   return request({

@@ -4,35 +4,46 @@
       <el-form
         ref="codeForm"
         :model="codeForm"
-        label-width="100px"
+        :label-width="isEnglish() ? '160px' : '100px'"
         :rules="rules"
       >
         <el-row>
           <el-col :span="24">
-            <el-form-item label="规则名称" prop="code">
+            <el-form-item :label="$t('decisionPlatform.ruleName')" prop="code">
               <el-input
                 v-model="codeForm.code"
                 @input="(e) => (codeForm.code = e.replace(/\s*/g, ''))"
-                placeholder="请输入"
+                :placeholder="$t('decisionPlatform.inputPlaceholder')"
               />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="规则等级" prop="level">
-              <el-input v-model="codeForm.level" placeholder="请输入" />
-              <span class="tips">规则等级范围为0~5，数字越小等级越高。</span>
+            <el-form-item
+              :label="$t('decisionPlatform.ruleLevel')"
+              prop="level"
+            >
+              <el-input
+                v-model="codeForm.level"
+                :placeholder="$t('decisionPlatform.inputPlaceholder')"
+              />
+              <span class="tips">{{
+                $t('decisionPlatform.ruleLevelRangeTip')
+              }}</span>
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item label="执行优先级" prop="salience">
+            <el-form-item
+              :label="$t('decisionPlatform.executionPriority')"
+              prop="salience"
+            >
               <el-input
                 v-model="codeForm.salience"
-                placeholder="请输入执行优先级"
+                :placeholder="$t('decisionPlatform.inputExecutionPriority')"
                 clearable
                 @clear="codeForm.salience = 0"
-              /><span class="tips"
-                >规则优先级，值越高的规则，优先级越高，越先执行</span
-              >
+              /><span class="tips">{{
+                $t('decisionPlatform.rulePriorityTip')
+              }}</span>
             </el-form-item>
           </el-col>
           <!--					<el-col :span="24">
@@ -54,11 +65,14 @@
                       </el-form-item>
                     </el-col>-->
           <el-col :span="24">
-            <el-form-item label="规则描述" prop="content">
+            <el-form-item
+              :label="$t('decisionPlatform.ruleDescription')"
+              prop="content"
+            >
               <el-input
                 type="textarea"
                 v-model.trim="codeForm.content"
-                placeholder="请输入说明"
+                :placeholder="$t('decisionPlatform.inputDescription')"
                 :rows="5"
               />
             </el-form-item>
@@ -66,7 +80,7 @@
           <el-col :span="24">
             <el-form-item
               required
-              :label="`规则逻辑${idx + 1}`"
+              :label="`${$t('decisionPlatform.ruleLogic')}${idx + 1}`"
               v-for="(item, idx) in conditionArray"
               :key="idx"
             >
@@ -77,18 +91,27 @@
                   class="condition"
                 >
                   <el-col :span="1.5" class="title">
-                    {{ ix === 0 ? '如果：' : ' 或者：' }}
+                    {{
+                      ix === 0
+                        ? $t('decisionPlatform.if')
+                        : $t('decisionPlatform.or')
+                    }}
                   </el-col>
 
                   <el-col :span="18" class="select">
                     <el-cascader
                       v-model="obj.selectObj"
-                      placeholder="选择决策条件"
+                      :placeholder="
+                        $t('decisionPlatform.selectDecisionCondition')
+                      "
                       :options="options"
                       :props="{ checkStrictly: true }"
                       filterable
                     />
-                    <el-select v-model="obj.operator" placeholder="逻辑运算符">
+                    <el-select
+                      v-model="obj.operator"
+                      :placeholder="$t('decisionPlatform.logicalOperator')"
+                    >
                       <el-option
                         v-for="item in conditionList"
                         :label="item.label"
@@ -98,7 +121,7 @@
                     </el-select>
                     <el-input
                       v-model.trim="obj.result"
-                      placeholder="请输入值"
+                      :placeholder="$t('decisionPlatform.inputValue')"
                     />
                   </el-col>
                   <el-col :span="4.5" class="operation">
@@ -108,7 +131,7 @@
                       size="mini"
                       @click="addNodeTemplate(item.id)"
                     >
-                      或者
+                      {{ $t('decisionPlatform.or') }}
                     </el-button>
                     <el-button
                       type="danger"
@@ -117,7 +140,7 @@
                       size="mini"
                       @click="delNodeTemplate(item.id, obj.id)"
                     >
-                      删除
+                      {{ $t('decisionPlatform.delete') }}
                     </el-button>
                   </el-col>
                 </div>
@@ -128,7 +151,10 @@
             <el-form-item label="">
               <!-- <span class="tips">为确保流水分类规则生效，请手动设置“收入金额大于0”或“支出金额大于0”条件。</span> -->
               <div class="addBtn" @click="addTemplate">
-                <span><i class="el-icon-plus" /> 新增并且判断条件</span>
+                <span
+                  ><i class="el-icon-plus" />
+                  {{ $t('decisionPlatform.addAndJudgeCondition') }}</span
+                >
               </div>
             </el-form-item>
           </el-col>
@@ -146,10 +172,10 @@
             </el-form-item>
           </el-col> -->
           <el-col :span="24" class="dataTotal">
-            <el-form-item label="数据总数">
+            <el-form-item :label="$t('decisionPlatform.dataTotal')">
               <el-select
                 v-model="codeForm.DT_operator"
-                placeholder="请选择"
+                :placeholder="$t('decisionPlatform.pleaseSelect')"
                 clearable
               >
                 <el-option
@@ -163,7 +189,7 @@
             <el-form-item prop="DT_result">
               <el-input
                 v-model="codeForm.DT_result"
-                placeholder="请输入"
+                :placeholder="$t('decisionPlatform.inputPlaceholder')"
                 clearable
               />
             </el-form-item>
@@ -171,8 +197,12 @@
         </el-row>
       </el-form>
       <div class="btnBottom" v-if="info && info.type != 0">
-        <el-button type="primary" @click="submit">确定 </el-button>
-        <el-button @click="handleClose">取消</el-button>
+        <el-button type="primary" @click="submit">{{
+          $t('decisionPlatform.confirm')
+        }}</el-button>
+        <el-button @click="handleClose">{{
+          $t('decisionPlatform.cancel')
+        }}</el-button>
       </div>
     </div>
     <!--		<confirmDialog
@@ -272,74 +302,6 @@ export default {
         DT_result: null, //数据总数值
         salience: 0,
       },
-      rules: {
-        salience: [
-          { required: true, message: '执行优先级不能为空', trigger: 'blur' },
-          {
-            pattern: /^(-)?\d+$/,
-            message: '执行优先级只能输入整数',
-            trigger: ['blur', 'change'],
-          },
-        ],
-        code: [
-          { required: true, message: '分类名称不能为空', trigger: 'blur' },
-        ],
-        level: [
-          { required: true, message: '决策等级不能为空', trigger: 'blur' },
-          {
-            pattern: /^[0-5]$/,
-            message: '决策等级只能输入0-5的数字',
-            trigger: ['blur', 'change'],
-          },
-        ],
-        DT_result: [
-          {
-            pattern: /^(-)?\d+$/,
-            message: '请输入数字',
-            trigger: ['blur', 'change'],
-          },
-        ],
-        content: [
-          { required: true, message: '分类描述不能为空', trigger: 'blur' },
-        ],
-      },
-      conditionList: [
-        { value: '==', label: '等于', check: 'number' },
-        { value: '!=', label: '不等于', check: 'number' },
-        // { value: '>', label: '大于', check: 'number' },
-        // { value: '<', label: '小于', check: 'number' },
-        // { value: '>=', label: '大于等于', check: 'number' },
-        // { value: '<=', label: '小于等于', check: 'number' },
-        { value: '&gt;', label: '大于', check: 'number' },
-        { value: '&lt;', label: '小于', check: 'number' },
-        { value: '&gt;=', label: '大于等于', check: 'number' },
-        { value: '&lt;=', label: '小于等于', check: 'number' },
-        { value: 'contains', label: '包含', check: 'string' },
-        { value: 'not contains', label: '不包含' },
-        { value: 'memberOf', label: '存在' },
-        { value: 'not memberOf', label: '不存在' },
-        { value: 'matches', label: '正则命中' },
-        { value: 'not matches', label: '正则取反' },
-        { value: 'checkDateDayNum', label: '和当前日期相差小于天' },
-        { value: 'checkDateMonthNum', label: '和当前日期相差小于月' },
-        { value: 'checkDateYearNum', label: '和当前日期相差小于年' },
-        { value: 'checkDateDayNumBig', label: '和当前日期相差大于天' },
-        { value: 'checkDateMonthNumBig', label: '和当前日期相差大于月' },
-        { value: 'checkDateYearNumBig', label: '和当前日期相差大于年' },
-        { value: 'notArrayOr', label: '多条件集合不存在' },
-        { value: 'ArrayOr', label: '多条件集合存在' },
-      ],
-      operatorList: [
-        { value: '==', label: '等于', check: 'number' },
-        // { value: '>', label: '大于', check: 'number' },
-        // { value: '<', label: '小于', check: 'number' },
-        // { value: '>=', label: '大于等于', check: 'number' },
-        // { value: '<=', label: '小于等于', check: 'number' },
-        { value: '&gt;', label: '大于', check: 'number' },
-        { value: '&lt;', label: '小于', check: 'number' },
-        { value: '&gt;=', label: '大于等于', check: 'number' },
-        { value: '&lt;=', label: '小于等于', check: 'number' },
-      ],
       cidx: 1,
       coidx: 1,
       cmidx: 1,
@@ -379,6 +341,193 @@ export default {
         (item) => item.id === this.dataRisk.decision.projectCode
       )
       return findObj
+    },
+    rules() {
+      return {
+        salience: [
+          {
+            required: true,
+            message: this.$t('decisionPlatform.executionPriorityCannotBeEmpty'),
+            trigger: 'blur',
+          },
+          {
+            pattern: /^(-)?\d+$/,
+            message: this.$t('decisionPlatform.executionPriorityOnlyInteger'),
+            trigger: ['blur', 'change'],
+          },
+        ],
+        code: [
+          {
+            required: true,
+            message: this.$t('decisionPlatform.classifyNameCannotBeEmpty'),
+            trigger: 'blur',
+          },
+        ],
+        level: [
+          {
+            required: true,
+            message: this.$t('decisionPlatform.decisionLevelCannotBeEmpty'),
+            trigger: 'blur',
+          },
+          {
+            pattern: /^[0-5]$/,
+            message: this.$t('decisionPlatform.decisionLevelOnlyInput0To5'),
+            trigger: ['blur', 'change'],
+          },
+        ],
+        DT_result: [
+          {
+            pattern: /^(-)?\d+$/,
+            message: this.$t('decisionPlatform.inputNumber'),
+            trigger: ['blur', 'change'],
+          },
+        ],
+        content: [
+          {
+            required: true,
+            message: this.$t(
+              'decisionPlatform.classifyDescriptionCannotBeEmpty'
+            ),
+            trigger: 'blur',
+          },
+        ],
+      }
+    },
+    conditionList() {
+      return [
+        {
+          value: '==',
+          label: this.$t('decisionPlatform.equals'),
+          check: 'number',
+        },
+        {
+          value: '!=',
+          label: this.$t('decisionPlatform.notEquals'),
+          check: 'number',
+        },
+        {
+          value: '&gt;',
+          label: this.$t('decisionPlatform.greaterThan'),
+          check: 'number',
+        },
+        {
+          value: '&lt;',
+          label: this.$t('decisionPlatform.lessThan'),
+          check: 'number',
+        },
+        {
+          value: '&gt;=',
+          label: this.$t('decisionPlatform.greaterThanOrEqual'),
+          check: 'number',
+        },
+        {
+          value: '&lt;=',
+          label: this.$t('decisionPlatform.lessThanOrEqual'),
+          check: 'number',
+        },
+        {
+          value: 'contains',
+          label: this.$t('decisionPlatform.contains'),
+          check: 'string',
+        },
+        {
+          value: 'not contains',
+          label: this.$t('decisionPlatform.notContains'),
+        },
+        { value: 'memberOf', label: this.$t('decisionPlatform.exists') },
+        { value: 'not memberOf', label: this.$t('decisionPlatform.notExists') },
+        { value: 'matches', label: this.$t('decisionPlatform.regexMatch') },
+        {
+          value: 'not matches',
+          label: this.$t('decisionPlatform.regexNotMatch'),
+        },
+        {
+          value: 'checkDateDayNum',
+          label: this.$t('decisionPlatform.dateDiffLessThanDay'),
+        },
+        {
+          value: 'checkDateMonthNum',
+          label: this.$t('decisionPlatform.dateDiffLessThanMonth'),
+        },
+        {
+          value: 'checkDateYearNum',
+          label: this.$t('decisionPlatform.dateDiffLessThanYear'),
+        },
+        {
+          value: 'checkDateDayNumBig',
+          label: this.$t('decisionPlatform.dateDiffGreaterThanDay'),
+        },
+        {
+          value: 'checkDateMonthNumBig',
+          label: this.$t('decisionPlatform.dateDiffGreaterThanMonth'),
+        },
+        {
+          value: 'checkDateYearNumBig',
+          label: this.$t('decisionPlatform.dateDiffGreaterThanYear'),
+        },
+        {
+          value: 'notArrayOr',
+          label: this.$t('decisionPlatform.multiConditionSetNotExists'),
+        },
+        {
+          value: 'ArrayOr',
+          label: this.$t('decisionPlatform.multiConditionSetExists'),
+        },
+      ]
+    },
+    operatorList() {
+      return [
+        {
+          value: '==',
+          label: this.$t('decisionPlatform.equals'),
+          check: 'number',
+        },
+        {
+          value: '&gt;',
+          label: this.$t('decisionPlatform.greaterThan'),
+          check: 'number',
+        },
+        {
+          value: '&lt;',
+          label: this.$t('decisionPlatform.lessThan'),
+          check: 'number',
+        },
+        {
+          value: '&gt;=',
+          label: this.$t('decisionPlatform.greaterThanOrEqual'),
+          check: 'number',
+        },
+        {
+          value: '&lt;=',
+          label: this.$t('decisionPlatform.lessThanOrEqual'),
+          check: 'number',
+        },
+      ]
+    },
+    objRules() {
+      return {
+        selectObj: [
+          {
+            required: true,
+            message: this.$t('decisionPlatform.decisionConditionCannotBeEmpty'),
+            trigger: 'change',
+          },
+        ],
+        operator: [
+          {
+            required: true,
+            message: this.$t('decisionPlatform.logicalOperatorCannotBeEmpty'),
+            trigger: 'change',
+          },
+        ],
+        result: [
+          {
+            required: true,
+            message: this.$t('decisionPlatform.valueCannotBeEmpty'),
+            trigger: 'blur',
+          },
+        ],
+      }
     },
   },
   watch: {
@@ -589,7 +738,12 @@ export default {
           let isIF = false
           that.conditionArray.forEach((item) => {
             if (!item.condition) {
-              this.$message({ message: '条件判断不能为空', type: 'warning' })
+              this.$message({
+                message: this.$t(
+                  'decisionPlatform.conditionJudgmentCannotBeEmpty'
+                ),
+                type: 'warning',
+              })
               isIF = false
               return
             }
@@ -605,7 +759,9 @@ export default {
                     document.getElementsByClassName('el-message').length === 0
                   )
                     this.$message({
-                      message: '条件判断不能为空',
+                      message: this.$t(
+                        'decisionPlatform.conditionJudgmentCannotBeEmpty'
+                      ),
                       type: 'warning',
                     })
                   isIF = false
@@ -708,7 +864,9 @@ export default {
               .then((res) => {
                 if (res.code == 200) {
                   this.loading = false
-                  this.$message.success('操作成功')
+                  this.$message.success(
+                    this.$t('decisionPlatform.operationSuccess')
+                  )
                   this.$emit('resetStep')
                   this.reset()
                   this.$emit('success', 2)
@@ -716,7 +874,7 @@ export default {
               })
               .catch((err) => {
                 this.loading = false
-                this.$message.error('操作失败')
+                this.$message.error(this.$t('decisionPlatform.operationFailed'))
               })
           }
         }

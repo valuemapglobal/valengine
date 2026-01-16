@@ -31,10 +31,10 @@
               </g>
             </g>
           </svg>
-          <span>接口模块主题</span>
+          <span>{{ $t('interfacePlatform.interfaceModuleTheme') }}</span>
           <el-select
             v-model="query.interfaceDataType"
-            placeholder="请选择"
+            :placeholder="$t('interfacePlatform.pleaseSelect')"
             @change="
               () => {
                 query.pageNum = 1
@@ -55,7 +55,7 @@
         <div class="list" v-if="list.length > 0">
           <div
             v-loading="loadingMore"
-            element-loading-text="加载中"
+            :element-loading-text="$t('common.loading')"
             id="scroll-container"
             ref="scrollContainer"
             @scroll="handleScroll"
@@ -87,22 +87,26 @@
               margin-top: 10px;
             "
           >
-            没有更多了...
+            {{ $t('interfacePlatform.noMore') }}
           </div>
         </div>
         <div
           v-loading="loading"
-          element-loading-text="加载中"
+          :element-loading-text="$t('common.loading')"
           class="empty"
           v-else
         >
           <img src="../image/empty.png" class="empty" />
-          <div style="margin-top: 13px; color: #9e9e9e">暂无数据</div>
+          <div style="margin-top: 13px; color: #9e9e9e">
+            {{ $t('common.noData') }}
+          </div>
         </div>
       </div>
       <div class="btn">
         <div @click="showAddScene">
-          <img src="../image/addOrange.png" class="img" />新增
+          <img src="../image/addOrange.png" class="img" />{{
+            $t('interfacePlatform.add')
+          }}
         </div>
       </div>
     </div>
@@ -146,14 +150,17 @@ export default {
         pageSize: 15,
         interfaceDataType: 0, //默认选择元数据
       },
-      // 接口模块主题 选项
-      interfaceDataOptions: [
-        { value: 0, label: '元数据' },
-        { value: 1, label: '特征变量' },
-        { value: 2, label: '分析指标' },
-      ],
       list: [],
     }
+  },
+  computed: {
+    interfaceDataOptions() {
+      return [
+        { value: 0, label: this.$t('interfacePlatform.metadata') },
+        { value: 1, label: this.$t('interfacePlatform.featureVariable') },
+        { value: 2, label: this.$t('interfacePlatform.analysisTarget') },
+      ]
+    },
   },
   mounted() {
     this.getList()
@@ -183,18 +190,22 @@ export default {
       }
     },
     remove(item) {
-      this.$confirm(`是否确认删除 ${item.dataName}?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm(
+        this.$t('interfacePlatform.deleteConfirm', { name: item.dataName }),
+        this.$t('common.systemTip'),
+        {
+          confirmButtonText: this.$t('common.sure'),
+          cancelButtonText: this.$t('common.cancel'),
+          type: 'warning',
+        }
+      )
         .then(() => {
           removeSourceInfo({ sourceNo: item.interfaceSourceNo })
             .then((res) => {
               if (res.code == 200) {
                 this.$message({
                   type: 'success',
-                  message: '删除成功!',
+                  message: this.$t('common.success'),
                 })
                 this.query.pageNum = 1
                 this.list = []

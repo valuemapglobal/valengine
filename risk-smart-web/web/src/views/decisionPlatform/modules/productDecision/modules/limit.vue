@@ -3,13 +3,13 @@
     <main>
       <div
         class="leftRate"
-        element-loading-text="数据加载中"
+        :element-loading-text="$t('decisionPlatform.dataLoading')"
         v-if="limitList.length > 0 || quotaCard != ''"
       >
         <div class="searchTop">
           <el-input
             v-model="quotaCard"
-            placeholder="请输入"
+            :placeholder="$t('decisionPlatform.inputPlaceholder')"
             suffix-icon="el-icon-search"
           ></el-input>
         </div>
@@ -28,45 +28,49 @@
                     v-model="item.buttonState"
                     active-color="#D6D3D3"
                     inactive-color="var(--primary-color)"
-                    active-text="禁用"
-                    inactive-text="使用"
+                    :active-text="$t('decisionPlatform.disabled')"
+                    :inactive-text="$t('decisionPlatform.enabled')"
                     :active-value="0"
                     :inactive-value="1"
                     @change="handleSwitch(item)"
                   />
                 </div>
               </div>
-              <div class="cardDescribe">描述：{{ item.description }}</div>
+              <div class="cardDescribe">
+                {{ $t('decisionPlatform.description') }}：{{ item.description }}
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="noData" v-else>
         <img src="@/assets/images/dataRisk/noData.png" />
-        <p>您还未创建评级模型</p>
-        <p>请先进行配置</p>
+        <p>{{ $t('decisionPlatform.notCreatedLimitModel') }}</p>
+        <p>{{ $t('decisionPlatform.pleaseConfigureFirst') }}</p>
         <el-button @click="jumpToRate">
-          <img class="icon" src="@/assets/images/dataRisk/add.png" />去新增
+          <img class="icon" src="@/assets/images/dataRisk/add.png" />{{
+            $t('decisionPlatform.goToAdd')
+          }}
         </el-button>
       </div>
       <div class="rightTable">
         <div v-if="showTable">
           <div class="title">
-            <span>评级规则表</span>
+            <span>{{ $t('decisionPlatform.limitRuleTable') }}</span>
             <el-button
               type="primary"
               @click="openFormulaConfiguration"
               v-if="activeCard"
             >
-              标准额度配置
+              {{ $t('decisionPlatform.standardLimitConfiguration') }}
             </el-button>
           </div>
           <div class="search">
             <el-form ref="form" :model="queryParams">
-              <el-form-item label="评级标准">
+              <el-form-item :label="$t('decisionPlatform.ratingStandard')">
                 <el-select
                   v-model="queryParams.standardRate"
-                  placeholder="请选择"
+                  :placeholder="$t('decisionPlatform.pleaseSelect')"
                   :popper-append-to-body="false"
                   clearable
                   :disabled="!activeCard"
@@ -105,8 +109,15 @@
             @row-click="checkRow"
             :row-class-name="tableRowClassName"
           >
-            <el-table-column label="评级" prop="rate" width="116" />
-            <el-table-column label="额度浮动范围" prop="limitRange">
+            <el-table-column
+              :label="$t('decisionPlatform.rate')"
+              prop="rate"
+              width="116"
+            />
+            <el-table-column
+              :label="$t('decisionPlatform.limitFloatRange')"
+              prop="limitRange"
+            >
               <template slot-scope="{ row }">
                 <div class="editRange">
                   <div
@@ -121,17 +132,18 @@
                       v-else
                       v-numberOnly
                       v-model="row.limit"
-                      placeholder="请输入"
+                      :placeholder="$t('decisionPlatform.inputPlaceholder')"
                     ></el-input
                     >%
                   </div>
-                  <div v-else>标准额度</div>
+                  <div v-else>{{ $t('decisionPlatform.standardLimit') }}</div>
                 </div>
               </template>
             </el-table-column>
             <el-table-column prop="remark">
               <template slot="header">
-                <span style="color: red">*</span> 说明
+                <span style="color: red">*</span>
+                {{ $t('decisionPlatform.explanation') }}
               </template>
               <template slot-scope="{ row }">
                 <div
@@ -139,12 +151,12 @@
                   :class="{ checkFailed: row.checkRemark }"
                 >
                   <span class="value" v-if="!edit">{{
-                    row.remark || '待填写'
+                    row.remark || $t('decisionPlatform.toBeFilled')
                   }}</span>
                   <el-input
                     v-else
                     v-model="row.remark"
-                    placeholder="待填写"
+                    :placeholder="$t('decisionPlatform.toBeFilled')"
                   ></el-input>
                 </div>
               </template>
@@ -155,13 +167,13 @@
               type="primary"
               @click="editTable"
               :disabled="edit || !activeCard"
-              >编辑评级规则</el-button
+              >{{ $t('decisionPlatform.editLimitRule') }}</el-button
             >
             <el-button
               type="primary"
               :disabled="!edit || !activeCard"
               @click="submit"
-              >确认提交</el-button
+              >{{ $t('decisionPlatform.confirmSubmit') }}</el-button
             >
           </div>
         </div>
@@ -171,7 +183,7 @@
       </div>
     </main>
     <el-dialog
-      title="警告"
+      :title="$t('decisionPlatform.warning')"
       :visible.sync="dialogVisible"
       width="350px"
       :before-close="
@@ -182,15 +194,15 @@
       class="dialogRelease"
     >
       <div class="dialogTitle" slot="title">
-        <span>警告</span>
+        <span>{{ $t('decisionPlatform.warning') }}</span>
       </div>
       <div class="releaseContent">
         <span>{{ checkMsg }}</span>
       </div>
       <div class="releaseBtnList">
-        <el-button type="primary" @click="dialogVisible = false"
-          >确定</el-button
-        >
+        <el-button type="primary" @click="dialogVisible = false">{{
+          $t('decisionPlatform.confirm')
+        }}</el-button>
       </div>
     </el-dialog>
     <FormulaConfiguration
@@ -450,12 +462,16 @@ export default {
         mapList.push(obj)
       })
       if (checkLimit) {
-        this.popupPrompt('当前额度浮动范围不合理，请修改确认')
+        this.popupPrompt(
+          this.$t('decisionPlatform.currentLimitFloatRangeInvalid')
+        )
         this.dialogVisible = true
         return
       }
       if (checkRemark) {
-        this.popupPrompt('当前额度说明未完善，请补充')
+        this.popupPrompt(
+          this.$t('decisionPlatform.currentLimitExplanationIncomplete')
+        )
         return
       }
       submitLimit({
@@ -466,7 +482,7 @@ export default {
       })
         .then((res) => {
           if (res.code == 200) {
-            this.$message.success('操作成功')
+            this.$message.success(this.$t('decisionPlatform.operationSuccess'))
             this.edit = false
             this.getLimitData()
           }
@@ -506,14 +522,19 @@ export default {
         .catch((err) => {})
     },
     handleSwitch(data) {
+      const action =
+        data.buttonState == 1
+          ? this.$t('decisionPlatform.enable')
+          : this.$t('decisionPlatform.close')
       this.$confirm(
-        `是否${data.buttonState == 1 ? '启用' : '关闭'}指标 【${
-          data.quotaCard
-        }】?`,
-        '提示',
+        this.$t('decisionPlatform.enableOrDisableIndicator', {
+          action: action,
+          name: data.quotaCard,
+        }),
+        this.$t('decisionPlatform.tip'),
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+          confirmButtonText: this.$t('decisionPlatform.confirm'),
+          cancelButtonText: this.$t('decisionPlatform.cancel'),
           type: 'warning',
         }
       )
@@ -526,7 +547,9 @@ export default {
           updateStatusLimit({ ...params })
             .then((res) => {
               if (res.code == 200) {
-                this.$message.success('操作成功')
+                this.$message.success(
+                  this.$t('decisionPlatform.operationSuccess')
+                )
                 this.getLimitData()
               }
             })
@@ -560,11 +583,11 @@ export default {
     },
     editTable() {
       if (!this.activeCard) {
-        this.popupPrompt('请选择评分卡')
+        this.popupPrompt(this.$t('decisionPlatform.pleaseSelectScoreCard'))
         return
       }
       if (!this.queryParams.standardRate) {
-        this.popupPrompt('请选择【标准评级】')
+        this.popupPrompt(this.$t('decisionPlatform.pleaseSelectStandardRating'))
         return
       }
       // if (!this.queryParams.creditSource) {
@@ -590,7 +613,7 @@ export default {
       })
         .then((res) => {
           if (res.code == 200) {
-            this.$message.success('操作成功')
+            this.$message.success(this.$t('decisionPlatform.operationSuccess'))
             this.getLimitData()
           }
         })
@@ -629,7 +652,7 @@ export default {
         width: 100px;
       }
       > p {
-        font-size: 18px;
+        font-size: 16px;
         color: #9e9e9e;
         font-family: PingFang SC-Regular, PingFang SC;
         font-weight: 400;

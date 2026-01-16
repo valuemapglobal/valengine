@@ -25,7 +25,7 @@
     </div>
     <div class="right">
       <div class="title_box">
-        <div class="title">累计接口调用情况分布</div>
+        <div class="title">{{ $t('interfacePlatform.totalInterfaceCallDistribution') }}</div>
         <i class="el-icon-refresh"></i>
       </div>
       <InterFace :info="info"></InterFace>
@@ -43,57 +43,61 @@ export default {
   data() {
     return {
       info: {},
-      dataV: [
+    };
+  },
+  computed: {
+    dataV() {
+      return [
         {
-          title: "数据总量",
-          text1: "更新于：",
+          title: this.$t('interfacePlatform.totalData'),
+          text1: this.$t('interfacePlatform.updatedAt'),
           text2: "2023-08-15",
           value: "",
-          dev: "条",
+          dev: this.$t('interfacePlatform.pieces'),
           icon: 1,
         },
         {
-          title: "近七日调用平均响应时间",
+          title: this.$t('interfacePlatform.avgResponseTime7days'),
           text1: "2023-08-08～",
           text2: "2023-08-15",
           value: '',
-          dev: "秒",
+          dev: this.$t('interfacePlatform.seconds'),
           icon: 0,
         },
         {
-          title: "累计调用量",
-          text1: "更新于：",
+          title: this.$t('interfacePlatform.totalCalls'),
+          text1: this.$t('interfacePlatform.updatedAt'),
           text2: "2023-08-15",
           value: '',
-          dev: "次",
+          dev: this.$t('interfacePlatform.times'),
           icon: 1,
         },
         {
-          title: "昨日调用量",
-          text1: "更新于：",
+          title: this.$t('interfacePlatform.yesterdayCalls'),
+          text1: this.$t('interfacePlatform.updatedAt'),
           text2: "2023-08-15",
           value: '',
-          dev: "次",
+          dev: this.$t('interfacePlatform.times'),
           icon: 0,
         },
         {
-          title: "近7日调用成功量",
+          title: this.$t('interfacePlatform.successCalls7days'),
           text1: "2023-08-08～",
           text2: "2023-08-15",
           value: '',
-          dev: "次",
+          dev: this.$t('interfacePlatform.times'),
           icon: 0,
         },
         {
-          title: "近7日调用失败量",
+          title: this.$t('interfacePlatform.failureCalls7days'),
           text1: "2023-08-08～",
           text2: "2023-08-15",
           value: '',
-          dev: "次",
+          dev: this.$t('interfacePlatform.times'),
           icon: 0,
         },
-      ],
-    };
+      ]
+    },
   },
   mounted() {
     this.getCountLog()

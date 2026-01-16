@@ -3,13 +3,13 @@
     <main>
       <div
         class="leftRate"
-        element-loading-text="数据加载中"
+        :element-loading-text="$t('decisionPlatform.dataLoading')"
         v-if="priceList.length || priceCard != ''"
       >
         <div class="searchTop">
           <el-input
             v-model="priceCard"
-            placeholder="请输入"
+            :placeholder="$t('decisionPlatform.inputPlaceholder')"
             suffix-icon="el-icon-search"
           ></el-input>
         </div>
@@ -28,30 +28,36 @@
                     v-model="item.buttonState"
                     active-color="#D6D3D3"
                     inactive-color="var(--primary-color)"
-                    active-text="禁用"
-                    inactive-text="使用"
+                    :active-text="$t('decisionPlatform.disabled')"
+                    :inactive-text="$t('decisionPlatform.enabled')"
                     :active-value="0"
                     :inactive-value="1"
                     @change="handleSwitch(item)"
                   />
                 </div>
               </div>
-              <div class="cardDescribe">描述：{{ item.description }}</div>
+              <div class="cardDescribe">
+                {{ $t('decisionPlatform.description') }}：{{ item.description }}
+              </div>
             </div>
           </template>
         </div>
       </div>
       <div class="noData" v-else>
         <img src="@/assets/images/dataRisk/noData.png" />
-        <p>您还未创建评分卡</p>
-        <p>请先进行配置</p>
+        <p>{{ $t('decisionPlatform.notCreatedScoreCard') }}</p>
+        <p>{{ $t('decisionPlatform.pleaseConfigureFirst') }}</p>
         <el-button @click="jumpToScore">
-          <img class="icon" src="@/assets/images/dataRisk/add.png" />去新增
+          <img class="icon" src="@/assets/images/dataRisk/add.png" />{{
+            $t('decisionPlatform.goToAdd')
+          }}
         </el-button>
       </div>
       <div class="rightTable">
         <div v-if="showTable">
-          <div class="title">风险定价规则表</div>
+          <div class="title">
+            {{ $t('decisionPlatform.riskPricingRuleTable') }}
+          </div>
           <el-table
             v-loading="tableLoading"
             ref="elTableRef"
@@ -61,8 +67,15 @@
             @row-click="checkRow"
             :row-class-name="tableRowClassName"
           >
-            <el-table-column label="评级" prop="rate" width="116" />
-            <el-table-column label="定价" prop="limitRange">
+            <el-table-column
+              :label="$t('decisionPlatform.rate')"
+              prop="rate"
+              width="116"
+            />
+            <el-table-column
+              :label="$t('decisionPlatform.pricing')"
+              prop="limitRange"
+            >
               <template slot-scope="{ row }">
                 <div class="editRange">
                   <div :class="{ checkFailed: row.checkPrice }">
@@ -71,7 +84,7 @@
                     <el-input
                       v-else
                       v-model="row.price"
-                      placeholder="请输入"
+                      :placeholder="$t('decisionPlatform.inputPlaceholder')"
                     ></el-input
                     >%
                   </div>
@@ -81,7 +94,8 @@
             </el-table-column>
             <el-table-column prop="remark">
               <template slot="header">
-                <span style="color: red">*</span> 说明
+                <span style="color: red">*</span>
+                {{ $t('decisionPlatform.explanation') }}
               </template>
               <template slot-scope="{ row }">
                 <div
@@ -89,24 +103,24 @@
                   :class="{ checkFailed: row.checkRemark }"
                 >
                   <span class="value" v-if="!edit">{{
-                    row.remark || '待填写'
+                    row.remark || $t('decisionPlatform.toBeFilled')
                   }}</span>
                   <el-input
                     v-else
                     v-model="row.remark"
-                    placeholder="待填写"
+                    :placeholder="$t('decisionPlatform.toBeFilled')"
                   ></el-input>
                 </div>
               </template>
             </el-table-column>
           </el-table>
           <div class="bottomBtns">
-            <el-button type="primary" @click="editTable" :disabled="edit"
-              >编辑评级规则</el-button
-            >
-            <el-button type="primary" :disabled="!edit" @click="submit"
-              >确认提交</el-button
-            >
+            <el-button type="primary" @click="editTable" :disabled="edit">{{
+              $t('decisionPlatform.editLimitRule')
+            }}</el-button>
+            <el-button type="primary" :disabled="!edit" @click="submit">{{
+              $t('decisionPlatform.confirmSubmit')
+            }}</el-button>
           </div>
         </div>
         <div class="tableNoData" v-else>
@@ -115,7 +129,7 @@
       </div>
     </main>
     <el-dialog
-      title="警告"
+      :title="$t('decisionPlatform.warning')"
       :visible.sync="dialogVisible"
       width="350px"
       :before-close="
@@ -126,15 +140,15 @@
       class="dialogRelease"
     >
       <div class="dialogTitle" slot="title">
-        <span>警告</span>
+        <span>{{ $t('decisionPlatform.warning') }}</span>
       </div>
       <div class="releaseContent">
         <span>{{ checkMsg }}</span>
       </div>
       <div class="releaseBtnList">
-        <el-button type="primary" @click="dialogVisible = false"
-          >确定</el-button
-        >
+        <el-button type="primary" @click="dialogVisible = false">{{
+          $t('decisionPlatform.confirm')
+        }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -370,12 +384,16 @@ export default {
         mapList.push(obj)
       })
       if (checkPrice) {
-        this.popupPrompt('当前定价浮动范围不合理，请修改确认')
+        this.popupPrompt(
+          this.$t('decisionPlatform.currentPricingFloatRangeInvalid')
+        )
         this.dialogVisible = true
         return
       }
       if (checkRemark) {
-        this.popupPrompt('当前定价说明未完善，请补充')
+        this.popupPrompt(
+          this.$t('decisionPlatform.currentPricingExplanationIncomplete')
+        )
         return
       }
       submitPrice({
@@ -386,9 +404,9 @@ export default {
       })
         .then((res) => {
           if (res.code == 200) {
-            this.$message.success('操作成功')
+            this.$message.success(this.$t('decisionPlatform.operationSuccess'))
             this.edit = false
-            this.getLimitData()
+            this.getPriceData()
           }
         })
         .catch((err) => {
@@ -437,7 +455,7 @@ export default {
     },
     editTable() {
       if (!this.activeCard) {
-        this.popupPrompt('请选择评分卡')
+        this.popupPrompt(this.$t('decisionPlatform.pleaseSelectScoreCard'))
         return
       }
       this.edit = !this.edit
@@ -446,14 +464,19 @@ export default {
       this.currentRow = row
     },
     handleSwitch(data) {
+      const action =
+        data.buttonState == 1
+          ? this.$t('decisionPlatform.enable')
+          : this.$t('decisionPlatform.close')
       this.$confirm(
-        `是否${data.buttonState == 1 ? '启用' : '关闭'}指标 【${
-          data.priceCard
-        }】?`,
-        '提示',
+        this.$t('decisionPlatform.enableOrDisableIndicator', {
+          action: action,
+          name: data.priceCard,
+        }),
+        this.$t('decisionPlatform.tip'),
         {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+          confirmButtonText: this.$t('decisionPlatform.confirm'),
+          cancelButtonText: this.$t('decisionPlatform.cancel'),
           type: 'warning',
         }
       )
@@ -466,7 +489,9 @@ export default {
           updateStatusPrice({ ...params })
             .then((res) => {
               if (res.code == 200) {
-                this.$message.success('操作成功')
+                this.$message.success(
+                  this.$t('decisionPlatform.operationSuccess')
+                )
                 this.getPriceData()
               }
             })
@@ -495,7 +520,7 @@ export default {
       })
         .then((res) => {
           if (res.code == 200) {
-            this.$message.success('操作成功')
+            this.$message.success(this.$t('decisionPlatform.operationSuccess'))
             this.getPriceData()
           }
         })
@@ -531,7 +556,7 @@ export default {
         width: 100px;
       }
       > p {
-        font-size: 18px;
+        font-size: 16px;
         color: #9e9e9e;
         font-family: PingFang SC-Regular, PingFang SC;
         font-weight: 400;

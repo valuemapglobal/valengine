@@ -1,16 +1,21 @@
 <template>
   <div class="addTactics">
-    <el-form ref="form" :model="modelForm" :rules="rules" label-width="80px">
+    <el-form
+      ref="form"
+      :model="modelForm"
+      :rules="rules"
+      :label-width="isEnglish() ? '140px' : '80px'"
+    >
       <el-form-item :label="modelFormLabel.name" prop="name">
         <el-input
           v-model="modelForm.name"
-          placeholder="请输入模型名称"
+          :placeholder="$t('decisionPlatform.inputModelName')"
           v-if="type == 'rule' || type === 'classify'"
           @change="handleRuleCode"
         />
         <el-select
           v-model="modelForm.name"
-          placeholder="请选择"
+          :placeholder="$t('decisionPlatform.pleaseSelect')"
           clearable
           @change="handleRuleCode"
           v-else
@@ -28,7 +33,7 @@
         <el-input
           v-model="modelForm.descr"
           type="textarea"
-          placeholder="请输入描述"
+          :placeholder="$t('decisionPlatform.inputDescription')"
           :rows="5"
         ></el-input>
       </el-form-item>
@@ -40,19 +45,23 @@
       >
         <el-input
           v-model="modelForm.newVersion"
-          placeholder="自动生成版本号"
+          :placeholder="$t('decisionPlatform.autoGenerateVersion')"
           disabled
         />
       </el-form-item>
     </el-form>
     <div class="btnBottom" v-if="status">
-      <el-button type="primary" @click="handleBeforeSubmit">确定 </el-button>
-      <el-button @click="handleClose">取消</el-button>
+      <el-button type="primary" @click="handleBeforeSubmit">{{
+        $t('decisionPlatform.confirm')
+      }}</el-button>
+      <el-button @click="handleClose">{{
+        $t('decisionPlatform.cancel')
+      }}</el-button>
     </div>
     <div class="hint-box">
-      <div class="text">提示：</div>
+      <div class="text">{{ $t('decisionPlatform.tip') }}</div>
       <div>
-        版本号会根据产品名称、业务场景、修改时间等自动生成,版本号不可修改。
+        {{ $t('decisionPlatform.versionAutoGenerateTip') }}
       </div>
     </div>
     <!--		<confirmDialog ref="confirmDialog" :disabled="fullscreenLoading" @update="update" @reserved="reserved">
@@ -115,33 +124,6 @@ export default {
         name: '',
         descr: '',
       },
-      modelFormLabel: {
-        name: '模型名称',
-        descr: '模型描述',
-      },
-      rules: {
-        name: [
-          { required: true, message: '不能为空', trigger: 'blur' },
-          // {
-          //   validator: (rule, value, callback) => {
-          //     let check = /^[\u4E00-\u9FA5A-Za-z0-9_]+$/
-          //     if (!check.test(value)) {
-          //       callback('请输入不包含特殊字符的名称')
-          //     }
-          //     callback()
-          //   }, trigger: 'blur'
-          // },
-          {
-            max: 30,
-            required: true,
-            message: '模型名称长度不能超过30',
-            trigger: 'blur',
-          },
-        ],
-        descr: [
-          { max: 200, message: '模型描述文字长度不能超过200', trigger: 'blur' },
-        ],
-      },
       professionList: [],
 
       logRecord: {
@@ -172,25 +154,6 @@ export default {
       deep: true,
       immediate: true,
     },
-    type: {
-      handler(val) {
-        if (val == 'rule' || val === 'classify') {
-          this.modelFormLabel = {
-            name: '模型名称',
-            descr: '模型描述',
-            personOrCompany: '客户类型',
-            v: '版本号',
-          }
-        } else {
-          this.modelFormLabel = {
-            name: '应用行业',
-            descr: '策略描述',
-          }
-        }
-      },
-      deep: true,
-      immediate: true,
-    },
   },
   computed: {
     ...mapState(['dataRisk']),
@@ -200,6 +163,45 @@ export default {
         (item) => item.id === this.dataRisk.decision.projectCode
       )
       return findObj
+    },
+    modelFormLabel() {
+      if (this.type == 'rule' || this.type === 'classify') {
+        return {
+          name: this.$t('decisionPlatform.modelName'),
+          descr: this.$t('decisionPlatform.modelDescription'),
+          personOrCompany: this.$t('decisionPlatform.customerType'),
+          v: this.$t('decisionPlatform.versionNumber'),
+        }
+      } else {
+        return {
+          name: this.$t('decisionPlatform.applicationIndustry'),
+          descr: this.$t('decisionPlatform.strategyDescription'),
+        }
+      }
+    },
+    rules() {
+      return {
+        name: [
+          {
+            required: true,
+            message: this.$t('decisionPlatform.cannotBeEmpty'),
+            trigger: 'blur',
+          },
+          {
+            max: 30,
+            required: true,
+            message: this.$t('decisionPlatform.modelNameLengthExceeded'),
+            trigger: 'blur',
+          },
+        ],
+        descr: [
+          {
+            max: 200,
+            message: this.$t('decisionPlatform.modelDescriptionLengthExceeded'),
+            trigger: 'blur',
+          },
+        ],
+      }
     },
   },
   mounted() {
@@ -287,9 +289,9 @@ export default {
      */
     getFieldLabel(field) {
       const fieldMap = {
-        name: '模型名称',
-        descr: '模型描述',
-        newVersion: '版本号',
+        name: this.$t('decisionPlatform.modelName'),
+        descr: this.$t('decisionPlatform.modelDescription'),
+        newVersion: this.$t('decisionPlatform.versionNumber'),
       }
       return fieldMap[field] || field
     },
@@ -320,9 +322,11 @@ export default {
           .catch((err) => {})
       }
     },
-    checkCodeNo: (rule, value, callback) => {
+    checkCodeNo(rule, value, callback) {
       if (value) {
-        return callback(new Error('策略名称重复'))
+        return callback(
+          new Error(this.$t('decisionPlatform.strategyNameDuplicate'))
+        )
       } else {
         callback()
       }
@@ -380,7 +384,7 @@ export default {
       })
         .then((res) => {
           if (res.code == 200) {
-            this.$message.success('操作成功')
+            this.$message.success(this.$t('decisionPlatform.operationSuccess'))
             // 暂时注释 20260105
             // if (this.dataRisk.decision.ruleCode == 5) {
             //   this.handleCheckLock()

@@ -1,7 +1,7 @@
 <template>
   <div class="rightCompoent" v-show="!showEmpty">
     <div class="header">
-      <div class="text">接口配置</div>
+      <div class="text">{{ $t('interfacePlatform.interfaceConfig') }}</div>
       <div class="right">
         <div class="input-warp">
           <el-input
@@ -13,15 +13,20 @@
             @clear="getList"
           ></el-input>
         </div>
-        <div class="add" @click="add">
+        <div
+          class="add"
+          :style="{ width: (isEnglish() ? 140 : 110) + 'px' }"
+          @click="add"
+        >
           <img src="../image/addOrange.png" />
-          <div>新增接口</div>
+          <div>{{ $t('interfacePlatform.addInterface') }}</div>
         </div>
       </div>
     </div>
     <div class="content">
       <div class="table-warp">
         <el-table
+          ref="interfaceTable"
           :data="tableData"
           :border="true"
           style="width: 100%"
@@ -29,45 +34,72 @@
           height="calc(var(--bgvh) - 230px)"
         >
           <el-table-column
-            prop="interfaceNo"
-            label="编号"
+            :label="$t('interfacePlatform.index')"
             width="90"
             type="index"
           >
           </el-table-column>
-          <el-table-column prop="interfaceName" label="接口名称">
+          <el-table-column
+            prop="interfaceName"
+            :label="$t('interfacePlatform.interfaceName')"
+          >
           </el-table-column>
-          <el-table-column prop="interfaceNo" label="接口编号">
+          <el-table-column
+            prop="interfaceNo"
+            :label="$t('interfacePlatform.interfaceNo')"
+          >
           </el-table-column>
-          <el-table-column prop="interfaceVersion" label="接口版本" width="100">
+          <el-table-column
+            prop="interfaceVersion"
+            :label="$t('interfacePlatform.interfaceVersion')"
+            :width="isEnglish() ? 150 : 100"
+          >
           </el-table-column>
-          <el-table-column prop="interfaceType" label="接口类型" width="160">
+          <el-table-column
+            prop="interfaceType"
+            :label="$t('interfacePlatform.interfaceType')"
+            :width="isEnglish() ? 250 : 160"
+          >
             <template slot-scope="scope">
               {{
                 scope.row.interfaceType == 1
-                  ? '企业接口'
+                  ? $t('interfacePlatform.enterpriseInterface')
                   : scope.row.interfaceType == 2
-                  ? '司法接口'
-                  : '个人接口'
+                  ? $t('interfacePlatform.judicialInterface')
+                  : $t('interfacePlatform.personalInterface')
               }}
             </template>
           </el-table-column>
-          <el-table-column prop="createTime" label="创建时间" width="190">
+          <el-table-column
+            prop="createTime"
+            :label="$t('common.createTime')"
+            width="190"
+          >
           </el-table-column>
-          <el-table-column fixed="right" label="操作" width="208">
+          <el-table-column
+            fixed="right"
+            :label="$t('common.operation')"
+            :width="isEnglish() ? 380 : 208"
+          >
             <template slot-scope="scope">
-              <el-button @click="editClick(scope.row)" type="text" size="small"
-                >编辑接口</el-button
+              <el-button
+                @click="editClick(scope.row)"
+                type="text"
+                size="small"
+                >{{ $t('interfacePlatform.editInterface') }}</el-button
               >
-              <el-button type="text" size="small" @click="editParms(scope.row)"
-                >编辑参数</el-button
+              <el-button
+                type="text"
+                size="small"
+                @click="editParms(scope.row)"
+                >{{ $t('interfacePlatform.editParameter') }}</el-button
               >
               <el-button
                 type="text"
                 size="small"
                 style="color: #fa5151"
                 @click="del(scope.row)"
-                >删除</el-button
+                >{{ $t('common.delete') }}</el-button
               >
             </template>
           </el-table-column>
@@ -129,10 +161,19 @@ export default {
       tableData: [],
     }
   },
+  computed: {},
   // mounted(){
   //     this.getList()
   // },
   watch: {
+    '$i18n.locale'() {
+      // 语言切换时，强制表格重新计算布局，修复fixed列位置
+      this.$nextTick(() => {
+        if (this.$refs.interfaceTable) {
+          this.$refs.interfaceTable.doLayout()
+        }
+      })
+    },
     sourceNo: {
       handler(n, o) {
         // this.showEmpty = n ? false : true
@@ -148,6 +189,9 @@ export default {
     },
   },
   methods: {
+    isEnglish() {
+      return this.$i18n.locale === 'en'
+    },
     handleCurrentChange(val) {
       this.formData.pageNum = val
     },
@@ -178,18 +222,22 @@ export default {
     },
     //删除
     del(row) {
-      this.$confirm('确定删除吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      })
+      this.$confirm(
+        this.$t('interfacePlatform.deleteConfirmSimple'),
+        this.$t('common.systemTip'),
+        {
+          confirmButtonText: this.$t('common.sure'),
+          cancelButtonText: this.$t('common.cancel'),
+          type: 'warning',
+        }
+      )
         .then(() => {
           removeInterfaceInfo({ manageNo: row.interfaceManageNo })
             .then((res) => {
               if (res.code == 200) {
                 this.$message({
                   type: 'success',
-                  message: '删除成功!',
+                  message: this.$t('interfacePlatform.deleteSuccess'),
                 })
                 this.getList()
               }
