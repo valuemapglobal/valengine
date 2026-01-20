@@ -6,6 +6,7 @@
 export function isEditShow(deptId) {
   if (!deptId) return false
   const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+  if (!userInfo || !userInfo.dept) return false
   return userInfo.dept.deptId === deptId
 }
 
@@ -17,6 +18,9 @@ export function isStandardDept() {
   const decisionStandardList = JSON.parse(
     sessionStorage.getItem('decisionStandard')
   )
+  if (!userInfo || !userInfo.dept || !decisionStandardList) {
+    return false
+  }
   if (decisionStandardList.indexOf(userInfo.dept.deptId) === -1) {
     // console.log("非标准部门");
     return false
