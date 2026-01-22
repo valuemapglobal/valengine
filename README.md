@@ -187,6 +187,33 @@ ValEngine/
 4. MySQL 8.x
 5. Redis 7.x
 
+### 启动基础服务
+
+使用 Docker 启动 MySQL、Redis、Nacos：
+
+```bash
+# 复制环境变量配置
+cp .env.example .env
+
+# 启动基础服务
+docker-compose up -d mysql redis nacos
+```
+
+### 环境变量配置
+
+本地开发启动后端服务时，如果 MySQL 端口映射为非 3306（如 13306），需要设置环境变量：
+
+```bash
+# Windows PowerShell
+$env:MYSQL_PORT="13306"
+
+# Windows CMD
+set MYSQL_PORT=13306
+
+# Linux/Mac
+export MYSQL_PORT=13306
+```
+
 ### 启动顺序
 
 1. 启动 MySQL、Redis、Nacos
@@ -201,23 +228,28 @@ ValEngine/
 ```bash
 cd risk-smart-backend
 
-# 编译项目
-mvn clean compile -DskipTests
+# 编译打包
+mvn clean package -DskipTests
 
 # 启动各服务 (在各模块目录下)
+java -jar risk-smart-gateway/target/risk-smart-gateway.jar
+java -jar risk-smart-system/target/risk-smart-system.jar
+java -jar risk-smart-decision-manage/target/risk-smart-decision-manage.jar
+java -jar risk-smart-data-middle-station/target/risk-smart-data-middle-station.jar
+
 # 或在 IDE 中启动各 Application 类
 ```
 
 ### 前端启动
 
 ```bash
-cd risk-smart-web
+cd web
 
 # 安装依赖
 npm install
 
 # 启动开发服务器
-npm run dev
+npm run serve
 ```
 
 ---

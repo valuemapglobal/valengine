@@ -231,7 +231,7 @@ services:
   # ==================== 前端服务 ====================
   web:
     build:
-      context: ./risk-smart-web
+      context: ./web
       dockerfile: Dockerfile
       args:
         - VITE_API_BASE_URL=/api

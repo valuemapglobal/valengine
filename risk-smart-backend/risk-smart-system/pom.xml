@@ -166,14 +166,16 @@
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
-            <!--
-                risk-smart-system 是库模块，被 decision-manage 和 data-middle-station 依赖
-                不使用 spring-boot-maven-plugin:repackage，保持为普通 JAR
-            -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.3.0</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
