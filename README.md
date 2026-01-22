@@ -72,8 +72,8 @@ RiskSmart 是一个**企业级智能风控平台**，提供规则引擎、决策
 
 ```bash
 # 1. 克隆项目
-git clone http://192.168.1.148/valengine-group/risksmart-opensource.git
-cd risksmart-opensource
+git clone https://github.com/valuemapglobal/valengine.git
+cd valengine
 
 # 2. 复制环境变量配置
 cp .env.example .env
@@ -240,8 +240,8 @@ npm run dev
 
 ## 联系我们
 
-- **GitLab**: http://192.168.1.148/valengine-group/risksmart-opensource
-- **邮箱**: support@risksmart.com
+- **GitHub**: https://github.com/valuemapglobal/valengine
+- **邮箱**: vmgitadmin@valuemapglobal.com
 
 ---
 
@@ -249,4 +249,4 @@ npm run dev
 
 如果这个项目对你有帮助，请给我们一个 Star！
 
-[![Star History Chart](https://api.star-history.com/svg?repos=valengine-group/risksmart-opensource&type=Date)](https://star-history.com/#valengine-group/risksmart-opensource&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=valuemapglobal/valengine&type=Date)](https://star-history.com/#valuemapglobal/valengine&Date)
