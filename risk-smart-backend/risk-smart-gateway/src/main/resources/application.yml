@@ -37,6 +37,39 @@ spring:
         password: ${NACOS_PASSWORD:nacos}
         namespace: ${NACOS_NAMESPACE:}
         group: ${NACOS_GROUP:DEFAULT_GROUP}
+    # Gateway 默认路由配置 (Nacos 配置会覆盖此配置)
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        # 认证相关路由
+        - id: risk-smart-auth
+          uri: lb://risk-smart-system
+          predicates:
+            - Path=/login,/logout,/captchaImage
+        # 系统服务路由
+        - id: risk-smart-system
+          uri: lb://risk-smart-system
+          predicates:
+            - Path=/system/**
+          filters:
+            - StripPrefix=1
+        # 数据中台路由
+        - id: risk-smart-data-middle-station
+          uri: lb://risk-smart-data-middle-station
+          predicates:
+            - Path=/data/**
+          filters:
+            - StripPrefix=1
+        # 决策引擎路由
+        - id: risk-smart-decision-manage
+          uri: lb://risk-smart-decision-manage
+          predicates:
+            - Path=/decision/**
+          filters:
+            - StripPrefix=1
     sentinel:
       eager: true
       transport:
