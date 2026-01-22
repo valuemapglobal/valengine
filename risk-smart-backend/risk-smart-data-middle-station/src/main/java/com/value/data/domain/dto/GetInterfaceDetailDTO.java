@@ -5,9 +5,10 @@ import lombok.Data;
 import jakarta.validation.constraints.NotEmpty;
 
 /**
- * @author Vida
- * @date 2023年11月15日 16:12
- * @description
+ * 获取接口详情数据传输对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class GetInterfaceDetailDTO {

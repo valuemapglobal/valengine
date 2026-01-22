@@ -5,8 +5,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 获取地址类
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class AddressUtils
 {

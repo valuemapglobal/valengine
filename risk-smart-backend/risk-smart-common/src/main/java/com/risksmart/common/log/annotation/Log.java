@@ -10,9 +10,9 @@ import com.risksmart.common.log.enums.OperatorType;
 
 /**
  * 自定义操作日志记录注解
- * 
- * @author ruoyi
  *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Target({ ElementType.PARAMETER, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)

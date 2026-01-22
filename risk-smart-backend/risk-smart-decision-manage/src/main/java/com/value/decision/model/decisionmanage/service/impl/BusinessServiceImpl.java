@@ -15,12 +15,10 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * <p>
- * 业务场景表 服务实现类
- * </p>
+ * 业务场景表服务实现类
  *
- * @author Vida
- * @since 2024-11-07
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 public class BusinessServiceImpl extends ServiceImpl<BusinessMapper, Business> implements BusinessService {

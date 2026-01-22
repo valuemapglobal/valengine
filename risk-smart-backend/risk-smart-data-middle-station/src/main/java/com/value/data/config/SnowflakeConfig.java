@@ -6,9 +6,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author Vida
- * @date 2023年08月08日 11:11
- * @description
+ * 雪花算法配置类
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Configuration
 public class SnowflakeConfig {

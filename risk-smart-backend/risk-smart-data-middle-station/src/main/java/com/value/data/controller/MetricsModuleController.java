@@ -15,12 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * <p>
- * 分析指标模块表 前端控制器
- * </p>
+ * 分析指标模块 控制器
  *
- * @author Vida
- * @since 2025-04-23
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @RequestMapping("/metrics-module")

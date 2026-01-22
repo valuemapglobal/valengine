@@ -8,9 +8,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 /**
- * @author Vida
- * @date 2025年03月12日 14:50
- * @description
+ * JSON规则导入DTO
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class ImportRuleWithJsonDTO {

@@ -14,8 +14,9 @@ import com.risksmart.common.security.auth.AuthUtil;
 
 /**
  * 基于 Spring Aop 的注解鉴权
- * 
- * @author kong
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Aspect
 @Component

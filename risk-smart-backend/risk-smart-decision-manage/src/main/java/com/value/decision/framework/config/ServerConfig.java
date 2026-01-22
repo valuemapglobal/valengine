@@ -7,9 +7,9 @@ import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 服务相关配置
- * 
- * @author ruoyi
  *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Component
 public class ServerConfig

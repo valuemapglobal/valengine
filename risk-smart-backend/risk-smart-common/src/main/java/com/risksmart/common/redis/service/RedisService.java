@@ -14,16 +14,19 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 /**
- * spring redis 工具类
- * 
- * @author ruoyi
- **/
+ * Spring Redis工具类
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
+ */
 @SuppressWarnings(value = { "unchecked", "rawtypes" })
 @Component
 public class RedisService
 {
     @Autowired
     public RedisTemplate redisTemplate;
+
+    private static final long ZERO = 0L;
 
     /**
      * 缓存基本的对象，Integer、String、实体类等
@@ -33,6 +36,10 @@ public class RedisService
      */
     public <T> void setCacheObject(final String key, final T value)
     {
+        if (key == null)
+        {
+            return;
+        }
         redisTemplate.opsForValue().set(key, value);
     }
 
@@ -46,6 +53,10 @@ public class RedisService
      */
     public <T> void setCacheObject(final String key, final T value, final Long timeout, final TimeUnit timeUnit)
     {
+        if (key == null)
+        {
+            return;
+        }
         redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
     }
 
@@ -71,6 +82,10 @@ public class RedisService
      */
     public boolean expire(final String key, final long timeout, final TimeUnit unit)
     {
+        if (key == null)
+        {
+            return false;
+        }
         return redisTemplate.expire(key, timeout, unit);
     }
 
@@ -82,6 +97,10 @@ public class RedisService
      */
     public long getExpire(final String key)
     {
+        if (key == null)
+        {
+            return ZERO;
+        }
         return redisTemplate.getExpire(key);
     }
 
@@ -93,6 +112,10 @@ public class RedisService
      */
     public Boolean hasKey(String key)
     {
+        if (key == null)
+        {
+            return false;
+        }
         return redisTemplate.hasKey(key);
     }
 
@@ -104,6 +127,10 @@ public class RedisService
      */
     public <T> T getCacheObject(final String key)
     {
+        if (key == null)
+        {
+            return null;
+        }
         ValueOperations<String, T> operation = redisTemplate.opsForValue();
         return operation.get(key);
     }
@@ -115,6 +142,10 @@ public class RedisService
      */
     public boolean deleteObject(final String key)
     {
+        if (key == null)
+        {
+            return false;
+        }
         return redisTemplate.delete(key);
     }
 
@@ -126,6 +157,10 @@ public class RedisService
      */
     public boolean deleteObject(final Collection collection)
     {
+        if (collection == null || collection.isEmpty())
+        {
+            return false;
+        }
         return redisTemplate.delete(collection) > 0;
     }
 
@@ -138,6 +173,10 @@ public class RedisService
      */
     public <T> long setCacheList(final String key, final List<T> dataList)
     {
+        if (key == null || dataList == null || dataList.isEmpty())
+        {
+            return ZERO;
+        }
         Long count = redisTemplate.opsForList().rightPushAll(key, dataList);
         return count == null ? 0 : count;
     }
@@ -150,6 +189,10 @@ public class RedisService
      */
     public <T> List<T> getCacheList(final String key)
     {
+        if (key == null)
+        {
+            return null;
+        }
         return redisTemplate.opsForList().range(key, 0, -1);
     }
 
@@ -164,6 +207,10 @@ public class RedisService
     public <T> BoundSetOperations<String, T> setCacheSet(final String key, final Set<T> dataSet)
     {
         BoundSetOperations<String, T> setOperation = redisTemplate.boundSetOps(key);
+        if (key == null)
+        {
+            return setOperation;
+        }
         if (dataSet != null && !dataSet.isEmpty())
         {
             // 使用批量添加，减少网络往返次数（单次SADD命令）
@@ -181,6 +228,10 @@ public class RedisService
      */
     public <T> Set<T> getCacheSet(final String key)
     {
+        if (key == null)
+        {
+            return null;
+        }
         return redisTemplate.opsForSet().members(key);
     }
 
@@ -192,9 +243,11 @@ public class RedisService
      */
     public <T> void setCacheMap(final String key, final Map<String, T> dataMap)
     {
-        if (dataMap != null) {
-            redisTemplate.opsForHash().putAll(key, dataMap);
+        if (key == null || dataMap == null || dataMap.isEmpty())
+        {
+            return;
         }
+        redisTemplate.opsForHash().putAll(key, dataMap);
     }
 
     /**
@@ -205,6 +258,10 @@ public class RedisService
      */
     public <T> Map<String, T> getCacheMap(final String key)
     {
+        if (key == null)
+        {
+            return null;
+        }
         return redisTemplate.opsForHash().entries(key);
     }
 
@@ -217,6 +274,10 @@ public class RedisService
      */
     public <T> void setCacheMapValue(final String key, final String hKey, final T value)
     {
+        if (key == null || hKey == null)
+        {
+            return;
+        }
         redisTemplate.opsForHash().put(key, hKey, value);
     }
 
@@ -229,6 +290,10 @@ public class RedisService
      */
     public <T> T getCacheMapValue(final String key, final String hKey)
     {
+        if (key == null || hKey == null)
+        {
+            return null;
+        }
         HashOperations<String, String, T> opsForHash = redisTemplate.opsForHash();
         return opsForHash.get(key, hKey);
     }
@@ -242,6 +307,10 @@ public class RedisService
      */
     public <T> List<T> getMultiCacheMapValue(final String key, final Collection<Object> hKeys)
     {
+        if (key == null || hKeys == null || hKeys.isEmpty())
+        {
+            return null;
+        }
         return redisTemplate.opsForHash().multiGet(key, hKeys);
     }
 
@@ -254,6 +323,10 @@ public class RedisService
      */
     public boolean deleteCacheMapValue(final String key, final String hKey)
     {
+        if (key == null || hKey == null)
+        {
+            return false;
+        }
         return redisTemplate.opsForHash().delete(key, hKey) > 0;
     }
 
@@ -265,6 +338,10 @@ public class RedisService
      */
     public Collection<String> keys(final String pattern)
     {
+        if (pattern == null)
+        {
+            return null;
+        }
         return redisTemplate.keys(pattern);
     }
 }

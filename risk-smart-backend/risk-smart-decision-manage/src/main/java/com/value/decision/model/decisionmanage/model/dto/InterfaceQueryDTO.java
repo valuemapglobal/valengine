@@ -6,9 +6,10 @@ import lombok.experimental.Accessors;
 import java.util.List;
 
 /**
- * @author Vida
- * @date 2025年03月19日 13:59
- * @description
+ * 接口查询DTO
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @Accessors(chain = true)

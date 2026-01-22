@@ -2,8 +2,9 @@ package com.risksmart.common.core.enums;
 
 /**
  * 用户状态
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public enum UserStatus
 {

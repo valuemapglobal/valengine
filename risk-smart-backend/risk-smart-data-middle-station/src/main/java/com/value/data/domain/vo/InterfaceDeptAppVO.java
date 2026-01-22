@@ -7,12 +7,10 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 
 /**
- * <p>
- * 
- * </p>
+ * 接口部门应用视图对象
  *
- * @author Vida
- * @since 2023-12-06
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @EqualsAndHashCode(callSuper = false)

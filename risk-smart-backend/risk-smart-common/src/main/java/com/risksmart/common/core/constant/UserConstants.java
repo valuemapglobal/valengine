@@ -2,8 +2,9 @@ package com.risksmart.common.core.constant;
 
 /**
  * 用户常量信息
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class UserConstants
 {

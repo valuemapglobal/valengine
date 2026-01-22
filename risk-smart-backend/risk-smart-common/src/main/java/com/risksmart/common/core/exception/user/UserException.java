@@ -4,8 +4,9 @@ import com.risksmart.common.core.exception.base.BaseException;
 
 /**
  * 用户信息异常类
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class UserException extends BaseException
 {

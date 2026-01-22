@@ -14,9 +14,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * @author Vida
- * @date 2023年08月21日 11:55
- * @description
+ * 集成服务实现类
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 public class IntegrationServiceImpl implements IntegrationService {

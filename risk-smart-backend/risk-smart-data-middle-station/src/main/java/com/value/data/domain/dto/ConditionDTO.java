@@ -3,9 +3,10 @@ package com.value.data.domain.dto;
 import lombok.Data;
 
 /**
- * @author Vida
- * @date 2023年08月22日 13:54
- * @description 并且条件
+ * 并且条件数据传输对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class ConditionDTO {

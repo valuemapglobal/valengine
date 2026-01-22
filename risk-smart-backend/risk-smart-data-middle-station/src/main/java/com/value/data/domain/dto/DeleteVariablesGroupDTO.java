@@ -5,9 +5,10 @@ import lombok.Data;
 import jakarta.validation.constraints.Pattern;
 
 /**
- * @author Vida
- * @date 2023年08月10日 14:50
- * @description
+ * 删除变量分组数据传输对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class DeleteVariablesGroupDTO {

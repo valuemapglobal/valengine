@@ -6,9 +6,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * @author Vida
- * @date 2025年03月19日 13:54
- * @description
+ * 接口VO
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class InterfaceVO implements Serializable {

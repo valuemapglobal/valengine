@@ -8,6 +8,9 @@ import org.springframework.validation.annotation.Validated;
 
 /**
  * 业务配置属性
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @Component

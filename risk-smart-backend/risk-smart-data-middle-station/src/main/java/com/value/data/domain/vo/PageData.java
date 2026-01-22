@@ -5,9 +5,10 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * @author Vida
- * @date 2023年08月07日 11:36
- * @description
+ * 分页数据封装类
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class PageData {

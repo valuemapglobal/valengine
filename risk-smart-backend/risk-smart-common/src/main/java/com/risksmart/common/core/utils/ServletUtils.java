@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -21,6 +22,8 @@ import org.springframework.util.LinkedCaseInsensitiveMap;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson2.JSON;
 import com.risksmart.common.core.constant.Constants;
 import com.risksmart.common.core.domain.R;
@@ -29,17 +32,21 @@ import reactor.core.publisher.Mono;
 
 /**
  * 客户端工具类
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class ServletUtils
 {
+    private static final Logger log = LoggerFactory.getLogger(ServletUtils.class);
+
     /**
      * 获取String参数
      */
     public static String getParameter(String name)
     {
-        return getRequest().getParameter(name);
+        HttpServletRequest request = getRequest();
+        return request == null ? null : request.getParameter(name);
     }
 
     /**
@@ -47,7 +54,8 @@ public class ServletUtils
      */
     public static String getParameter(String name, String defaultValue)
     {
-        return Convert.toStr(getRequest().getParameter(name), defaultValue);
+        HttpServletRequest request = getRequest();
+        return Convert.toStr(request == null ? null : request.getParameter(name), defaultValue);
     }
 
     /**
@@ -55,7 +63,8 @@ public class ServletUtils
      */
     public static Integer getParameterToInt(String name)
     {
-        return Convert.toInt(getRequest().getParameter(name));
+        HttpServletRequest request = getRequest();
+        return Convert.toInt(request == null ? null : request.getParameter(name));
     }
 
     /**
@@ -63,7 +72,8 @@ public class ServletUtils
      */
     public static Integer getParameterToInt(String name, Integer defaultValue)
     {
-        return Convert.toInt(getRequest().getParameter(name), defaultValue);
+        HttpServletRequest request = getRequest();
+        return Convert.toInt(request == null ? null : request.getParameter(name), defaultValue);
     }
 
     /**
@@ -71,7 +81,8 @@ public class ServletUtils
      */
     public static Boolean getParameterToBool(String name)
     {
-        return Convert.toBool(getRequest().getParameter(name));
+        HttpServletRequest request = getRequest();
+        return Convert.toBool(request == null ? null : request.getParameter(name));
     }
 
     /**
@@ -79,7 +90,8 @@ public class ServletUtils
      */
     public static Boolean getParameterToBool(String name, Boolean defaultValue)
     {
-        return Convert.toBool(getRequest().getParameter(name), defaultValue);
+        HttpServletRequest request = getRequest();
+        return Convert.toBool(request == null ? null : request.getParameter(name), defaultValue);
     }
 
     /**
@@ -117,7 +129,8 @@ public class ServletUtils
     {
         try
         {
-            return getRequestAttributes().getRequest();
+            ServletRequestAttributes attributes = getRequestAttributes();
+            return attributes == null ? null : attributes.getRequest();
         }
         catch (Exception e)
         {
@@ -132,7 +145,8 @@ public class ServletUtils
     {
         try
         {
-            return getRequestAttributes().getResponse();
+            ServletRequestAttributes attributes = getRequestAttributes();
+            return attributes == null ? null : attributes.getResponse();
         }
         catch (Exception e)
         {
@@ -145,7 +159,8 @@ public class ServletUtils
      */
     public static HttpSession getSession()
     {
-        return getRequest().getSession();
+        HttpServletRequest request = getRequest();
+        return request == null ? null : request.getSession();
     }
 
     public static ServletRequestAttributes getRequestAttributes()
@@ -163,6 +178,10 @@ public class ServletUtils
 
     public static String getHeader(HttpServletRequest request, String name)
     {
+        if (request == null)
+        {
+            return StringUtils.EMPTY;
+        }
         String value = request.getHeader(name);
         if (StringUtils.isEmpty(value))
         {
@@ -174,6 +193,10 @@ public class ServletUtils
     public static Map<String, String> getHeaders(HttpServletRequest request)
     {
         Map<String, String> map = new LinkedCaseInsensitiveMap<>();
+        if (request == null)
+        {
+            return map;
+        }
         Enumeration<String> enumeration = request.getHeaderNames();
         if (enumeration != null)
         {
@@ -197,14 +220,18 @@ public class ServletUtils
     {
         try
         {
-            response.setStatus(200);
+            if (response == null)
+            {
+                return;
+            }
+            response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
             response.getWriter().print(string);
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            log.error("输出响应内容失败", e);
         }
     }
 
@@ -247,6 +274,10 @@ public class ServletUtils
     {
         try
         {
+            if (StringUtils.isEmpty(str))
+            {
+                return StringUtils.EMPTY;
+            }
             return URLEncoder.encode(str, Constants.UTF8);
         }
         catch (UnsupportedEncodingException e)
@@ -265,6 +296,10 @@ public class ServletUtils
     {
         try
         {
+            if (StringUtils.isEmpty(str))
+            {
+                return StringUtils.EMPTY;
+            }
             return URLDecoder.decode(str, Constants.UTF8);
         }
         catch (UnsupportedEncodingException e)
@@ -326,8 +361,9 @@ public class ServletUtils
     {
         response.setStatusCode(status);
         response.getHeaders().add(HttpHeaders.CONTENT_TYPE, contentType);
-        R<?> result = R.fail(code, value.toString());
-        DataBuffer dataBuffer = response.bufferFactory().wrap(JSON.toJSONString(result).getBytes());
+        String message = value == null ? StringUtils.EMPTY : value.toString();
+        R<?> result = R.fail(code, message);
+        DataBuffer dataBuffer = response.bufferFactory().wrap(JSON.toJSONString(result).getBytes(StandardCharsets.UTF_8));
         return response.writeWith(Mono.just(dataBuffer));
     }
 }

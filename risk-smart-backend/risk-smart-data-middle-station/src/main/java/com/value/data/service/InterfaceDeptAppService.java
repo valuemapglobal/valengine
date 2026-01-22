@@ -4,12 +4,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.value.data.domain.entity.InterfaceDeptApp;
 
 /**
- * <p>
- *  服务类
- * </p>
+ * 接口部门应用服务类
  *
- * @author Vida
- * @since 2023-12-06
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface InterfaceDeptAppService extends IService<InterfaceDeptApp> {
 

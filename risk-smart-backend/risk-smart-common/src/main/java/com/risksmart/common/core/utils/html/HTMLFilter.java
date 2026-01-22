@@ -11,9 +11,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * HTML过滤器，用于去除XSS漏洞隐患。
+ * HTML过滤器，用于去除XSS漏洞隐患
  *
- * @author ruoyi
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public final class HTMLFilter
 {

@@ -3,9 +3,10 @@ package com.value.data.service;
 import java.util.Map;
 
 /**
- * @author Vida
- * @date 2025年04月24日 14:31
- * @description
+ * 分析指标服务接口
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface MetricsService {
     /**

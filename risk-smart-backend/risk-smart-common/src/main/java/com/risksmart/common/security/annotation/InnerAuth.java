@@ -4,8 +4,9 @@ import java.lang.annotation.*;
 
 /**
  * 内部认证注解
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

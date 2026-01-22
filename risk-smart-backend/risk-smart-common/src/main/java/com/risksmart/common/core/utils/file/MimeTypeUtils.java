@@ -2,11 +2,16 @@ package com.risksmart.common.core.utils.file;
 
 /**
  * 媒体类型工具类
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class MimeTypeUtils
 {
+    private MimeTypeUtils()
+    {
+    }
+
     public static final String IMAGE_PNG = "image/png";
 
     public static final String IMAGE_JPG = "image/jpg";

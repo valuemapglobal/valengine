@@ -23,12 +23,10 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
- * <p>
  * 流程策略表 服务实现类
- * </p>
  *
- * @author hc
- * @since 2023-08-16
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Slf4j
 @Service

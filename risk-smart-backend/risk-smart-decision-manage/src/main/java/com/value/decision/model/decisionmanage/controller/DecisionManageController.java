@@ -24,33 +24,34 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * @author Vida
- * @date 2025年03月05日 14:45
- * @description
+ * 决策管理控制器
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @RequestMapping("/decision-manage")
 @AllArgsConstructor
 @Slf4j
 public class DecisionManageController {
+
     private final DecisionManageService service;
 
-    @GetMapping(value = "/export-rule/json",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> exportRuleWithJson(@RequestParam Integer strategyId){
+    @GetMapping(value = "/export-rule/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> exportRuleWithJson(@RequestParam Integer strategyId) {
         // 创建JSON内容
         String jsonContent;
         try {
             jsonContent = service.getRuleJson(strategyId);
-        }catch (JsonProcessingException e) {
+        } catch (JsonProcessingException e) {
             log.error("JSON序列化失败", e);
-            jsonContent = String.format("{\"error\": %s}",e.getMessage());
+            jsonContent = String.format("{\"error\": %s}", e.getMessage());
         }
-
 
         // 设置HTTP头部信息
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setContentDispositionFormData("attachment", getName(strategyId)+".json");
+        headers.setContentDispositionFormData("attachment", getName(strategyId) + ".json");
         headers.setCacheControl("no-cache, no-store, must-revalidate");
 
         // 返回ResponseEntity，包含JSON内容、HTTP头部和状态码
@@ -59,28 +60,30 @@ public class DecisionManageController {
 
     @GetMapping(value = "/export-rule/excel")
     public void exportRuleWithExcel(@RequestParam Integer strategyId, HttpServletResponse response) throws IOException {
-        final Path excel = Paths.get(getName(strategyId)+".xlsx");
-        service.exportRuleToExcel(strategyId,excel);
+        final Path excel = Paths.get(getName(strategyId) + ".xlsx");
+        service.exportRuleToExcel(strategyId, excel);
 
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-        response.setHeader( "Content-Disposition", String.format("attachment; filename=\"%s\"",excel.toFile().getName()));
+        response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", excel.toFile().getName()));
         Files.copy(excel, response.getOutputStream());
         response.getOutputStream().flush();
         Files.deleteIfExists(excel);
     }
 
-    private String getName(Integer strategyId){
-       return String.format("strategy-%s-%s",IdUtil.fastSimpleUUID(),strategyId);
+    private String getName(Integer strategyId) {
+        return String.format("strategy-%s-%s", IdUtil.fastSimpleUUID(), strategyId);
     }
 
     @PostMapping("/import-rule/json")
-    public AjaxResult importRuleWithJson(@Validated ImportRuleWithJsonDTO params, HttpServletRequest request){
+    public AjaxResult importRuleWithJson(@Validated ImportRuleWithJsonDTO params, HttpServletRequest request) {
         final LoginUser loginUser = SecurityUtils.getLoginUser();
-        if (loginUser==null){ return AjaxResult.error("未登录"); }
-        final int count = service.importRuleByJson(params, loginUser);
-        if (count<0){
-            return AjaxResult.error("导入失败："+count);
+        if (loginUser == null) {
+            return AjaxResult.error("未登录");
         }
-        return AjaxResult.success("导入成功："+count);
+        final int count = service.importRuleByJson(params, loginUser);
+        if (count < 0) {
+            return AjaxResult.error("导入失败：" + count);
+        }
+        return AjaxResult.success("导入成功：" + count);
     }
 }

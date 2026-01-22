@@ -6,9 +6,10 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.*;
 
 /**
- * 线程相关工具类.
- * 
- * @author ruoyi
+ * 线程相关工具类
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class Threads
 {

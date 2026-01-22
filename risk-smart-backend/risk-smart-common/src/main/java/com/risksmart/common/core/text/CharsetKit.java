@@ -6,8 +6,9 @@ import com.risksmart.common.core.utils.StringUtils;
 
 /**
  * 字符集工具类
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class CharsetKit
 {

@@ -5,9 +5,10 @@ import jakarta.validation.Payload;
 import java.lang.annotation.*;
 
 /**
- * @author Vida
- * @date 2025年03月12日 15:01
- * @description
+ * 文件非空校验注解
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Documented
 @Constraint(validatedBy = {FileNotEmptyValidator.class})

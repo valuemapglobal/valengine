@@ -4,12 +4,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.value.decision.model.decisionmanage.model.Product;
 
 /**
- * <p>
  * 产品表 Mapper 接口
- * </p>
  *
- * @author Vida
- * @since 2024-11-07
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface ProductMapper extends BaseMapper<Product> {
 

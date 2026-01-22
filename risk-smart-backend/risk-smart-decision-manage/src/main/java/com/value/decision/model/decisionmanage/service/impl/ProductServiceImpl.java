@@ -15,12 +15,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * <p>
- * 产品表 服务实现类
- * </p>
+ * 产品表服务实现类
  *
- * @author Vida
- * @since 2024-11-07
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements ProductService {

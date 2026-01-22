@@ -5,9 +5,10 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * @author Vida
- * @date 2023年08月22日 13:52
- * @description 条件
+ * 条件
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class ConditionArrayDTO {

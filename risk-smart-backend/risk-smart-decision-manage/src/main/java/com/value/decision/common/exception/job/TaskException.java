@@ -3,7 +3,8 @@ package com.value.decision.common.exception.job;
 /**
  * 计划策略异常
  *
- * @author ruoyi
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class TaskException extends Exception
 {

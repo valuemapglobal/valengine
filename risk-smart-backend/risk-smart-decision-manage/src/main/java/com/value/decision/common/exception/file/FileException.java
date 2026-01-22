@@ -4,8 +4,9 @@ import com.value.decision.common.exception.BaseException;
 
 /**
  * 文件信息异常类
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class FileException extends BaseException
 {

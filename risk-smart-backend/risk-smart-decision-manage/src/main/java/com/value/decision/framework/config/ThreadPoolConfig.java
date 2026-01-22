@@ -14,8 +14,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * 线程池配置
  *
- * @author ruoyi
- **/
+ * @author vlauemap team
+ * @since 2026/01/22
+ */
 @Configuration
 public class ThreadPoolConfig
 {

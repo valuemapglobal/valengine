@@ -6,9 +6,10 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
 /**
- * @author Vida
- * @date 2023年12月19日 10:03
- * @description
+ * 获取接口入参参数数据传输对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class GetInterfaceInputParameterDTO {

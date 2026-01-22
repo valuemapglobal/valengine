@@ -20,7 +20,8 @@ import java.util.List;
 /**
  * 全局异常处理器
  *
- * @author ruoyi
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler

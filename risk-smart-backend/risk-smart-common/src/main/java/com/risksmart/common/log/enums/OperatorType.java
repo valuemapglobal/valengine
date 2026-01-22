@@ -2,8 +2,9 @@ package com.risksmart.common.log.enums;
 
 /**
  * 操作人类别
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public enum OperatorType
 {

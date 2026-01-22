@@ -13,6 +13,12 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import com.risksmart.common.security.config.ApplicationConfig;
 import com.risksmart.common.security.feign.FeignAutoConfiguration;
 
+/**
+ * 自定义配置注解
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

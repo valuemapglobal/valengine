@@ -15,12 +15,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * <p>
  * 业务场景表
- * </p>
  *
- * @author Vida
- * @since 2024-11-07
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @EqualsAndHashCode(callSuper = false)

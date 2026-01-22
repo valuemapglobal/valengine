@@ -7,9 +7,10 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 /**
- * @author Vida
- * @date 2023年08月10日 15:07
- * @description
+ * 验证分组是否存在数据传输对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class GroupIsExistedDTO {

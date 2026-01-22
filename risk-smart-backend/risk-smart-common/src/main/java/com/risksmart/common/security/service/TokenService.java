@@ -20,9 +20,10 @@ import com.risksmart.common.security.utils.SecurityUtils;
 import com.risksmart.system.api.model.LoginUser;
 
 /**
- * token验证处理
- * 
- * @author ruoyi
+ * Token验证处理
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Component
 public class TokenService
@@ -32,21 +33,25 @@ public class TokenService
     @Autowired
     private RedisService redisService;
 
-    protected static final long MILLIS_SECOND = 1000;
+    private static final long MILLIS_SECOND = 1000;
 
-    protected static final long MILLIS_MINUTE = 60 * MILLIS_SECOND;
+    private static final long MILLIS_MINUTE = 60 * MILLIS_SECOND;
 
-    private final static long TOKEN_EXPIRE_TIME = CacheConstants.EXPIRATION;
+    private static final long TOKEN_EXPIRE_TIME = CacheConstants.EXPIRATION;
 
-    private final static String ACCESS_TOKEN = CacheConstants.LOGIN_TOKEN_KEY;
+    private static final String ACCESS_TOKEN = CacheConstants.LOGIN_TOKEN_KEY;
 
-    private final static Long TOKEN_REFRESH_THRESHOLD_MINUTES = CacheConstants.REFRESH_TIME * MILLIS_MINUTE;
+    private static final long TOKEN_REFRESH_THRESHOLD_MILLIS = CacheConstants.REFRESH_TIME * MILLIS_MINUTE;
 
     /**
      * 创建令牌
      */
     public Map<String, Object> createToken(LoginUser loginUser)
     {
+        if (loginUser == null || loginUser.getSysUser() == null)
+        {
+            return new HashMap<>(0);
+        }
         String token = IdUtils.fastUUID();
         Long userId = loginUser.getSysUser().getUserId();
         String userName = loginUser.getSysUser().getUserName();
@@ -57,13 +62,13 @@ public class TokenService
         refreshToken(loginUser);
 
         // Jwt存储信息
-        Map<String, Object> claimsMap = new HashMap<String, Object>();
+        Map<String, Object> claimsMap = new HashMap<>(4);
         claimsMap.put(SecurityConstants.USER_KEY, token);
         claimsMap.put(SecurityConstants.DETAILS_USER_ID, userId);
         claimsMap.put(SecurityConstants.DETAILS_USERNAME, userName);
 
         // 接口返回信息
-        Map<String, Object> rspMap = new HashMap<String, Object>();
+        Map<String, Object> rspMap = new HashMap<>(2);
         rspMap.put("access_token", JwtUtils.createToken(claimsMap));
         rspMap.put("expires_in", TOKEN_EXPIRE_TIME);
         return rspMap;
@@ -87,7 +92,7 @@ public class TokenService
     public LoginUser getLoginUser(HttpServletRequest request)
     {
         // 获取请求携带的令牌
-        String token = SecurityUtils.getToken(request);
+        String token = request == null ? null : SecurityUtils.getToken(request);
         return getLoginUser(token);
     }
 
@@ -104,11 +109,8 @@ public class TokenService
             if (StringUtils.isNotEmpty(token))
             {
                 String userkey = JwtUtils.getUserKey(token);
-                log.debug("TokenService - userkey from JWT: {}", userkey);
                 String redisKey = getTokenKey(userkey);
-                log.debug("TokenService - looking up Redis key: {}", redisKey);
                 user = redisService.getCacheObject(redisKey);
-                log.debug("TokenService - user from Redis: {}", user != null ? "found" : "null");
                 return user;
             }
         }
@@ -149,9 +151,13 @@ public class TokenService
      */
     public void verifyToken(LoginUser loginUser)
     {
+        if (loginUser == null)
+        {
+            return;
+        }
         long expireTime = loginUser.getExpireTime();
         long currentTime = System.currentTimeMillis();
-        if (expireTime - currentTime <= TOKEN_REFRESH_THRESHOLD_MINUTES)
+        if (expireTime - currentTime <= TOKEN_REFRESH_THRESHOLD_MILLIS)
         {
             refreshToken(loginUser);
         }
@@ -164,6 +170,10 @@ public class TokenService
      */
     public void refreshToken(LoginUser loginUser)
     {
+        if (loginUser == null || StringUtils.isEmpty(loginUser.getToken()))
+        {
+            return;
+        }
         loginUser.setLoginTime(System.currentTimeMillis());
         loginUser.setExpireTime(loginUser.getLoginTime() + TOKEN_EXPIRE_TIME * MILLIS_MINUTE);
         // 根据uuid将loginUser缓存

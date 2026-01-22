@@ -6,12 +6,10 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * <p>
  * 分析指标规则详情表
- * </p>
  *
- * @author Vida
- * @since 2023-08-14
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class RuleDetailsVO implements Serializable {

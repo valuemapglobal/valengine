@@ -11,9 +11,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Vida
- * @date 2025年03月19日 10:35
- * @description
+ * 数据中台Feign客户端降级工厂
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Component
 @Slf4j

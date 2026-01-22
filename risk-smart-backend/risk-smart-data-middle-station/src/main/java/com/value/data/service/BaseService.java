@@ -8,9 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Vida
- * @date 2023年08月07日 11:43
- * @description
+ * 基础服务接口
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface BaseService {
     default  <T> List<T> getVOList(List lists,Class<T> voClass){

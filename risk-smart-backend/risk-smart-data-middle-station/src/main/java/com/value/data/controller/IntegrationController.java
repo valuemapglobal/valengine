@@ -13,9 +13,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
- * @author Vida
- * @date 2023年08月21日 9:23
- * @description 联调
+ * 联调控制器
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @Slf4j

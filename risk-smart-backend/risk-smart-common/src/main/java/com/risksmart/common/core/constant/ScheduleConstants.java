@@ -2,8 +2,9 @@ package com.risksmart.common.core.constant;
 
 /**
  * 任务调度通用常量
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class ScheduleConstants
 {

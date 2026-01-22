@@ -4,9 +4,10 @@ import com.value.decision.model.decisionmanage.model.Business;
 import lombok.Data;
 
 /**
- * @author Vida
- * @date 2024年11月08日 16:02
- * @description
+ * 业务场景查询DTO
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class BusinessQueryDTO extends Business {

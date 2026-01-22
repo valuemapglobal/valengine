@@ -22,12 +22,10 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * <p>
- * 特征变量属性表 前端控制器
- * </p>
+ * 特征变量属性 控制器
  *
- * @author Vida
- * @since 2025-04-15
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @RequestMapping("/feature-attribute")

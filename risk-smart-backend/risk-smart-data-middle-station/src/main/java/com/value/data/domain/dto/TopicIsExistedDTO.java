@@ -6,9 +6,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 /**
- * @author Vida
- * @date 2023年08月10日 14:42
- * @description 验证主题是否存在
+ * 验证主题是否存在数据传输对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class TopicIsExistedDTO {

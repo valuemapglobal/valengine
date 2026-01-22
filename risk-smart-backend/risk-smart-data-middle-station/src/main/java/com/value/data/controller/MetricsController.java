@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 /**
- * @author Vida
- * @date 2025年04月24日 13:34
- * @description
+ * 分析指标控制器
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @RequestMapping("/metrics")

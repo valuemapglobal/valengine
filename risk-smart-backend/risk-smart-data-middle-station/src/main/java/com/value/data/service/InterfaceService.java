@@ -8,9 +8,10 @@ import com.value.data.domain.entity.InterfaceSourceManage;
 import com.value.data.domain.vo.InterfaceChargingVo;
 
 /**
- * @author Vida
- * @date 2023年08月16日 19:48
- * @description
+ * 接口服务接口
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface InterfaceService {
 

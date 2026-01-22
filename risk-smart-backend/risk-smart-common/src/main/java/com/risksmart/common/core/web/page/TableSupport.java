@@ -5,11 +5,16 @@ import com.risksmart.common.core.utils.ServletUtils;
 
 /**
  * 表格数据处理
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class TableSupport
 {
+    private TableSupport()
+    {
+    }
+
     /**
      * 当前记录起始索引
      */

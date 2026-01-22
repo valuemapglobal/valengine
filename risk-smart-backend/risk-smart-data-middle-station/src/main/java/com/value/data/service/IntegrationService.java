@@ -4,9 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Vida
- * @date 2023年08月21日 11:55
- * @description 联调接口服务
+ * 联调接口服务
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface IntegrationService {
     //如下新增

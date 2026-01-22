@@ -2,8 +2,9 @@ package com.value.decision.common.exception;
 
 /**
  * 自定义异常
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class CustomException extends RuntimeException
 {

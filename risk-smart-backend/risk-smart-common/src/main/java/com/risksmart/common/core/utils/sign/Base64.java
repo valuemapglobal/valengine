@@ -2,8 +2,9 @@ package com.risksmart.common.core.utils.sign;
 
 /**
  * Base64工具类
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public final class Base64
 {

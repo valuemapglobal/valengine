@@ -17,8 +17,9 @@ import com.risksmart.common.core.utils.DateUtils;
 
 /**
  * 反射工具类. 提供调用getter/setter方法, 访问私有变量, 调用私有方法, 获取泛型类型Class, 被AOP过的真实类等工具函数.
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @SuppressWarnings("rawtypes")
 public class ReflectUtils
@@ -29,7 +30,7 @@ public class ReflectUtils
 
     private static final String CGLIB_CLASS_SEPARATOR = "$$";
 
-    private static Logger logger = LoggerFactory.getLogger(ReflectUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(ReflectUtils.class);
 
     /**
      * 调用Getter方法.
@@ -79,7 +80,10 @@ public class ReflectUtils
         Field field = getAccessibleField(obj, fieldName);
         if (field == null)
         {
-            logger.debug("在 [" + obj.getClass() + "] 中，没有找到 [" + fieldName + "] 字段 ");
+            if (obj != null)
+            {
+                logger.debug("在 [{}] 中，没有找到 [{}] 字段", obj.getClass(), fieldName);
+            }
             return null;
         }
         E result = null;
@@ -102,8 +106,10 @@ public class ReflectUtils
         Field field = getAccessibleField(obj, fieldName);
         if (field == null)
         {
-            // throw new IllegalArgumentException("在 [" + obj.getClass() + "] 中，没有找到 [" + fieldName + "] 字段 ");
-            logger.debug("在 [" + obj.getClass() + "] 中，没有找到 [" + fieldName + "] 字段 ");
+            if (obj != null)
+            {
+                logger.debug("在 [{}] 中，没有找到 [{}] 字段", obj.getClass(), fieldName);
+            }
             return;
         }
         try
@@ -154,11 +160,15 @@ public class ReflectUtils
     @SuppressWarnings("unchecked")
     public static <E> E invokeMethodByName(final Object obj, final String methodName, final Object[] args)
     {
-        Method method = getAccessibleMethodByName(obj, methodName, args.length);
+        Object[] invokeArgs = args == null ? new Object[0] : args;
+        Method method = getAccessibleMethodByName(obj, methodName, invokeArgs.length);
         if (method == null)
         {
             // 如果为空不报错，直接返回空。
-            logger.debug("在 [" + obj.getClass() + "] 中，没有找到 [" + methodName + "] 方法 ");
+            if (obj != null)
+            {
+                logger.debug("在 [{}] 中，没有找到 [{}] 方法", obj.getClass(), methodName);
+            }
             return null;
         }
         try
@@ -167,50 +177,50 @@ public class ReflectUtils
             Class<?>[] cs = method.getParameterTypes();
             for (int i = 0; i < cs.length; i++)
             {
-                if (args[i] != null && !args[i].getClass().equals(cs[i]))
+                if (invokeArgs[i] != null && !invokeArgs[i].getClass().equals(cs[i]))
                 {
                     if (cs[i] == String.class)
                     {
-                        args[i] = Convert.toStr(args[i]);
-                        if (StringUtils.endsWith((String) args[i], ".0"))
+                        invokeArgs[i] = Convert.toStr(invokeArgs[i]);
+                        if (StringUtils.endsWith((String) invokeArgs[i], ".0"))
                         {
-                            args[i] = StringUtils.substringBefore((String) args[i], ".0");
+                            invokeArgs[i] = StringUtils.substringBefore((String) invokeArgs[i], ".0");
                         }
                     }
                     else if (cs[i] == Integer.class)
                     {
-                        args[i] = Convert.toInt(args[i]);
+                        invokeArgs[i] = Convert.toInt(invokeArgs[i]);
                     }
                     else if (cs[i] == Long.class)
                     {
-                        args[i] = Convert.toLong(args[i]);
+                        invokeArgs[i] = Convert.toLong(invokeArgs[i]);
                     }
                     else if (cs[i] == Double.class)
                     {
-                        args[i] = Convert.toDouble(args[i]);
+                        invokeArgs[i] = Convert.toDouble(invokeArgs[i]);
                     }
                     else if (cs[i] == Float.class)
                     {
-                        args[i] = Convert.toFloat(args[i]);
+                        invokeArgs[i] = Convert.toFloat(invokeArgs[i]);
                     }
                     else if (cs[i] == Date.class)
                     {
-                        if (args[i] instanceof String)
+                        if (invokeArgs[i] instanceof String)
                         {
-                            args[i] = DateUtils.parseDate(args[i]);
+                            invokeArgs[i] = DateUtils.parseDate(invokeArgs[i]);
                         }
                         else
                         {
-                            args[i] = DateUtil.getJavaDate((Double) args[i]);
+                            invokeArgs[i] = DateUtil.getJavaDate((Double) invokeArgs[i]);
                         }
                     }
                     else if (cs[i] == boolean.class || cs[i] == Boolean.class)
                     {
-                        args[i] = Convert.toBool(args[i]);
+                        invokeArgs[i] = Convert.toBool(invokeArgs[i]);
                     }
                 }
             }
-            return (E) method.invoke(obj, args);
+            return (E) method.invoke(obj, invokeArgs);
         }
         catch (Exception e)
         {

@@ -6,8 +6,9 @@ import java.lang.annotation.*;
 /**
  * 自定义feign注解
  * 添加basePackages路径
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

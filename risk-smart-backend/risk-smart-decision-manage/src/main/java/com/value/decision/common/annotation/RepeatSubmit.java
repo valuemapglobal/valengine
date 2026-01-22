@@ -5,8 +5,8 @@ import java.lang.annotation.*;
 /**
  * 自定义注解防止表单重复提交
  *
- * @author ruoyi
- *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Inherited
 @Target(ElementType.METHOD)

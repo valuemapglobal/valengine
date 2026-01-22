@@ -8,6 +8,8 @@ import java.io.Serializable;
  * 通用响应类
  *
  * @param <T> 数据类型
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class R<T> implements Serializable {

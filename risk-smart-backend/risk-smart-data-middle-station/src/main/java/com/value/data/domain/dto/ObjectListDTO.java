@@ -8,12 +8,10 @@ import jakarta.validation.constraints.*;
 import java.io.Serializable;
 
 /**
- * <p>
- * 分析指标对象表
- * </p>
+ * 分析指标对象列表数据传输对象
  *
- * @author Vida
- * @since 2023-08-12
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @EqualsAndHashCode(callSuper = false)

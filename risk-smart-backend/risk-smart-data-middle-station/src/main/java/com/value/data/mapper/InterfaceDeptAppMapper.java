@@ -4,12 +4,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.value.data.domain.entity.InterfaceDeptApp;
 
 /**
- * <p>
- *  Mapper 接口
- * </p>
+ * Mapper 接口
  *
- * @author Vida
- * @since 2023-12-06
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface InterfaceDeptAppMapper extends BaseMapper<InterfaceDeptApp> {
 

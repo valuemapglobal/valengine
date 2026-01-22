@@ -1,9 +1,10 @@
 package com.value.data.constant;
 
 /**
- * @author Vida
- * @date 2023年08月08日 17:02
- * @description
+ * 类型常量
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class TypeConstant {
     public static final Integer listType = 1;

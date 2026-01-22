@@ -5,14 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Bean 工具类
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class BeanUtils extends org.springframework.beans.BeanUtils
 {
+    private static final Logger log = LoggerFactory.getLogger(BeanUtils.class);
+
     /** Bean方法名中属性名开始的下标 */
     private static final int BEAN_METHOD_PROP_INDEX = 3;
 
@@ -21,6 +26,10 @@ public class BeanUtils extends org.springframework.beans.BeanUtils
 
     /** * 匹配setter方法的正则表达式 */
     private static final Pattern SET_PATTERN = Pattern.compile("set(\\p{javaUpperCase}\\w*)");
+
+    private BeanUtils()
+    {
+    }
 
     /**
      * Bean属性复制工具方法。
@@ -32,11 +41,15 @@ public class BeanUtils extends org.springframework.beans.BeanUtils
     {
         try
         {
+            if (dest == null || src == null)
+            {
+                return;
+            }
             copyProperties(src, dest);
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error("Bean属性拷贝失败", e);
         }
     }
 
@@ -49,7 +62,11 @@ public class BeanUtils extends org.springframework.beans.BeanUtils
     public static List<Method> getSetterMethods(Object obj)
     {
         // setter方法列表
-        List<Method> setterMethods = new ArrayList<Method>();
+        List<Method> setterMethods = new ArrayList<>();
+        if (obj == null)
+        {
+            return setterMethods;
+        }
 
         // 获取所有方法
         Method[] methods = obj.getClass().getMethods();
@@ -78,7 +95,11 @@ public class BeanUtils extends org.springframework.beans.BeanUtils
     public static List<Method> getGetterMethods(Object obj)
     {
         // getter方法列表
-        List<Method> getterMethods = new ArrayList<Method>();
+        List<Method> getterMethods = new ArrayList<>();
+        if (obj == null)
+        {
+            return getterMethods;
+        }
         // 获取所有方法
         Method[] methods = obj.getClass().getMethods();
         // 查找getter方法
@@ -105,6 +126,14 @@ public class BeanUtils extends org.springframework.beans.BeanUtils
 
     public static boolean isMethodPropEquals(String m1, String m2)
     {
+        if (m1 == null || m2 == null)
+        {
+            return false;
+        }
+        if (m1.length() <= BEAN_METHOD_PROP_INDEX || m2.length() <= BEAN_METHOD_PROP_INDEX)
+        {
+            return false;
+        }
         return m1.substring(BEAN_METHOD_PROP_INDEX).equals(m2.substring(BEAN_METHOD_PROP_INDEX));
     }
 }

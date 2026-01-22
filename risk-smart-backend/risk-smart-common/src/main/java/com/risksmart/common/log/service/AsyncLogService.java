@@ -9,8 +9,9 @@ import com.risksmart.system.api.domain.SysOperLog;
 
 /**
  * 异步调用日志服务
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 public class AsyncLogService
@@ -22,8 +23,12 @@ public class AsyncLogService
      * 保存系统日志记录
      */
     @Async
-    public void saveSysLog(SysOperLog sysOperLog) throws Exception
+    public void saveSysLog(SysOperLog sysOperLog)
     {
+        if (sysOperLog == null)
+        {
+            return;
+        }
         remoteLogService.saveLog(sysOperLog, SecurityConstants.INNER);
     }
 }

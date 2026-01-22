@@ -2,8 +2,9 @@ package com.risksmart.common.core.exception;
 
 /**
  * 内部认证异常
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class InnerAuthException extends RuntimeException
 {

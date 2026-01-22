@@ -26,9 +26,10 @@ import java.util.*;
 import java.util.function.Function;
 
 /**
- * @author Vida
- * @date 2025年04月03日 15:37
- * @description
+ * 特征变量服务实现类
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 @RequiredArgsConstructor

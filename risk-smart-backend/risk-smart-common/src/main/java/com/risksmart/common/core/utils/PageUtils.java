@@ -7,8 +7,9 @@ import com.risksmart.common.core.web.page.TableSupport;
 
 /**
  * 分页工具类
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class PageUtils extends PageHelper
 {

@@ -2,8 +2,9 @@ package com.risksmart.common.core.constant;
 
 /**
  * Token的Key常量
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class TokenConstants
 {

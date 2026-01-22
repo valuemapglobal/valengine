@@ -3,9 +3,10 @@ package com.value.data.domain.vo;
 import lombok.Data;
 
 /**
- * @author Vida
- * @date 2024年01月30日 16:37
- * @description
+ * 入参参数视图对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class InputParameterVO {

@@ -2,8 +2,9 @@ package com.value.decision.common.exception.user;
 
 /**
  * 用户密码不正确或不符合规范异常类
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class UserPasswordNotMatchException extends UserException
 {

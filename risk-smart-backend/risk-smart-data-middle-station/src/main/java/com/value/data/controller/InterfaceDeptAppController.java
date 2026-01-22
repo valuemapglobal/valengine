@@ -28,12 +28,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * <p>
- *  前端控制器
- * </p>
+ * 接口部门应用控制器
  *
- * @author Vida
- * @since 2023-12-06
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @RequestMapping("/interfaceDeptApp")

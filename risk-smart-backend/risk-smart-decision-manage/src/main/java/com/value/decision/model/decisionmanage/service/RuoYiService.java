@@ -5,9 +5,10 @@ import com.risksmart.system.domain.SysUser;
 import java.util.List;
 
 /**
- * @author Vida
- * @date 2024年11月14日 10:45
- * @description
+ * 若依服务接口
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface RuoYiService {
     List<Long> getStandardDepts();

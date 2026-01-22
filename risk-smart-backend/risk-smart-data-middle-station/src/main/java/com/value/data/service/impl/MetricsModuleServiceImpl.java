@@ -19,12 +19,10 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 /**
- * <p>
  * 分析指标模块表 服务实现类
- * </p>
  *
- * @author Vida
- * @since 2025-04-23
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 @AllArgsConstructor

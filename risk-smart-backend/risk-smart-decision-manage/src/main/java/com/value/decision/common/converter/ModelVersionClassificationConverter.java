@@ -7,9 +7,10 @@ import com.value.decision.version.domain.ModelVersionClassification;
 import java.util.Date;
 
 /**
- * @author Vida
- * @date 2025年04月02日 13:23
- * @description
+ * 模型版本分类转换器
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class ModelVersionClassificationConverter {
     public static ModelVersionClassification convert(RdeModelAntiFraud rdeModelAntiFraud){

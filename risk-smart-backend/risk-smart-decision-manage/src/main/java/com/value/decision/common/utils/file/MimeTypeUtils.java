@@ -3,7 +3,8 @@ package com.value.decision.common.utils.file;
 /**
  * 媒体类型工具类
  *
- * @author ruoyi
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class MimeTypeUtils
 {

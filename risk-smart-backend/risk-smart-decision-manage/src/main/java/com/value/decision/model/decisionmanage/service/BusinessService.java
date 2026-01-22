@@ -7,12 +7,10 @@ import com.value.decision.common.security.LoginUser;
 import java.util.List;
 
 /**
- * <p>
- * 业务场景表 服务类
- * </p>
+ * 业务场景表服务类
  *
- * @author Vida
- * @since 2024-11-07
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface BusinessService extends IService<Business> {
     List<Business> queryList(Business business, LoginUser loginUser);

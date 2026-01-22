@@ -6,15 +6,20 @@ import com.risksmart.system.api.model.LoginUser;
 
 /**
  * Token 权限验证工具类
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class AuthUtil
 {
     /**
      * 底层的 AuthLogic 对象
      */
-    public static AuthLogic authLogic = new AuthLogic();
+    public static final AuthLogic authLogic = new AuthLogic();
+
+    private AuthUtil()
+    {
+    }
 
     /**
      * 会话注销

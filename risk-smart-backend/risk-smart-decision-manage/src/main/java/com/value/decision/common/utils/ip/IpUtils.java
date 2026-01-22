@@ -8,8 +8,9 @@ import java.net.UnknownHostException;
 
 /**
  * 获取IP方法
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class IpUtils
 {

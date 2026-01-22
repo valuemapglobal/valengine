@@ -8,7 +8,8 @@ import org.springframework.util.Assert;
 /**
  * 公式工具类 - 使用 Apache POI 执行 Excel 公式
  *
- * @author Vida, Austin
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Slf4j
 public class FormulaUtil {

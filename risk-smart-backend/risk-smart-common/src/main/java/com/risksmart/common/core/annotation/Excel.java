@@ -10,8 +10,9 @@ import com.risksmart.common.core.utils.poi.ExcelHandlerAdapter;
 
 /**
  * 自定义导出Excel数据注解
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

@@ -4,8 +4,9 @@ import com.risksmart.common.core.utils.StringUtils;
 
 /**
  * 转义和反转义工具类
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class EscapeUtil
 {

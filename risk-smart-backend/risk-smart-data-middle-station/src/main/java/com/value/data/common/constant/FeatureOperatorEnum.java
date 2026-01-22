@@ -7,9 +7,10 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 /**
- * @author Vida
- * @date 2025年04月18日 16:09
- * @description
+ * 特征变量操作符枚举
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @AllArgsConstructor
 @Getter

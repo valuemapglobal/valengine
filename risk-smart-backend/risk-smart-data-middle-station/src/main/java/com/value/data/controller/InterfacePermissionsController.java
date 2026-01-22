@@ -25,6 +25,12 @@ import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 接口权限控制器
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
+ */
 @RestController
 @RequestMapping("/interfacePermissions")
 @Slf4j(topic = "[InterfacePermissionsController]")

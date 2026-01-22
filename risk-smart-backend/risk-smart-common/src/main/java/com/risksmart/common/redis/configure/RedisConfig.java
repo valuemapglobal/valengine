@@ -11,9 +11,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
- * redis配置
- * 
- * @author ruoyi
+ * Redis配置
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Configuration
 @EnableCaching
@@ -36,6 +37,7 @@ public class RedisConfig extends CachingConfigurerSupport
         // Hash的key也采用StringRedisSerializer的序列化方式
         template.setHashKeySerializer(new StringRedisSerializer());
         template.setHashValueSerializer(serializer);
+        template.setDefaultSerializer(serializer);
 
         template.afterPropertiesSet();
         return template;

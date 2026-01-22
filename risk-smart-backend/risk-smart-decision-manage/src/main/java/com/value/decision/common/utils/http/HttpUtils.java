@@ -28,8 +28,9 @@ import java.security.cert.X509Certificate;
 
 /**
  * 通用http发送方法
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class HttpUtils
 {

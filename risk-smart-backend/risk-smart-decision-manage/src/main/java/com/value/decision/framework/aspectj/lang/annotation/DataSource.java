@@ -6,8 +6,9 @@ import java.lang.annotation.*;
 
 /**
  * 自定义多数据源切换注解
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Target({ ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)

@@ -5,9 +5,10 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * @author Vida
- * @date 2023年08月18日 17:16
- * @description
+ * 树形列表
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class TreeList {

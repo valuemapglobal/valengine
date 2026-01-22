@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.ArrayUtils;
@@ -15,18 +17,21 @@ import com.risksmart.common.core.utils.StringUtils;
 
 /**
  * 文件处理工具类
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class FileUtils
 {
+    private static final Logger log = LoggerFactory.getLogger(FileUtils.class);
+
     /** 字符常量：斜杠 {@code '/'} */
     public static final char SLASH = '/';
 
     /** 字符常量：反斜杠 {@code '\\'} */
     public static final char BACKSLASH = '\\';
 
-    public static String FILENAME_PATTERN = "[a-zA-Z0-9_\\-\\|\\.\\u4e00-\\u9fa5]+";
+    public static final String FILENAME_PATTERN = "[a-zA-Z0-9_\\-\\|\\.\\u4e00-\\u9fa5]+";
 
     /**
      * 输出指定文件的byte数组
@@ -37,7 +42,6 @@ public class FileUtils
      */
     public static void writeBytes(String filePath, OutputStream os) throws IOException
     {
-        FileInputStream fis = null;
         try
         {
             File file = new File(filePath);
@@ -45,12 +49,14 @@ public class FileUtils
             {
                 throw new FileNotFoundException(filePath);
             }
-            fis = new FileInputStream(file);
-            byte[] b = new byte[1024];
-            int length;
-            while ((length = fis.read(b)) > 0)
+            try (FileInputStream fis = new FileInputStream(file))
             {
-                os.write(b, 0, length);
+                byte[] b = new byte[1024];
+                int length;
+                while ((length = fis.read(b)) > 0)
+                {
+                    os.write(b, 0, length);
+                }
             }
         }
         catch (IOException e)
@@ -67,18 +73,7 @@ public class FileUtils
                 }
                 catch (IOException e1)
                 {
-                    e1.printStackTrace();
-                }
-            }
-            if (fis != null)
-            {
-                try
-                {
-                    fis.close();
-                }
-                catch (IOException e1)
-                {
-                    e1.printStackTrace();
+                    log.error("关闭输出流失败", e1);
                 }
             }
         }
@@ -110,7 +105,7 @@ public class FileUtils
      */
     public static boolean isValidFilename(String filename)
     {
-        return filename.matches(FILENAME_PATTERN);
+        return StringUtils.isNotEmpty(filename) && filename.matches(FILENAME_PATTERN);
     }
 
     /**
@@ -121,6 +116,10 @@ public class FileUtils
      */
     public static boolean validateFilePath(String fileUrl)
     {
+        if (StringUtils.isEmpty(fileUrl))
+        {
+            return false;
+        }
         // 禁止目录上跳级别
         if (StringUtils.contains(fileUrl, ".."))
         {
@@ -139,28 +138,32 @@ public class FileUtils
      */
     public static String setFileDownloadHeader(HttpServletRequest request, String fileName) throws UnsupportedEncodingException
     {
+        if (request == null || fileName == null)
+        {
+            return fileName;
+        }
         final String agent = request.getHeader("USER-AGENT");
         String filename = fileName;
         if (agent.contains("MSIE"))
         {
             // IE浏览器
-            filename = URLEncoder.encode(filename, "utf-8");
+            filename = URLEncoder.encode(filename, StandardCharsets.UTF_8.toString());
             filename = filename.replace("+", " ");
         }
         else if (agent.contains("Firefox"))
         {
             // 火狐浏览器
-            filename = new String(fileName.getBytes(), "ISO8859-1");
+            filename = new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
         }
         else if (agent.contains("Chrome"))
         {
             // google浏览器
-            filename = URLEncoder.encode(filename, "utf-8");
+            filename = URLEncoder.encode(filename, StandardCharsets.UTF_8.toString());
         }
         else
         {
             // 其它浏览器
-            filename = URLEncoder.encode(filename, "utf-8");
+            filename = URLEncoder.encode(filename, StandardCharsets.UTF_8.toString());
         }
         return filename;
     }
@@ -225,6 +228,10 @@ public class FileUtils
      */
     public static void setAttachmentResponseHeader(HttpServletResponse response, String realFileName) throws UnsupportedEncodingException
     {
+        if (response == null)
+        {
+            return;
+        }
         String percentEncodedFileName = percentEncode(realFileName);
 
         StringBuilder contentDispositionValue = new StringBuilder();
@@ -247,7 +254,11 @@ public class FileUtils
      */
     public static String percentEncode(String s) throws UnsupportedEncodingException
     {
+        if (StringUtils.isEmpty(s))
+        {
+            return StringUtils.EMPTY;
+        }
         String encode = URLEncoder.encode(s, StandardCharsets.UTF_8.toString());
-        return encode.replaceAll("\\+", "%20");
+        return encode.replace("+", "%20");
     }
 }

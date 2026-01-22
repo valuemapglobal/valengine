@@ -11,11 +11,16 @@ import io.jsonwebtoken.SignatureAlgorithm;
 /**
  * Jwt工具类
  *
- * @author ruoyi
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class JwtUtils
 {
-    public static String secret = TokenConstants.SECRET;
+    private static final String SECRET = TokenConstants.SECRET;
+
+    private JwtUtils()
+    {
+    }
 
     /**
      * 从数据声明生成令牌
@@ -25,7 +30,7 @@ public class JwtUtils
      */
     public static String createToken(Map<String, Object> claims)
     {
-        String token = Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, secret).compact();
+        String token = Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, SECRET).compact();
         return token;
     }
 
@@ -37,7 +42,7 @@ public class JwtUtils
      */
     public static Claims parseToken(String token)
     {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
     }
 
     /**
@@ -118,6 +123,10 @@ public class JwtUtils
      */
     public static String getValue(Claims claims, String key)
     {
+        if (claims == null)
+        {
+            return "";
+        }
         return Convert.toStr(claims.get(key), "");
     }
 }

@@ -5,12 +5,10 @@ import com.value.data.domain.entity.FeatureModuleEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * <p>
  * 特征变量模块表 服务类
- * </p>
  *
- * @author Vida
- * @since 2025-04-15
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface FeatureModuleService extends IService<FeatureModuleEntity> {
     /**

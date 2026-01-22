@@ -7,12 +7,10 @@ import com.value.data.service.InterfaceDeptAppService;
 import org.springframework.stereotype.Service;
 
 /**
- * <p>
- *  服务实现类
- * </p>
+ * 服务实现类
  *
- * @author Vida
- * @since 2023-12-06
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 public class InterfaceDeptAppServiceImpl extends ServiceImpl<InterfaceDeptAppMapper, InterfaceDeptApp> implements InterfaceDeptAppService {

@@ -2,8 +2,9 @@ package com.risksmart.common.core.exception.user;
 
 /**
  * 验证码失效异常类
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class CaptchaExpireException extends UserException
 {

@@ -20,12 +20,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * <p>
  * 分析指标属性表
- * </p>
  *
- * @author Vida
- * @since 2025-04-23
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @EqualsAndHashCode(callSuper = false)

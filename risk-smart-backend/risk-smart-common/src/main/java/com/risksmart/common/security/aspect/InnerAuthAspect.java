@@ -13,8 +13,9 @@ import com.risksmart.common.security.annotation.InnerAuth;
 
 /**
  * 内部服务调用验证处理
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Aspect
 @Component

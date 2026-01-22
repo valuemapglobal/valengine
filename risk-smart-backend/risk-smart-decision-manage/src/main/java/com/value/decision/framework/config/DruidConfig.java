@@ -22,7 +22,8 @@ import java.util.Map;
 /**
  * druid 配置多数据源
  *
- * @author ruoyi
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Configuration
 public class DruidConfig

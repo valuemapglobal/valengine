@@ -8,9 +8,10 @@ import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 
 /**
- * @author Vida
- * @date 2023年08月15日 15:47
- * @description
+ * 验证规则是否存在数据传输对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class RuleIsExistedDTO implements Serializable {

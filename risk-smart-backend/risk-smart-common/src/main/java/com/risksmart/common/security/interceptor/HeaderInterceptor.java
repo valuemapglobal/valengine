@@ -18,7 +18,8 @@ import com.risksmart.system.api.model.LoginUser;
  * 自定义请求头拦截器，将Header数据封装到线程变量中方便获取
  * 注意：此拦截器会同时验证当前用户有效期自动刷新有效期
  *
- * @author ruoyi
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class HeaderInterceptor implements AsyncHandlerInterceptor
 {
@@ -27,6 +28,10 @@ public class HeaderInterceptor implements AsyncHandlerInterceptor
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception
     {
+        if (request == null)
+        {
+            return true;
+        }
         if (!(handler instanceof HandlerMethod))
         {
             return true;
@@ -36,31 +41,32 @@ public class HeaderInterceptor implements AsyncHandlerInterceptor
         SecurityContextHolder.setUserName(ServletUtils.getHeader(request, SecurityConstants.DETAILS_USERNAME));
         SecurityContextHolder.setUserKey(ServletUtils.getHeader(request, SecurityConstants.USER_KEY));
 
-        String token = SecurityUtils.getToken();
-        log.debug("HeaderInterceptor - token: {}", token != null ? token.substring(0, Math.min(20, token.length())) + "..." : "null");
+        String token = SecurityUtils.getToken(request);
 
         if (StringUtils.isNotEmpty(token))
         {
             LoginUser loginUser = AuthUtil.getLoginUser(token);
-            log.debug("HeaderInterceptor - loginUser: {}, userid: {}",
-                loginUser != null ? "found" : "null",
-                loginUser != null ? loginUser.getUserid() : "N/A");
-
             if (StringUtils.isNotNull(loginUser))
             {
                 AuthUtil.verifyLoginUserExpire(loginUser);
                 SecurityContextHolder.set(SecurityConstants.LOGIN_USER, loginUser);
                 // 从 LoginUser 中设置用户信息到 SecurityContextHolder
-                if (loginUser.getUserid() != null) {
+                if (loginUser.getUserid() != null)
+                {
                     SecurityContextHolder.setUserId(String.valueOf(loginUser.getUserid()));
-                    log.debug("HeaderInterceptor - set userId to: {}", loginUser.getUserid());
                 }
-                if (StringUtils.isNotEmpty(loginUser.getUsername())) {
+                if (StringUtils.isNotEmpty(loginUser.getUsername()))
+                {
                     SecurityContextHolder.setUserName(loginUser.getUsername());
                 }
-                if (StringUtils.isNotEmpty(loginUser.getToken())) {
+                if (StringUtils.isNotEmpty(loginUser.getToken()))
+                {
                     SecurityContextHolder.setUserKey(loginUser.getToken());
                 }
+            }
+            else
+            {
+                log.debug("HeaderInterceptor - loginUser not found for token");
             }
         }
         return true;

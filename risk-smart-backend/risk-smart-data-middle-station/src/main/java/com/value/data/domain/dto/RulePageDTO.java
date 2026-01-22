@@ -6,9 +6,10 @@ import jakarta.validation.constraints.*;
 import java.io.Serializable;
 
 /**
- * @author Vida
- * @date 2023年08月15日 9:54
- * @description
+ * 规则分页查询数据传输对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class RulePageDTO implements Serializable {

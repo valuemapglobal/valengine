@@ -2,9 +2,9 @@ package com.value.decision.framework.aspectj.lang.enums;
 
 /**
  * 操作状态
- * 
- * @author ruoyi
  *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public enum BusinessStatus
 {

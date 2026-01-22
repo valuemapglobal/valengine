@@ -67,7 +67,8 @@ import com.risksmart.common.core.utils.reflect.ReflectUtils;
 /**
  * Excel相关处理
  *
- * @author ruoyi
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class ExcelUtil<T>
 {

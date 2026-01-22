@@ -22,7 +22,8 @@ import com.risksmart.common.core.web.page.TableSupport;
 /**
  * web层通用数据处理
  *
- * @author ruoyi
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class BaseController
 {

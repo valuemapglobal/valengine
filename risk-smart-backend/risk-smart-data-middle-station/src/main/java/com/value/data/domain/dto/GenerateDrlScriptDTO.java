@@ -5,9 +5,10 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * @author Vida
- * @date 2023年08月22日 13:47
- * @description
+ * 生成DRL脚本数据传输对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class GenerateDrlScriptDTO {

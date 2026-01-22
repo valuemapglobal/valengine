@@ -4,6 +4,9 @@ import java.util.HashMap;
 
 /**
  * 统一API响应结果
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class AjaxResult extends HashMap<String, Object> {
 
@@ -26,6 +29,9 @@ public class AjaxResult extends HashMap<String, Object> {
 
     /** 警告状态码 */
     public static final int WARN = 601;
+
+    private static final String DEFAULT_SUCCESS_MESSAGE = "操作成功";
+    private static final String DEFAULT_ERROR_MESSAGE = "操作失败";
 
     /**
      * 初始化一个新创建的 AjaxResult 对象
@@ -63,14 +69,14 @@ public class AjaxResult extends HashMap<String, Object> {
      * 返回成功消息
      */
     public static AjaxResult success() {
-        return AjaxResult.success("操作成功");
+        return AjaxResult.success(DEFAULT_SUCCESS_MESSAGE);
     }
 
     /**
      * 返回成功数据
      */
     public static AjaxResult success(Object data) {
-        return AjaxResult.success("操作成功", data);
+        return AjaxResult.success(DEFAULT_SUCCESS_MESSAGE, data);
     }
 
     /**
@@ -91,7 +97,7 @@ public class AjaxResult extends HashMap<String, Object> {
      * 返回错误消息
      */
     public static AjaxResult error() {
-        return AjaxResult.error("操作失败");
+        return AjaxResult.error(DEFAULT_ERROR_MESSAGE);
     }
 
     /**

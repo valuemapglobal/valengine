@@ -9,9 +9,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
 
 /**
- * @author Vida
- * @date 2025年04月24日 9:21
- * @description
+ * JSON转字符串反序列化器
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class JSON2StringDeserializer extends JsonDeserializer<String>{
     @Override

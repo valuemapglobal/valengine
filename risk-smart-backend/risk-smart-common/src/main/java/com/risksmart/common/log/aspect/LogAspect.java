@@ -33,8 +33,9 @@ import com.risksmart.system.api.domain.SysOperLog;
 
 /**
  * 操作日志记录处理
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Aspect
 @Component
@@ -96,7 +97,11 @@ public class LogAspect
             // 请求的地址
             String ip = IpUtils.getIpAddr();
             operLog.setOperIp(ip);
-            operLog.setOperUrl(StringUtils.substring(ServletUtils.getRequest().getRequestURI(), 0, 255));
+            HttpServletRequest request = ServletUtils.getRequest();
+            if (request != null)
+            {
+                operLog.setOperUrl(StringUtils.substring(request.getRequestURI(), 0, 255));
+            }
             String username = SecurityUtils.getUsername();
             if (StringUtils.isNotBlank(username))
             {
@@ -113,11 +118,18 @@ public class LogAspect
             String methodName = joinPoint.getSignature().getName();
             operLog.setMethod(className + "." + methodName + "()");
             // 设置请求方式
-            operLog.setRequestMethod(ServletUtils.getRequest().getMethod());
+            if (request != null)
+            {
+                operLog.setRequestMethod(request.getMethod());
+            }
             // 处理设置注解上的参数
             getControllerMethodDescription(joinPoint, controllerLog, operLog, jsonResult);
             // 设置消耗时间
-            operLog.setCostTime(System.currentTimeMillis() - TIME_THREADLOCAL.get());
+            Long startTime = TIME_THREADLOCAL.get();
+            if (startTime != null)
+            {
+                operLog.setCostTime(System.currentTimeMillis() - startTime);
+            }
             // 保存数据库
             asyncLogService.saveSysLog(operLog);
         }
@@ -125,7 +137,7 @@ public class LogAspect
         {
             // 记录本地异常日志
             log.error("操作日志记录异常, 请求URI: {}, 异常信息: {}",
-                    ServletUtils.getRequest().getRequestURI(), exp.getMessage(), exp);
+                    ServletUtils.getRequest() == null ? "" : ServletUtils.getRequest().getRequestURI(), exp.getMessage(), exp);
         }
         finally
         {
@@ -170,7 +182,8 @@ public class LogAspect
     private void setRequestValue(JoinPoint joinPoint, SysOperLog operLog, String[] excludeParamNames) throws Exception
     {
         String requestMethod = operLog.getRequestMethod();
-        Map<?, ?> paramsMap = ServletUtils.getParamMap(ServletUtils.getRequest());
+        HttpServletRequest request = ServletUtils.getRequest();
+        Map<?, ?> paramsMap = request == null ? null : ServletUtils.getParamMap(request);
         if (StringUtils.isEmpty(paramsMap) && StringUtils.equalsAny(requestMethod, HttpMethod.PUT.name(), HttpMethod.POST.name(), HttpMethod.DELETE.name()))
         {
             String params = argsArrayToString(joinPoint.getArgs(), excludeParamNames);

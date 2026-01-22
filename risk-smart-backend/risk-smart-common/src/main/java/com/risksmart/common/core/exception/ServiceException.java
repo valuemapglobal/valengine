@@ -4,6 +4,9 @@ import lombok.Getter;
 
 /**
  * 业务异常
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Getter
 public class ServiceException extends RuntimeException {

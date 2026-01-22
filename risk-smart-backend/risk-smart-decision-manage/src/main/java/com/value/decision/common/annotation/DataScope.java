@@ -5,7 +5,8 @@ import java.lang.annotation.*;
 /**
  * 数据权限过滤注解
  *
- * @author ruoyi
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

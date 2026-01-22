@@ -7,8 +7,9 @@ import java.util.Map;
 
 /**
  * 动态数据源
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class DynamicDataSource extends AbstractRoutingDataSource
 {

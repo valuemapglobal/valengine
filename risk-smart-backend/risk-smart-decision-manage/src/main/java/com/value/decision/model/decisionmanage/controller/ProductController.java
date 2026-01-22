@@ -21,12 +21,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * <p>
  * 产品表 前端控制器
- * </p>
  *
- * @author Vida
- * @since 2024-11-07
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @AllArgsConstructor

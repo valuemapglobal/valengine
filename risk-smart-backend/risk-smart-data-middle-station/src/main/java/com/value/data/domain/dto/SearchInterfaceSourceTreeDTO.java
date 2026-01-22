@@ -6,9 +6,10 @@ import com.value.data.domain.entity.InterfaceSourceManage;
 import lombok.Data;
 
 /**
- * @author Vida
- * @date 2025年04月18日 13:39
- * @description
+ * 搜索接口数据源树形结构数据传输对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class SearchInterfaceSourceTreeDTO {

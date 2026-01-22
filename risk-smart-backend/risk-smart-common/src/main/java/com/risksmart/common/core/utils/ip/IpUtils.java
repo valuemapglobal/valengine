@@ -8,11 +8,24 @@ import com.risksmart.common.core.utils.StringUtils;
 
 /**
  * 获取IP方法
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class IpUtils
 {
+    private static final String UNKNOWN = "unknown";
+    private static final String LOCALHOST_IPV4 = "127.0.0.1";
+    private static final String LOCALHOST_IPV6 = "0:0:0:0:0:0:0:1";
+    private static final String HEADER_X_FORWARDED_FOR = "x-forwarded-for";
+    private static final String HEADER_PROXY_CLIENT_IP = "Proxy-Client-IP";
+    private static final String HEADER_X_FORWARDED_FOR_UPPER = "X-Forwarded-For";
+    private static final String HEADER_WL_PROXY_CLIENT_IP = "WL-Proxy-Client-IP";
+    private static final String HEADER_X_REAL_IP = "X-Real-IP";
+
+    private IpUtils()
+    {
+    }
     public final static String REGX_0_255 = "(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]\\d|\\d)";
     // 匹配 ip
     public final static String REGX_IP = "((" + REGX_0_255 + "\\.){3}" + REGX_0_255 + ")";
@@ -40,32 +53,32 @@ public class IpUtils
     {
         if (request == null)
         {
-            return "unknown";
+            return UNKNOWN;
         }
-        String ip = request.getHeader("x-forwarded-for");
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
+        String ip = request.getHeader(HEADER_X_FORWARDED_FOR);
+        if (StringUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip))
         {
-            ip = request.getHeader("Proxy-Client-IP");
+            ip = request.getHeader(HEADER_PROXY_CLIENT_IP);
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
+        if (StringUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip))
         {
-            ip = request.getHeader("X-Forwarded-For");
+            ip = request.getHeader(HEADER_X_FORWARDED_FOR_UPPER);
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
+        if (StringUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip))
         {
-            ip = request.getHeader("WL-Proxy-Client-IP");
+            ip = request.getHeader(HEADER_WL_PROXY_CLIENT_IP);
         }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
+        if (StringUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip))
         {
-            ip = request.getHeader("X-Real-IP");
+            ip = request.getHeader(HEADER_X_REAL_IP);
         }
 
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
+        if (StringUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip))
         {
             ip = request.getRemoteAddr();
         }
 
-        return "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : getMultistageReverseProxyIp(ip);
+        return LOCALHOST_IPV6.equals(ip) ? LOCALHOST_IPV4 : getMultistageReverseProxyIp(ip);
     }
 
     /**
@@ -77,7 +90,7 @@ public class IpUtils
     public static boolean internalIp(String ip)
     {
         byte[] addr = textToNumericFormatV4(ip);
-        return internalIp(addr) || "127.0.0.1".equals(ip);
+        return internalIp(addr) || LOCALHOST_IPV4.equals(ip);
     }
 
     /**
@@ -131,7 +144,7 @@ public class IpUtils
      */
     public static byte[] textToNumericFormatV4(String text)
     {
-        if (text.length() == 0)
+        if (StringUtils.isEmpty(text))
         {
             return null;
         }
@@ -225,7 +238,7 @@ public class IpUtils
         catch (UnknownHostException e)
         {
         }
-        return "127.0.0.1";
+        return LOCALHOST_IPV4;
     }
 
     /**
@@ -242,7 +255,7 @@ public class IpUtils
         catch (UnknownHostException e)
         {
         }
-        return "未知";
+        return UNKNOWN;
     }
 
     /**
@@ -253,6 +266,10 @@ public class IpUtils
      */
     public static String getMultistageReverseProxyIp(String ip)
     {
+        if (StringUtils.isEmpty(ip))
+        {
+            return StringUtils.EMPTY;
+        }
         // 多级反向代理检测
         if (ip != null && ip.indexOf(",") > 0)
         {
@@ -301,8 +318,16 @@ public class IpUtils
      */
     public static boolean ipIsInWildCardNoCheck(String ipWildCard, String ip)
     {
+        if (StringUtils.isEmpty(ipWildCard) || StringUtils.isEmpty(ip))
+        {
+            return false;
+        }
         String[] s1 = ipWildCard.split("\\.");
         String[] s2 = ip.split("\\.");
+        if (s1.length != s2.length)
+        {
+            return false;
+        }
         boolean isMatchedSeg = true;
         for (int i = 0; i < s1.length && !s1[i].equals("*"); i++)
         {
@@ -328,10 +353,22 @@ public class IpUtils
      */
     public static boolean ipIsInNetNoCheck(String iparea, String ip)
     {
+        if (StringUtils.isEmpty(iparea) || StringUtils.isEmpty(ip))
+        {
+            return false;
+        }
         int idx = iparea.indexOf('-');
+        if (idx <= 0 || idx >= iparea.length() - 1)
+        {
+            return false;
+        }
         String[] sips = iparea.substring(0, idx).split("\\.");
         String[] sipe = iparea.substring(idx + 1).split("\\.");
         String[] sipt = ip.split("\\.");
+        if (sips.length != 4 || sipe.length != 4 || sipt.length != 4)
+        {
+            return false;
+        }
         long ips = 0L, ipe = 0L, ipt = 0L;
         for (int i = 0; i < 4; ++i)
         {

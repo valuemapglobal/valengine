@@ -2,9 +2,9 @@ package com.risksmart.common.security.annotation;
 
 /**
  * 权限注解的验证模式
- * 
- * @author ruoyi
  *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public enum Logical
 {

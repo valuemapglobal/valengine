@@ -4,9 +4,10 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
- * @author Vida
- * @date 2025年03月19日 13:56
- * @description
+ * HTTP响应结果
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @Accessors(chain = true)

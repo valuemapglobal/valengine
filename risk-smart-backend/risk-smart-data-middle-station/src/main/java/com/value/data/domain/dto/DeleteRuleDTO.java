@@ -7,9 +7,10 @@ import jakarta.validation.constraints.Pattern;
 import java.io.Serializable;
 
 /**
- * @author Vida
- * @date 2023年08月14日 20:23
- * @description
+ * 删除规则数据传输对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class DeleteRuleDTO implements Serializable {

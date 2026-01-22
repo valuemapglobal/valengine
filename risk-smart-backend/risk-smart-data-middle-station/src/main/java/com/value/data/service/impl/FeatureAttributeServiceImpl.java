@@ -12,12 +12,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 /**
- * <p>
  * 特征变量属性表 服务实现类
- * </p>
  *
- * @author Vida
- * @since 2025-04-15
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 @AllArgsConstructor

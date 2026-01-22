@@ -17,8 +17,9 @@ import java.io.IOException;
 
 /**
  * 文件上传工具类
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Slf4j
 public class FileUploadUtils

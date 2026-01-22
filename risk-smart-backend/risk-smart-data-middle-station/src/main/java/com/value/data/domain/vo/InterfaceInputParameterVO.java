@@ -5,9 +5,10 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * @author Vida
- * @date 2023年12月19日 11:11
- * @description
+ * 接口入参参数视图对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class InterfaceInputParameterVO {

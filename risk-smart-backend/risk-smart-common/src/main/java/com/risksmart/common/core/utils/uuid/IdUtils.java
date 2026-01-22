@@ -2,11 +2,16 @@ package com.risksmart.common.core.utils.uuid;
 
 /**
  * ID生成器工具类
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class IdUtils
 {
+    private IdUtils()
+    {
+    }
+
     /**
      * 获取随机UUID
      * 

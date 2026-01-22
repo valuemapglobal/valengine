@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author Vida
- * @date 2025年03月31日 17:42
- * @description 决策策略专用
+ * 决策策略控制器
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @RequestMapping("/decision")

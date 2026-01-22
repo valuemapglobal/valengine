@@ -8,8 +8,9 @@ import com.risksmart.common.core.utils.StringUtils;
 
 /**
  * 自定义xss校验注解实现
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class XssValidator implements ConstraintValidator<Xss, String>
 {

@@ -6,9 +6,10 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * @author Vida
- * @date 2023年08月14日 11:30
- * @description
+ * 分类列表分页视图对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class CategoryListPageVO implements Serializable {

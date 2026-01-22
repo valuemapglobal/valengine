@@ -16,9 +16,10 @@ import com.value.data.domain.entity.InterfaceSourceManage;
 import java.util.List;
 
 /**
- * @author Vida
- * @date 2025年03月19日 13:20
- * @description
+ * Wrapper转换器
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class WrapperConverter {
     public static Wrapper<InterfaceManage> convert(InterfaceQueryDTO dto ){

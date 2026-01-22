@@ -6,7 +6,8 @@ import java.util.Set;
 /**
  * 用户信息
  *
- * @author ruoyi
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class LoginUser implements Serializable
 {

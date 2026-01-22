@@ -45,6 +45,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+/**
+ * 接口请求控制器
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
+ */
 @RestController
 @RequestMapping("/interfaceRequest")
 @Slf4j(topic = "[InterfaceRequestController]")

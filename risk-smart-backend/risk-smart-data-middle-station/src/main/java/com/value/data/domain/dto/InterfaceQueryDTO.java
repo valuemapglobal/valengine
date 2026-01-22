@@ -6,9 +6,10 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
 /**
- * @author Vida
- * @date 2025年03月19日 11:03
- * @description
+ * 接口查询数据传输对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class InterfaceQueryDTO {

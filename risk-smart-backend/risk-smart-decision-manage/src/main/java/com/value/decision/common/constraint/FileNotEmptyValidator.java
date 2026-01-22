@@ -6,9 +6,10 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 /**
- * @author Vida
- * @date 2025年03月12日 15:01
- * @description
+ * 文件非空校验器
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class FileNotEmptyValidator implements ConstraintValidator<FileNotEmpty, MultipartFile> {
 

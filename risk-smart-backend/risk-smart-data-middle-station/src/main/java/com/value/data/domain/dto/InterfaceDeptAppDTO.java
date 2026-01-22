@@ -11,12 +11,10 @@ import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
- * <p>
- * 
- * </p>
+ * 接口部门应用DTO
  *
- * @author Vida
- * @since 2023-12-06
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @EqualsAndHashCode(callSuper = false)

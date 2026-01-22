@@ -9,9 +9,10 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 /**
- * @author Vida
- * @date 2025年03月05日 16:26
- * @description
+ * 决策管理服务接口
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface DecisionManageService {
     /**

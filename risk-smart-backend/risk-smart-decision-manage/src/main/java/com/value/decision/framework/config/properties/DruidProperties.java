@@ -6,8 +6,9 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * druid 配置属性
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Configuration
 public class DruidProperties

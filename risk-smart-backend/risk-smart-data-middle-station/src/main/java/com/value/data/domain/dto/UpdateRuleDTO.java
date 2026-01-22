@@ -10,9 +10,10 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * @author Vida
- * @date 2023年08月14日 19:28
- * @description
+ * 更新规则数据传输对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class UpdateRuleDTO implements Serializable {

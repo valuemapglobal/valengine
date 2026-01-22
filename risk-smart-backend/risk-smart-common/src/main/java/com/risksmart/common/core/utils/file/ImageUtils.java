@@ -12,22 +12,31 @@ import org.slf4j.LoggerFactory;
 /**
  * 图片处理工具类
  *
- * @author ruoyi
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class ImageUtils
 {
     private static final Logger log = LoggerFactory.getLogger(ImageUtils.class);
+
+    private ImageUtils()
+    {
+    }
 
     public static byte[] getImage(String imagePath)
     {
         InputStream is = getFile(imagePath);
         try
         {
+            if (is == null)
+            {
+                return null;
+            }
             return IOUtils.toByteArray(is);
         }
         catch (Exception e)
         {
-            log.error("图片加载异常 {}", e);
+            log.error("图片加载异常", e);
             return null;
         }
         finally
@@ -41,12 +50,16 @@ public class ImageUtils
         try
         {
             byte[] result = readFile(imagePath);
+            if (result == null)
+            {
+                return null;
+            }
             result = Arrays.copyOf(result, result.length);
             return new ByteArrayInputStream(result);
         }
         catch (Exception e)
         {
-            log.error("获取图片异常 {}", e);
+            log.error("获取图片异常", e);
         }
         return null;
     }
@@ -62,6 +75,10 @@ public class ImageUtils
         InputStream in = null;
         try
         {
+            if (url == null || url.isEmpty())
+            {
+                return null;
+            }
             // 网络地址
             URL urlObj = new URL(url);
             URLConnection urlConnection = urlObj.openConnection();
@@ -73,7 +90,7 @@ public class ImageUtils
         }
         catch (Exception e)
         {
-            log.error("访问文件异常 {}", e);
+            log.error("访问文件异常", e);
             return null;
         }
         finally

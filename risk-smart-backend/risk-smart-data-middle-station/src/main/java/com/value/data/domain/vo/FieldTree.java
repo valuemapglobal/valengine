@@ -3,9 +3,10 @@ package com.value.data.domain.vo;
 import lombok.Data;
 
 /**
- * @author Vida
- * @date 2023年08月21日 10:28
- * @description
+ * 字段树形结构视图对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class FieldTree extends TreeList{

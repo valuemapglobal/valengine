@@ -5,7 +5,10 @@ import com.risksmart.common.core.utils.DateUtils;
 import com.risksmart.common.core.utils.StringUtils;
 
 /**
- * @author ruoyi 序列生成类
+ * 序列生成类
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class Seq
 {

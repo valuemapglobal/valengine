@@ -2,8 +2,9 @@ package com.risksmart.common.log.enums;
 
 /**
  * 业务操作类型
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public enum BusinessType
 {

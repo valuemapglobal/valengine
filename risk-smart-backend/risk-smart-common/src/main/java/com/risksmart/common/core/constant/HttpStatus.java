@@ -2,8 +2,9 @@ package com.risksmart.common.core.constant;
 
 /**
  * 返回状态码
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class HttpStatus
 {

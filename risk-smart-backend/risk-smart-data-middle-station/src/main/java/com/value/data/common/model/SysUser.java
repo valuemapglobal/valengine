@@ -8,8 +8,9 @@ import java.util.List;
 
 /**
  * 用户对象 sys_user
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class SysUser extends BaseEntity
 {

@@ -7,8 +7,9 @@ import jakarta.validation.Validator;
 
 /**
  * bean对象属性验证
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class BeanValidators
 {

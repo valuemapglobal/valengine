@@ -11,8 +11,9 @@ import com.risksmart.common.core.utils.StringUtils;
 
 /**
  * 类型转换器
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class Convert
 {

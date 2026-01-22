@@ -7,8 +7,9 @@ import java.security.MessageDigest;
 
 /**
  * Md5加密方法
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class Md5Utils
 {

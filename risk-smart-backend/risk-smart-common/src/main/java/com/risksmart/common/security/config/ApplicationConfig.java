@@ -7,7 +7,8 @@ import org.springframework.context.annotation.Bean;
 /**
  * 系统配置
  *
- * @author ruoyi
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class ApplicationConfig
 {

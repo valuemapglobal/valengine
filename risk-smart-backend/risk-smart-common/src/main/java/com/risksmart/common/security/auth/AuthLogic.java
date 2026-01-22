@@ -20,8 +20,9 @@ import com.risksmart.system.api.model.LoginUser;
 
 /**
  * Token 权限验证，逻辑实现类
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class AuthLogic
 {

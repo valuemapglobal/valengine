@@ -23,12 +23,10 @@ import jakarta.annotation.Resource;
 import java.util.List;
 
 /**
- * <p>
  * 业务场景表 前端控制器
- * </p>
  *
- * @author Vida
- * @since 2024-11-07
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @RequestMapping("/business")

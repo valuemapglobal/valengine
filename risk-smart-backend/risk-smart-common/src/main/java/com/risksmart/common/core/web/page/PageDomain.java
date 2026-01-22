@@ -4,8 +4,9 @@ import com.risksmart.common.core.utils.StringUtils;
 
 /**
  * 分页数据
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class PageDomain
 {

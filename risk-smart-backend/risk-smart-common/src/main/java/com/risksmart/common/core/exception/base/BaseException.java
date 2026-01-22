@@ -2,8 +2,9 @@ package com.risksmart.common.core.exception.base;
 
 /**
  * 基础异常
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class BaseException extends RuntimeException
 {

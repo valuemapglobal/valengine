@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * @author Vida
- * @date 2025年04月18日 13:33
- * @description
+ * 接口数据源控制器
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @RequestMapping("/interfaceSource")

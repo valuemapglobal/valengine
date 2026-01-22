@@ -6,8 +6,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 角色表 sys_role
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class SysRole extends BaseEntity
 {

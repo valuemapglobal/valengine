@@ -2,8 +2,9 @@ package com.value.decision.common.exception.file;
 
 /**
  * 文件名称超长限制异常类
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class FileNameLengthLimitExceededException extends FileException
 {

@@ -6,9 +6,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 /**
- * @author Vida
- * @date 2023年08月10日 14:21
- * @description
+ * 查询单个主题数据传输对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class FindOneTopicDTO {

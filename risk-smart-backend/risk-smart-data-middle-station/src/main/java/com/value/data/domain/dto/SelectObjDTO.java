@@ -3,9 +3,10 @@ package com.value.data.domain.dto;
 import lombok.Data;
 
 /**
- * @author Vida
- * @date 2023年08月22日 13:56
- * @description 选择的元数据或特征变量对象
+ * 选择的元数据或特征变量对象数据传输对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class SelectObjDTO {

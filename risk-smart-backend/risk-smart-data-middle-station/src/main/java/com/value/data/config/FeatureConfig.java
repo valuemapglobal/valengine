@@ -8,9 +8,10 @@ import org.springframework.context.annotation.Configuration;
 import java.util.concurrent.Executors;
 
 /**
- * @author Vida
- * @date 2025年04月03日 17:27
- * @description
+ * 特征变量配置
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Configuration
 public class FeatureConfig {

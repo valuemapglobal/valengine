@@ -51,6 +51,12 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+/**
+ * 接口管理控制器
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
+ */
 @RestController
 @RequestMapping("/interfaceManage")
 @Slf4j(topic = "[InterfaceManageController]")

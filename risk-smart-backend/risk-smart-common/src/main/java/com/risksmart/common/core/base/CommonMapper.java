@@ -3,10 +3,11 @@ package com.risksmart.common.core.base;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
- * 通用mapper可自定义
+ * 通用Mapper基类
  *
- * @author Felix Fan
- * @param <T>
+ * @param <T> 实体类型
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface CommonMapper<T> extends BaseMapper<T> {
 

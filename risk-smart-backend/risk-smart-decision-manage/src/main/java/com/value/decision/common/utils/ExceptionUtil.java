@@ -7,9 +7,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 /**
- * 错误信息处理类。
+ * 错误信息处理类
  *
- * @author ruoyi
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class ExceptionUtil
 {

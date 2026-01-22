@@ -6,9 +6,10 @@ import com.value.data.domain.entity.FeatureModuleEntity;
 import java.util.Map;
 
 /**
- * @author Vida
- * @date 2025年04月03日 15:01
- * @description
+ * 特征变量服务接口
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface FeatureVariableService {
     Map<String,String> getScripts(FeatureModuleEntity featureModuleEntity);

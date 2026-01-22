@@ -2,8 +2,9 @@ package com.value.decision.framework.aspectj.lang.enums;
 
 /**
  * 数据源
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public enum DataSourceType
 {

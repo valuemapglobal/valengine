@@ -11,11 +11,15 @@ import com.risksmart.system.api.model.LoginUser;
 
 /**
  * 权限获取工具类
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class SecurityUtils
 {
+    private static final Long ADMIN_ID = 1L;
+    private static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+
     /**
      * 获取用户ID
      */
@@ -61,6 +65,10 @@ public class SecurityUtils
      */
     public static String getToken(HttpServletRequest request)
     {
+        if (request == null)
+        {
+            return null;
+        }
         // 从header获取token标识
         String token = request.getHeader(SecurityConstants.AUTHORIZATION_HEADER);
         return replaceTokenPrefix(token);
@@ -72,9 +80,13 @@ public class SecurityUtils
     public static String replaceTokenPrefix(String token)
     {
         // 如果前端设置了令牌前缀，则裁剪掉前缀
-        if (StringUtils.isNotEmpty(token) && token.startsWith(TokenConstants.PREFIX))
+        if (StringUtils.isEmpty(token))
         {
-            token = token.replaceFirst(TokenConstants.PREFIX, "");
+            return token;
+        }
+        if (token.startsWith(TokenConstants.PREFIX))
+        {
+            token = token.substring(TokenConstants.PREFIX.length());
         }
         return token;
     }
@@ -87,7 +99,7 @@ public class SecurityUtils
      */
     public static boolean isAdmin(Long userId)
     {
-        return userId != null && 1L == userId;
+        return ADMIN_ID.equals(userId);
     }
 
     /**
@@ -98,8 +110,7 @@ public class SecurityUtils
      */
     public static String encryptPassword(String password)
     {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        return passwordEncoder.encode(password);
+        return PASSWORD_ENCODER.encode(password);
     }
 
     /**
@@ -111,7 +122,6 @@ public class SecurityUtils
      */
     public static boolean matchesPassword(String rawPassword, String encodedPassword)
     {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        return passwordEncoder.matches(rawPassword, encodedPassword);
+        return PASSWORD_ENCODER.matches(rawPassword, encodedPassword);
     }
 }

@@ -5,9 +5,10 @@ import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
 
 /**
- * @author Vida
- * @date 2024年01月30日 17:44
- * @description
+ * 查询入参参数列表数据传输对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class ListInputParameterDTO {

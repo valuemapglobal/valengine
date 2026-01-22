@@ -11,12 +11,10 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * <p>
- * 分析指标分类表
- * </p>
+ * 更新分析指标分类数据传输对象
  *
- * @author Vida
- * @since 2023-08-12
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @EqualsAndHashCode(callSuper = false)

@@ -13,8 +13,8 @@ import java.util.Date;
 /**
  * 风险变量主题表
  *
- * @author Vida
- * @since 2023-08-08
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @EqualsAndHashCode(callSuper = false)

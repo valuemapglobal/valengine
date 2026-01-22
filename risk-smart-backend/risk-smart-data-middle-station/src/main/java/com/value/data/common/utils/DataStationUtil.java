@@ -19,9 +19,10 @@ import org.springframework.util.Assert;
 import java.util.*;
 
 /**
- * @author Vida
- * @date 2025年04月03日 11:38
- * @description
+ * 数据中台工具类
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Slf4j
 public class DataStationUtil {

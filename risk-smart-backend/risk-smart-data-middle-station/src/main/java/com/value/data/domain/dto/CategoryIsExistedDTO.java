@@ -6,9 +6,10 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 /**
- * @author Vida
- * @date 2023年08月14日 13:36
- * @description
+ * 分类是否存在DTO
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class CategoryIsExistedDTO {

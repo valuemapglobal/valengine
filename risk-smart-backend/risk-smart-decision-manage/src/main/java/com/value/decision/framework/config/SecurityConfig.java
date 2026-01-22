@@ -9,8 +9,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
- * Decision Manage Security Configuration
- * Permits all requests as authentication is handled by gateway
+ * 决策管理服务安全配置
+ * 允许所有请求通过，认证由网关处理
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Configuration
 @EnableWebSecurity

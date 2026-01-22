@@ -2,8 +2,9 @@ package com.risksmart.common.core.constant;
 
 /**
  * 代码生成通用常量
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class GenConstants
 {

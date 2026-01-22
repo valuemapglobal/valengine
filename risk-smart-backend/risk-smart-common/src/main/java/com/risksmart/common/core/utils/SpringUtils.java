@@ -9,14 +9,28 @@ import org.springframework.stereotype.Component;
 
 /**
  * spring工具类 方便在非spring管理环境中获取bean
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Component
 public final class SpringUtils implements BeanFactoryPostProcessor
 {
     /** Spring应用上下文环境 */
     private static ConfigurableListableBeanFactory beanFactory;
+
+    private SpringUtils()
+    {
+    }
+
+    private static ConfigurableListableBeanFactory getBeanFactory()
+    {
+        if (beanFactory == null)
+        {
+            throw new IllegalStateException("Spring BeanFactory尚未初始化");
+        }
+        return beanFactory;
+    }
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException
@@ -35,7 +49,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor
     @SuppressWarnings("unchecked")
     public static <T> T getBean(String name) throws BeansException
     {
-        return (T) beanFactory.getBean(name);
+        return (T) getBeanFactory().getBean(name);
     }
 
     /**
@@ -48,8 +62,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor
      */
     public static <T> T getBean(Class<T> clz) throws BeansException
     {
-        T result = (T) beanFactory.getBean(clz);
-        return result;
+        return getBeanFactory().getBean(clz);
     }
 
     /**
@@ -60,7 +73,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor
      */
     public static boolean containsBean(String name)
     {
-        return beanFactory.containsBean(name);
+        return getBeanFactory().containsBean(name);
     }
 
     /**
@@ -73,7 +86,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor
      */
     public static boolean isSingleton(String name) throws NoSuchBeanDefinitionException
     {
-        return beanFactory.isSingleton(name);
+        return getBeanFactory().isSingleton(name);
     }
 
     /**
@@ -84,7 +97,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor
      */
     public static Class<?> getType(String name) throws NoSuchBeanDefinitionException
     {
-        return beanFactory.getType(name);
+        return getBeanFactory().getType(name);
     }
 
     /**
@@ -97,7 +110,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor
      */
     public static String[] getAliases(String name) throws NoSuchBeanDefinitionException
     {
-        return beanFactory.getAliases(name);
+        return getBeanFactory().getAliases(name);
     }
 
     /**

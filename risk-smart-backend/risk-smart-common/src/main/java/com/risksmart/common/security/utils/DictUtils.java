@@ -11,8 +11,9 @@ import com.risksmart.system.api.domain.SysDictData;
 
 /**
  * 字典工具类
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class DictUtils
 {

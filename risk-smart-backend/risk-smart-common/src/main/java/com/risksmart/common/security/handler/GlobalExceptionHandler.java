@@ -24,12 +24,20 @@ import com.risksmart.common.core.web.AjaxResult;
 /**
  * 全局异常处理器
  *
- * @author ruoyi
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler
 {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private static final String DEFAULT_ERROR_MESSAGE = "系统繁忙，请稍后重试";
+    private static final String DEFAULT_VALIDATION_MESSAGE = "参数验证失败";
+
+    private static String resolveRequestUri(HttpServletRequest request)
+    {
+        return request == null ? "" : request.getRequestURI();
+    }
 
     /**
      * 权限码异常
@@ -37,7 +45,7 @@ public class GlobalExceptionHandler
     @ExceptionHandler(NotPermissionException.class)
     public AjaxResult handleNotPermissionException(NotPermissionException e, HttpServletRequest request)
     {
-        String requestURI = request.getRequestURI();
+        String requestURI = resolveRequestUri(request);
         log.error("请求地址'{}',权限码校验失败'{}'", requestURI, e.getMessage());
         return AjaxResult.error(HttpStatus.FORBIDDEN, "没有访问权限，请联系管理员授权");
     }
@@ -48,7 +56,7 @@ public class GlobalExceptionHandler
     @ExceptionHandler(NotRoleException.class)
     public AjaxResult handleNotRoleException(NotRoleException e, HttpServletRequest request)
     {
-        String requestURI = request.getRequestURI();
+        String requestURI = resolveRequestUri(request);
         log.error("请求地址'{}',角色权限校验失败'{}'", requestURI, e.getMessage());
         return AjaxResult.error(HttpStatus.FORBIDDEN, "没有访问权限，请联系管理员授权");
     }
@@ -59,7 +67,7 @@ public class GlobalExceptionHandler
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public AjaxResult handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e, HttpServletRequest request)
     {
-        String requestURI = request.getRequestURI();
+        String requestURI = resolveRequestUri(request);
         log.error("请求地址'{}',不支持'{}'请求", requestURI, e.getMethod());
         return AjaxResult.error(e.getMessage());
     }
@@ -81,7 +89,7 @@ public class GlobalExceptionHandler
     @ExceptionHandler(MissingPathVariableException.class)
     public AjaxResult handleMissingPathVariableException(MissingPathVariableException e, HttpServletRequest request)
     {
-        String requestURI = request.getRequestURI();
+        String requestURI = resolveRequestUri(request);
         log.error("请求路径中缺少必需的路径变量'{}',发生系统异常.", requestURI, e);
         return AjaxResult.error(String.format("请求路径中缺少必需的路径变量[%s]", e.getVariableName()));
     }
@@ -92,14 +100,16 @@ public class GlobalExceptionHandler
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public AjaxResult handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e, HttpServletRequest request)
     {
-        String requestURI = request.getRequestURI();
+        String requestURI = resolveRequestUri(request);
         String value = Convert.toStr(e.getValue());
         if (StringUtils.isNotEmpty(value))
         {
             value = EscapeUtil.clean(value);
         }
+        Class<?> requiredType = e.getRequiredType();
+        String requiredTypeName = requiredType == null ? "未知" : requiredType.getName();
         log.error("请求参数类型不匹配'{}',发生系统异常.", requestURI, e);
-        return AjaxResult.error(String.format("请求参数类型不匹配，参数[%s]要求类型为：'%s'，但输入值为：'%s'", e.getName(), e.getRequiredType().getName(), value));
+        return AjaxResult.error(String.format("请求参数类型不匹配，参数[%s]要求类型为：'%s'，但输入值为：'%s'", e.getName(), requiredTypeName, value));
     }
 
     /**
@@ -108,10 +118,10 @@ public class GlobalExceptionHandler
     @ExceptionHandler(RuntimeException.class)
     public AjaxResult handleRuntimeException(RuntimeException e, HttpServletRequest request)
     {
-        String requestURI = request.getRequestURI();
+        String requestURI = resolveRequestUri(request);
         log.error("请求地址'{}',发生未知异常.", requestURI, e);
         // 生产环境不应该暴露原始错误信息，返回通用错误提示
-        String message = StringUtils.isNotEmpty(e.getMessage()) ? e.getMessage() : "系统繁忙，请稍后重试";
+        String message = StringUtils.isNotEmpty(e.getMessage()) ? e.getMessage() : DEFAULT_ERROR_MESSAGE;
         return AjaxResult.error(message);
     }
 
@@ -121,10 +131,10 @@ public class GlobalExceptionHandler
     @ExceptionHandler(Exception.class)
     public AjaxResult handleException(Exception e, HttpServletRequest request)
     {
-        String requestURI = request.getRequestURI();
+        String requestURI = resolveRequestUri(request);
         log.error("请求地址'{}',发生系统异常.", requestURI, e);
         // 生产环境不应该暴露原始错误信息，返回通用错误提示
-        return AjaxResult.error("系统繁忙，请稍后重试");
+        return AjaxResult.error(DEFAULT_ERROR_MESSAGE);
     }
 
     /**
@@ -134,7 +144,7 @@ public class GlobalExceptionHandler
     public AjaxResult handleBindException(BindException e)
     {
         log.error(e.getMessage(), e);
-        String message = e.getAllErrors().isEmpty() ? "参数验证失败" : e.getAllErrors().get(0).getDefaultMessage();
+        String message = e.getAllErrors().isEmpty() ? DEFAULT_VALIDATION_MESSAGE : e.getAllErrors().get(0).getDefaultMessage();
         return AjaxResult.error(message);
     }
 
@@ -142,10 +152,10 @@ public class GlobalExceptionHandler
      * 自定义验证异常
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Object handleMethodArgumentNotValidException(MethodArgumentNotValidException e)
+    public AjaxResult handleMethodArgumentNotValidException(MethodArgumentNotValidException e)
     {
         log.error(e.getMessage(), e);
-        String message = "参数验证失败";
+        String message = DEFAULT_VALIDATION_MESSAGE;
         if (e.getBindingResult().getFieldError() != null)
         {
             message = e.getBindingResult().getFieldError().getDefaultMessage();

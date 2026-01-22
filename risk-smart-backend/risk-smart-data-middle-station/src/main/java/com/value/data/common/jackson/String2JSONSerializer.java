@@ -10,9 +10,10 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import java.io.IOException;
 
 /**
- * @author Vida
- * @date 2025年04月21日 14:50
- * @description
+ * 字符串转JSON序列化器
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class String2JSONSerializer extends JsonSerializer<String> {
     private final JsonMapper jsonMapper = new JsonMapper();

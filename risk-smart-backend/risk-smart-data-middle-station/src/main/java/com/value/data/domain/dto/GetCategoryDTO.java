@@ -7,9 +7,10 @@ import jakarta.validation.constraints.Pattern;
 import java.io.Serializable;
 
 /**
- * @author Vida
- * @date 2023年08月14日 11:44
- * @description
+ * 获取分类数据传输对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class GetCategoryDTO implements Serializable {

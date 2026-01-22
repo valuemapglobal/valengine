@@ -6,9 +6,10 @@ import jakarta.validation.constraints.Pattern;
 import java.io.Serializable;
 
 /**
- * @author Vida
- * @date 2023年08月16日 14:56
- * @description
+ * 删除主题数据传输对象
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class DeleteThemeDTO implements Serializable {

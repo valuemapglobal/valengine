@@ -7,9 +7,10 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 
 /**
- * @author Vida
- * @date 2025年04月22日 11:42
- * @description
+ * 日期时间工具类
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class LocalDateTimeUtil {
     public LocalDateTime parse(String date) {

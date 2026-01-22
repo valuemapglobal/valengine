@@ -5,9 +5,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Vida
- * @date 2025年04月03日 15:21
- * @description
+ * 特征变量属性配置
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Component
 @Data

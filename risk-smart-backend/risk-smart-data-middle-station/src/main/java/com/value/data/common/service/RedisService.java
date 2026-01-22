@@ -12,9 +12,10 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * spring redis 工具类
- * 
- * @author ruoyi
- **/
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
+ */
 @SuppressWarnings(value = { "unchecked", "rawtypes" })
 @Component
 public class RedisService

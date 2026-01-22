@@ -15,9 +15,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * @author Vida
- * @date 2024年11月18日 14:17
- * @description
+ * 产品VO
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @NoArgsConstructor

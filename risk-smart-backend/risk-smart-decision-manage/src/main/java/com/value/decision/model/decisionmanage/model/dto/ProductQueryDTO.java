@@ -4,9 +4,10 @@ import com.value.decision.model.decisionmanage.model.Product;
 import lombok.Data;
 
 /**
- * @author Vida
- * @date 2024年11月08日 16:39
- * @description
+ * 产品查询DTO
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class ProductQueryDTO extends Product {

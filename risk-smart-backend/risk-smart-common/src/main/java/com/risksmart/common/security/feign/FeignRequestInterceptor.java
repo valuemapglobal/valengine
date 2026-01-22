@@ -12,8 +12,9 @@ import feign.RequestTemplate;
 
 /**
  * feign 请求拦截器
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Component
 public class FeignRequestInterceptor implements RequestInterceptor

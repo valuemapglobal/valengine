@@ -21,9 +21,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author Vida
- * @date 2024�?1�?8�?17:59
- * @description
+ * 登录用户验证切面
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Aspect
 @Component

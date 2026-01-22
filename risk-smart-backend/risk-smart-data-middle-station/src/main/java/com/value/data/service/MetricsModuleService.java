@@ -4,12 +4,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.value.data.domain.entity.MetricsModuleEntity;
 
 /**
- * <p>
  * 分析指标模块表 服务类
- * </p>
  *
- * @author Vida
- * @since 2025-04-23
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface MetricsModuleService extends IService<MetricsModuleEntity> {
     /**

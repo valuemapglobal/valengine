@@ -9,8 +9,9 @@ import java.util.List;
 
 /**
  * 部门表 sys_dept
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class SysDept extends BaseEntity
 {
