@@ -8,7 +8,6 @@ import com.risksmart.system.domain.SysUser;
 import com.risksmart.system.mapper.SysDeptMapper;
 import com.risksmart.system.mapper.SysUserMapper;
 import com.risksmart.system.service.ISysUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -16,13 +15,19 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 用户管理 服务实现
+ * 用户管理服务实现
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
 
-    @Autowired
-    private SysDeptMapper deptMapper;
+    private final SysDeptMapper deptMapper;
+
+    public SysUserServiceImpl(SysDeptMapper deptMapper) {
+        this.deptMapper = deptMapper;
+    }
 
     @Override
     public List<SysUser> selectUserList(SysUser user) {

@@ -8,6 +8,9 @@ import com.risksmart.system.domain.vo.TreeSelect;
 
 /**
  * 菜单 业务层
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface ISysMenuService {
 

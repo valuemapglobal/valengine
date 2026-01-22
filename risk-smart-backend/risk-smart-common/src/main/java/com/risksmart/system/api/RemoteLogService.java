@@ -13,8 +13,9 @@ import com.risksmart.system.api.factory.RemoteLogFallbackFactory;
 
 /**
  * 日志服务
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @FeignClient(contextId = "remoteLogService", value = ServiceNameConstants.SYSTEM_SERVICE, fallbackFactory = RemoteLogFallbackFactory.class)
 public interface RemoteLogService

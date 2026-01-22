@@ -12,7 +12,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 用户信息 内部服务调用
+ * 用户信息 内部服务调用控制器
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @RequestMapping("/user")

@@ -11,12 +11,10 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * <p>
  * 决策code登记表
- * </p>
  *
- * @author Dianne
- * @since 2023-05-08
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @Table(name = "rde_model_decision_code_level_snapshot")

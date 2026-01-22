@@ -12,6 +12,9 @@ import java.util.List;
 
 /**
  * 字典类型 服务实现
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDictType> implements ISysDictTypeService {

@@ -11,7 +11,8 @@ import org.springframework.context.annotation.ComponentScan;
 /**
  * 系统服务启动类
  *
- * @author RiskSmart
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @SpringBootApplication(exclude = {PageHelperAutoConfiguration.class})
 @EnableDiscoveryClient

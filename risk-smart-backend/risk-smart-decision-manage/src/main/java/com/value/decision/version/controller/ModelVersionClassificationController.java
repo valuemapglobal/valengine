@@ -21,12 +21,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * <p>
- * 反欺诈模型规则组表 前端控制器
- * </p>
+ * 版本归类冠军标识表 前端控制器
  *
- * @author Dianne
- * @since 2023-05-08
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @RequestMapping("/model-version-classification")

@@ -12,7 +12,10 @@ import com.risksmart.system.domain.SysMenu;
 import com.risksmart.system.service.ISysMenuService;
 
 /**
- * 菜单信息
+ * 菜单信息 控制器
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @RequestMapping("/system/menu")

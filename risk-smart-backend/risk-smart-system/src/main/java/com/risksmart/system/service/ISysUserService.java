@@ -7,6 +7,9 @@ import java.util.List;
 
 /**
  * 用户管理 服务层
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface ISysUserService extends IService<SysUser> {
 

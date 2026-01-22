@@ -6,7 +6,8 @@ import com.risksmart.system.domain.SysLogininfor;
 /**
  * 系统访问日志情况信息 数据层
  *
- * @author ruoyi
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface SysLogininforMapper
 {

@@ -5,8 +5,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 角色和菜单关联 sys_role_menu
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class SysRoleMenu
 {

@@ -7,6 +7,9 @@ import com.risksmart.system.domain.SysRole;
 
 /**
  * 角色表 数据层
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Mapper
 public interface SysRoleMapper {

@@ -11,8 +11,9 @@ import com.risksmart.common.core.web.BaseEntity;
 
 /**
  * 字典类型表 sys_dict_type
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class SysDictType extends BaseEntity
 {

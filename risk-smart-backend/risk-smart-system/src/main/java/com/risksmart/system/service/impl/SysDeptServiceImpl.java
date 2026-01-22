@@ -16,6 +16,9 @@ import java.util.stream.Collectors;
 
 /**
  * 部门管理 服务实现
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> implements ISysDeptService {

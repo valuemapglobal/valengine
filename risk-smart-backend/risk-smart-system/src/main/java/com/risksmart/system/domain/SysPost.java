@@ -11,8 +11,9 @@ import com.risksmart.common.core.web.BaseEntity;
 
 /**
  * 岗位表 sys_post
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class SysPost extends BaseEntity
 {

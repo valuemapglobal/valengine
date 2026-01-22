@@ -11,8 +11,10 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
 /**
- * @author Dianne
- * @since 2023-05-08
+ * 模型测试结果表
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @Table(name = "rde_model_test_result")

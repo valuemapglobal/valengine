@@ -11,7 +11,10 @@ import com.risksmart.system.service.ISysDeptService;
 import com.risksmart.system.service.ISysRoleService;
 
 /**
- * 角色信息
+ * 角色信息 控制器
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @RequestMapping("/system/role")

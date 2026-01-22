@@ -18,12 +18,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 /**
- * <p>
  * 定价详情表
- * </p>
  *
- * @author Dianne
- * @since 2023-08-08
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

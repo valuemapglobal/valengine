@@ -10,6 +10,9 @@ import java.util.List;
 
 /**
  * 字典类型 控制器
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @RequestMapping("/system/dict/type")

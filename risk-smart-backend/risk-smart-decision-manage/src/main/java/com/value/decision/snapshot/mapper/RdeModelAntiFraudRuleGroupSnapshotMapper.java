@@ -8,12 +8,10 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * <p>
  * 反欺诈模型规则组表 Mapper 接口
- * </p>
  *
- * @author Dianne
- * @since 2023-05-08
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface RdeModelAntiFraudRuleGroupSnapshotMapper extends CommonMapper<RdeModelAntiFraudRuleGroupSnapshot> {
 

@@ -5,9 +5,10 @@ import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
 
 /**
- * @description：TODO
- * @author： andera
- * @create： 2023/10/19 10:50
+ * 规则结果VO
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 public class RuleResultVO {

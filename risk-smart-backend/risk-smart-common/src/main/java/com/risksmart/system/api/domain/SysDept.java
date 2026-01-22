@@ -12,8 +12,9 @@ import com.risksmart.common.core.web.BaseEntity;
 
 /**
  * 部门表 sys_dept
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class SysDept extends BaseEntity
 {

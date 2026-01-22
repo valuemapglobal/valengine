@@ -21,12 +21,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * <p>
  * 定价详情表 服务实现类
- * </p>
  *
- * @author Dianne
- * @since 2023-08-08
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 public class PriceCardRadiusServiceImpl extends ServiceImpl<PriceCardRadiusMapper, PriceCardRadius> implements IPriceCardRadiusService {

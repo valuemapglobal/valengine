@@ -12,6 +12,9 @@ import com.risksmart.system.service.ISysRoleService;
 
 /**
  * 角色 业务层处理
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 public class SysRoleServiceImpl implements ISysRoleService {

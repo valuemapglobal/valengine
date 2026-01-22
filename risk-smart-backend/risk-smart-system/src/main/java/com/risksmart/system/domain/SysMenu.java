@@ -11,8 +11,9 @@ import com.risksmart.common.core.web.BaseEntity;
 
 /**
  * 菜单权限表 sys_menu
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class SysMenu extends BaseEntity
 {

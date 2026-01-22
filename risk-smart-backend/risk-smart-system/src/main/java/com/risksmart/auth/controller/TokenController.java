@@ -19,8 +19,9 @@ import com.risksmart.system.api.model.LoginUser;
 
 /**
  * token 控制
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 public class TokenController

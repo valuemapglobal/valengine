@@ -14,8 +14,9 @@ import com.risksmart.system.api.factory.RemoteFileFallbackFactory;
 
 /**
  * 文件服务
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @FeignClient(contextId = "remoteFileService", value = ServiceNameConstants.FILE_SERVICE, fallbackFactory = RemoteFileFallbackFactory.class)
 public interface RemoteFileService

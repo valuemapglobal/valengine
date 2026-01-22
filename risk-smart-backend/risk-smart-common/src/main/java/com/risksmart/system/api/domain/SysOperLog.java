@@ -8,8 +8,9 @@ import com.risksmart.common.core.web.BaseEntity;
 
 /**
  * 操作日志记录表 oper_log
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class SysOperLog extends BaseEntity
 {

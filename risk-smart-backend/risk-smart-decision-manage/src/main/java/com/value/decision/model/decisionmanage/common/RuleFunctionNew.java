@@ -56,9 +56,10 @@ import java.util.stream.Stream;
 import static org.apache.logging.log4j.ThreadContext.containsKey;
 
 /**
- * @description：任务方法
- * @author： andera
- * @create： 2023/8/16 20:12
+ * 任务方法
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Slf4j
 @Component

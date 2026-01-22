@@ -21,8 +21,9 @@ import com.risksmart.system.api.model.LoginUser;
 
 /**
  * 登录校验方法
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Component
 public class SysLoginService

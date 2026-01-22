@@ -8,12 +8,10 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * <p>
  * 决策code登记表 Mapper 接口
- * </p>
  *
- * @author Dianne
- * @since 2023-05-08
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface RdeModelDecisionCodeLevelSnapshotMapper extends CommonMapper<RdeModelDecisionCodeLevelSnapshot> {
     List<RdeModelDecisionCodeLevelSnapshot> selectSnapshotCodeList(@Param("codeList") List<String> codeList,@Param("projectCode") String projectCode);

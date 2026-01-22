@@ -39,12 +39,10 @@ import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 /**
- * <p>
  * 反欺诈模型表 服务实现类
- * </p>
  *
- * @author Dianne
- * @since 2023-05-08
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 @Log4j2

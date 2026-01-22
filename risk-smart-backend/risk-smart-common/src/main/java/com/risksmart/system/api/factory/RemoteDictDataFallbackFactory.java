@@ -11,9 +11,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * Dictionary Data Service Fallback Factory
+ * 字典数据服务降级处理
  *
- * @author RiskSmart Team
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Component
 public class RemoteDictDataFallbackFactory implements FallbackFactory<RemoteDictDataService> {

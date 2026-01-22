@@ -4,12 +4,10 @@ package com.value.decision.snapshot.service;
 import org.springframework.stereotype.Service;
 
 /**
- * <p>
  * 反欺诈模型规则明细表 服务实现类
- * </p>
  *
- * @author Dianne
- * @since 2023-05-08
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 public class RdeModelAntiFraudRuleRecordSnapshotService {

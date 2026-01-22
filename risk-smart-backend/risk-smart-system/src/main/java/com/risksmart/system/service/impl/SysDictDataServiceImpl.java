@@ -12,6 +12,9 @@ import java.util.List;
 
 /**
  * 字典数据 服务实现
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 public class SysDictDataServiceImpl extends ServiceImpl<SysDictDataMapper, SysDictData> implements ISysDictDataService {

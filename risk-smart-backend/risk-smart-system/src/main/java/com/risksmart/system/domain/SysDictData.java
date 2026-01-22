@@ -10,6 +10,9 @@ import java.util.Date;
 
 /**
  * 字典数据表 sys_dict_data
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @TableName("sys_dict_data")

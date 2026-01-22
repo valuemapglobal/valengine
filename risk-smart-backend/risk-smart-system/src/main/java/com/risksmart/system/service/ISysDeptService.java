@@ -8,6 +8,9 @@ import java.util.List;
 
 /**
  * 部门管理 服务层
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface ISysDeptService extends IService<SysDept> {
 

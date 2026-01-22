@@ -6,12 +6,10 @@ import com.value.decision.common.security.LoginUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
- * <p>
  * 定价详情表 服务类
- * </p>
  *
- * @author Dianne
- * @since 2023-08-08
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface IPriceCardRadiusService extends IService<PriceCardRadius> {
 

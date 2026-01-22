@@ -11,8 +11,9 @@ import com.risksmart.system.api.domain.SysLogininfor;
 
 /**
  * 记录日志方法
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Component
 public class SysRecordLogService

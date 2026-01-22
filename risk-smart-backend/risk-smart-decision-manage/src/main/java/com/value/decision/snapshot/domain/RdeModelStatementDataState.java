@@ -11,8 +11,10 @@ import jakarta.persistence.Table;
 import java.util.Date;
 
 /**
- * @author Dianne
- * @since 2023-05-08
+ * 模型报表数据状态表
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @Table(name = "rde_model_statement_data_state")

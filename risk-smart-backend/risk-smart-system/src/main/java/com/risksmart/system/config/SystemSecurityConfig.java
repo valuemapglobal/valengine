@@ -9,8 +9,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
- * System Service Security Configuration
- * Disable CSRF and configure authentication for REST API
+ * System服务安全配置
+ * 禁用CSRF并配置REST API认证
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Configuration
 @EnableWebSecurity

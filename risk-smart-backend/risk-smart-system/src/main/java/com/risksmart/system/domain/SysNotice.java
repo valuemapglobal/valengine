@@ -9,8 +9,9 @@ import com.risksmart.common.core.xss.Xss;
 
 /**
  * 通知公告表 sys_notice
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class SysNotice extends BaseEntity
 {

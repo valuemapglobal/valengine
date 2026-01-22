@@ -8,12 +8,10 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 /**
- * <p>
  * 反欺诈模型表 Mapper 接口
- * </p>
  *
- * @author Dianne
- * @since 2023-05-08
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface RdeModelAntiFraudSnapshotMapper extends CommonMapper<RdeModelAntiFraudSnapshot> {
     @Select("select * from rde_model_anti_fraud_snapshot where id=#{modelId} and data_status=0")

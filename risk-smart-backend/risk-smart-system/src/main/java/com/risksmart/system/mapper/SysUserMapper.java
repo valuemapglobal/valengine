@@ -8,6 +8,9 @@ import org.apache.ibatis.annotations.Select;
 
 /**
  * 用户管理 数据层
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Mapper
 public interface SysUserMapper extends BaseMapper<SysUser> {

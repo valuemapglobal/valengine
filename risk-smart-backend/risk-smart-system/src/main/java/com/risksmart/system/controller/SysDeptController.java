@@ -14,6 +14,9 @@ import com.risksmart.system.service.ISysDeptService;
 
 /**
  * 部门管理 控制器
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @RequestMapping("/system/dept")

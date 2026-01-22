@@ -10,7 +10,8 @@ import com.risksmart.system.service.ISysLogininforService;
 /**
  * 系统访问日志情况信息 服务层处理
  *
- * @author ruoyi
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 public class SysLogininforServiceImpl implements ISysLogininforService

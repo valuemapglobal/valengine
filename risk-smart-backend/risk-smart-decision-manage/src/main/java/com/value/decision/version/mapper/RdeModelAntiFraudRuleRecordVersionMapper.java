@@ -10,12 +10,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p>
  * 反欺诈模型规则明细表 Mapper 接口
- * </p>
  *
- * @author Dianne
- * @since 2023-05-08
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface RdeModelAntiFraudRuleRecordVersionMapper extends CommonMapper<RdeModelAntiFraudRuleRecordVersion> {
 

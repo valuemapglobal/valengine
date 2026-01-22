@@ -18,6 +18,9 @@ import com.risksmart.system.service.ISysMenuService;
 
 /**
  * 菜单 业务层处理
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 public class SysMenuServiceImpl implements ISysMenuService {

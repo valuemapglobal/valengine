@@ -10,8 +10,9 @@ import com.risksmart.common.core.web.BaseEntity;
 
 /**
  * 参数配置表 sys_config
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class SysConfig extends BaseEntity
 {

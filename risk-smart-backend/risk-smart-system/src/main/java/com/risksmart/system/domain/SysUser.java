@@ -11,6 +11,9 @@ import java.util.Date;
 
 /**
  * 用户表 sys_user
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @TableName("sys_user")

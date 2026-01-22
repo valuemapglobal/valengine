@@ -13,6 +13,9 @@ import java.util.List;
 
 /**
  * 部门表 sys_dept
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @TableName("sys_dept")

@@ -7,6 +7,9 @@ import java.util.List;
 
 /**
  * 字典数据 服务层
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface ISysDictDataService extends IService<SysDictData> {
 

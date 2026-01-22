@@ -8,8 +8,10 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 /**
- * @author Dianne
- * @since 2023-05-08
+ * 模型报表数据状态表 Mapper 接口
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface RdeModelStatementDataStateMapper extends CommonMapper<RdeModelStatementDataState> {
 

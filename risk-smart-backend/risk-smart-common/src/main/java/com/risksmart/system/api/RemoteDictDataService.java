@@ -10,6 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
+/**
+ * 字典数据服务
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
+ */
 @FeignClient(contextId = "RemoteDictDataService", value = ServiceNameConstants.SYSTEM_SERVICE, fallbackFactory = RemoteDictDataFallbackFactory.class)
 public interface RemoteDictDataService {
 

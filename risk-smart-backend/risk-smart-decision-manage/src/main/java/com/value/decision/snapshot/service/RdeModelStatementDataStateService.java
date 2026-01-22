@@ -3,8 +3,10 @@ package com.value.decision.snapshot.service;
 import org.springframework.stereotype.Service;
 
 /**
- * @author Dianne
- * @since 2023-05-08
+ * 模型报表数据状态服务
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 public class RdeModelStatementDataStateService {

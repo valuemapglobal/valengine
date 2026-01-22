@@ -11,8 +11,9 @@ import com.risksmart.system.api.domain.SysFile;
 
 /**
  * 文件服务降级处理
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Component
 public class RemoteFileFallbackFactory implements FallbackFactory<RemoteFileService>

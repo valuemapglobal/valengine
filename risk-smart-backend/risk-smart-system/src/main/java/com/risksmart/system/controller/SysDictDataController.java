@@ -13,6 +13,9 @@ import java.util.stream.Collectors;
 /**
  * 字典数据 控制器
  * 前端调用: GET /vm/system/dict/data/type/{dictType}
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @RequestMapping("/system/dict/data")

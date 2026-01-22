@@ -4,6 +4,9 @@ import com.risksmart.common.core.utils.StringUtils;
 
 /**
  * 路由显示信息
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class MetaVo {
     /** 设置该路由在侧边栏和面包屑中展示的名字 */

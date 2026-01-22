@@ -2,8 +2,9 @@ package com.risksmart.system.controller;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.github.pagehelper.PageHelper;
@@ -23,23 +24,31 @@ import com.risksmart.system.service.ISysUserService;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * 用户管理 控制器
+ * 用户管理控制器
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @RequestMapping("/system/user")
 public class SysUserController {
 
-    @Autowired
-    private ISysUserService userService;
+    private static final Logger log = LoggerFactory.getLogger(SysUserController.class);
 
-    @Autowired(required = false)
-    private ISysRoleService roleService;
+    private final ISysUserService userService;
+    private final ISysRoleService roleService;
+    private final ISysDeptService deptService;
+    private final ISysMenuService menuService;
 
-    @Autowired(required = false)
-    private ISysDeptService deptService;
-
-    @Autowired(required = false)
-    private ISysMenuService menuService;
+    public SysUserController(ISysUserService userService,
+                            @Nullable ISysRoleService roleService,
+                            @Nullable ISysDeptService deptService,
+                            @Nullable ISysMenuService menuService) {
+        this.userService = userService;
+        this.roleService = roleService;
+        this.deptService = deptService;
+        this.menuService = menuService;
+    }
 
     /**
      * 获取用户列表
@@ -52,9 +61,15 @@ public class SysUserController {
         try {
             String pageNumStr = request.getParameter("pageNum");
             String pageSizeStr = request.getParameter("pageSize");
-            if (pageNumStr != null) pageNum = Integer.parseInt(pageNumStr);
-            if (pageSizeStr != null) pageSize = Integer.parseInt(pageSizeStr);
-        } catch (Exception ignored) {}
+            if (pageNumStr != null) {
+                pageNum = Integer.parseInt(pageNumStr);
+            }
+            if (pageSizeStr != null) {
+                pageSize = Integer.parseInt(pageSizeStr);
+            }
+        } catch (NumberFormatException e) {
+            log.warn("分页参数解析失败，使用默认值: pageNum={}, pageSize={}", pageNum, pageSize);
+        }
 
         PageHelper.startPage(pageNum, pageSize);
         List<SysUser> list = userService.selectUserList(user);
@@ -66,6 +81,42 @@ public class SysUserController {
         rspData.setTotal(pageInfo.getTotal());
         rspData.setMsg("查询成功");
         return rspData;
+    }
+
+    /**
+     * 根据部门ID获取用户列表（隐藏敏感信息）
+     */
+    @GetMapping("/listByDeptIdHidden")
+    public AjaxResult listByDeptIdHidden(@RequestParam(value = "deptId", required = false) Long deptId,
+                                          @RequestParam(value = "listByDeptIdHidden", required = false) Long deptIdAlt) {
+        // 兼容两种参数名
+        Long actualDeptId = deptId != null ? deptId : deptIdAlt;
+        SysUser queryUser = new SysUser();
+        if (actualDeptId != null) {
+            queryUser.setDeptId(actualDeptId);
+        }
+        List<SysUser> list = userService.selectUserList(queryUser);
+        // 隐藏敏感信息
+        list.forEach(user -> {
+            user.setPassword(null);
+        });
+        return AjaxResult.success(list);
+    }
+
+    /**
+     * 根据部门ID获取用户列表（隐藏敏感信息）- POST方式
+     */
+    @PostMapping("/listByDeptIdHidden")
+    public AjaxResult listByDeptIdHiddenPost(@RequestBody(required = false) SysUser user) {
+        if (user == null) {
+            user = new SysUser();
+        }
+        List<SysUser> list = userService.selectUserList(user);
+        // 隐藏敏感信息
+        list.forEach(u -> {
+            u.setPassword(null);
+        });
+        return AjaxResult.success(list);
     }
 
     /**
@@ -103,8 +154,12 @@ public class SysUserController {
         if (loginUser == null) {
             return AjaxResult.error("获取用户信息失败");
         }
+        // 从数据库获取完整的用户信息（包含部门信息）
+        Long userId = loginUser.getSysUser().getUserId();
+        SysUser fullUserInfo = userService.selectUserById(userId);
+
         AjaxResult ajax = AjaxResult.success();
-        ajax.put("user", loginUser.getSysUser());
+        ajax.put("user", fullUserInfo != null ? fullUserInfo : loginUser.getSysUser());
         ajax.put("roles", loginUser.getRoles());
         ajax.put("permissions", loginUser.getPermissions());
         return ajax;

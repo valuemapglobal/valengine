@@ -78,9 +78,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * @description：任务方法
- * @author： Dianne
- * @create： 2024/10/25 10:12
+ * 任务方法
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Component
 public class CommonRuleFunctionDataNew {
@@ -417,8 +418,8 @@ public class CommonRuleFunctionDataNew {
     /**
      * 对List进行分页操作
      *
-     * @author Chasen
-     * @create 2022/5/18
+     * @author vlauemap team
+     * @since 2026/01/22
      */
     public AjaxResult paging(List list, Integer pageNum, Integer pageSize) {
         pageNum = pageNum == null ? 1 : pageNum;

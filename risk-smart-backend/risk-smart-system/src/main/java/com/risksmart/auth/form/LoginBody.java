@@ -2,8 +2,9 @@ package com.risksmart.auth.form;
 
 /**
  * 用户登录对象
- * 
- * @author ruoyi
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public class LoginBody
 {

@@ -9,9 +9,10 @@ import com.risksmart.system.domain.SysLogininfor;
 import com.risksmart.system.service.ISysLogininforService;
 
 /**
- * 系统访问记录
+ * 系统访问记录 控制器
  *
- * @author ruoyi
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @RequestMapping("/logininfor")
