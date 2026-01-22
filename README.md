@@ -1,4 +1,4 @@
-# RiskSmart 智能风控平台 - 开源版
+# ValEngine - 开源决策引擎平台
 
 <div align="center">
 
@@ -6,8 +6,8 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.2-brightgreen.svg)](https://spring.io/projects/spring-boot)
-[![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-2023.0.4-blue.svg)](https://spring.io/projects/spring-cloud)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.9-brightgreen.svg)](https://spring.io/projects/spring-boot)
+[![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-2025.0.1-blue.svg)](https://spring.io/projects/spring-cloud)
 
 </div>
 
@@ -15,7 +15,7 @@
 
 ## 项目简介
 
-RiskSmart 是一个**企业级智能风控平台**，提供规则引擎、决策管理、数据中台等核心功能，帮助企业快速构建智能风控决策系统。
+ValEngine 是一个**企业级智能风控平台**，提供规则引擎、决策管理、数据中台等核心功能，帮助企业快速构建智能风控决策系统。
 
 ### 核心特性
 
@@ -106,7 +106,7 @@ docker-compose logs -f
 ## 项目结构
 
 ```
-RiskSmart-OpenSource/
+ValEngine/
 ├── risk-smart-backend/                    # 后端项目
 │   ├── risk-smart-common/                 # 公共模块 (工具类、API定义)
 │   ├── risk-smart-gateway/                # API 网关服务
@@ -155,14 +155,17 @@ RiskSmart-OpenSource/
 | 技术 | 版本 | 说明 |
 |------|------|------|
 | Java | 17 | JDK |
-| Spring Boot | 3.3.2 | 基础框架 |
-| Spring Cloud | 2023.0.4 | 微服务框架 |
-| Spring Cloud Alibaba | 2023.0.1.2 | 微服务组件 |
-| MyBatis Plus | 3.5.3.1 | ORM 框架 |
-| Drools | 7.73.0 | 规则引擎 |
+| Spring Boot | 3.5.9 | 基础框架 |
+| Spring Cloud | 2025.0.1 | 微服务框架 |
+| Spring Cloud Alibaba | 2025.0.0.0 | 微服务组件 |
+| MyBatis Plus | 3.5.14 | ORM 框架 |
+| Druid | 1.2.24 | 数据库连接池 |
+| Drools | 7.73.0.Final | 规则引擎 |
 | MySQL | 8.4.0 | 数据库 |
 | Redis | 7.x | 缓存 |
 | Nacos | 3.1.1 | 注册/配置中心 |
+| Hutool | 5.8.22 | 工具类库 |
+| Redisson | 3.17.7 | Redis 客户端 |
 
 ### 前端
 
