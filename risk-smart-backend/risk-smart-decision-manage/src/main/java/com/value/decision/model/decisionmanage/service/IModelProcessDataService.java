@@ -4,12 +4,10 @@ import com.value.decision.model.decisionmanage.model.ModelProcessData;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
- * <p>
- *  服务类
- * </p>
+ * 服务类
  *
- * @author dianne
- * @since 2024-11-18
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface IModelProcessDataService extends IService<ModelProcessData> {
 

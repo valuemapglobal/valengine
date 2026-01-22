@@ -7,12 +7,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**
- * <p>
  * 评分卡复用关联表 服务实现类
- * </p>
  *
- * @author dianne
- * @since 2024-12-02
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 public class ScoreCardReuseSnapshotServiceImpl extends ServiceImpl<ScoreCardReuseSnapshotMapper, ScoreCardReuseSnapshot> implements IScoreCardReuseSnapshotService {

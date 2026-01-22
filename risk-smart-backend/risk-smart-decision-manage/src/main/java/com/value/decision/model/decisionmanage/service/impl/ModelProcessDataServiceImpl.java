@@ -7,12 +7,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**
- * <p>
- *  服务实现类
- * </p>
+ * 服务实现类
  *
- * @author dianne
- * @since 2024-11-18
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 public class ModelProcessDataServiceImpl extends ServiceImpl<ModelProcessDataMapper, ModelProcessData> implements IModelProcessDataService {

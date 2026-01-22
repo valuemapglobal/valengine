@@ -68,12 +68,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * <p>
  * 模型任务记录表 服务实现类
- * </p>
  *
- * @author dianne
- * @since 2024-11-18
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 @Slf4j

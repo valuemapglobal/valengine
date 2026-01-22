@@ -10,12 +10,10 @@ import com.value.decision.common.security.LoginUser;
 import java.util.List;
 
 /**
- * <p>
  * 评分卡复用关联表 服务类
- * </p>
  *
- * @author dianne
- * @since 2024-11-28
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface IScoreCardReuseService extends IService<ScoreCardReuse> {
 

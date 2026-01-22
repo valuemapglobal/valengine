@@ -23,12 +23,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * <p>
  * 评分卡复用关联表 服务实现类
- * </p>
  *
- * @author dianne
- * @since 2024-11-28
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Service
 public class ScoreCardReuseServiceImpl extends ServiceImpl<ScoreCardReuseMapper, ScoreCardReuse> implements IScoreCardReuseService {

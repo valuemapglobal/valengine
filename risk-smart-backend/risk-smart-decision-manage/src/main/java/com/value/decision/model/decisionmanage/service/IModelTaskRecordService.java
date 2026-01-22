@@ -12,12 +12,10 @@ import java.text.ParseException;
 import java.util.List;
 
 /**
- * <p>
  * 模型任务记录表 服务类
- * </p>
  *
- * @author dianne
- * @since 2024-11-18
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface IModelTaskRecordService extends IService<ModelTaskRecord> {
 

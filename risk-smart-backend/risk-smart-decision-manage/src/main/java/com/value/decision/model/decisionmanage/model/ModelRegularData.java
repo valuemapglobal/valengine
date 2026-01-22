@@ -8,12 +8,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * <p>
  * 模型规则存储表
- * </p>
  *
- * @author dianne
- * @since 2024-12-30
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

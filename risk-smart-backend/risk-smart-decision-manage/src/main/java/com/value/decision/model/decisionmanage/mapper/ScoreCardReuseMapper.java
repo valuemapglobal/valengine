@@ -4,12 +4,10 @@ import com.value.decision.model.decisionmanage.model.ScoreCardReuse;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
- * <p>
  * 评分卡复用关联表 Mapper 接口
- * </p>
  *
- * @author dianne
- * @since 2024-11-28
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface ScoreCardReuseMapper extends BaseMapper<ScoreCardReuse> {
 

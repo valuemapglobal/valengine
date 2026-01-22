@@ -6,12 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>
- *  前端控制器
- * </p>
+ * 前端控制器
  *
- * @author dianne
- * @since 2024-11-18
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @RequestMapping("/model-process-data")

@@ -45,7 +45,7 @@ INSERT INTO sys_menu VALUES(101, '角色管理', 1, 2, 'RoleManage', 'system/rol
 INSERT INTO sys_menu VALUES(102, '菜单管理', 1, 3, 'MenuManage', 'system/menuManagement/index', '', 1, 0, 'C', '0', '0', 'system:menu:list', 'tree-table', 'admin', sysdate(), '', NULL, '菜单管理菜单');
 INSERT INTO sys_menu VALUES(103, '部门管理', 1, 4, 'Department', 'system/department/index', '', 1, 0, 'C', '0', '0', 'system:dept:list', 'tree', 'admin', sysdate(), '', NULL, '部门管理菜单');
 INSERT INTO sys_menu VALUES(104, '字典管理', 1, 5, 'DictionaryManagement', 'system/dictionaryManagement/index', '', 1, 0, 'C', '0', '0', 'system:dict:list', 'dict', 'admin', sysdate(), '', NULL, '字典管理菜单');
-INSERT INTO sys_menu VALUES(105, '操作日志', 1, 6, 'OperlogManage', 'system/operlogManage/index', '', 1, 0, 'C', '0', '0', 'system:operlog:list', 'log', 'admin', sysdate(), '', NULL, '操作日志菜单');
+-- INSERT INTO sys_menu VALUES(105, '操作日志', 1, 6, 'OperlogManage', 'system/operlogManage/index', '', 1, 0, 'C', '0', '0', 'system:operlog:list', 'log', 'admin', sysdate(), '', NULL, '操作日志菜单');
 
 -- 接口平台子菜单
 INSERT INTO sys_menu VALUES(200, '数据场景管理', 2, 1, 'SmartDecision', 'interfacePlatform/modules/SmartDecision', '', 1, 0, 'C', '0', '0', 'interface:scene:list', 'scene', 'admin', sysdate(), '', NULL, '数据场景管理菜单');
@@ -132,6 +132,9 @@ INSERT INTO sys_dict_type VALUES(6, '通知类型', 'sys_notice_type', '0', 'adm
 INSERT INTO sys_dict_type VALUES(7, '通知状态', 'sys_notice_status', '0', 'admin', sysdate(), '', NULL, '通知状态列表');
 INSERT INTO sys_dict_type VALUES(8, '操作类型', 'sys_oper_type', '0', 'admin', sysdate(), '', NULL, '操作类型列表');
 INSERT INTO sys_dict_type VALUES(9, '系统状态', 'sys_common_status', '0', 'admin', sysdate(), '', NULL, '登录状态列表');
+INSERT INTO sys_dict_type VALUES(10, '数据类型', 'decision_data_type', '0', 'admin', sysdate(), '', NULL, '接口参数数据类型');
+INSERT INTO sys_dict_type VALUES(11, '标准部门', 'decision_standard', '0', 'admin', sysdate(), '', NULL, '决策平台标准部门配置');
+INSERT INTO sys_dict_type VALUES(12, '接口返回状态码', 'api_service_returncode', '0', 'admin', sysdate(), '', NULL, '接口返回状态码');
 
 -- 初始化字典数据
 INSERT INTO sys_dict_data VALUES(1, 1, '男', '0', 'sys_user_sex', '', '', 'Y', '0', 'admin', sysdate(), '', NULL, '性别男');
@@ -145,6 +148,24 @@ INSERT INTO sys_dict_data VALUES(8, 1, '是', 'Y', 'sys_yes_no', '', 'primary', 
 INSERT INTO sys_dict_data VALUES(9, 2, '否', 'N', 'sys_yes_no', '', 'danger', 'N', '0', 'admin', sysdate(), '', NULL, '系统默认否');
 INSERT INTO sys_dict_data VALUES(10, 1, '成功', '0', 'sys_common_status', '', 'primary', 'N', '0', 'admin', sysdate(), '', NULL, '正常状态');
 INSERT INTO sys_dict_data VALUES(11, 2, '失败', '1', 'sys_common_status', '', 'danger', 'N', '0', 'admin', sysdate(), '', NULL, '停用状态');
+-- 数据类型字典 (0-数值，1-字符串，2-日期，3-对象，4-数组，5-文件，6-布尔，7-小数)
+INSERT INTO sys_dict_data VALUES(12, 0, '数值', '0', 'decision_data_type', '', '', 'N', '0', 'admin', sysdate(), '', NULL, '数值类型');
+INSERT INTO sys_dict_data VALUES(13, 1, '字符串', '1', 'decision_data_type', '', '', 'N', '0', 'admin', sysdate(), '', NULL, '字符串类型');
+INSERT INTO sys_dict_data VALUES(14, 2, '日期', '2', 'decision_data_type', '', '', 'N', '0', 'admin', sysdate(), '', NULL, '日期类型');
+INSERT INTO sys_dict_data VALUES(15, 3, '对象', '3', 'decision_data_type', '', '', 'N', '0', 'admin', sysdate(), '', NULL, '对象类型');
+INSERT INTO sys_dict_data VALUES(16, 4, '数组', '4', 'decision_data_type', '', '', 'N', '0', 'admin', sysdate(), '', NULL, '数组类型');
+INSERT INTO sys_dict_data VALUES(17, 5, '文件', '5', 'decision_data_type', '', '', 'N', '0', 'admin', sysdate(), '', NULL, '文件类型');
+INSERT INTO sys_dict_data VALUES(18, 6, '布尔', '6', 'decision_data_type', '', '', 'N', '0', 'admin', sysdate(), '', NULL, '布尔类型');
+INSERT INTO sys_dict_data VALUES(19, 7, '小数', '7', 'decision_data_type', '', '', 'N', '0', 'admin', sysdate(), '', NULL, '小数类型');
+-- 标准部门配置 (101是默认技术部门ID)
+INSERT INTO sys_dict_data VALUES(20, 1, '标准部门', '[101]', 'decision_standard', '', '', 'N', '0', 'admin', sysdate(), '', NULL, '决策平台标准部门');
+-- 接口返回状态码
+INSERT INTO sys_dict_data VALUES(21, 1, '成功', '200', 'api_service_returncode', '', 'primary', 'N', '0', 'admin', sysdate(), '', NULL, '请求成功');
+INSERT INTO sys_dict_data VALUES(22, 2, '参数错误', '400', 'api_service_returncode', '', 'warning', 'N', '0', 'admin', sysdate(), '', NULL, '参数错误');
+INSERT INTO sys_dict_data VALUES(23, 3, '未授权', '401', 'api_service_returncode', '', 'danger', 'N', '0', 'admin', sysdate(), '', NULL, '未授权');
+INSERT INTO sys_dict_data VALUES(24, 4, '禁止访问', '403', 'api_service_returncode', '', 'danger', 'N', '0', 'admin', sysdate(), '', NULL, '禁止访问');
+INSERT INTO sys_dict_data VALUES(25, 5, '资源不存在', '404', 'api_service_returncode', '', 'info', 'N', '0', 'admin', sysdate(), '', NULL, '资源不存在');
+INSERT INTO sys_dict_data VALUES(26, 6, '服务器错误', '500', 'api_service_returncode', '', 'danger', 'N', '0', 'admin', sysdate(), '', NULL, '服务器内部错误');
 
 -- 初始化系统参数
 INSERT INTO sys_config VALUES(1, '主框架页-默认皮肤样式名称', 'sys.index.skinName', 'skin-blue', 'Y', 'admin', sysdate(), '', NULL, '蓝色 skin-blue、绿色 skin-green、紫色 skin-purple、红色 skin-red、黄色 skin-yellow');

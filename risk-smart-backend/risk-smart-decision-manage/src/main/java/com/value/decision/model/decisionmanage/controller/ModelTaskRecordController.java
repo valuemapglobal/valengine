@@ -47,12 +47,10 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**
- * <p>
  * 模型任务记录表 前端控制器
- * </p>
  *
- * @author dianne
- * @since 2024-11-18
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Log4j2
 @RestController

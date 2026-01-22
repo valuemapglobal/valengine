@@ -4,12 +4,10 @@ import com.value.decision.model.decisionmanage.model.ModelProcessData;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
- * <p>
- *  Mapper 接口
- * </p>
+ * Mapper 接口
  *
- * @author dianne
- * @since 2024-11-18
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 public interface ModelProcessDataMapper extends BaseMapper<ModelProcessData> {
 

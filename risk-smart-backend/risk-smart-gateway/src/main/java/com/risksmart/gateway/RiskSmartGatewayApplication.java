@@ -6,7 +6,10 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
- * RiskSmart Gateway Application.
+ * RiskSmart网关应用启动类
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableDiscoveryClient
@@ -16,4 +19,3 @@ public class RiskSmartGatewayApplication {
         SpringApplication.run(RiskSmartGatewayApplication.class, args);
     }
 }
-

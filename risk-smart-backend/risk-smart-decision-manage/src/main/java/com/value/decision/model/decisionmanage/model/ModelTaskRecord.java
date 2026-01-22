@@ -11,12 +11,10 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
- * <p>
  * 模型任务记录表
- * </p>
  *
- * @author dianne
- * @since 2024-11-18
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

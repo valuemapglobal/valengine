@@ -9,12 +9,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * <p>
  * 评分卡复用关联表
- * </p>
  *
- * @author dianne
- * @since 2024-12-10
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

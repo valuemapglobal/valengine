@@ -20,12 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * <p>
  * 评分卡复用关联表 前端控制器
- * </p>
  *
- * @author dianne
- * @since 2024-12-10
+ * @author vlauemap team
+ * @since 2026/01/22
  */
 @RestController
 @RequestMapping("/rule-record-reuse")
