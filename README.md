@@ -189,8 +189,7 @@ ValEngine/
 1. JDK 17
 2. Maven 3.8+
 3. Node.js 16+
-4. MySQL 8.x
-5. Redis 7.x
+4. Docker Desktop (用于运行基础服务)
 
 ### 启动基础服务
 
@@ -200,16 +199,28 @@ ValEngine/
 # 复制环境变量配置
 cp .env.example .env
 
+# 编辑 .env 文件，可修改端口避免冲突
+# MYSQL_PORT=13306  # 如果本地 3306 已被占用
+
 # 启动基础服务
 docker-compose up -d mysql redis nacos
+
+# 等待服务就绪 (约 30 秒)
+docker-compose ps
 ```
 
 ### 环境变量配置
 
-本地开发启动后端服务时，如果 MySQL 端口映射为非 3306（如 13306），需要设置环境变量：
+本地开发时，后端服务需要连接 Docker 中的基础服务。如果修改了 `.env` 中的端口映射，启动后端时需要设置对应的环境变量：
+
+| 环境变量 | 默认值 | 说明 |
+|----------|--------|------|
+| MYSQL_PORT | 3306 | MySQL 端口 |
+| MYSQL_HOST | localhost | MySQL 主机 |
+| NACOS_SERVER_ADDR | localhost:8848 | Nacos 地址 |
 
 ```bash
-# Windows PowerShell
+# Windows PowerShell (如果 MySQL 映射到 13306)
 $env:MYSQL_PORT="13306"
 
 # Windows CMD
@@ -219,15 +230,6 @@ set MYSQL_PORT=13306
 export MYSQL_PORT=13306
 ```
 
-### 启动顺序
-
-1. 启动 MySQL、Redis、Nacos
-2. 启动 risk-smart-gateway
-3. 启动 risk-smart-system
-4. 启动 risk-smart-data-middle-station
-5. 启动 risk-smart-decision-manage
-6. 启动前端项目
-
 ### 后端启动
 
 ```bash
@@ -236,7 +238,7 @@ cd risk-smart-backend
 # 编译打包
 mvn clean package -DskipTests
 
-# 启动各服务 (在各模块目录下)
+# 按顺序启动各服务 (每个服务在新终端窗口)
 java -jar risk-smart-gateway/target/risk-smart-gateway.jar
 java -jar risk-smart-system/target/risk-smart-system.jar
 java -jar risk-smart-decision-manage/target/risk-smart-decision-manage.jar
@@ -256,6 +258,35 @@ npm install
 # 启动开发服务器
 npm run serve
 ```
+
+### 前端代理说明
+
+前端开发服务器配置了 API 代理，请求路径转换关系：
+
+```
+前端请求                    Gateway 接收
+───────────────────────────────────────────
+/dev-api/vm/system/**  →   /vm/system/**   →  risk-smart-system
+/dev-api/vm/auth/**    →   /vm/auth/**     →  risk-smart-system
+/dev-api/vm/smartDecision/** → /vm/smartDecision/** → risk-smart-decision-manage
+/dev-api/vm/smartData/**     → /vm/smartData/**     → risk-smart-data-middle-station
+```
+
+### 本地访问地址
+
+| 服务 | 地址 | 说明 |
+|------|------|------|
+| 前端页面 | http://localhost:8081 | Vue 开发服务器 |
+| API 网关 | http://localhost:8080 | 所有 API 入口 |
+| Nacos 控制台 | http://localhost:8858/nacos | 账号: nacos / nacos |
+| System 服务 | http://localhost:8992 | 用户/角色/菜单 |
+| Decision 服务 | http://localhost:8991 | 决策引擎 |
+| Data 服务 | http://localhost:8990 | 数据中台 |
+
+### 默认账号
+
+- 用户名：`admin`
+- 密码：`admin123`
 
 ---
 
