@@ -1,0 +1,120 @@
+# Gateway Service Configuration
+# 使用 spring.config.import 替代 bootstrap.yml (Spring Cloud Alibaba 2025.x)
+
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: risk-smart-gateway
+  main:
+    web-application-type: reactive
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+  # 使用 spring.config.import 导入 Nacos 配置
+  config:
+    import:
+      - optional:nacos:${spring.application.name}-${spring.profiles.active}.yml?group=${NACOS_GROUP:DEFAULT_GROUP}&refreshEnabled=true
+      - optional:nacos:application-${spring.profiles.active}.yml?group=${NACOS_GROUP:DEFAULT_GROUP}&refreshEnabled=true
+  cloud:
+    nacos:
+      # Nacos 服务器地址
+      server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+      username: ${NACOS_USERNAME:nacos}
+      password: ${NACOS_PASSWORD:nacos}
+      # Nacos 配置中心
+      config:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+        username: ${NACOS_USERNAME:nacos}
+        password: ${NACOS_PASSWORD:nacos}
+        namespace: ${NACOS_NAMESPACE:}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+        file-extension: yml
+      # Nacos 服务发现
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+        username: ${NACOS_USERNAME:nacos}
+        password: ${NACOS_PASSWORD:nacos}
+        namespace: ${NACOS_NAMESPACE:}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+    # Gateway 默认路由配置 (Nacos 配置会覆盖此配置)
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        # ==================== /vm/** 前缀路由 (前端代理) ====================
+        # /vm/system/** -> /system/**
+        - id: risk-smart-system-vm
+          uri: lb://risk-smart-system
+          predicates:
+            - Path=/vm/system/**
+          filters:
+            - StripPrefix=1
+        # /vm/auth/** -> /auth/**
+        - id: risk-smart-auth-vm
+          uri: lb://risk-smart-system
+          predicates:
+            - Path=/vm/auth/**
+          filters:
+            - StripPrefix=1
+        # /vm/smartDecision/** -> /
+        - id: risk-smart-decision-vm
+          uri: lb://risk-smart-decision-manage
+          predicates:
+            - Path=/vm/smartDecision/**
+          filters:
+            - StripPrefix=2
+        # /vm/smartData/** -> /
+        - id: risk-smart-data-vm
+          uri: lb://risk-smart-data-middle-station
+          predicates:
+            - Path=/vm/smartData/**
+          filters:
+            - StripPrefix=2
+        # ==================== 标准路由 ====================
+        # 认证相关路由
+        - id: risk-smart-auth
+          uri: lb://risk-smart-system
+          predicates:
+            - Path=/login,/logout,/captchaImage
+        # 系统服务路由
+        - id: risk-smart-system
+          uri: lb://risk-smart-system
+          predicates:
+            - Path=/system/**
+        # 数据中台路由
+        - id: risk-smart-data-middle-station
+          uri: lb://risk-smart-data-middle-station
+          predicates:
+            - Path=/data/**
+          filters:
+            - StripPrefix=1
+        # 决策引擎路由
+        - id: risk-smart-decision-manage
+          uri: lb://risk-smart-decision-manage
+          predicates:
+            - Path=/decision/**
+          filters:
+            - StripPrefix=1
+    sentinel:
+      eager: true
+      transport:
+        dashboard: ${SENTINEL_DASHBOARD:127.0.0.1:8718}
+      datasource:
+        ds1:
+          nacos:
+            server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+            username: ${NACOS_USERNAME:nacos}
+            password: ${NACOS_PASSWORD:nacos}
+            dataId: sentinel-risk-smart-gateway
+            groupId: DEFAULT_GROUP
+            data-type: json
+            rule-type: gw-flow
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

@@ -1,0 +1,244 @@
+/**
+* @author chris
+* @date 2023/4/20 9:26
+*/
+/*
+输入框样式
+*/
+ /deep/ .el-form-item {
+  margin-bottom: 20px;
+}
+ /deep/ .el-form-item__label {
+  padding: 0;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 400;
+  color: #333333;
+  white-space: pre-line;
+}
+ /deep/ .el-form-item__label.label-customisation {
+  line-height: 20px;
+  text-align: left;
+  display: inline-block;
+}
+ /deep/ .el-form-item__label.label-customisation .gray {
+  color: #666666;
+}
+ /deep/ .el-form-item .el-select {
+  width: 100%;
+}
+ /deep/ .el-form-item .el-select .el-input .el-select__caret {
+  color: #272728;
+}
+ /deep/ .el-form-item .el-select .el-input--small .el-input__icon {
+  line-height: 48px;
+}
+ /deep/ .el-form-item .el-select .el-tag:first-child {
+  height: 100%;
+  font-size: 14px;
+  color: #333333;
+  background: transparent;
+  border: none;
+}
+ /deep/ .el-form-item .el-select .el-tag__close.el-icon-close {
+  display: none;
+}
+ /deep/ .el-form-item .el-input__prefix,
+ /deep/ .el-form-item .el-input__suffix {
+  line-height: 48px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.85);
+}
+ /deep/ .el-form-item .el-input__suffix {
+  right: 7px;
+  top: auto;
+}
+ /deep/ .el-form-item .is-disabled,
+ /deep/ .el-form-item .el-input__inner,
+ /deep/ .el-form-item .el-textarea__inner {
+  padding: 14px;
+  border: none;
+  font-size: 14px;
+  border-radius: 4px;
+  background: #F4F6F9;
+  color: rgba(0, 0, 0, 0.85);
+}
+ /deep/ .el-form-item .is-disabled::placeholder,
+ /deep/ .el-form-item .el-input__inner::placeholder,
+ /deep/ .el-form-item .el-textarea__inner::placeholder {
+  color: rgba(0, 0, 0, 0.3);
+}
+ /deep/ .el-form-item .is-disabled {
+  padding: 0;
+}
+ /deep/ .el-form-item .el-input__inner {
+  height: 48px;
+  padding: 14px 40px 14px 14px;
+}
+ /deep/ .el-form-item .el-textarea__inner {
+  height: 96px;
+}
+ /deep/ .el-form-item .el-checkbox-group,
+ /deep/ .el-form-item .el-radio-group {
+  width: 100%;
+}
+ /deep/ .el-form-item .el-checkbox.is-bordered,
+ /deep/ .el-form-item .el-radio.is-bordered {
+  padding: 0;
+}
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-checkbox--small,
+ /deep/ .el-form-item .el-radio.is-bordered.el-checkbox--small,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-radio--small,
+ /deep/ .el-form-item .el-radio.is-bordered.el-radio--small {
+  height: 48px;
+  line-height: 48px;
+  margin-right: 0;
+  background: #F4F6F9;
+  border-radius: 4px;
+  border: none;
+  padding: 0;
+  text-align: center;
+  /*
+				w-4	一行展示4个
+				w-3	一行展示3个
+				w-2	一行展示2个
+				*/
+}
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-checkbox--small.w-4,
+ /deep/ .el-form-item .el-radio.is-bordered.el-checkbox--small.w-4,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-radio--small.w-4,
+ /deep/ .el-form-item .el-radio.is-bordered.el-radio--small.w-4,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-checkbox--small.w-3,
+ /deep/ .el-form-item .el-radio.is-bordered.el-checkbox--small.w-3,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-radio--small.w-3,
+ /deep/ .el-form-item .el-radio.is-bordered.el-radio--small.w-3,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-checkbox--small.w-2,
+ /deep/ .el-form-item .el-radio.is-bordered.el-checkbox--small.w-2,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-radio--small.w-2,
+ /deep/ .el-form-item .el-radio.is-bordered.el-radio--small.w-2 {
+  min-width: calc((100% - 30px) / 4);
+}
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-checkbox--small.w-4.mr-10,
+ /deep/ .el-form-item .el-radio.is-bordered.el-checkbox--small.w-4.mr-10,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-radio--small.w-4.mr-10,
+ /deep/ .el-form-item .el-radio.is-bordered.el-radio--small.w-4.mr-10,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-checkbox--small.w-3.mr-10,
+ /deep/ .el-form-item .el-radio.is-bordered.el-checkbox--small.w-3.mr-10,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-radio--small.w-3.mr-10,
+ /deep/ .el-form-item .el-radio.is-bordered.el-radio--small.w-3.mr-10,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-checkbox--small.w-2.mr-10,
+ /deep/ .el-form-item .el-radio.is-bordered.el-checkbox--small.w-2.mr-10,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-radio--small.w-2.mr-10,
+ /deep/ .el-form-item .el-radio.is-bordered.el-radio--small.w-2.mr-10 {
+  margin-right: 10px;
+  margin-top: 10px;
+}
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-checkbox--small.w-4.mt-0,
+ /deep/ .el-form-item .el-radio.is-bordered.el-checkbox--small.w-4.mt-0,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-radio--small.w-4.mt-0,
+ /deep/ .el-form-item .el-radio.is-bordered.el-radio--small.w-4.mt-0,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-checkbox--small.w-3.mt-0,
+ /deep/ .el-form-item .el-radio.is-bordered.el-checkbox--small.w-3.mt-0,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-radio--small.w-3.mt-0,
+ /deep/ .el-form-item .el-radio.is-bordered.el-radio--small.w-3.mt-0,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-checkbox--small.w-2.mt-0,
+ /deep/ .el-form-item .el-radio.is-bordered.el-checkbox--small.w-2.mt-0,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-radio--small.w-2.mt-0,
+ /deep/ .el-form-item .el-radio.is-bordered.el-radio--small.w-2.mt-0 {
+  margin-top: 0;
+}
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-checkbox--small.w-special,
+ /deep/ .el-form-item .el-radio.is-bordered.el-checkbox--small.w-special,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-radio--small.w-special,
+ /deep/ .el-form-item .el-radio.is-bordered.el-radio--small.w-special {
+  min-width: 28%;
+}
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-checkbox--small.w-last,
+ /deep/ .el-form-item .el-radio.is-bordered.el-checkbox--small.w-last,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-radio--small.w-last,
+ /deep/ .el-form-item .el-radio.is-bordered.el-radio--small.w-last {
+  min-width: calc(20% - 10px);
+}
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-checkbox--small.w-3,
+ /deep/ .el-form-item .el-radio.is-bordered.el-checkbox--small.w-3,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-radio--small.w-3,
+ /deep/ .el-form-item .el-radio.is-bordered.el-radio--small.w-3 {
+  min-width: calc((100% - 20px) / 3);
+}
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-checkbox--small.w-2,
+ /deep/ .el-form-item .el-radio.is-bordered.el-checkbox--small.w-2,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-radio--small.w-2,
+ /deep/ .el-form-item .el-radio.is-bordered.el-radio--small.w-2 {
+  min-width: calc((100% - 10px) / 2);
+}
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-checkbox--small .el-checkbox__label,
+ /deep/ .el-form-item .el-radio.is-bordered.el-checkbox--small .el-checkbox__label,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-radio--small .el-checkbox__label,
+ /deep/ .el-form-item .el-radio.is-bordered.el-radio--small .el-checkbox__label,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-checkbox--small .el-radio__label,
+ /deep/ .el-form-item .el-radio.is-bordered.el-checkbox--small .el-radio__label,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-radio--small .el-radio__label,
+ /deep/ .el-form-item .el-radio.is-bordered.el-radio--small .el-radio__label {
+  padding: 0;
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.85);
+}
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-checkbox--small .el-checkbox__input.is-checked + .el-checkbox__label,
+ /deep/ .el-form-item .el-radio.is-bordered.el-checkbox--small .el-checkbox__input.is-checked + .el-checkbox__label,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-radio--small .el-checkbox__input.is-checked + .el-checkbox__label,
+ /deep/ .el-form-item .el-radio.is-bordered.el-radio--small .el-checkbox__input.is-checked + .el-checkbox__label,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-checkbox--small .el-radio__input.is-checked + .el-radio__label,
+ /deep/ .el-form-item .el-radio.is-bordered.el-checkbox--small .el-radio__input.is-checked + .el-radio__label,
+ /deep/ .el-form-item .el-checkbox.is-bordered.el-radio--small .el-radio__input.is-checked + .el-radio__label,
+ /deep/ .el-form-item .el-radio.is-bordered.el-radio--small .el-radio__input.is-checked + .el-radio__label {
+  color: #FFFFFF;
+}
+ /deep/ .el-form-item .el-checkbox.is-bordered.is-checked,
+ /deep/ .el-form-item .el-radio.is-bordered.is-checked {
+  background: var(--primary-color);
+}
+ /deep/ .el-form-item .el-checkbox__input,
+ /deep/ .el-form-item .el-checkbox__original,
+ /deep/ .el-form-item .el-checkbox__input .el-checkbox__inner,
+ /deep/ .el-form-item .el-checkbox__input.is-indeterminate .el-checkbox__inner,
+ /deep/ .el-form-item .el-radio__input,
+ /deep/ .el-form-item .el-radio__original,
+ /deep/ .el-form-item .el-radio__input .el-radio__inner,
+ /deep/ .el-form-item .el-radio__input.is-indeterminate .el-radio__inner {
+  display: none;
+}
+ /deep/ .el-form-item .el-checkbox.is-bordered + .el-checkbox.is-bordered,
+ /deep/ .el-form-item .el-radio.is-bordered + .el-radio.is-bordered {
+  margin: 0;
+}
+/*
+底部按钮样式
+*/
+.drawer-footer {
+  text-align: right;
+}
+.drawer-footer .el-button {
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+}
+.drawer-footer .el-button:hover {
+  opacity: 0.8;
+}
+.drawer-footer .el-button:active {
+  opacity: 1;
+}
+.drawer-footer .el-button--primary {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  padding: 13px 28px 12px;
+}
+.drawer-footer .el-button--info {
+  color: #3F4254;
+  background: #E4E6EF;
+  border-color: #E4E6EF;
+  padding: 13px 14px 12px;
+}

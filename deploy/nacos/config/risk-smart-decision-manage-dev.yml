@@ -1,0 +1,79 @@
+# RiskSmart Decision Manage Service Configuration
+# Nacos Data ID: risk-smart-decision-manage-dev.yml
+# Nacos Group: DEFAULT_GROUP
+
+spring:
+  main:
+    allow-circular-references: true
+
+  datasource:
+    druid:
+      master:
+        url: ${RS_DB_URL:jdbc:mysql://127.0.0.1:3306/risk_smart_decision_manage?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true}
+        username: ${RS_DB_USER:root}
+        password: ${RS_DB_PASS:root}
+        driver-class-name: ${RS_DB_DRIVER:com.mysql.cj.jdbc.Driver}
+      slave:
+        enabled: ${RS_DB_SLAVE_ENABLED:false}
+        url: ${RS_DB_SLAVE_URL:}
+        username: ${RS_DB_SLAVE_USER:}
+        password: ${RS_DB_SLAVE_PASS:}
+        driver-class-name: ${RS_DB_SLAVE_DRIVER:com.mysql.cj.jdbc.Driver}
+
+  redis:
+    host: ${REDIS_HOST:127.0.0.1}
+    port: ${REDIS_PORT:6379}
+    database: ${REDIS_DATABASE:0}
+    timeout: 10000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+
+mybatis-plus:
+  mapper-locations: classpath*:mapper/**/*.xml
+  type-aliases-package: com.risksmart.system.domain,com.value.decision.model.**.domain,com.value.decision.engine.domain
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    cache-enabled: false
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: delFlag
+      logic-delete-value: 2
+      logic-not-delete-value: 0
+
+service:
+  engine:
+    ruleUrl: ${SERVICE_ENGINE_RULE_URL:http://127.0.0.1:8991}
+    ruleflUrl: ${SERVICE_ENGINE_RULEFL_URL:${service.engine.ruleUrl}}
+  interfaceManage:
+    baseUrl: ${SERVICE_INTERFACE_MANAGE_BASE_URL:http://127.0.0.1:8990}
+    interfaceRequestUrl: ${SERVICE_INTERFACE_MANAGE_REQUEST_URL:${service.interfaceManage.baseUrl}}
+    interfaceDetailUrl: ${SERVICE_INTERFACE_MANAGE_DETAIL_URL:${service.interfaceManage.baseUrl}}
+    fieldsUrl: ${SERVICE_INTERFACE_MANAGE_FIELDS_URL:${service.interfaceManage.baseUrl}}
+    queryAppkeyByUserIdUrl: ${SERVICE_INTERFACE_MANAGE_APPKEY_URL:${service.interfaceManage.baseUrl}}
+    monitorDetailUrl: ${SERVICE_INTERFACE_MANAGE_MONITOR_DETAIL_URL:${service.interfaceManage.baseUrl}}
+    monitorWarningUrl: ${SERVICE_INTERFACE_MANAGE_MONITOR_WARNING_URL:${service.interfaceManage.baseUrl}}
+    interfaceParameters: ${SERVICE_INTERFACE_MANAGE_PARAMS:}
+    apiToken: ${SERVICE_INTERFACE_MANAGE_API_TOKEN:}
+
+appkey: ${APPKEY:}
+sercet: ${APP_SERCET:${APP_SECRET:}}
+
+xxl:
+  job:
+    admin:
+      addresses: ${XXL_JOB_ADMIN_ADDRESSES:}
+    accessToken: ${XXL_JOB_ACCESS_TOKEN:}
+    executor:
+      appname: ${XXL_JOB_EXECUTOR_APPNAME:risk-smart-decision-manage}
+      address: ${XXL_JOB_EXECUTOR_ADDRESS:}
+      ip: ${XXL_JOB_EXECUTOR_IP:}
+      port: ${XXL_JOB_EXECUTOR_PORT:0}
+      logpath: ${XXL_JOB_EXECUTOR_LOGPATH:./logs/xxl-job}
+      logretentiondays: ${XXL_JOB_EXECUTOR_LOGRETENTIONDAYS:30}
+

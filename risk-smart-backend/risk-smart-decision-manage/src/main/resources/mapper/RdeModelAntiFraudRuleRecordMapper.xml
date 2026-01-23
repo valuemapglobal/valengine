@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.value.decision.model.rdenew.mapper.RdeModelAntiFraudRuleRecordMapper">
+  <resultMap id="BaseResultMap" type="com.value.decision.model.rdenew.domain.RdeModelAntiFraudRuleRecord">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="code_id" jdbcType="INTEGER" property="codeId" />
+    <result column="model_id" jdbcType="INTEGER" property="modelId" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="descr" jdbcType="VARCHAR" property="descr" />
+    <result column="control" jdbcType="VARCHAR" property="control" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="term" jdbcType="VARCHAR" property="term" />
+    <result column="term_package" jdbcType="VARCHAR" property="termPackage" />
+    <result column="term_key" jdbcType="VARCHAR" property="termKey" />
+    <result column="term_value" jdbcType="VARCHAR" property="termValue" />
+    <result column="term_other" jdbcType="VARCHAR" property="termOther" />
+    <result column="term_rule" jdbcType="VARCHAR" property="termRule" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="data_status" jdbcType="TINYINT" property="dataStatus" />
+    <result column="flag" jdbcType="TINYINT" property="flag" />
+    <result column="dept_id" jdbcType="TINYINT" property="deptId" />
+  </resultMap>
+
+    <delete id="deleteList">
+        delete from rde_model_anti_fraud_rule_record where group_id in
+        (
+        <foreach collection="ids" separator="," item="id">
+            #{id}
+        </foreach>
+        )
+        and dept_id = #{deptId}
+        and project_code=#{projectCode}
+        and rule_code=#{ruleCode}
+    </delete>
+
+    <!-- 查询列表 -->
+    <select id="newList" resultType="com.value.decision.model.rdenew.vo.RdeModelAntiFraudRuleRecordVO">
+        select r.id,l.id as codeId,r.group_id,r.model_id,l.code as code,l.content as content,l.code as name,l.content as descr,l.dept_id
+             ,r.status
+             ,r.update_time
+             ,r.dept_flag
+        from rde_model_anti_fraud_rule_record r
+                 left JOIN  rde_model_decision_code_level  l on r.code_id = l.id
+        WHERE  r.data_status=0
+        <if test="groupId !=null">
+            and group_id = #{groupId}
+        </if>
+        and r.dept_id =#{deptId} and r.project_code=#{projectCode} and l.project_code=#{projectCode} and l.data_status = '0'
+        order by update_time desc
+    </select>
+
+    <select id="queryList" resultType="com.value.decision.model.rdenew.domain.RdeModelAntiFraudRuleRecord">
+        SELECT * FROM `rde_model_anti_fraud_rule_record`
+        <where>
+            <if test="ids!=null and ids.size > 0">
+                group_id in
+                (
+                <foreach collection="ids" item="item" separator=",">
+                    #{item}
+                </foreach>
+                )
+                and
+            </if>
+            data_status= 0
+            and dept_id = #{deptId}
+            and project_code = #{projectCode}
+        </where>
+    </select>
+    <select id="queryList2" resultType="com.value.decision.model.rdenew.domain.RdeModelAntiFraudRuleRecord">
+        SELECT * FROM `rde_model_anti_fraud_rule_record`
+        <where>
+            <if test="ids!=null and ids.size > 0">
+                group_id in
+                (
+                <foreach collection="ids" item="item" separator=",">
+                    #{item}
+                </foreach>
+                )
+                and
+            </if>
+            data_status= 0
+            and dept_id = #{deptId}
+            and project_code=#{projectCode}
+            and business_code = #{businessCode}
+            and rule_code = #{ruleCode}
+        </where>
+    </select>
+    <select id="getCodeIdDeleted" resultType="java.lang.Integer">
+        select code_id from rde_model_anti_fraud_rule_record
+        <where>
+            <if test="groupIdList!=null and groupIdList.size > 0">
+                group_id in(
+                <foreach collection="groupIdList" item="groupId" separator=",">
+                    #{groupId}
+                </foreach>
+                )
+            </if>
+            and dept_id=#{deptId}
+            and dept_flag=1
+            and data_status=0
+            and project_code = #{projectCode}
+            and rule_code = #{ruleCode}
+        </where>
+    </select>
+
+    <update id="updateList">
+        update rde_model_anti_fraud_rule_record set status=0
+        <where>
+            <if test="recordIdList!=null and recordIdList.size > 0">
+                name in(
+                <foreach collection="recordIdList" item="recordId" separator=",">
+                    #{recordId}
+                </foreach>
+                )
+            </if>
+                and dept_id=#{deptId}
+        </where>
+    </update>
+    <!-- 查询列表 -->
+    <select id="newList2" resultType="com.value.decision.model.rdenew.domain.RdeModelDecisionCodeLevel">
+        select l.*
+        from rde_model_anti_fraud_rule_record r
+                 inner JOIN  rde_model_decision_code_level  l on r.code_id = l.id
+        WHERE  r.data_status=0 and l.data_status = 0 and r.group_id = #{groupId}
+    </select>
+
+    <update id="updateVersionList">
+        update rde_model_anti_fraud_rule_record
+        <set>
+            version_control = #{versionControl}
+        </set>
+        where id = #{id}
+    </update>
+
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO rde_model_anti_fraud_rule_record (
+        id,
+        group_id,
+        code_id,
+        model_id,
+        code,
+        name,
+        descr,
+        control,
+        status,
+        term,
+        term_package,
+        term_key,
+        term_value,
+        term_other,
+        term_rule,
+        remark,
+        create_user_id,
+        create_time,
+        update_time,
+        data_status,
+        dept_id,
+        dept_flag,
+        rule_code,
+        business_code,
+        project_code,
+        version_control,
+        data_module
+        )
+        VALUES
+        <foreach collection="fraudRecordList" index="" item="fraudRecord" separator=",">
+            (#{fraudRecord.id},
+            #{fraudRecord.groupId},
+            #{fraudRecord.codeId},
+            #{fraudRecord.modelId},
+            #{fraudRecord.code},
+            #{fraudRecord.name},
+            #{fraudRecord.descr},
+            #{fraudRecord.control},
+            #{fraudRecord.status},
+            #{fraudRecord.term},
+            #{fraudRecord.termPackage},
+            #{fraudRecord.termKey},
+            #{fraudRecord.termValue},
+            #{fraudRecord.termOther},
+            #{fraudRecord.termRule},
+            #{fraudRecord.remark},
+            #{fraudRecord.createUserId},
+            #{fraudRecord.createTime},
+            #{fraudRecord.updateTime},
+            #{fraudRecord.dataStatus},
+            #{fraudRecord.deptId},
+            #{fraudRecord.deptFlag},
+            #{fraudRecord.ruleCode},
+            #{fraudRecord.businessCode},
+            #{fraudRecord.projectCode},
+            #{fraudRecord.versionControl},
+            #{fraudRecord.dataModule})
+        </foreach>
+    </insert>
+</mapper>

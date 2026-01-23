@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.value.decision.model.rdenew.mapper.RdeModelDecisionCodeLevelMapper">
+
+    <!-- 查询列表 -->
+    <select id="selectListQ" parameterType="com.value.decision.model.rdenew.vo.RdeModelDecisionCodeLevelVO"
+            resultType="com.value.decision.model.rdenew.domain.RdeModelDecisionCodeLevel">
+        SELECT * FROM rde_model_decision_code_level
+        WHERE data_status = 0
+        <if test="projectCode != null and projectCode != ''">
+            AND project_code = #{projectCode}
+        </if>
+        <if test="businessCode != null and businessCode != ''">
+            AND business_code = #{businessCode}
+        </if>
+        <if test="ruleCode != null and ruleCode != ''">
+            AND rule_code = #{ruleCode}
+        </if>
+        <if test="deptId != null">
+            AND dept_id = #{deptId}
+        </if>
+        <if test="type != null">
+            AND type = #{type}
+        </if>
+        ORDER BY sort_num ASC
+    </select>
+
+    <!-- 查询规则列表 -->
+    <select id="selectRuleList" parameterType="com.value.decision.model.rdenew.vo.BankClassVO"
+            resultType="com.value.decision.model.rdenew.domain.RdeModelDecisionCodeLevel">
+        SELECT * FROM rde_model_decision_code_level
+        WHERE data_status = 0 AND status = '1'
+        <if test="projectCode != null and projectCode != ''">
+            AND project_code = #{projectCode}
+        </if>
+        <if test="businessCode != null and businessCode != ''">
+            AND business_code = #{businessCode}
+        </if>
+        <if test="ruleCode != null and ruleCode != ''">
+            AND rule_code = #{ruleCode}
+        </if>
+        <if test="deptId != null">
+            AND dept_id = #{deptId}
+        </if>
+        ORDER BY sort_num ASC
+    </select>
+
+    <!-- 测试用规则列表 -->
+    <select id="selectRuleListTest" parameterType="com.value.decision.model.rdenew.vo.BankClassVO"
+            resultType="com.value.decision.model.rdenew.domain.RdeModelDecisionCodeLevel">
+        SELECT * FROM rde_model_decision_code_level
+        WHERE data_status = 0
+        <if test="projectCode != null and projectCode != ''">
+            AND project_code = #{projectCode}
+        </if>
+        <if test="businessCode != null and businessCode != ''">
+            AND business_code = #{businessCode}
+        </if>
+        <if test="ruleCode != null and ruleCode != ''">
+            AND rule_code = #{ruleCode}
+        </if>
+        <if test="deptId != null">
+            AND dept_id = #{deptId}
+        </if>
+        ORDER BY sort_num ASC
+    </select>
+
+    <!-- 正式列表 -->
+    <select id="officialList" parameterType="com.value.decision.model.rdenew.vo.RdeModelDecisionCodeLevelVO"
+            resultType="com.value.decision.model.rdenew.domain.RdeModelDecisionCodeLevel">
+        SELECT * FROM rde_model_decision_code_level
+        WHERE data_status = 0 AND status = '1'
+        <if test="projectCode != null and projectCode != ''">
+            AND project_code = #{projectCode}
+        </if>
+        <if test="businessCode != null and businessCode != ''">
+            AND business_code = #{businessCode}
+        </if>
+        <if test="ruleCode != null and ruleCode != ''">
+            AND rule_code = #{ruleCode}
+        </if>
+        <if test="deptId != null">
+            AND dept_id = #{deptId}
+        </if>
+        ORDER BY sort_num ASC
+    </select>
+
+    <!-- 查询对象列表 -->
+    <select id="selectObjectList" parameterType="java.lang.Integer"
+            resultType="com.value.decision.model.rdenew.domain.RdeRiskVariableTheme">
+        SELECT * FROM rde_risk_variable_theme WHERE data_status = 0 AND id = #{codeId}
+    </select>
+
+    <!-- 根据codeList查找详情List -->
+    <select id="selectCodeList" resultType="com.value.decision.model.rdenew.domain.RdeModelDecisionCodeLevel">
+        SELECT * FROM rde_model_decision_code_level
+        WHERE data_status = 0
+        <if test="deptId != null">
+            AND dept_id = #{deptId}
+        </if>
+        <if test="codeList != null and codeList.size() > 0">
+            AND code IN
+            <foreach collection="codeList" item="code" open="(" separator="," close=")">
+                #{code}
+            </foreach>
+        </if>
+    </select>
+
+    <!-- 根据模型id找到对应的code规则文件 -->
+    <select id="selectCodeFile" parameterType="java.util.List" resultType="java.lang.String">
+        SELECT DISTINCT term_rule FROM rde_model_decision_code_level
+        WHERE data_status = 0 AND term_rule IS NOT NULL AND term_rule != ''
+        <if test="list != null and list.size() > 0">
+            AND id IN
+            <foreach collection="list" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+    </select>
+
+    <!-- 根据模型id找到对应的codeId -->
+    <select id="selectCodeId" parameterType="java.util.List" resultType="java.lang.String">
+        SELECT DISTINCT code FROM rde_model_decision_code_level
+        WHERE data_status = 0
+        <if test="list != null and list.size() > 0">
+            AND id IN
+            <foreach collection="list" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+    </select>
+
+    <!-- 从原表中获取数据存入快照表 -->
+    <select id="queryList" resultType="com.value.decision.model.rdenew.domain.RdeModelDecisionCodeLevel">
+        SELECT * FROM rde_model_decision_code_level
+        WHERE data_status = 0
+        <if test="deptId != null">
+            AND dept_id = #{deptId}
+        </if>
+        <if test="projectCode != null and projectCode != ''">
+            AND project_code = #{projectCode}
+        </if>
+        <if test="ruleCode != null and ruleCode != ''">
+            AND rule_code = #{ruleCode}
+        </if>
+        <if test="ids != null and ids.size() > 0">
+            AND id IN
+            <foreach collection="ids" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+    </select>
+
+    <!-- 从原表中获取数据存入快照表2 -->
+    <select id="queryList2" resultType="com.value.decision.model.rdenew.domain.RdeModelDecisionCodeLevel">
+        SELECT * FROM rde_model_decision_code_level
+        WHERE data_status = 0
+        <if test="deptId != null">
+            AND dept_id = #{deptId}
+        </if>
+        <if test="projectCode != null and projectCode != ''">
+            AND project_code = #{projectCode}
+        </if>
+        <if test="ruleCode != null and ruleCode != ''">
+            AND rule_code = #{ruleCode}
+        </if>
+        <if test="businessCode != null and businessCode != ''">
+            AND business_code = #{businessCode}
+        </if>
+        <if test="ids != null and ids.size() > 0">
+            AND id IN
+            <foreach collection="ids" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+    </select>
+
+    <!-- 根据code查询 -->
+    <select id="queryListByCode" resultType="com.value.decision.model.rdenew.domain.RdeModelDecisionCodeLevel">
+        SELECT * FROM rde_model_decision_code_level
+        WHERE data_status = 0
+        <if test="deptId != null">
+            AND dept_id = #{deptId}
+        </if>
+        <if test="projectCode != null and projectCode != ''">
+            AND project_code = #{projectCode}
+        </if>
+        <if test="ruleCode != null and ruleCode != ''">
+            AND rule_code = #{ruleCode}
+        </if>
+        <if test="codes != null and codes.size() > 0">
+            AND code IN
+            <foreach collection="codes" item="code" open="(" separator="," close=")">
+                #{code}
+            </foreach>
+        </if>
+    </select>
+
+    <!-- 删除其他账号下的标准模型数据 -->
+    <update id="deleteList">
+        UPDATE rde_model_decision_code_level SET data_status = 1
+        WHERE data_status = 0
+        <if test="deptId != null">
+            AND dept_id != #{deptId}
+        </if>
+        <if test="projectCode != null and projectCode != ''">
+            AND project_code = #{projectCode}
+        </if>
+        <if test="ruleCode != null and ruleCode != ''">
+            AND rule_code = #{ruleCode}
+        </if>
+        <if test="ids != null and ids.size() > 0">
+            AND id IN
+            <foreach collection="ids" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+    </update>
+
+    <!-- 根据行业名称获取系统名称 -->
+    <select id="getSystematicNameByIndustryName" resultType="java.lang.String">
+        SELECT DISTINCT purpose_category FROM rde_model_decision_code_level
+        WHERE data_status = 0
+        <if test="categoryType != null">
+            AND category_type = #{categoryType}
+        </if>
+        <if test="name != null and name != ''">
+            AND purpose_category LIKE CONCAT('%', #{name}, '%')
+        </if>
+        <if test="deptId != null">
+            AND dept_id = #{deptId}
+        </if>
+        <if test="projectCode != null and projectCode != ''">
+            AND project_code = #{projectCode}
+        </if>
+    </select>
+
+    <!-- 通用获取系统名称 -->
+    <select id="getSystematicNameByIndustryNameCommon" resultType="java.lang.String">
+        SELECT DISTINCT purpose_category FROM rde_model_decision_code_level
+        WHERE data_status = 0
+        <if test="categoryType != null">
+            AND category_type = #{categoryType}
+        </if>
+        <if test="modelId != null and modelId != ''">
+            AND id = #{modelId}
+        </if>
+    </select>
+
+    <!-- 检查是否存在重复记录 -->
+    <select id="selectList2" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM rde_model_decision_code_level
+        WHERE data_status = 0
+        <if test="id != null">
+            AND id != #{id}
+        </if>
+        <if test="project_code != null and project_code != ''">
+            AND project_code = #{project_code}
+        </if>
+        <if test="business_code != null and business_code != ''">
+            AND business_code = #{business_code}
+        </if>
+        <if test="rule_code != null and rule_code != ''">
+            AND rule_code = #{rule_code}
+        </if>
+        <if test="dept_id != null">
+            AND dept_id = #{dept_id}
+        </if>
+        <if test="code != null and code != ''">
+            AND code = #{code}
+        </if>
+        <if test="moduleId != null and moduleId != ''">
+            AND data_module = #{moduleId}
+        </if>
+    </select>
+
+    <!-- 批量修改 -->
+    <update id="updateVersionList" parameterType="com.value.decision.model.rdenew.domain.RdeModelDecisionCodeLevel">
+        UPDATE rde_model_decision_code_level
+        SET version_control = #{versionControl}, update_time = NOW()
+        WHERE data_status = 0
+        <if test="id != null">
+            AND id = #{id}
+        </if>
+    </update>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO rde_model_decision_code_level (
+            code, level, type, risk_type, content, risk_description, sort_num,
+            start_rate, end_rate, status, term, term_package, term_key, term_value,
+            term_other, term_rule, remark, update_by, create_by, update_time, create_time,
+            dept_id, data_status, dept_flag, rule_code, project_code, purpose_category,
+            category_type, business_code, conditions, version_control, data_module,
+            strongly_reject, quato_rate, transfer_to_person
+        ) VALUES
+        <foreach collection="CodeLevelList" item="item" separator=",">
+            (
+                #{item.code}, #{item.level}, #{item.type}, #{item.riskType},
+                #{item.content}, #{item.riskDescription}, #{item.sortNum}, #{item.startRate},
+                #{item.endRate}, #{item.status}, #{item.term}, #{item.termPackage},
+                #{item.termKey}, #{item.termValue}, #{item.termOther}, #{item.termRule},
+                #{item.remark}, #{item.updateBy}, #{item.createBy}, #{item.updateTime},
+                #{item.createTime}, #{item.deptId}, #{item.dataStatus}, #{item.deptFlag},
+                #{item.ruleCode}, #{item.projectCode}, #{item.purposeCategory},
+                #{item.categoryType}, #{item.businessCode}, #{item.conditions},
+                #{item.versionControl}, #{item.dataModule}, #{item.stronglyReject},
+                #{item.quatoRate}, #{item.transferToPerson}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 根据code查询，不受权限拦截影响 -->
+    <select id="selectByCodeWithoutPermission" resultType="com.value.decision.model.rdenew.domain.RdeModelDecisionCodeLevel">
+        SELECT * FROM rde_model_decision_code_level
+        WHERE data_status = 0 AND code = #{code}
+        <if test="type != null">
+            AND type = #{type}
+        </if>
+        LIMIT 1
+    </select>
+
+</mapper>

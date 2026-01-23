@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.value.decision.model.rdenew.mapper.RdeModelAntiFraudMapper">
+  <resultMap id="BaseResultMap" type="com.value.decision.model.rdenew.domain.RdeModelAntiFraud">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="descr" jdbcType="VARCHAR" property="descr" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="check_status" jdbcType="TINYINT" property="checkStatus" />
+    <result column="rule_type" jdbcType="INTEGER" property="ruleType" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="data_status" jdbcType="TINYINT" property="dataStatus" />
+    <result column="new_rule" jdbcType="LONGVARCHAR" property="newRule" />
+    <result column="run_rule" jdbcType="LONGVARCHAR" property="runRule" />
+  </resultMap>
+    <delete id="deleteList">
+      delete from rde_model_anti_fraud where id in
+      (
+      <foreach collection="ids" separator="," item="id">
+        #{id}
+      </foreach>
+      )
+      and dept_id = #{deptId}
+      and project_code=#{projectCode}
+      and rule_code=#{ruleCode}
+    </delete>
+    <select id="queryList" resultType="com.value.decision.model.rdenew.domain.RdeModelAntiFraud">
+      SELECT * FROM `rde_model_anti_fraud`
+      <where>
+        <if test="ids!=null and ids.size > 0">
+          id in
+          (
+          <foreach collection="ids" item="item" separator=",">
+            #{item}
+          </foreach>
+          )
+          and
+        </if>
+        data_status= 0
+        and dept_id = #{deptId}
+        and project_code=#{projectCode}
+        and rule_code = #{ruleCode}
+      </where>
+    </select>
+
+    <select id="queryList2" resultType="com.value.decision.model.rdenew.domain.RdeModelAntiFraud">
+        SELECT * FROM `rde_model_anti_fraud`
+        <where>
+            <if test="ids!=null and ids.size > 0">
+                id in
+                (
+                <foreach collection="ids" item="item" separator=",">
+                    #{item}
+                </foreach>
+                )
+                and
+            </if>
+            data_status= 0
+            and dept_id = #{deptId}
+            and project_code=#{projectCode}
+            and rule_code = #{ruleCode}
+            and business_code = #{businessCode}
+        </where>
+    </select>
+
+  <select id="selectDeleted" resultType="java.lang.Integer">
+    select id from rde_model_anti_fraud
+    <where>
+      <if test="modelIdList!=null and modelIdList.size > 0">
+        id not in(
+        <foreach collection="modelIdList" item="modelId" separator=",">
+          #{modelId}
+        </foreach>
+        )
+      </if>
+      and dept_id=#{deptId}
+      and project_code=#{projectCode}
+      and rule_code=#{ruleCode}
+      and dept_flag=1
+      and data_status=0;
+    </where>
+  </select>
+
+  <update id="updateStatus" parameterType="com.value.decision.model.rdenew.vo.RdeUpdateStateEntryVO">
+    update ${tableName} set status=#{status} where id=#{id} and dept_id=#{deptId}
+  </update>
+
+  <update id="updateList">
+    update rde_model_anti_fraud set status=0
+    <where>
+        <if test="modelIdList!=null and modelIdList.size > 0">
+            name in(
+            <foreach collection="modelIdList" item="modelId" separator=",">
+                #{modelId}
+            </foreach>
+            )
+        </if>
+        and dept_id=#{deptId}
+    </where>
+  </update>
+
+    <update id="updateVersionList">
+        update rde_model_anti_fraud
+        <set>
+            version_control = #{versionControl}
+        </set>
+        where id = #{id}
+    </update>
+
+    <insert id="insertBatch">
+        INSERT INTO rde_model_anti_fraud (
+        id,
+        name,
+        descr,
+        model_type,
+        STATUS,
+        check_status,
+        new_rule,
+        run_rule,
+        rule_type,
+        remark,
+        create_user_id,
+        create_time,
+        update_time,
+        dept_id,
+        data_status,
+        dept_flag,
+        rule_code,
+        business_code,
+        project_code,
+        version_control
+        )
+        VALUES
+        <foreach collection="fraudList" index="" item="fraud" separator=",">
+            (#{fraud.id},
+            #{fraud.name},
+            #{fraud.descr},
+            #{fraud.modelType},
+            #{fraud.status},
+            #{fraud.checkStatus},
+            #{fraud.newRule},
+            #{fraud.runRule},
+            #{fraud.ruleType},
+            #{fraud.remark},
+            #{fraud.createUserId},
+            #{fraud.createTime},
+            #{fraud.updateTime},
+            #{fraud.deptId},
+            #{fraud.dataStatus},
+            #{fraud.deptFlag},
+            #{fraud.ruleCode},
+            #{fraud.businessCode},
+            #{fraud.projectCode},
+            #{fraud.versionControl})
+        </foreach>
+    </insert>
+</mapper>

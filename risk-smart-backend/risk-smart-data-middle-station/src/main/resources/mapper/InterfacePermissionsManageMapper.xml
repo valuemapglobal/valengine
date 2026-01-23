@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.value.data.mapper.InterfacePermissionsManageMapper">
+
+    <resultMap id="treeMenuListMap" type="com.value.data.domain.vo.TreeInterfaceVO">
+        <result property="sourceId" column="source_id"/>
+        <result property="interfaceSourceNo" column="interface_source_no"/>
+        <result property="dataName" column="data_name"/>
+
+        <collection property="children" column="interface_source_no"
+                    select="com.value.data.mapper.InterfaceManageMapper.listBySourceNo">
+        </collection>
+    </resultMap>
+
+    <select id="treeMenuList" resultMap="treeMenuListMap">
+        SELECT
+            source_manage.id AS source_id,
+            source_manage.interface_source_no,
+            source_manage.data_name
+        FROM
+            `interface_source_manage` source_manage
+        WHERE source_manage.data_status = 0 AND source_manage.dept_id = #{deptId};
+    </select>
+
+
+
+</mapper>

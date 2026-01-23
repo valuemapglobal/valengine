@@ -1,0 +1,65 @@
+# RiskSmart Data Middle Station Service Configuration
+# Nacos Data ID: risk-smart-data-middle-station-dev.yml
+# Nacos Group: DEFAULT_GROUP
+
+spring:
+  # 数据源配置
+  datasource:
+    url: ${RS_DB_URL:jdbc:mysql://127.0.0.1:3306/risk_smart_data_middle_station?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true}
+    username: ${RS_DB_USER:root}
+    password: ${RS_DB_PASS:root}
+    driver-class-name: ${RS_DB_DRIVER:com.mysql.cj.jdbc.Driver}
+
+    # Druid 连接池配置（兼容旧版代码）
+    druid:
+      master:
+        url: ${RS_DB_URL:jdbc:mysql://127.0.0.1:3306/risk_smart_data_middle_station?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true}
+        username: ${RS_DB_USER:root}
+        password: ${RS_DB_PASS:root}
+        driver-class-name: ${RS_DB_DRIVER:com.mysql.cj.jdbc.Driver}
+
+  # Redis 配置
+  redis:
+    host: ${REDIS_HOST:127.0.0.1}
+    port: ${REDIS_PORT:6379}
+    database: ${REDIS_DATABASE:0}
+    timeout: 10000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+
+# MyBatis Plus 配置
+mybatis-plus:
+  # Mapper XML 文件位置
+  mapper-locations: classpath*:mapper/**/*.xml
+  # 实体类包路径
+  type-aliases-package: com.value.data.**.domain
+  # MyBatis 配置
+  configuration:
+    # 下划线转驼峰
+    map-underscore-to-camel-case: true
+    # SQL 日志实现
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    # 禁用二级缓存
+    cache-enabled: false
+  # 全局配置
+  global-config:
+    db-config:
+      # 主键类型（自增）
+      id-type: auto
+      # 逻辑删除字段配置
+      logic-delete-field: dataStatus
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# API 签名配置（HMAC-SHA256）
+signature:
+  expirationTimeInSeconds: ${SIGNATURE_EXPIRATION_TIME:300}
+
+# Snowflake ID 生成器配置
+snowFlake:
+  datacenterId: ${SNOWFLAKE_DATACENTER_ID:1}
+  machineId: ${SNOWFLAKE_MACHINE_ID:1}

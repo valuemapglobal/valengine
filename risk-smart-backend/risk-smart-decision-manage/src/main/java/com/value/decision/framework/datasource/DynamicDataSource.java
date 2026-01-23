@@ -1,0 +1,28 @@
+package com.value.decision.framework.datasource;
+
+import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
+
+import javax.sql.DataSource;
+import java.util.Map;
+
+/**
+ * 动态数据源
+ *
+ * @author vlauemap team
+ * @since 2026/01/22
+ */
+public class DynamicDataSource extends AbstractRoutingDataSource
+{
+    public DynamicDataSource(DataSource defaultTargetDataSource, Map<Object, Object> targetDataSources)
+    {
+        super.setDefaultTargetDataSource(defaultTargetDataSource);
+        super.setTargetDataSources(targetDataSources);
+        super.afterPropertiesSet();
+    }
+
+    @Override
+    protected Object determineCurrentLookupKey()
+    {
+        return DynamicDataSourceContextHolder.getDataSourceType();
+    }
+}

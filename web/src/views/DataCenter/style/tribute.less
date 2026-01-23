@@ -1,0 +1,47 @@
+/**
+* @author chris
+* @date 2025/4/17 10:53
+*/
+.tribute-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	max-height: 180px;
+	overflow: auto;
+	display: block;
+	z-index: 999999;
+	font-size: 12px;
+	background: #FFFFFF;
+	box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+	border-radius: 4px 4px 4px 4px;
+	border: 1px solid #E9E9EB;
+}
+
+.tribute-container ul {
+	margin: 0;
+	margin-top: 2px;
+	padding: 0;
+	list-style: none;
+}
+
+.tribute-container li {
+	padding: 5px 5px;
+	cursor: pointer;
+}
+
+.tribute-container li.highlight {
+	color: var(--primary-color);
+	background: rgba(40, 136, 232, 0.1);
+}
+
+.tribute-container li span {
+	font-weight: bold;
+}
+
+.tribute-container li.no-match {
+	cursor: default;
+}
+
+.tribute-container .menu-highlighted {
+	font-weight: bold;
+}

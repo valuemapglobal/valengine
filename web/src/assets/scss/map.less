@@ -1,0 +1,63 @@
+/**
+* @author chris
+* @date 2023/10/31 13:44
+*/
+.company .top, .tabBar {
+	/deep/ .el-tabs__header {
+		margin-bottom: 20px;
+	}
+
+	/deep/ .el-tabs__item {
+		height: 48px;
+		line-height: 48px;
+	}
+}
+
+.leftbox {
+	display: flex;
+	margin-bottom: 20px;
+
+	/deep/ .el-select, .el-cascader {
+		width: 138px;
+		margin-right: 10px;
+
+		.el-input {
+			background: transparent;
+		}
+
+		&-dropdown__item {
+
+		}
+	}
+
+	/deep/ .el-scrollbar,
+	/deep/ .el-select-dropdown {
+
+	}
+}
+
+#centerLeft1 {
+	.bg-color-black {
+		position: relative;
+		padding: 0 !important;
+		height: 800px !important;
+		background: linear-gradient(180deg, #F6FAFF 0%, #FFFFFF 100%);
+		border-radius: 12px;
+	}
+
+	/deep/ .el-input--suffix {
+		.el-input__inner {
+			height: 48px;
+			line-height: 48px;
+			background: #FFFFFF;
+			font-size: 16px;
+			font-family: PingFang SC-Regular, PingFang SC;
+			font-weight: 400;
+			border-radius: 12px;
+
+			&::placeholder {
+				color: rgba(0, 0, 0, 0.6);
+			}
+		}
+	}
+}
