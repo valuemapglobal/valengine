@@ -113,7 +113,7 @@ ValEngine/
 │   ├── risk-smart-system/                 # 系统管理服务 (用户、角色、权限)
 │   ├── risk-smart-data-middle-station/    # 数据中台服务 (接口、变量管理)
 │   └── risk-smart-decision-manage/        # 决策管理服务 (规则、模型)
-├── risk-smart-web/                        # Vue.js 前端项目
+├── web/                                   # Vue.js 前端项目
 ├── deploy/                                # 部署配置
 │   ├── mysql/                             # MySQL 配置和初始化脚本
 │   │   ├── conf/my.cnf                    # MySQL 配置文件
@@ -140,11 +140,16 @@ ValEngine/
 
 ### API 路由
 
-| 路径前缀 | 目标服务 |
-|----------|----------|
-| /system/** | risk-smart-system |
-| /data/** | risk-smart-data-middle-station |
-| /decision/** | risk-smart-decision-manage |
+| 路径前缀 | 目标服务 | 说明 |
+|----------|----------|------|
+| /vm/system/** | risk-smart-system | 前端代理路径 |
+| /vm/auth/** | risk-smart-system | 前端认证路径 |
+| /vm/smartDecision/** | risk-smart-decision-manage | 前端决策路径 |
+| /vm/smartData/** | risk-smart-data-middle-station | 前端数据路径 |
+| /system/** | risk-smart-system | 标准路径 |
+| /data/** | risk-smart-data-middle-station | 标准路径 |
+| /decision/** | risk-smart-decision-manage | 标准路径 |
+| /login, /logout | risk-smart-system | 认证接口 |
 
 ---
 
