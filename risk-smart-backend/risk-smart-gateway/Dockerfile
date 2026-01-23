@@ -12,6 +12,9 @@ WORKDIR /build
 COPY pom.xml .
 COPY risk-smart-common/pom.xml risk-smart-common/
 COPY risk-smart-gateway/pom.xml risk-smart-gateway/
+COPY risk-smart-system/pom.xml risk-smart-system/
+COPY risk-smart-decision-manage/pom.xml risk-smart-decision-manage/
+COPY risk-smart-data-middle-station/pom.xml risk-smart-data-middle-station/
 
 # Download dependencies (cached layer)
 RUN mvn dependency:go-offline -B -pl risk-smart-gateway -am
