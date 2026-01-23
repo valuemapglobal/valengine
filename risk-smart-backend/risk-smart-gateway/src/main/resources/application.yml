@@ -44,6 +44,36 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
+        # ==================== /vm/** 前缀路由 (前端代理) ====================
+        # /vm/system/** -> /system/**
+        - id: risk-smart-system-vm
+          uri: lb://risk-smart-system
+          predicates:
+            - Path=/vm/system/**
+          filters:
+            - StripPrefix=1
+        # /vm/auth/** -> /auth/**
+        - id: risk-smart-auth-vm
+          uri: lb://risk-smart-system
+          predicates:
+            - Path=/vm/auth/**
+          filters:
+            - StripPrefix=1
+        # /vm/smartDecision/** -> /
+        - id: risk-smart-decision-vm
+          uri: lb://risk-smart-decision-manage
+          predicates:
+            - Path=/vm/smartDecision/**
+          filters:
+            - StripPrefix=2
+        # /vm/smartData/** -> /
+        - id: risk-smart-data-vm
+          uri: lb://risk-smart-data-middle-station
+          predicates:
+            - Path=/vm/smartData/**
+          filters:
+            - StripPrefix=2
+        # ==================== 标准路由 ====================
         # 认证相关路由
         - id: risk-smart-auth
           uri: lb://risk-smart-system
@@ -54,8 +84,6 @@ spring:
           uri: lb://risk-smart-system
           predicates:
             - Path=/system/**
-          filters:
-            - StripPrefix=1
         # 数据中台路由
         - id: risk-smart-data-middle-station
           uri: lb://risk-smart-data-middle-station
